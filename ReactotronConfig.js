@@ -16,4 +16,16 @@ Reactotron
 // }, 5000);
 
 console.tron = Reactotron;
+// console log
+const oldeConsoleLog = console.log
+console.log  = (...args) => {
+  oldeConsoleLog(...args)
+  Reactotron.display({ 
+    name: 'CONSOLE.LOG',
+    value: args,
+    preview: args.length > 0 && typeof args[0] === 'string' ? args[0] : null
+  })
+}
+
+
 export default Reactotron;

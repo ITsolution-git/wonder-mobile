@@ -21,7 +21,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
   renderRecentMessage = () => {
     const { chat } = this.props;
     if (chat && chat.last_message) {
-      return <SmallText>{chat.last_message}</SmallText>;
+      return <SmallText>{chat.last_message.body == null ? "" : chat.last_message.body}</SmallText>;
     }
     return <SmallText>No Messages</SmallText>;
   }

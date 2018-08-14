@@ -4,7 +4,7 @@ import { watchLoginUser, watchLogoutUser, watchGetUser, watchUpdateUser, watchRe
 import { watchGetNewProposal, watchRateProposal } from './proposal';
 import { watchCreateAppointment, watchGetAppointments } from './appointment';
 import { watchGetPartners, watchGetPartnerActivities, watchGetActivityDetails } from './partner';
-import { watchGetConversation, watchGetConversations } from './conversations';
+import { watchGetConversation, watchGetConversations, watchSendMessage } from './conversations';
 
 export default function* rootSaga() {
   yield all([
@@ -32,6 +32,7 @@ export default function* rootSaga() {
 
     // Conversation
     watchGetConversation(),
-    watchGetConversations()
+    watchGetConversations(),
+    watchSendMessage(),
   ])
 }
