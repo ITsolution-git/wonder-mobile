@@ -3,8 +3,8 @@
  * https://github.com/facebook/react-native
  * @flow
  */
-import './ReactotronConfig';
-import NavigatorService from './src/services/navigation';
+import '../ReactotronConfig';
+import NavigatorService from 'src/services/navigation';
 import React, { Component } from 'react';
 import {
   SafeAreaView,
@@ -13,8 +13,8 @@ import {
 } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
-import configureStore from './src/store/configureStore';
-import AppRouter from './src/views/router';
+import configureStore from 'src/store/configureStore';
+import AppRouter from 'src/views/router';
 
 // Allow access to navigation in sagas
 export let navigatorRef: any;
