@@ -1,10 +1,12 @@
 import React from 'react';
-import { Modal, View, ModalProps, StyleSheet, ScrollView, Platform } from 'react-native';
+import { Modal, View, ModalProps, StyleSheet, ScrollView, Platform, ImageBackground } from 'react-native';
 import theme from '../../../assets/styles/theme';
-import { IconButton, Text, Title, Label } from '../theme';
+import { IconButton, Text, Title, Label, SubTitle, WonderImage } from '../theme';
 import TouchableOpacityOnPress from '../../../types/touchable-on-press';
 import Candidate from '../../../types/candidate';
 import moment from 'moment-timezone';
+import LinearGradient from 'react-native-linear-gradient';
+import Topic from '../../../types/topic';
 
 interface Props extends ModalProps {
   candidate?: Candidate | null;
@@ -15,24 +17,37 @@ interface Props extends ModalProps {
 class ProfileModal extends React.Component<Props> {
 
   renderContent = () => {
-    const { candidate } = this.props;
+    const { candidate, onCancel } = this.props;
     if (candidate) {
       return (
-        <ScrollView style={styles.container}>
-          <View style={styles.textContainer}>
-            <Text>{JSON.stringify(candidate.topics, null, 2)}</Text>
-            <Text>{JSON.stringify(candidate, null, 2)}</Text>
-            <Title>{[candidate.first_name, moment().diff(candidate.birthdate, 'years')].join(', ')}</Title>
-            <Label>Education</Label>
-            <Text>{candidate.school}</Text>
-
-            <Label>Occupation</Label>
-            <Text>{candidate.occupation}</Text>
-
-            <Label>About</Label>
-            <Text>{candidate.about}</Text>
-          </View>
-        </ScrollView>
+        <WonderImage
+          background
+          uri={candidate.images[0].url}
+          style={styles.container}
+        >
+          <LinearGradient
+            style={styles.textContainer}
+            colors={['transparent', 'rgb(22,22,22)']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            locations={[0, 0.3]}
+          >
+            <View>
+              <Title style={{ fontSize: 24 }} color="#FFF">
+                {[candidate.first_name, moment().diff(candidate.birthdate, 'years')].join(', ')}
+              </Title>
+              <SubTitle style={{ fontSize: 16 }} color="#FFF">{'Los Angelas, CA'}</SubTitle>
+              <View style={{ flexDirection: 'row' }}>
+                {candidate.topics.map((topic: Topic) => (<Text key={topic.name}>{topic.name}</Text>))}
+              </View>
+              <Text color="#FFF">{candidate.occupation} - {candidate.school}</Text>
+              {candidate.about && <Text color="#FFF">{candidate.about}</Text>}
+            </View>
+            <View style={{ justifyContent: 'flex-end' }}>
+              <IconButton size={44} icon="chevron-down" onPress={onCancel} primary="#FFF" secondary="transparent" />
+            </View>
+          </LinearGradient>
+        </WonderImage>
       );
     }
 
@@ -47,9 +62,6 @@ class ProfileModal extends React.Component<Props> {
         {...rest}
       >
         <View flex={1}>
-          <View style={styles.header}>
-            <IconButton circle size={44} icon="times" onPress={onCancel} />
-          </View>
           {this.renderContent()}
         </View>
       </Modal>
@@ -70,10 +82,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
-    backgroundColor: '#DDD'
+    backgroundColor: '#EEE',
+    justifyContent: 'flex-end'
   },
   textContainer: {
-    padding: 20
+    padding: 20,
+    flexDirection: 'row'
   },
   footer: {
     paddingVertical: 10,

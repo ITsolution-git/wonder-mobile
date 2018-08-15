@@ -1,10 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Text } from '@components/theme';
-import Topic from '../../../../types/topic';
-import theme from '../../../../assets/styles/theme';
-import TouchableOpacityOnPress from '../../../../types/touchable-on-press';
+import { Text } from 'src/views/components/theme';
+import Topic from 'src/types/topic';
+import theme from 'src/assets/styles/theme';
+import TouchableOpacityOnPress from 'src/types/touchable-on-press';
 import WonderImage from '../wonder-image';
 
 interface Props {

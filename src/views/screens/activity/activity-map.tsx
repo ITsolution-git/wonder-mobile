@@ -15,6 +15,8 @@ import ActivityDetails from '../../../types/activity-details';
 import { persistActivity } from '../../../store/reducers/chat';
 import { GeolocationReturnType, Alert, PermissionsAndroid, Platform } from 'react-native';
 import { persistAppointmentData, AppointmentState } from '../../../store/reducers/appointment';
+import askForDeviceLocation from '../../../services/gps';
+import Coordinate from '../../../types/coordinate';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: state.user.profile,
@@ -23,7 +25,7 @@ const mapState = (state: WonderAppState) => ({
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onGetActivities: (id: number) => dispatch(getPartnerActivities({ id })),
+  onGetActivities: (id: number, coordinate?: Coordinate) => dispatch(getPartnerActivities({ id, coordinate })),
   onGetActivity: (id: string) => dispatch(getActivityDetails({ id })),
   onUpdateAppointment: (data: AppointmentState) => dispatch(persistAppointmentData(data)),
   clearActivity: () => dispatch(persistActivity(null))
@@ -60,48 +62,21 @@ class ActivityMapScreen extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    if (Platform.OS === 'android') {
-      PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Wonder would like your location',
-          message: 'Use your location to find activities near you'
-        }
-      ).then((granted) => {
-        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-          navigator.geolocation.getCurrentPosition(
-            this.updatePosition,
-            (error) => Alert.alert(error.message),
-            // { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
-          );
-
-          navigator.geolocation.watchPosition(
-            this.updatePosition,
-            (error) => alert(JSON.stringify(error))
-          );
-        }
-      });
-    } else {
-      navigator.geolocation.getCurrentPosition(
-        this.updatePosition,
-        (error) => Alert.alert(error.message),
-        // { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
-      );
-
-      navigator.geolocation.watchPosition(
-        this.updatePosition,
-        (error) => alert(JSON.stringify(error))
-      );
-    }
+    askForDeviceLocation(this.updatePosition);
   }
 
   updatePosition = (position: GeolocationReturnType) => {
+    const { navigation, onGetActivities, clearActivity } = this.props;
+    const partnerId: number = navigation.getParam('id', 0);
+    const { coords } = position;
     this.setState({
       position: {
-        lng: position.coords.longitude,
-        lat: position.coords.latitude
+        lng: coords.longitude,
+        lat: coords.latitude
       }
     });
+
+    onGetActivities(partnerId, coords);
   }
 
   onInviteMatch = () => {
@@ -111,6 +86,11 @@ class ActivityMapScreen extends React.Component<Props, State> {
     onUpdateAppointment({ activity: details });
     navigation.navigate('AppointmentInvite');
   }
+
+  // {
+  //   "lat": 41.887528,
+  //   "lng": -88.305352
+  // }
 
   renderMarker = (activity: Activity) => {
     const { onGetActivity, onUpdateAppointment } = this.props;
@@ -160,8 +140,8 @@ class ActivityMapScreen extends React.Component<Props, State> {
           region={{
             latitude: position.lat,
             longitude: position.lng,
-            latitudeDelta: 0.08,
-            longitudeDelta: 0.08,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
           }}
         >
           {activities.map(this.renderMarker)}
