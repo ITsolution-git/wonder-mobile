@@ -85,6 +85,7 @@ class Register3 extends React.Component<Props, State> {
               onChangeText={this.onAboutChangeText('about')}
               // tslint:disable-next-line
               placeholder={'Take this time to describe yourself, life experience, hobbies, and anything else that makes you wonderful...'}
+              maxLength={200}
             />
           </KeyboardDismissView>
         </KeyboardAvoidingView>
