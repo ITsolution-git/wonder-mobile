@@ -150,3 +150,41 @@ export function* updateUserSaga(action: Action<any>) {
 export function* watchUpdateUser() {
   yield takeEvery(UPDATE_USER, updateUserSaga);
 }
+
+const UPDATE_IMAGE = 'UPDATE_IMAGE'
+export const updateImage = createAction(UPDATE_IMAGE);
+export function* updateImageSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+    const { auth } = state.user;
+    var body = new FormData();
+    const profile: Partial<any> = action.payload;
+    var photo = {
+      uri: profile.uri,
+      type: 'image/jpeg',
+      name: 'photo111.jpg',
+    };
+    body.append('image', photo);
+    console.log('heyyyyyyyyy1111', action, api, auth)
+    const { data }: { data: any } = yield call(api, {
+      method: 'POST',
+      url: `/users/${auth.uid}/images`,
+      data: body
+    }, state.user);
+    console.log(data)
+    yield put({ ...action, type: GET_USER });
+  } catch (error) {
+    console.log(error)
+    if (error.response) {
+      Alert.alert('API Error', JSON.stringify(error.response.data));
+    } else {
+      console.warn(error);
+    }
+  } finally {
+
+  }
+}
+
+export function* watchUpdateImage() {
+  yield takeEvery(UPDATE_IMAGE, updateImageSaga);
+}

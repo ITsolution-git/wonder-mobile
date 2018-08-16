@@ -5,25 +5,39 @@ import theme from '../../../../assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MediaGridItem from './media-grid-item';
 import TouchableOpacityOnPress from '../../../../types/touchable-on-press';
+import WonderAppState from '../../../../types/wonder-app-state';
+import User from '../../../../types/user';
+import { connect } from 'react-redux';
+import Avatar, { AvatarSize } from '../../theme/avatar';
+
+const imageurl = "https://api.getwonderapp.com";
+let images: any = [];
+
+const mapState = (state: WonderAppState) => ({
+  currentUser: state.user.profile
+});
+
+
 
 interface Props {
   featured?: ImageSourcePropType;
   items?: any;
   images?: ImageSourcePropType[];
   onNewPicture?: TouchableOpacityOnPress;
+  onNewVideo?: TouchableOpacityOnPress;
   gutter: number;
   width: number;
+  currentUser: any;
 }
 
-
-export default class MediaGrid extends React.Component<Props> {
+class MediaGrid extends React.Component<Props> {
   static defaultProps = {
     gutter: 5,
     width: 200,
   };
 
   renderFeatured = () => {
-    const { featured, onNewPicture } = this.props;
+    const { featured, onNewPicture, onNewVideo } = this.props;
 
     if (featured) {
       return (
@@ -58,26 +72,41 @@ export default class MediaGrid extends React.Component<Props> {
     return result;
   }
 
+
   render() {
-    const { featured, gutter } = this.props;
+    const { featured, gutter, onNewPicture, onNewVideo, currentUser } = this.props;
+    console.log("current user in media grid :", currentUser);
+    images = [];
+
+    if (currentUser && currentUser.images) {
+      images.push(currentUser.images);
+      console.log("image :", images[0][0]);
+      console.log("iiiiii :", currentUser.images[Object.keys(currentUser.images)[Object.keys(currentUser.images).length - 1]]);
+    }
+
     return (
       <View style={styles.container}>
+
+
         <View style={styles.row}>
           <View style={[styles.column]}>
             <MediaGridItem
               featured
               size={this.calcGridSpace(2)}
               gutter={gutter}
+              onPress={onNewPicture}
             />
           </View>
           <View style={[styles.column]}>
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
+              onPress={onNewPicture}
             />
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
+              onPress={onNewPicture}
             />
           </View>
         </View>
@@ -86,12 +115,14 @@ export default class MediaGrid extends React.Component<Props> {
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
+              onPress={onNewPicture}
             />
           </View>
           <View style={styles.column}>
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
+              onPress={onNewPicture}
             />
           </View>
           <View style={styles.column}>
@@ -99,13 +130,127 @@ export default class MediaGrid extends React.Component<Props> {
               video
               size={this.calcGridSpace(1)}
               gutter={gutter}
+              onPress={onNewVideo}
             />
           </View>
         </View>
+
+
+        {/* {
+          <View>
+            {currentUser && currentUser.images && Object.keys(currentUser.images).length == 1 ?
+              <View>
+                <View style={styles.row}>
+                  <View>
+                    <View style={[styles.column]}>
+                      <Image
+                        style={{ width: 170, height: 210 }}
+                        source={{ uri: imageurl + images[0][0].url }}
+                      />
+                    </View>
+                  </View>
+                  <View style={[styles.column]}>
+                    <MediaGridItem
+                      size={this.calcGridSpace(1)}
+                      gutter={gutter}
+                      onPress={onNewPicture}
+                    />
+                    <MediaGridItem
+                      size={this.calcGridSpace(1)}
+                      gutter={gutter}
+                      onPress={onNewPicture}
+                    />
+                  </View>
+                </View>
+                <View style={styles.row}>
+                  <View style={styles.column}>
+                    <MediaGridItem
+                      size={this.calcGridSpace(1)}
+                      gutter={gutter}
+                      onPress={onNewPicture}
+                    />
+                  </View>
+                  <View style={styles.column}>
+                    <MediaGridItem
+                      size={this.calcGridSpace(1)}
+                      gutter={gutter}
+                      onPress={onNewPicture}
+                    />
+                  </View>
+                  <View style={styles.column}>
+                    <MediaGridItem
+                      video
+                      size={this.calcGridSpace(1)}
+                      gutter={gutter}
+                      onPress={onNewVideo}
+                    />
+                  </View>
+                </View>
+              </View>
+              :
+              null
+            }
+            {currentUser && currentUser.images && Object.keys(currentUser.images).length == 2 ?
+              <View>
+                <View style={styles.row}>
+                  <View>
+                    <View style={[styles.column]}>
+                      <Image
+                        style={{ width: 170, height: 210 }}
+                        source={{ uri: imageurl + images[0][0].url }}
+                      />
+                    </View>
+                  </View>
+                  <View style={[styles.column]}>
+                    <View>
+                      <Image
+                        style={{ width: 60, height: 60 }}
+                        source={{ uri: imageurl + images[0][1].url }}
+                      />
+                    </View>
+                    <MediaGridItem
+                      size={this.calcGridSpace(1)}
+                      gutter={gutter}
+                      onPress={onNewPicture}
+                    />
+                  </View>
+                </View>
+                <View style={styles.row}>
+                  <View style={styles.column}>
+                    <MediaGridItem
+                      size={this.calcGridSpace(1)}
+                      gutter={gutter}
+                      onPress={onNewPicture}
+                    />
+                  </View>
+                  <View style={styles.column}>
+                    <MediaGridItem
+                      size={this.calcGridSpace(1)}
+                      gutter={gutter}
+                      onPress={onNewPicture}
+                    />
+                  </View>
+                  <View style={styles.column}>
+                    <MediaGridItem
+                      video
+                      size={this.calcGridSpace(1)}
+                      gutter={gutter}
+                      onPress={onNewVideo}
+                    />
+                  </View>
+                </View>
+              </View>
+              :
+              null
+            }
+          </View>
+        } */}
       </View>
     );
   }
 }
+
+export default connect(mapState)(MediaGrid);
 
 const styles = StyleSheet.create({
   row: {

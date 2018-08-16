@@ -7,9 +7,17 @@ import theme from '../../../assets/styles/theme';
 import CameraModal from '../../components/modals/camera-modal';
 import { NavigationScreenProp, NavigationParams } from '../../../../node_modules/@types/react-navigation';
 import CameraData from '../../../types/camera-data';
+import { updateImage } from '../../../store/sagas/user';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+ 
+const mapDispatch = (dispatch: Dispatch) => ({
+  onUpdateImage: (data: any) => dispatch(updateImage(data))
+}); 
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
+  onUpdateImage:Function;
 }
 
 interface State {
@@ -23,6 +31,7 @@ class ProfileCameraScreen extends React.Component<Props, State> {
     modalOpen: false
   };
 
+  
   openModal = () => this.setState({ modalOpen: true });
   closeModal = () => this.setState({ modalOpen: false });
 
@@ -30,7 +39,11 @@ class ProfileCameraScreen extends React.Component<Props, State> {
 
   clear = () => this.setState({ imageData: null });
   save = () => {
-    const { imageData } = this.props;
+    const { onUpdateImage,navigation } = this.props;
+    const { imageData } = this.state;
+    console.log("Image Data",imageData);
+    onUpdateImage(imageData)
+    navigation.goBack();
   }
 
   renderContent = () => {
@@ -82,6 +95,7 @@ class ProfileCameraScreen extends React.Component<Props, State> {
     );
   }
   render() {
+    console.log('prof camera')
     const { navigation } = this.props;
     const { modalOpen } = this.state;
     return (
@@ -101,7 +115,8 @@ class ProfileCameraScreen extends React.Component<Props, State> {
   }
 }
 
-export default ProfileCameraScreen;
+export default connect(null,mapDispatch)(ProfileCameraScreen);
+// export default ProfileCameraScreen;
 
 const styles = StyleSheet.create({
   container: {

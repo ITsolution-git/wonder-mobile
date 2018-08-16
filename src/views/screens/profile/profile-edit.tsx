@@ -16,7 +16,7 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onSave: (data: State) => dispatch(updateUser(data))
-});
+}); 
 
 interface Props {
   navigation: NavigationScreenProp<NavigationParams>;

@@ -9,19 +9,19 @@ import theme from '../../../assets/styles/theme';
 class ProfileVideoScreen extends React.Component {
   camera?: RNCamera | null;
 
-  // takePicture = () => {
-  //   if (this.camera) {
-  //     const options = { quality: 0.5, base64: true };
-  //     this.camera.takePictureAsync(options).then(data => {
-  //       console.log(data.uri);
-  //     })
-  //   }
-  // };
+  takeVideo = () => {
+    if (this.camera) {
+      const options = { maxDuration:60, base64: true };
+      this.camera.recordAsync(options).then(data => {
+        console.log(data.uri);
+      })
+    }
+  };
 
   render() {
     return (
       <Screen>
-        <RNCamera
+        <RNCamera 
           ref={ref => { this.camera = ref; }}
           style={styles.preview}
           type={RNCamera.Constants.Type.back}
@@ -31,7 +31,7 @@ class ProfileVideoScreen extends React.Component {
         />
         <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center' }}>
           <TouchableOpacity
-            // onPress={this.takePicture}
+            onPress={this.takeVideo}
             style={styles.capture}
           >
             <Icon name="camera" color="#FFF" size={24} />
