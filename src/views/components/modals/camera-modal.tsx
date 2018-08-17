@@ -20,7 +20,7 @@ class CameraModal extends React.Component<Props> {
     if (this.camera) {
       const options = { quality: 1 };
       const data: CameraData = await this.camera.takePictureAsync();
-      alert(JSON.stringify(data));
+      //alert(JSON.stringify(data));
       if (onSuccess) {
         onSuccess(data);
       }

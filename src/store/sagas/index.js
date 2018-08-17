@@ -1,6 +1,6 @@
 import { all } from 'redux-saga/effects';
 import { watchGetTopics } from './topics';
-import { watchLoginUser, watchLogoutUser, watchGetUser, watchUpdateUser, watchRegisterUser } from './user';
+import { watchLoginUser, watchLogoutUser, watchGetUser, watchUpdateUser, watchRegisterUser, watchUpdateImage, watchUpdateVideo } from './user';
 import { watchGetNewProposal, watchRateProposal } from './proposal';
 import { watchCreateAppointment, watchGetAppointments } from './appointment';
 import { watchGetPartners, watchGetPartnerActivities, watchGetActivityDetails } from './partner';
@@ -14,6 +14,8 @@ export default function* rootSaga() {
     watchLoginUser(),
     watchGetUser(),
     watchUpdateUser(),
+    watchUpdateImage(),
+    watchUpdateVideo(),
     watchRegisterUser(),
     watchLogoutUser(),
 

@@ -68,6 +68,7 @@ class Register3 extends React.Component<Props, State> {
   }
 
   render() {
+    const { navigation } = this.props;
     return (
       <Screen horizontalPadding={20}>
         <KeyboardAvoidingView
@@ -78,7 +79,7 @@ class Register3 extends React.Component<Props, State> {
           <KeyboardDismissView>
             <MediaGrid
               width={Device.WIDTH - 40}
-              gutter={2}
+              gutter={2}    
             />
             <TextArea
               label="About Me"
