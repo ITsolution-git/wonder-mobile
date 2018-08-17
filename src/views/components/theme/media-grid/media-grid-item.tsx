@@ -36,6 +36,22 @@ export default class MediaGridItem extends React.Component<Props> {
     };
   }
 
+  renderMediaContent = () => {
+    const { source, video } = this.props;
+    if (source) {
+      if (video) {
+        return (
+          <Video
+            source={{ uri: `${ApiConfig.defaults.baseURL.replace('/v1', '/')}${source}` }}
+            style={{ width: '100%', height: '100%' }}
+            pause={false}
+          />
+        );
+      }
+      return <WonderImage style={{ width: '100%', height: '100%', borderRadius: 10 }} uri={source} />;
+    }
+  }
+
   render() {
     const { source, onPress, size, video, imgSrc } = this.props;
     const containerStyles = [styles.container, this.renderContainerStyles()];
@@ -49,31 +65,24 @@ export default class MediaGridItem extends React.Component<Props> {
             end={{ x: 1, y: 0.5 }}
             colors={['#FFF799', '#FFC3A0']}
           >
-           
+
             <Icon name={video ? 'video-camera' : 'plus'} size={size ? (size / 5) : 16} color="#FFF" />
 
           </LinearGradient>
         </TouchableOpacity >
       );
-    } 
-    if(source)
-    {
-      return(
-      <TouchableOpacity onPress={onPress}>
-        <View
-          style={containerStyles}
-        >
-        {video? <Video source={{uri: `${ApiConfig.defaults.baseURL.replace('/v1', '/')}${source}`}} style={{width: '100%', height: '100%'}} pause={false} />: <WonderImage style={{width: '100%', height: '100%'}} uri={source} />}
-        
-        
-        </View>
-      </TouchableOpacity >)
     }
-
-    return (
-      <View style={styles.container}>
-      </View>
-    )
+    if (source) {
+      return (
+        <TouchableOpacity onPress={onPress}>
+          <View
+            style={containerStyles}
+          >
+            {this.renderMediaContent()}
+          </View>
+        </TouchableOpacity >
+      );
+    }
   }
 }
 

@@ -55,24 +55,24 @@ class ProfileCameraScreen extends React.Component<Props, State> {
             />
           </View>
           <View style={{ flexDirection: 'row' }}>
-          <View>
-            <TextButton
-              text="DELETE"
-              onPress={this.clear}
-            />
+            <View>
+              <TextButton
+                text="DELETE"
+                onPress={this.clear}
+              />
             </View>
             <View>
-            <PrimaryButton
-              rounded={false}
-              title="RETAKE"
-              onPress={this.openModal}
-            />
+              <PrimaryButton
+                rounded={false}
+                title="RETAKE"
+                onPress={this.openModal}
+              />
             </View>
             <View>
-            <TextButton
-              text="SAVE"
-              onPress={this.save}
-            />
+              <TextButton
+                text="SAVE"
+                onPress={this.save}
+              />
             </View>
           </View>
         </View>
