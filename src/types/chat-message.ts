@@ -4,7 +4,7 @@ export interface ChatUser {
   avatar?: string;
 }
 
-interface ChatMessage {
+interface GiftedChatMessage {
   _id: number;
   text: string;
   createdAt: Date;
@@ -12,4 +12,4 @@ interface ChatMessage {
   system?: boolean;
 }
 
-export default ChatMessage;
+export default GiftedChatMessage;

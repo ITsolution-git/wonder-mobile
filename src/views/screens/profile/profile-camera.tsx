@@ -1,23 +1,22 @@
 import React from 'react';
-import { RNCamera } from 'react-native-camera';
-import Screen from '../../components/screen';
+import Screen from 'src/views/components/screen';
 import { StyleSheet, View, Image } from 'react-native';
-import { Text, PrimaryButton } from '../../components/theme';
-import theme from '../../../assets/styles/theme';
-import CameraModal from '../../components/modals/camera-modal';
-import { NavigationScreenProp, NavigationParams } from '../../../../node_modules/@types/react-navigation';
-import CameraData from '../../../types/camera-data';
-import { updateImage } from '../../../store/sagas/user';
+import { Text, PrimaryButton, TextButton } from 'src/views/components/theme';
+import theme from 'src/assets/styles/theme';
+import CameraModal from 'src/views/components/modals/camera-modal';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import CameraData from 'src/types/camera-data';
+import { updateImage } from 'src/store/sagas/user';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
- 
+
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateImage: (data: any) => dispatch(updateImage(data))
-}); 
+});
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
-  onUpdateImage:Function;
+  onUpdateImage: Function;
 }
 
 interface State {
@@ -31,7 +30,6 @@ class ProfileCameraScreen extends React.Component<Props, State> {
     modalOpen: false
   };
 
-  
   openModal = () => this.setState({ modalOpen: true });
   closeModal = () => this.setState({ modalOpen: false });
 
@@ -39,9 +37,9 @@ class ProfileCameraScreen extends React.Component<Props, State> {
 
   clear = () => this.setState({ imageData: null });
   save = () => {
-    const { onUpdateImage,navigation } = this.props;
+    const { onUpdateImage, navigation } = this.props;
     const { imageData } = this.state;
-    onUpdateImage(imageData)
+    onUpdateImage(imageData);
     navigation.goBack();
   }
 
@@ -56,22 +54,26 @@ class ProfileCameraScreen extends React.Component<Props, State> {
               style={{ flex: 1 }}
             />
           </View>
+          <View style={{ flexDirection: 'row' }}>
           <View>
-            <PrimaryButton
-              rounded={false}
-              title="DELETE"
+            <TextButton
+              text="DELETE"
               onPress={this.clear}
             />
+            </View>
+            <View>
             <PrimaryButton
               rounded={false}
               title="RETAKE"
               onPress={this.openModal}
             />
-            <PrimaryButton
-              rounded={false}
-              title="SAVE"
+            </View>
+            <View>
+            <TextButton
+              text="SAVE"
               onPress={this.save}
             />
+            </View>
           </View>
         </View>
       );
@@ -94,7 +96,6 @@ class ProfileCameraScreen extends React.Component<Props, State> {
     );
   }
   render() {
-    console.log('prof camera')
     const { navigation } = this.props;
     const { modalOpen } = this.state;
     return (
@@ -114,7 +115,7 @@ class ProfileCameraScreen extends React.Component<Props, State> {
   }
 }
 
-export default connect(null,mapDispatch)(ProfileCameraScreen);
+export default connect(null, mapDispatch)(ProfileCameraScreen);
 // export default ProfileCameraScreen;
 
 const styles = StyleSheet.create({

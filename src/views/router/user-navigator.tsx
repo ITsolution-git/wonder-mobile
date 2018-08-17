@@ -72,13 +72,14 @@ const ProfileNavigator = createStackNavigator({
   ProfileCamera: {
     screen: ProfileCamera,
     navigationOptions: {
-      header: null
+      title: 'Profile Selfie',
+      ...theme.NavBar.transparent
     }
   },
   ProfileVideo: {
     screen: ProfileVideo,
     navigationOptions: {
-      title: 'Profile Selfie',
+      title: 'Vibe Video',
       ...theme.NavBar.transparent
     }
   },

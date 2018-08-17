@@ -13,73 +13,66 @@ import { NavigationScreenProp, NavigationParams } from '../../../../node_modules
 
 interface State {
   path: "",
-  recorded: Boolean, 
+  recorded: Boolean,
   isRecording: Boolean,
-  duration:number,
-  time:number;
+  duration: number,
+  time: number;
 }
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateVideo: (data: any) => dispatch(updateVideo(data))
-}); 
+});
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
-  onUpdateVideo:Function;
+  onUpdateVideo: Function;
 }
 
-class ProfileVideoScreen extends React.Component<Props,State> {
+class ProfileVideoScreen extends React.Component<Props, State> {
   camera?: RNCamera | null;
   timer = 0;
-  constructor(props)
-  {
-    super(props);
-    this.saveVideo = this.saveVideo.bind(this);
-    this.stopRecord = this.stopRecord.bind(this);
-  }
-  state:State = {
+
+  state: State = {
     path: "",
     recorded: false,
     isRecording: false,
-    duration:14,
-    time:14,
-  }
-  
+    duration: 14,
+    time: 14,
+  };
 
-  takeVideo = () => { 
-    this.state.isRecording ?  this.stopRecord() : this.saveVideo();
-    this.state.isRecording ? this.setState({isRecording: false}) : this.setState({isRecording: true})
+  takeVideo = () => {
+    this.state.isRecording ? this.stopRecord() : this.saveVideo();
+    this.state.isRecording ? this.setState({ isRecording: false }) : this.setState({ isRecording: true })
   }
 
-  async saveVideo () { 
-    if (this.camera) { 
-      const { onUpdateVideo,navigation } = this.props;
+  saveVideo = async () => {
+    if (this.camera) {
+      const { onUpdateVideo, navigation } = this.props;
       this.startTimer();
       const options = { maxDuration: this.state.duration }
       const data = await this.camera.recordAsync(options)
-      this.setState({path: data.uri })
-      this.setState({recorded: false})
+      this.setState({ path: data.uri })
+      this.setState({ recorded: false })
       onUpdateVideo(data);
       navigation.goBack();
     }
-  };
+  }
 
-  startTimer = () => {    
-    this.setState({time:this.state.duration});
-      this.timer = setInterval(this.countDown, 1000);
+  startTimer = () => {
+    this.setState({ time: this.state.duration });
+    this.timer = setInterval(this.countDown, 1000);
   }
 
   countDown = () => {
     let seconds = this.state.time - 1;
-    this.setState({time:seconds});
-    if (seconds == 0) { 
+    this.setState({ time: seconds });
+    if (seconds == 0) {
       clearInterval(this.timer);
     }
   }
 
-  async stopRecord(){
-    if(this.camera)
-    {
+  stopRecord = async () => {
+    if (this.camera) {
       this.camera.stopRecording();
       clearInterval(this.timer);
       const str = this.state.path;
@@ -89,40 +82,41 @@ class ProfileVideoScreen extends React.Component<Props,State> {
   render() {
     return (
       <Screen>
-        <RNCamera  
+        <RNCamera
+
           ref={ref => { this.camera = ref; }}
           style={styles.preview}
-          type={RNCamera.Constants.Type.back}
+          type={RNCamera.Constants.Type.front}
           flashMode={RNCamera.Constants.FlashMode.auto}
           captureAudio={true}
-          ratio = {"16:9"}
+          ratio={"16:9"}
           permissionDialogTitle={'Permission to use camera'}
           permissionDialogMessage={'We need your permission to use your camera phone'}
         />
         <View style={styles.footer}>
-            <View style={styles.footerCol}>
-              {/* <IconButton icon="times" primary="#FFF" secondary="transparent"  /> */}
-            </View>
-            <View style={styles.footerCol}>
-            {
-              this.state.isRecording?(
-                <IconButton circle icon="stop" onPress={this.takeVideo} />
-              ):(
-                <IconButton circle icon="video-camera" onPress={this.takeVideo} />
-              )
-            }
-            </View>
-            <View style={styles.footerCol}>
-              <Text>{this.state.time}</Text>
-            </View>
+          <View style={styles.footerCol}>
+            {/* <IconButton icon="times" primary="#FFF" secondary="transparent"  /> */}
           </View>
-        
+          <View style={styles.footerCol}>
+            {
+              this.state.isRecording ? (
+                <IconButton circle icon="stop" onPress={this.takeVideo} />
+              ) : (
+                  <IconButton circle icon="video-camera" onPress={this.takeVideo} />
+                )
+            }
+          </View>
+          <View style={styles.footerCol}>
+            <Text>{this.state.time}</Text>
+          </View>
+        </View>
+
       </Screen>
     )
   }
 }
 
-export default connect(null,mapDispatch)(ProfileVideoScreen);
+export default connect(null, mapDispatch)(ProfileVideoScreen);
 // export default ProfileVideoScreen;
 
 const styles = StyleSheet.create({

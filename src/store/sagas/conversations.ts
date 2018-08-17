@@ -37,10 +37,7 @@ export function* getConversationsSaga(action: Action<any>) {
 export function* watchGetConversations() {
   yield takeEvery(GET_CONVERSATIONS, getConversationsSaga);
 }
-//
-//
-//
-//
+
 // get chat messages
 export const GET_CONVERSATION = 'GET_CONVERSATION';
 export const getConversation = createAction(GET_CONVERSATION);

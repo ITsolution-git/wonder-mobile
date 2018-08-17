@@ -13,6 +13,10 @@ interface Props extends ModalProps {
 }
 
 class CameraModal extends React.Component<Props> {
+  static defaultProps = {
+    direction: 'front'
+  };
+
   camera?: RNCamera | null;
 
   takePicture = async () => {
@@ -20,7 +24,6 @@ class CameraModal extends React.Component<Props> {
     if (this.camera) {
       const options = { quality: 1 };
       const data: CameraData = await this.camera.takePictureAsync();
-      //alert(JSON.stringify(data));
       if (onSuccess) {
         onSuccess(data);
       }
@@ -38,7 +41,7 @@ class CameraModal extends React.Component<Props> {
           <RNCamera
             ref={(ref) => { this.camera = ref; }}
             style={styles.preview}
-            type={direction}
+            type={RNCamera.Constants.Type.front}
             flashMode={RNCamera.Constants.FlashMode.auto}
             permissionDialogTitle={'Permission to use camera'}
             permissionDialogMessage={'We need your permission to use your camera phone'}

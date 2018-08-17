@@ -4,9 +4,15 @@ import User from "./user";
 
 interface Conversation {
   id: number;
-  partner: Partial<User>;
-  last_message: Partial<ChatResponseMessage>;
-  messages: [Partial<ChatResponseMessage>];
+  partner: User;
+  last_message: ChatResponseMessage;
+  messages: ChatResponseMessage[];
 }
+
+interface DecoratedConversation extends Conversation {
+  partner: User;
+}
+
+export { DecoratedConversation };
 
 export default Conversation;
