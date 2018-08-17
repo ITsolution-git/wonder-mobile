@@ -13,7 +13,7 @@ import { NavigationScreenProp, NavigationParams } from '../../../../node_modules
 
 interface State {
   path: "",
-  recorded: Boolean,
+  recorded: Boolean, 
   isRecording: Boolean,
   duration:number,
   time:number;
@@ -47,25 +47,20 @@ class ProfileVideoScreen extends React.Component<Props,State> {
   
 
   takeVideo = () => { 
-    console.log('state  ',this.state)
     this.state.isRecording ?  this.stopRecord() : this.saveVideo();
     this.state.isRecording ? this.setState({isRecording: false}) : this.setState({isRecording: true})
   }
 
   async saveVideo () { 
-    console.log('save')
     if (this.camera) { 
       const { onUpdateVideo,navigation } = this.props;
       this.startTimer();
       const options = { maxDuration: this.state.duration }
       const data = await this.camera.recordAsync(options)
-      console.log(' -- data -- ',data)
       this.setState({path: data.uri })
       this.setState({recorded: false})
-      console.log("FILE", data.uri); // -- it returns - 
       onUpdateVideo(data);
       navigation.goBack();
-      //'FILE', 'file:///data/user/0/com.project/cache/Camera/07395974-32e0-4e43-8f7c-af5ec2d7267b.mp4'
     }
   };
 
@@ -88,7 +83,6 @@ class ProfileVideoScreen extends React.Component<Props,State> {
       this.camera.stopRecording();
       clearInterval(this.timer);
       const str = this.state.path;
-      console.log('Stopped',str);
     }
   }
 
