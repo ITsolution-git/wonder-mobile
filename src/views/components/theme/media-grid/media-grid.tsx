@@ -87,7 +87,6 @@ class MediaGrid extends React.Component<Props> {
     return (
       <View style={styles.container}>
 
-
         <View style={styles.row}>
           <View style={[styles.column]}>
             <MediaGridItem
