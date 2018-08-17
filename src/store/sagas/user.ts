@@ -150,3 +150,75 @@ export function* updateUserSaga(action: Action<any>) {
 export function* watchUpdateUser() {
   yield takeEvery(UPDATE_USER, updateUserSaga);
 }
+
+const UPDATE_IMAGE = 'UPDATE_IMAGE'
+export const updateImage = createAction(UPDATE_IMAGE);
+export function* updateImageSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+    const { auth } = state.user;
+    var body = new FormData();
+    const profile: Partial<any> = action.payload;
+    var photo = {
+      uri: profile.uri,
+      type: 'image/jpeg',
+      name: Date.now() + '.jpg',
+    };
+    body.append('image', photo);
+    const { data }: { data: any } = yield call(api, {
+      method: 'POST',
+      url: `/users/${auth.uid}/images`,
+      data: body
+    }, state.user);
+    yield put({ ...action, type: getUser });
+  } catch (error) {
+    console.log(error)
+    if (error.response) {
+      Alert.alert('API Error', JSON.stringify(error.response.data));
+    } else {
+      console.warn(error);
+    }
+  } finally {
+
+  }
+}
+
+export function* watchUpdateImage() {
+  yield takeEvery(UPDATE_IMAGE, updateImageSaga);
+}
+
+const UPDATE_VIDEO = 'UPDATE_VIDEO'
+export const updateVideo = createAction(UPDATE_VIDEO);
+export function* updateVideoSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+    const { auth } = state.user;
+    var body = new FormData();
+    const profile: Partial<any> = action.payload;
+    var video = {
+      uri: profile.uri,
+      type: 'video/mp4',
+      name: Date.now() + '.mp4',
+    };
+    body.append('video', video);
+    const { data }: { data: any } = yield call(api, {
+      method: 'POST',
+      url: `/users/${auth.uid}/video`,
+      data: body
+    }, state.user);
+    yield put({ ...action, type: getUser });
+  } catch (error) {
+    console.log(error)
+    if (error.response) {
+      Alert.alert('API Error', JSON.stringify(error.response.data));
+    } else {
+      console.warn(error);
+    }
+  } finally {
+
+  }
+}
+
+export function* watchUpdateVideo() {
+  yield takeEvery(UPDATE_VIDEO, updateVideoSaga);
+}

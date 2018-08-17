@@ -3,6 +3,9 @@ import { StyleSheet, View, ImageBackground, Image, TouchableOpacity, StyleProp }
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TouchableOpacityOnPress from '../../../../types/touchable-on-press';
+import WonderImage from '../wonder-image';
+import Video from 'react-native-video';
+import api, { ApiConfig } from '../../../../services/api';
 
 interface Props {
   source?: string;
@@ -11,6 +14,7 @@ interface Props {
   size?: number;
   gutter: number;
   video?: boolean;
+  imgSrc: string;
 }
 
 export default class MediaGridItem extends React.Component<Props> {
@@ -19,7 +23,8 @@ export default class MediaGridItem extends React.Component<Props> {
     featured: false,
     size: 75,
     gutter: 0,
-    video: false
+    video: false,
+    imgSrc: undefined
   };
 
   renderContainerStyles = () => {
@@ -32,7 +37,7 @@ export default class MediaGridItem extends React.Component<Props> {
   }
 
   render() {
-    const { source, onPress, size, video } = this.props;
+    const { source, onPress, size, video, imgSrc } = this.props;
     const containerStyles = [styles.container, this.renderContainerStyles()];
 
     if (!source) {
@@ -44,10 +49,25 @@ export default class MediaGridItem extends React.Component<Props> {
             end={{ x: 1, y: 0.5 }}
             colors={['#FFF799', '#FFC3A0']}
           >
+           
             <Icon name={video ? 'video-camera' : 'plus'} size={size ? (size / 5) : 16} color="#FFF" />
+
           </LinearGradient>
         </TouchableOpacity >
       );
+    } 
+    if(source)
+    {
+      return(
+      <TouchableOpacity onPress={onPress}>
+        <View
+          style={containerStyles}
+        >
+        {video? <Video source={{uri: `${ApiConfig.defaults.baseURL.replace('/v1', '/')}${source}`}} style={{width: '100%', height: '100%'}} pause={false} />: <WonderImage style={{width: '100%', height: '100%'}} uri={source} />}
+        
+        
+        </View>
+      </TouchableOpacity >)
     }
 
     return (

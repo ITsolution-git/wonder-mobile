@@ -3,12 +3,26 @@ import Screen from '../../components/screen';
 import ShadowBox from '../../components/theme/shadow-box';
 import { MediaGrid } from '../../components/theme/media-grid';
 import { TextArea, PrimaryButton } from '../../components/theme';
-import { View } from 'react-native';
+import { View,TouchableOpacity,Text, Alert } from 'react-native';
 import theme, { Device } from '../../../assets/styles/theme';
+import WonderAppState from '../../../types/wonder-app-state';
+import User from '../../../types/user';
+import { connect } from 'react-redux';
 
-class ProfileMediaScreen extends React.Component {
+const mapState = (state: WonderAppState) => ({
+  currentUser: state.user.profile
+});
+
+interface Props {
+  currentUser: User;
+}
+
+class ProfileMediaScreen extends React.Component<Props> {
+
+ 
+
   render() {
-    const { navigation } = this.props;
+    const { navigation,currentUser } = this.props;
     return (
       <Screen horizontalPadding={20}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -17,6 +31,7 @@ class ProfileMediaScreen extends React.Component {
               width={Device.WIDTH - 80}
               gutter={2}
               onNewPicture={() => navigation.navigate('ProfileCamera')}
+              onNewVideo={() => navigation.navigate('ProfileVideo')}              
             />
             <TextArea
               label="About Me"
@@ -26,6 +41,7 @@ class ProfileMediaScreen extends React.Component {
             <View style={{ marginTop: 10 }}>
               <PrimaryButton title="DONE" onPress={() => navigation.goBack()} />
             </View>
+          
           </ShadowBox>
         </View>
       </Screen>
@@ -33,4 +49,4 @@ class ProfileMediaScreen extends React.Component {
   }
 }
 
-export default ProfileMediaScreen;
+export default connect(mapState)(ProfileMediaScreen);

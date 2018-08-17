@@ -5,25 +5,36 @@ import theme from '../../../../assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MediaGridItem from './media-grid-item';
 import TouchableOpacityOnPress from '../../../../types/touchable-on-press';
+import WonderAppState from '../../../../types/wonder-app-state';
+import User from '../../../../types/user';
+import { connect } from 'react-redux';
+let images: any = [];
+
+const mapState = (state: WonderAppState) => ({
+  currentUser: state.user.profile
+});
+
+
 
 interface Props {
   featured?: ImageSourcePropType;
   items?: any;
   images?: ImageSourcePropType[];
   onNewPicture?: TouchableOpacityOnPress;
+  onNewVideo?: TouchableOpacityOnPress;
   gutter: number;
   width: number;
+  currentUser: any;
 }
 
-
-export default class MediaGrid extends React.Component<Props> {
+class MediaGrid extends React.Component<Props> {
   static defaultProps = {
     gutter: 5,
     width: 200,
   };
 
   renderFeatured = () => {
-    const { featured, onNewPicture } = this.props;
+    const { featured, onNewPicture, onNewVideo } = this.props;
 
     if (featured) {
       return (
@@ -58,26 +69,38 @@ export default class MediaGrid extends React.Component<Props> {
     return result;
   }
 
+
   render() {
-    const { featured, gutter } = this.props;
+    const { featured, gutter, onNewPicture, onNewVideo, currentUser } = this.props;
+    images = [];
+
+    
+
     return (
       <View style={styles.container}>
+
         <View style={styles.row}>
           <View style={[styles.column]}>
             <MediaGridItem
               featured
               size={this.calcGridSpace(2)}
               gutter={gutter}
+              onPress={onNewPicture}
+              source={currentUser && currentUser.images && currentUser.images['0']?currentUser.images['0'].url:''}
             />
           </View>
           <View style={[styles.column]}>
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
+              onPress={onNewPicture}
+              source={currentUser && currentUser.images && currentUser.images['1']?currentUser.images['1'].url:''}
             />
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
+              onPress={onNewPicture}
+              source={currentUser && currentUser.images && currentUser.images['2']?currentUser.images['2'].url:''}
             />
           </View>
         </View>
@@ -86,12 +109,16 @@ export default class MediaGrid extends React.Component<Props> {
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
+              onPress={onNewPicture}
+              source={currentUser && currentUser.images && currentUser.images['3']?currentUser.images['3'].url:''}
             />
           </View>
           <View style={styles.column}>
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
+              onPress={onNewPicture}
+              source={currentUser && currentUser.images && currentUser.images['4']?currentUser.images['4'].url:''}
             />
           </View>
           <View style={styles.column}>
@@ -99,13 +126,18 @@ export default class MediaGrid extends React.Component<Props> {
               video
               size={this.calcGridSpace(1)}
               gutter={gutter}
+              onPress={onNewVideo}
+              source={currentUser && currentUser.video?currentUser.video:''}
             />
           </View>
         </View>
+
       </View>
     );
   }
 }
+
+export default connect(mapState)(MediaGrid);
 
 const styles = StyleSheet.create({
   row: {
