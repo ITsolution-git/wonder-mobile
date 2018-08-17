@@ -8,13 +8,6 @@ import TouchableOpacityOnPress from '../../../../types/touchable-on-press';
 import WonderAppState from '../../../../types/wonder-app-state';
 import User from '../../../../types/user';
 import { connect } from 'react-redux';
-<<<<<<< HEAD
-
-=======
-import Avatar, { AvatarSize } from '../../theme/avatar';
-
-const imageurl = "https://api.getwonderapp.com";
->>>>>>> fe86648182fde95d75c13706fed807a8c7641e63
 let images: any = [];
 
 const mapState = (state: WonderAppState) => ({
