@@ -54,21 +54,22 @@ class ProfileCameraScreen extends React.Component<Props, State> {
               style={{ flex: 1 }}
             />
           </View>
-          <View style={{ flexDirection: 'row' }}>
-            <View>
+          <View style={styles.footer}>
+            <View style={styles.footerCol}>
               <TextButton
                 text="DELETE"
                 onPress={this.clear}
               />
             </View>
-            <View>
+            <View style={styles.footerCol}>
               <PrimaryButton
+                fullWidth
                 rounded={false}
                 title="RETAKE"
                 onPress={this.openModal}
               />
             </View>
-            <View>
+            <View style={styles.footerCol}>
               <TextButton
                 text="SAVE"
                 onPress={this.save}
@@ -139,5 +140,15 @@ const styles = StyleSheet.create({
     width: 50,
     alignSelf: 'center',
     margin: 20
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  footerCol: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });

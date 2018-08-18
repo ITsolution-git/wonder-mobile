@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#000',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-around'
   },
   footerCol: {
     flex: 1,
