@@ -28,7 +28,7 @@ interface State {
 export default class DatePicker extends React.Component<Props, State> {
 
   static defaultProps = {
-    displayFormat: 'M/D/YY'
+    displayFormat: 'MM-DD-YYYY'
   };
 
   constructor(props: Props) {
