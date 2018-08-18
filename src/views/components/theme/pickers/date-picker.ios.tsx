@@ -46,7 +46,7 @@ export default class DatePicker extends React.Component<Props, State> {
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.container}>
-          <Text>{moment(value).format(displayFormat)}</Text>
+          <Text style={{textAlign: 'center'}}>{moment(value).format(displayFormat)}</Text>
           <TouchableOpacity
             style={styles.iconBtn}
             onPress={() => this.setState({ open: true })}
