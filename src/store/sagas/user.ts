@@ -186,7 +186,7 @@ export function* watchUpdateImage() {
   yield takeEvery(UPDATE_IMAGE, updateImageSaga);
 }
 
-const UPDATE_VIDEO = 'UPDATE_VIDEO'
+const UPDATE_VIDEO = 'UPDATE_VIDEO';
 export const updateVideo = createAction(UPDATE_VIDEO);
 export function* updateVideoSaga(action: Action<any>) {
   try {
@@ -205,7 +205,7 @@ export function* updateVideoSaga(action: Action<any>) {
       url: `/users/${auth.uid}/video`,
       data: body
     }, state.user);
-    yield put({ ...action, type: getUser });
+    yield put(getUser());
   } catch (error) {
     console.log(error)
     if (error.response) {
