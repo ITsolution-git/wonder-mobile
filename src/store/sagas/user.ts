@@ -151,15 +151,15 @@ export function* watchUpdateUser() {
   yield takeEvery(UPDATE_USER, updateUserSaga);
 }
 
-const UPDATE_IMAGE = 'UPDATE_IMAGE'
+const UPDATE_IMAGE = 'UPDATE_IMAGE';
 export const updateImage = createAction(UPDATE_IMAGE);
 export function* updateImageSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
-    var body = new FormData();
+    const body = new FormData();
     const profile: Partial<any> = action.payload;
-    var photo = {
+    const photo = {
       uri: profile.uri,
       type: 'image/jpeg',
       name: Date.now() + '.jpg',
@@ -170,9 +170,8 @@ export function* updateImageSaga(action: Action<any>) {
       url: `/users/${auth.uid}/images`,
       data: body
     }, state.user);
-    yield put({ ...action, type: getUser });
+    yield put(getUser());
   } catch (error) {
-    console.log(error)
     if (error.response) {
       Alert.alert('API Error', JSON.stringify(error.response.data));
     } else {
