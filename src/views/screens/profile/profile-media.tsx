@@ -11,7 +11,6 @@ import { connect } from 'react-redux';
 import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view';
 import { Dispatch } from 'redux';
 import { updateUser } from 'src/store/sagas/user';
-import navigation from 'src/services/navigation';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 
 const mapState = (state: WonderAppState) => ({
@@ -49,6 +48,7 @@ class ProfileMediaScreen extends React.Component<Props> {
     this.setState({ about: text });
   }
   render() {
+    const { navigation } = this.props;
     const { about } = this.state;
     return (
       <Screen horizontalPadding={20}>
@@ -75,7 +75,7 @@ class ProfileMediaScreen extends React.Component<Props> {
                   onChangeText={this.onAboutChange}
                 />
                 <View style={{ marginTop: 10 }}>
-                  <PrimaryButton title="DONE" onPress={() => navigation.goBack()} />
+                  <PrimaryButton title="DONE" onPress={this.onSave} />
                 </View>
               </KeyboardDismissView>
             </ShadowBox>

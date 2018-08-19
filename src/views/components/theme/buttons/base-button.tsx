@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TextInput as Input, TouchableOpacity, StyleProp } from 'react-native';
+import { View, StyleSheet, TextInput as Input, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { Text } from '..';
 import theme from '../../../../assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -17,7 +17,8 @@ export interface BaseButtonProps {
   colors?: any;
   start?: GradientPoint;
   end?: GradientPoint;
-  style?: StyleProp<any>;
+  innerStyle?: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
   fullWidth?: boolean;
   iconColor?: string;
   title: string;
@@ -52,6 +53,7 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
       rounded,
       disabled,
       style,
+      innerStyle,
       start,
       end,
       color,
@@ -67,70 +69,57 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
 
     if (fullWidth) {
       renderedStyles['width'] = '100%';
-    } else {
-      renderedStyles['width'] = 'auto';
     }
 
     if (rounded) {
       renderedStyles['borderRadius'] = 30;
     }
 
+    let viewProps = {};
+    let ViewContainer: any = View;
     if (colors.length) {
-      return (
-        <LinearGradient
-          start={start}
-          end={end}
-          colors={colors}
-          style={[styles.btnContainer, renderedStyles]}
-        >
-          <TouchableOpacity
-            disabled={disabled}
-            onPress={onPress}
-            style={[styles.container, renderedStyles, style]}
-            {...rest}
-          >
-            {icon && this.renderIcon()}
-            <View style={styles.txtContainer}>
-              <Text color={color} style={styles.title}>{title}</Text>
-            </View>
-            {icon && <View flex={1} />}
-          </TouchableOpacity>
-        </LinearGradient>
-      );
+      ViewContainer = LinearGradient;
+      viewProps = {
+        start,
+        end,
+        colors
+      };
     }
 
     return (
-      <View style={[styles.btnContainer, renderedStyles]}>
-        <TouchableOpacity
-          disabled={disabled}
-          onPress={onPress}
-          style={[styles.container, renderedStyles, style]}
-          {...rest}
+
+      <TouchableOpacity
+        disabled={disabled}
+        onPress={onPress}
+        style={[styles.container, renderedStyles, style]}
+        {...rest}
+      >
+        <ViewContainer
+          {...viewProps}
+          style={[styles.btnContainer, renderedStyles, innerStyle]}
         >
           {icon && this.renderIcon()}
           <View style={styles.txtContainer}>
             <Text color={color} style={styles.title}>{title}</Text>
           </View>
           {icon && <View flex={1} />}
-        </TouchableOpacity>
-      </View>
+        </ViewContainer>
+      </TouchableOpacity>
     );
-
   }
 }
 
 const styles = StyleSheet.create({
   btnContainer: {
-    elevation: 1,
-    flex: 0,
-    // backgroundColor: palette.toString(),
-  },
-  container: {
-    flex: 0,
+    minWidth: 150,
+    minHeight: 44,
+    // padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 15,
+  },
+  container: {
+    flex: 0
   },
   txtContainer: {
     flex: 7,

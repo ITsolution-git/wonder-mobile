@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, Image, ImageSourcePropType, TouchableOpacity } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import theme from '../../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MediaGridItem from './media-grid-item';
-import TouchableOpacityOnPress from '../../../../types/touchable-on-press';
-import WonderAppState from '../../../../types/wonder-app-state';
-import User from '../../../../types/user';
+import TouchableOpacityOnPress from 'src/types/touchable-on-press';
+import WonderAppState from 'src/types/wonder-app-state';
+import User from 'src/types/user';
 import { connect } from 'react-redux';
 let images: any = [];
 
@@ -14,12 +14,11 @@ const mapState = (state: WonderAppState) => ({
   currentUser: state.user.profile
 });
 
-
-
 interface Props {
   featured?: ImageSourcePropType;
   items?: any;
-  images?: ImageSourcePropType[];
+  images?: any[];
+  video?: any;
   onNewPicture?: TouchableOpacityOnPress;
   onNewVideo?: TouchableOpacityOnPress;
   gutter: number;
@@ -69,16 +68,12 @@ class MediaGrid extends React.Component<Props> {
     return result;
   }
 
-
   render() {
     const { featured, gutter, onNewPicture, onNewVideo, currentUser } = this.props;
     images = [];
 
-    
-
     return (
       <View style={styles.container}>
-
         <View style={styles.row}>
           <View style={[styles.column]}>
             <MediaGridItem
@@ -86,7 +81,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(2)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images['0']?currentUser.images['0'].url:''}
+              source={currentUser && currentUser.images && currentUser.images['0'] ? currentUser.images['0'].url : ''}
             />
           </View>
           <View style={[styles.column]}>
@@ -94,13 +89,13 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images['1']?currentUser.images['1'].url:''}
+              source={currentUser && currentUser.images && currentUser.images['1'] ? currentUser.images['1'].url : ''}
             />
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images['2']?currentUser.images['2'].url:''}
+              source={currentUser && currentUser.images && currentUser.images['2'] ? currentUser.images['2'].url : ''}
             />
           </View>
         </View>
@@ -110,7 +105,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images['3']?currentUser.images['3'].url:''}
+              source={currentUser && currentUser.images && currentUser.images['3'] ? currentUser.images['3'].url : ''}
             />
           </View>
           <View style={styles.column}>
@@ -118,7 +113,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images['4']?currentUser.images['4'].url:''}
+              source={currentUser && currentUser.images && currentUser.images['4'] ? currentUser.images['4'].url : ''}
             />
           </View>
           <View style={styles.column}>
@@ -127,7 +122,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewVideo}
-              source={currentUser && currentUser.video?currentUser.video:''}
+              source={currentUser && currentUser.video ? currentUser.video : ''}
             />
           </View>
         </View>

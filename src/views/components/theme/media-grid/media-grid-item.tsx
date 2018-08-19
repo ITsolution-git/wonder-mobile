@@ -14,7 +14,6 @@ interface Props {
   size?: number;
   gutter: number;
   video?: boolean;
-  imgSrc: string;
 }
 
 export default class MediaGridItem extends React.Component<Props> {
@@ -24,7 +23,6 @@ export default class MediaGridItem extends React.Component<Props> {
     size: 75,
     gutter: 0,
     video: false,
-    imgSrc: undefined
   };
 
   renderContainerStyles = () => {
@@ -42,7 +40,7 @@ export default class MediaGridItem extends React.Component<Props> {
       if (video) {
         return (
           <Video
-            source={{ uri: `${ApiConfig.defaults.baseURL.replace('/v1', '/')}${source}` }}
+            source={{ uri: `${ApiConfig.defaults.baseURL.replace('/v1', '')}${source}` }}
             style={{ width: '100%', height: '100%' }}
             pause={false}
           />
@@ -53,7 +51,7 @@ export default class MediaGridItem extends React.Component<Props> {
   }
 
   render() {
-    const { source, onPress, size, video, imgSrc } = this.props;
+    const { source, onPress, size, video } = this.props;
     const containerStyles = [styles.container, this.renderContainerStyles()];
 
     if (!source) {
@@ -65,9 +63,7 @@ export default class MediaGridItem extends React.Component<Props> {
             end={{ x: 1, y: 0.5 }}
             colors={['#FFF799', '#FFC3A0']}
           >
-
             <Icon name={video ? 'video-camera' : 'plus'} size={size ? (size / 5) : 16} color="#FFF" />
-
           </LinearGradient>
         </TouchableOpacity >
       );

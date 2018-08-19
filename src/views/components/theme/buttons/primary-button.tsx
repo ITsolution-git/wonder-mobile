@@ -19,7 +19,6 @@ export default class PrimaryButton extends React.Component<BaseButtonProps> {
         colors={disabled ? disabledColors : enabledColors}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={{ padding: 15 }}
         {...this.props}
       />
     );

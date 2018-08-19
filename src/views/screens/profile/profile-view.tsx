@@ -67,7 +67,6 @@ class ProfileViewScreen extends React.Component<Props> {
           <View style={styles.row}>
             <View style={styles.col}>
               <ElevatedButton
-                fullWidth
                 icon="user"
                 title={currentUser.first_name}
                 onPress={this.goTo('ProfileEdit')}
@@ -115,16 +114,16 @@ class ProfileViewScreen extends React.Component<Props> {
           </View>
         </View>
 
-        <View style={{ marginBottom: 10 }}>
+        <View style={{ marginVertical: 10 }}>
           <View style={styles.row}>
-            <View style={styles.col}>
-              <PrimaryButton
-                title="UPGRADE TO WONDER PREMIUM"
-                onPress={() => { }}
-              />
-            </View>
+            <PrimaryButton
+              fullWidth
+              title="UPGRADE TO WONDER PREMIUM"
+              onPress={() => { }}
+            />
           </View>
           <View style={styles.row}>
+
             <View style={styles.col}>
               <Button
                 rounded
@@ -148,11 +147,12 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginBottom: 5
   },
   col: {
     flex: 1,
-    padding: 5
+    padding: 5,
   },
   heading: {
     alignItems: 'center',

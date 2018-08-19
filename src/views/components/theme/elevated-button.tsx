@@ -1,31 +1,25 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from 'react-native';
-import { Text } from '.';
-import TouchableOpacityOnPress from '../../../types/touchable-on-press';
-import LinearGradient from 'react-native-linear-gradient';
-import GradientPoint from '../../../types/gradient-point';
+import { StyleSheet, } from 'react-native';
 import BaseButton, { BaseButtonProps } from './buttons/base-button';
 
-interface Props extends BaseButtonProps {
-
-}
-
-export default class ElevatedButton extends React.Component<Props> {
+export default class ElevatedButton extends React.Component<BaseButtonProps> {
 
   static defaultProps = {
     start: undefined
   };
 
   render() {
-    const { onPress, title, style, start, ...rest } = this.props;
+    const { onPress, title, style, innerStyle, start, ...rest } = this.props;
     return (
       <BaseButton
         title={title}
         onPress={onPress}
         start={start}
         colors={['#FEFEFE', '#FFF']}
-        style={[styles.container, style]}
         {...rest}
+        style={[styles.container, style]}
+        innerStyle={[styles.inner, innerStyle]}
+
       />
     );
   }
@@ -33,10 +27,9 @@ export default class ElevatedButton extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   container: {
+    // flex: 1,
     backgroundColor: '#FFF',
     borderRadius: 3,
-    width: 'auto',
-    padding: 10,
     elevation: 3,
     shadowRadius: 3,
     shadowColor: '#000',
@@ -44,6 +37,11 @@ const styles = StyleSheet.create({
     shadowOffset: {
       width: 0,
       height: 5
-    }
+    },
+  },
+  inner: {
+    borderRadius: 3,
+    height: 44
+    // paddingVertical: 20,
   }
 });

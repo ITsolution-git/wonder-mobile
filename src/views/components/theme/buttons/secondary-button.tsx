@@ -14,7 +14,7 @@ export default class OutlineButton extends React.Component<BaseButtonProps> {
         color={theme.colors.textColor}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={{ backgroundColor: palette.toString(), padding: 15 }}
+        innerStyle={{ backgroundColor: palette.toString(), padding: 15 }}
         {...this.props}
       />
     );

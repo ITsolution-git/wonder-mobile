@@ -22,16 +22,13 @@ export default class Welcome extends React.Component<Props> {
         <View flex={1} style={styles.header}>
           <Image style={{ width: '80%' }} source={Logo.DARK} resizeMode="contain" />
         </View>
-        <View flex={1} style={styles.body}>
-          <View style={{ width: '100%' }}>
+        <View style={styles.body}>
+          <View>
             <PrimaryButton
               icon="envelope-o"
               title="CREATE ACCOUNT"
               onPress={() => navigation.navigate('Register1')}
-              fullWidth
             />
-          </View>
-          <View style={{ marginTop: 10, width: '100%' }}>
             <Button
               rounded
               color="#3D90F0"
@@ -39,7 +36,7 @@ export default class Welcome extends React.Component<Props> {
               title="LOGIN WITH FACEBOOK"
               onPress={() => navigation.navigate('Login')}
               fullWidth
-              style={{ backgroundColor: '#FFF' }}
+              style={{ backgroundColor: '#FFF', marginTop: 10 }}
             />
           </View>
           <View style={{ marginTop: 25 }}>
@@ -62,7 +59,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   body: {
-    flex: 1,
+    flex: 2,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
