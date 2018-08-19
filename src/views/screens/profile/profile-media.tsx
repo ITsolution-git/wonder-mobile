@@ -1,29 +1,55 @@
 import React from 'react';
-import Screen from '../../components/screen';
-import ShadowBox from '../../components/theme/shadow-box';
-import { MediaGrid } from '../../components/theme/media-grid';
-import { TextArea, PrimaryButton } from '../../components/theme';
-import { View, TouchableOpacity, Text, Alert, KeyboardAvoidingView } from 'react-native';
-import theme, { Device } from '../../../assets/styles/theme';
-import WonderAppState from '../../../types/wonder-app-state';
-import User from '../../../types/user';
+import Screen from 'src/views/components/screen';
+import ShadowBox from 'src/views/components/theme/shadow-box';
+import { MediaGrid } from 'src/views/components/theme/media-grid';
+import { TextArea, PrimaryButton } from 'src/views/components/theme';
+import { View, KeyboardAvoidingView } from 'react-native';
+import { Device } from 'src/assets/styles/theme';
+import WonderAppState from 'src/types/wonder-app-state';
+import User from 'src/types/user';
 import { connect } from 'react-redux';
-import { KeyboardDismissView } from '../../components/keyboard-dismiss-view';
+import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view';
+import { Dispatch } from 'redux';
+import { updateUser } from 'src/store/sagas/user';
+import navigation from 'src/services/navigation';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: state.user.profile
 });
 
+const mapDispatch = (dispatch: Dispatch) => ({
+  onUpdateUser: (data: Partial<User>) => dispatch(updateUser(data))
+});
+
 interface Props {
+  navigation: NavigationScreenProp<any, NavigationParams>;
   currentUser: User;
+  onUpdateUser: (data: Partial<User>) => any;
+}
+
+interface State {
+  about: string;
 }
 
 class ProfileMediaScreen extends React.Component<Props> {
+  state = {
+    about: this.props.currentUser.about || ''
+  };
 
+  onSave = () => {
+    const { onUpdateUser, navigation } = this.props;
+    const { about } = this.state;
 
+    onUpdateUser({ about });
+    navigation.goBack();
+  }
 
+  onAboutChange = (text: string) => {
+    this.setState({ about: text });
+  }
   render() {
-    const { navigation, currentUser } = this.props;
+    const { about } = this.state;
     return (
       <Screen horizontalPadding={20}>
         <KeyboardAvoidingView
@@ -45,6 +71,8 @@ class ProfileMediaScreen extends React.Component<Props> {
                   label="About Me"
                   placeholder="Take this time to describe yourself, life experience, hobbies, and anything else that makes you wonderful..."
                   maxLength={200}
+                  defaultValue={about}
+                  onChangeText={this.onAboutChange}
                 />
                 <View style={{ marginTop: 10 }}>
                   <PrimaryButton title="DONE" onPress={() => navigation.goBack()} />
@@ -59,4 +87,4 @@ class ProfileMediaScreen extends React.Component<Props> {
   }
 }
 
-export default connect(mapState)(ProfileMediaScreen);
+export default connect(mapState, mapDispatch)(ProfileMediaScreen);
