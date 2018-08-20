@@ -41,6 +41,7 @@ ext {
     targetSdkVersion = 27
     supportLibVersion = "27.1.0"
     googlePlayServicesVersion = "15.0.1"
+    firebaseVersion = "+"
 }
 
 subprojects {
