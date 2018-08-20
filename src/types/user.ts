@@ -7,7 +7,7 @@ import Topic from "./topic";
 /**
  * User Model
  */
-export default interface User {
+interface User {
   token?: string;
   id: number;
   first_name: string;
@@ -45,4 +45,8 @@ export default interface User {
   video?: VibeVideo;
   topics?: Topic[];
   topic_ids?: number[];
+  online: boolean;
+  last_seen_at: string | null;
 }
+
+export default User;

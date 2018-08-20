@@ -1,11 +1,10 @@
 import _ from 'lodash';
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { Text } from 'src/views/components/theme';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import Topic from 'src/types/topic';
+// import TouchableOpacityOnPress from 'src/types/touchable-on-press';
+import Wonder from '../wonder/wonder';
 import theme from 'src/assets/styles/theme';
-import TouchableOpacityOnPress from 'src/types/touchable-on-press';
-import WonderImage from '../wonder-image';
 
 interface Props {
   topic: Topic;
@@ -21,27 +20,23 @@ export default class WonderPickerItem extends React.Component<Props> {
 
   render() {
     const { topic, selected, onPress } = this.props;
-    const renderedStyles = [styles.container];
-    if (selected) {
-      renderedStyles.push(styles.selectedContainer);
-    }
 
     return (
-      <View style={renderedStyles}>
-        <TouchableOpacity style={styles.btn} onPress={() => onPress && onPress(topic)}>
-          <WonderImage
-            style={{ height: 30, width: 30, marginBottom: 5 }}
-            uri={topic.icon}
-          />
-          <Text style={styles.label}>{_.toUpper(topic.name)}</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity
+        style={[styles.btn, selected && styles.selectedBtn]}
+        onPress={() => onPress && onPress(topic)}
+      >
+        <Wonder topic={topic} active={selected} />
+      </TouchableOpacity>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  btn: {
+    borderRadius: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
     elevation: 3,
     shadowColor: '#000',
     shadowOpacity: 0.3,
@@ -50,24 +45,12 @@ const styles = StyleSheet.create({
       height: 0
     },
     shadowRadius: 5,
-    height: 80,
-    width: 80,
-    borderRadius: 40,
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
   },
-  selectedContainer: {
+  selectedBtn: {
     borderWidth: 2,
     borderColor: theme.colors.primaryLight,
     shadowColor: theme.colors.primary,
     shadowOpacity: 0.5,
-  },
-  btn: {
-    borderRadius: 35,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  label: {
-    fontSize: 8
   }
 });

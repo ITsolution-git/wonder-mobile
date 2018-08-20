@@ -18,7 +18,7 @@ export default class OutlineButton extends React.Component<BaseButtonProps> {
         color="#FFF"
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
-        style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: '#FFF', padding: 15 }}
+        style={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: '#FFF' }}
         {...this.props}
       />
     );

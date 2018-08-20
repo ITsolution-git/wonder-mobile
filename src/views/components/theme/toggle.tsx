@@ -10,7 +10,7 @@ interface Props {
   value?: boolean;
   initialValue?: boolean;
 }
-
+const { primary, primaryLight } = theme.colors;
 class Toggle extends React.Component<Props> {
 
   static defaultProps = {
@@ -30,9 +30,9 @@ class Toggle extends React.Component<Props> {
     return (
       <Switch
         disabled={disabled}
-        thumbTintColor={theme.colors.primaryLight}
-        tintColor={theme.colors.primaryLight}
-        onTintColor={theme.colors.primary}
+        thumbTintColor={disabled ? primaryLight : primary}
+        tintColor={disabled ? primaryLight : primary}
+        onTintColor={primaryLight}
         onValueChange={this.onChangeValue}
         value={value}
       />

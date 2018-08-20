@@ -1,5 +1,5 @@
 import User from "./user";
-export interface ChatUser extends Partial<User> {
+export interface ChatUser extends User {
   first_name: string;
 }
 
