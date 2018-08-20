@@ -12,26 +12,20 @@ import { Dispatch } from 'redux';
 import WonderAppState from 'src/types/wonder-app-state';
 import User from 'src/types/user';
 import { getConversation, sendMessage } from 'src/store/sagas/conversations';
-import Conversation from 'src/types/conversation';
-import ChatResponseMessage from 'src/types/chat-response-message';
+import { DecoratedConversation, ConversationNewMessage } from 'src/types/conversation';
+import { getDecoratedConversation } from 'src/store/selectors/conversation';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   currentUser: User;
-  messages: ChatMessage[];
-  conversation: Conversation;
+  conversation: DecoratedConversation;
   onGetMessage: (userId: number) => any;
-  onSendMessage: (data: any) => any;
-}
-
-interface State {
-  messages: ChatMessage[];
-  conversation: Conversation;
+  onSendMessage: (chatMessage: ConversationNewMessage) => any;
 }
 
 const mapState = (state: WonderAppState) => ({
   currentUser: state.user.profile,
-  conversation: state.chat.conversation
+  conversation: getDecoratedConversation(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
@@ -39,54 +33,24 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onSendMessage: (data: any) => dispatch(sendMessage(data)),
 });
 
-class ChatScreen extends React.Component<Props, State> {
+class ChatScreen extends React.Component<Props> {
   static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<any, NavigationParams> }) => ({
-    title: (navigation.getParam('chat') as Chat).partner ? (navigation.getParam('chat') as Chat).partner.first_name : 'Chat',
+    title: 'Chat',
   })
-
-  componentWillReceiveProps(nextProps: Props) {
-    const arrSelected = nextProps.conversation.messages.map((item: ChatResponseMessage) => {
-      const message: ChatMessage = {
-        _id: item.id,
-        text: item.body,
-        createdAt: new Date(item.sent_at),
-        user: {
-          _id: item.sender_id,
-          name: (item.sender_id === this.props.currentUser.id ? this.props.currentUser.first_name : this.getChat().partner.first_name) || '',
-          avatar: item.sender_id === this.props.currentUser.id ? ((this.props.currentUser.images && this.props.currentUser.images.length) ? this.props.currentUser.images[0].url : null) : ((this.getChat().partner.images && this.getChat().partner.images.length) ? this.getChat().partner.images[0].url : null),
-        }
-      };
-      return message;
-    });
-    this.setState({
-      messages: arrSelected
-    });
-  }
 
   getChat = (): Chat => {
     const { navigation } = this.props;
     return (navigation.getParam('chat') as Chat);
   }
 
-  componentWillMount() {
-    const { currentUser, onGetMessage } = this.props;
-    onGetMessage(this.getChat().partner.id);
-    this.setState({
-      messages: []
-    });
-  }
-
   scheduleWonder = () => {
-    const { onScheduleWonder, navigation } = this.props;
-    navigation.navigate('WonderMap', { id: this.getChat().partner.id });
+    const { navigation, conversation } = this.props;
+    navigation.navigate('WonderMap', { id: conversation.partner.id });
   }
 
   onSend = (messages: ChatMessage[] = []) => {
-    this.setState((previousState: State) => ({
-      messages: GiftedChat.append(previousState.messages, messages),
-    }));
-    const data = { message: { body: messages[0].text } };
-    this.props.onSendMessage({ recipient_id: this.getChat().partner.id, data });
+    const { conversation } = this.props;
+    this.props.onSendMessage({ conversation_id: conversation.partner.id, message: { body: messages[0].text } });
   }
 
   renderBubble(props: any) {
@@ -113,14 +77,13 @@ class ChatScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentUser } = this.props;
-    const messages = this.state.messages == null ? [] : this.state.messages;
+    const { currentUser, conversation } = this.props;
     return (
       <Screen>
         <GiftedChat
           user={{ _id: currentUser.id }}
           renderBubble={this.renderBubble}
-          messages={messages}
+          messages={conversation.giftedChatMessages}
           renderFooter={this.renderFooter}
           onSend={this.onSend}
         />

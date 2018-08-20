@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import WonderAppState from '../../../types/wonder-app-state';
 import { Dispatch } from 'redux';
 import { updateUser, getUser } from '../../../store/sagas/user';
+import MultiPointSlider, { MultiPointSliderValue } from '../../components/theme/multi-point-slider/multi-point-slider';
 
 const mapState = (state: WonderAppState) => ({
   profile: state.user.profile
@@ -28,6 +29,7 @@ interface Props {
 }
 
 interface State {
+  isScrollEnabled?: boolean;
   isRefreshing?: boolean;
   distance_of_interest_max?: number;
   age_of_interest_min?: number;
@@ -58,6 +60,7 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
   }
 
   loadProfile = (profile: User): State => ({
+    isScrollEnabled: true,
     isRefreshing: false,
     distance_of_interest_max: profile.distance_of_interest_max || 0,
     age_of_interest_min: profile.age_of_interest_min || 18,
@@ -97,6 +100,15 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
     return (value: boolean) => {
       this.setState({
         [key]: value ? DistanceUnit.miles : DistanceUnit.kilometers
+      });
+    };
+  }
+
+  onMultipointChange = (minKey: string, maxKey: string) => {
+    return (value: MultiPointSliderValue) => {
+      this.setState({
+        [minKey]: value.selectedMinimum,
+        [maxKey]: value.selectedMaximum
       });
     };
   }
@@ -176,6 +188,7 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
     return (
       <Screen>
         <ScrollView
+          scrollEnabled={this.state.isScrollEnabled}
           refreshControl={
             <RefreshControl
               refreshing={isRefreshing || false}
@@ -206,6 +219,7 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
             <View style={styles.row}>
               <Text>Activities</Text>
               <Toggle
+                disabled
               // value={true}
               // onValueChange={this.onBooleanChange('apn_activities')}
               />
@@ -214,6 +228,7 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
             <View style={styles.row}>
               <Text>Products &amp; Services</Text>
               <Toggle
+                disabled
               // value={true}
               // onValueChange={this.onBooleanChange('apn_activities')}
               />
@@ -274,7 +289,14 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
               <SubHeader>Age Range ({age_of_interest_max})</SubHeader>
             </View>
             <View style={styles.row}>
-              <Slider
+              <MultiPointSlider
+                min={18}
+                max={80}
+                initialMinValue={age_of_interest_min}
+                initialMaxValue={age_of_interest_max}
+                onValueChange={this.onMultipointChange('age_of_interest_min', 'age_of_interest_max')}
+              />
+              {/* <Slider
                 onValueChange={this.onNumberChange('age_of_interest_max')}
                 minimumTrackTintColor={theme.colors.primary}
                 style={{ width: '100%' }}
@@ -282,7 +304,7 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
                 maximumValue={80}
                 value={age_of_interest_max}
                 step={1}
-              />
+              /> */}
               {/* <RangeSlider
               minValue={0}
               maxValue={100}
@@ -297,7 +319,7 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
             </View>
 
             <View style={styles.heading}>
-              <SubHeader>Distance (mi.) - {distance_of_interest_max}</SubHeader>
+              <SubHeader>Distance ({distance_unit}) - {distance_of_interest_max}</SubHeader>
             </View>
             <View style={styles.row}>
               <Slider

@@ -1,11 +1,14 @@
 import React from 'react';
 import { DeckSwiper, Card, CardItem, Body } from 'native-base';
-import { Text, Title, WonderImage } from '../theme';
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Text, Title, WonderImage, SubTitle, IconButton } from '../theme';
+import { View, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import Proposal from '../../../types/proposal';
 import moment from 'moment-timezone';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ProfileImage from '../../../types/profile-image';
+import LinearGradient from 'react-native-linear-gradient';
+import Wonder from '../theme/wonder/wonder';
+import Topic from '../../../types/topic';
 
 interface Props {
   proposal: Proposal | null;
@@ -49,18 +52,40 @@ class ProposalSwiper extends React.Component<Props> {
 
     return (
       <TouchableOpacity onPress={onPress}>
-        <Card>
-          <CardItem cardBody>
-            {this.renderProfileImage(candidate.images)}
-          </CardItem>
-          <CardItem header>
-            <Body>
-              <Title>{[candidate.first_name, moment().diff(candidate.birthdate, 'years')].join(', ')}</Title>
-              <Text>{candidate.location}</Text>
-              <Text>{candidate.topics.map(topic => topic.name).join(', ')}</Text>
-            </Body>
-          </CardItem>
-        </Card>
+        <WonderImage
+          background
+          uri={candidate.images[0].url}
+          style={styles.container}
+        >
+          <LinearGradient
+            style={styles.textContainer}
+            colors={['transparent', 'rgb(22,22,22)']}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 0, y: 1 }}
+            locations={[0, 0.3]}
+          >
+            <View>
+              <Title style={{ fontSize: 24 }} color="#FFF">
+                {[candidate.first_name, moment().diff(candidate.birthdate, 'years')].join(', ')}
+              </Title>
+              <SubTitle style={{ fontSize: 16 }} color="#FFF">{'Los Angelas, CA'}</SubTitle>
+              <View style={{ flexDirection: 'row' }}>
+                {candidate.topics && candidate.topics.map((topic: Topic) => (
+                  <Wonder
+                    key={topic.name}
+                    topic={topic}
+                    size={60}
+                  />
+                ))}
+              </View>
+              <Text color="#FFF">{candidate.occupation} - {candidate.school}</Text>
+              {candidate.about && <Text color="#FFF">{candidate.about}</Text>}
+            </View>
+            <View style={{ justifyContent: 'flex-end' }}>
+              <IconButton size={44} icon="chevron-up" onPress={onPress} primary="#FFF" secondary="transparent" />
+            </View>
+          </LinearGradient>
+        </WonderImage>
       </TouchableOpacity>
     );
   }
@@ -91,7 +116,15 @@ export default ProposalSwiper;
 
 const styles = StyleSheet.create({
   container: {
-
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#EEE',
+    justifyContent: 'flex-end',
+    height: Dimensions.get('window').height - 60
+  },
+  textContainer: {
+    padding: 20,
+    flexDirection: 'row'
   },
   noMatchesContainer: {
     padding: 20,

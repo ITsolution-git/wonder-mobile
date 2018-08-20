@@ -7,6 +7,7 @@ import Candidate from '../../../types/candidate';
 import moment from 'moment-timezone';
 import LinearGradient from 'react-native-linear-gradient';
 import Topic from '../../../types/topic';
+import Wonder from '../theme/wonder/wonder';
 
 interface Props extends ModalProps {
   candidate?: Candidate | null;
@@ -38,7 +39,13 @@ class ProfileModal extends React.Component<Props> {
               </Title>
               <SubTitle style={{ fontSize: 16 }} color="#FFF">{'Los Angelas, CA'}</SubTitle>
               <View style={{ flexDirection: 'row' }}>
-                {candidate.topics.map((topic: Topic) => (<Text key={topic.name}>{topic.name}</Text>))}
+                {candidate.topics && candidate.topics.map((topic: Topic) => (
+                  <Wonder
+                    key={topic.name}
+                    topic={topic}
+                    size={60}
+                  />
+                ))}
               </View>
               <Text color="#FFF">{candidate.occupation} - {candidate.school}</Text>
               {candidate.about && <Text color="#FFF">{candidate.about}</Text>}

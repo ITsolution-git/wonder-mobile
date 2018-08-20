@@ -25,7 +25,7 @@ class Onboarding extends React.Component<Props> {
       <View style={styles.container}>
         <SwipeView
           onComplete={() => navigation.navigate('Register')}
-          onSkip={() => navigation.navigate('Register')}
+          onSkip={() => navigation.navigate('Register4')}
         >
           <SwipeView.Slide
             backgroundImage={Assets.ONBOARDING_1}

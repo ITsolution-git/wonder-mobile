@@ -81,7 +81,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
     const { proposal, onLeftSwipe, onRightSwipe, currentMatch, currentUser } = this.props;
     const { candidate } = this.state;
     return (
-      <Screen horizontalPadding={10}>
+      <Screen>
         <View style={{ flex: 1 }}>
           <ProposalSwiper
             proposal={proposal}

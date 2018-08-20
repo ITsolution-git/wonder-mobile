@@ -6,7 +6,7 @@ import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import Chat from '../../../types/chat';
 import WonderAppState from '../../../types/wonder-app-state';
 import { Dispatch } from 'redux';
-import { getConversations } from '../../../store/sagas/conversations';
+import { getConversations, getConversation } from '../../../store/sagas/conversations';
 import Conversation from '../../../types/conversation';
 import { connect } from 'react-redux';
 
@@ -14,6 +14,7 @@ interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   conversations: Conversation[];
   onRefreshConversations: Function;
+  onGetConversation: Function;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -22,7 +23,8 @@ const mapState = (state: WonderAppState) => ({
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onRefreshConversations: () => dispatch(getConversations())
+  onRefreshConversations: () => dispatch(getConversations()),
+  onGetConversation: (partnerId: number) => dispatch(getConversation(partnerId))
 });
 
 class ChatListScreen extends React.Component<Props> {
@@ -31,8 +33,8 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   goToChat = (chat: Chat) => {
-    const { navigation } = this.props;
-
+    const { navigation, onGetConversation } = this.props;
+    onGetConversation(chat.partner.id);
     navigation.navigate('Chat', { chat });
   }
 
