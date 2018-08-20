@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>24</string>
+	<string>25</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -44,13 +44,13 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Use your camera to take your profile pictures</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Use your location to find matches and activities near you</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Use your location to find activities near you</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Use your location to find activities near you</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Use your location to find matches and activities near you</string>
 	<key>NSLocationUsageDescription</key>
+	<string>Use your location to find activities near you</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Use your location to find activities near you</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Access your camera mic to upload for your profile</string>
@@ -96,6 +96,7 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

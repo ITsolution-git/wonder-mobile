@@ -43,6 +43,8 @@ PODS:
     - React
   - react-native-maps (0.21.0):
     - React
+  - react-native-video (3.2.0):
+    - React
   - React/Core (0.56.0):
     - yoga (= 0.56.0.React)
   - React/CxxBridge (0.56.0):
@@ -78,6 +80,8 @@ PODS:
     - React/Core
   - React/RCTNetwork (0.56.0):
     - React/Core
+  - React/RCTPushNotification (0.56.0):
+    - React/Core
   - React/RCTSettings (0.56.0):
     - React/Core
   - React/RCTText (0.56.0):
@@ -99,6 +103,7 @@ DEPENDENCIES:
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - React/Core (from `../node_modules/react-native`)
   - React/CxxBridge (from `../node_modules/react-native`)
   - React/DevSupport (from `../node_modules/react-native`)
@@ -108,6 +113,7 @@ DEPENDENCIES:
   - React/RCTImage (from `../node_modules/react-native`)
   - React/RCTLinkingIOS (from `../node_modules/react-native`)
   - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTPushNotification (from `../node_modules/react-native`)
   - React/RCTSettings (from `../node_modules/react-native`)
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
@@ -135,6 +141,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
@@ -149,8 +157,9 @@ SPEC CHECKSUMS:
   react-native-camera: ab22041dcf0403d88f2ae4b9ea3ed2644e680423
   react-native-google-maps: 2cfe3b01f8422c7dae51d8764139fd70f888cfce
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
+  react-native-video: 6db316323366025251a815c49ca0e2edabe30a2a
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 56cb0c32df5cac1da6796453a06b43f049184e0b
+PODFILE CHECKSUM: a53791b3b0f30d9a0e6461fbb0fb86ff675c71df
 
 COCOAPODS: 1.5.3

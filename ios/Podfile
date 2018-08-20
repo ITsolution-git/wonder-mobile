@@ -21,6 +21,7 @@ target 'WonderApp' do
     'RCTText',
     'RCTVibration',
     'RCTWebSocket',
+    'RCTPushNotification'
   ]
 
   # React Native third party dependencies podspecs
