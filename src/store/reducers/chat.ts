@@ -7,12 +7,13 @@ import ChatResponseMessage from '../../types/chat-response-message';
 
 export interface ChatState {
   readonly conversations: Conversation[];
-  readonly conversation: Conversation;
+  readonly conversation: Conversation | null;
   readonly activities: Activity[];
   readonly activity: ActivityDetails | null;
 }
 
 export const initialState: ChatState = {
+  conversations: [],
   conversation: null,
   activities: [],
   activity: null
@@ -31,10 +32,6 @@ export default handleActions({
   PERSIST_CONVERSATION: (state: ChatState, action: Action<any>) => ({
     ...state,
     conversation: action.payload || initialState.conversation,
-  }),
-  PERSIST_NEW_MESSAGE: (state: ChatState, action: Action<any>) => ({
-    ...state,
-    conversation: {...state.conversation, messages:[action.payload, ...state.conversation.messages] as [ChatResponseMessage]},
   }),
   PERSIST_ACTIVITY: (state: ChatState, action: Action<any>) => ({
     ...state,

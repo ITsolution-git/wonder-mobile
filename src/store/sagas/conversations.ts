@@ -7,11 +7,7 @@ import Conversation from '../../types/conversation';
 import { persistConversations, persistConversation, persistNewMessage } from '../reducers/chat';
 import ChatResponseMessage from '../../types/chat-response-message';
 
-//
-//
-//
-//
-// get list of all conversations
+// Get all conversations (Chats)
 export const GET_CONVERSATIONS = 'GET_CONVERSATIONS';
 export const getConversations = createAction(GET_CONVERSATIONS);
 export function* getConversationsSaga(action: Action<any>) {
@@ -38,7 +34,7 @@ export function* watchGetConversations() {
   yield takeEvery(GET_CONVERSATIONS, getConversationsSaga);
 }
 
-// get chat messages
+// Get the content of a single conversation
 export const GET_CONVERSATION = 'GET_CONVERSATION';
 export const getConversation = createAction(GET_CONVERSATION);
 export function* getConversationSaga(action: Action<any>) {
@@ -64,10 +60,7 @@ export function* getConversationSaga(action: Action<any>) {
 export function* watchGetConversation() {
   yield takeEvery(GET_CONVERSATION, getConversationSaga);
 }
-//
-//
-//
-//
+
 // send chat messages
 export const SEND_MESSAGE = 'SEND_MESSAGE';
 export const sendMessage = createAction(SEND_MESSAGE);
@@ -78,7 +71,7 @@ export function* sendMessageSaga(action: Action<any>) {
     const { data }: { data: ChatResponseMessage } = yield call(api, {
       method: 'POST',
       url: `/conversations/${action.payload.recipient_id}/messages`,
-      data: action.payload.data
+      data: action.payload
     }, state.user);
     yield put(persistNewMessage(data));
   } catch (error) {

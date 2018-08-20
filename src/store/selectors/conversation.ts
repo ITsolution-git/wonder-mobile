@@ -8,18 +8,16 @@ import GiftedChatMessage from "src/types/chat-message";
 
 const selectConversation = (state: WonderAppState) => state.chat.conversation;
 
-const getDecoratedConversation = createSelector([selectCurrentUser, selectConversation],
+export const getDecoratedConversation = createSelector([selectCurrentUser, selectConversation],
   (currentUser, conversation): DecoratedConversation => {
-    return conversation;
+    return decorateMessagesForGiftedChat(currentUser, conversation);
   });
 
-const selectMessagesForGiftedChat = createSelector(
-  [selectCurrentUser, getDecoratedConversation],
-  (currentUser: User, conversation: Conversation) => {
-    return conversation.messages.map((message: ChatResponseMessage) => {
-
-      const owner: User = message.sender_id ? currentUser : conversation.partner;
-
+export const decorateMessagesForGiftedChat = (currentUser: User, conversation: Conversation): DecoratedConversation => {
+  return {
+    ...conversation,
+    giftedChatMessages: conversation.messages.map((message: ChatResponseMessage) => {
+      const owner: User = message.sender_id === currentUser.id ? currentUser : conversation.partner;
       const o: GiftedChatMessage = {
         _id: message.id,
         text: message.body,
@@ -31,6 +29,6 @@ const selectMessagesForGiftedChat = createSelector(
         }
       };
       return o;
-    });
-  }
-);
+    })
+  };
+};
