@@ -41,6 +41,8 @@ PODS:
     - Google-Maps-iOS-Utils (= 2.1.0)
     - GoogleMaps (= 2.5.0)
     - React
+  - react-native-image-picker (0.14.3):
+    - React
   - react-native-maps (0.21.0):
     - React
   - react-native-video (3.2.0):
@@ -92,6 +94,8 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNImageRotate (2.1.0):
+    - React
   - yoga (0.56.0.React)
 
 DEPENDENCIES:
@@ -102,6 +106,7 @@ DEPENDENCIES:
   - GoogleMaps
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-video (from `../node_modules/react-native-video`)
   - React/Core (from `../node_modules/react-native`)
@@ -118,6 +123,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNImageRotate (from `../node_modules/react-native-image-rotate`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
@@ -139,10 +145,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-camera"
   react-native-google-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-video:
     :path: "../node_modules/react-native-video"
+  RNImageRotate:
+    :path: "../node_modules/react-native-image-rotate"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
@@ -156,10 +166,12 @@ SPEC CHECKSUMS:
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
   react-native-camera: ab22041dcf0403d88f2ae4b9ea3ed2644e680423
   react-native-google-maps: 2cfe3b01f8422c7dae51d8764139fd70f888cfce
+  react-native-image-picker: b303e31c3c4ada1d7cb1342423d328d2efb07fb3
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
   react-native-video: 6db316323366025251a815c49ca0e2edabe30a2a
+  RNImageRotate: 3c909e81f0bd78a91ab7d4528e29c7cd33571320
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: a53791b3b0f30d9a0e6461fbb0fb86ff675c71df
+PODFILE CHECKSUM: 9c0b497f3655f1eee397d659a68a9314d27c6288
 
 COCOAPODS: 1.5.3
