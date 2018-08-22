@@ -21,11 +21,15 @@ interface Props {
   onUpdateImage: Function;
 }
 
+interface pickedImageData {
+  uri : string
+}
+
 interface State {
   modalOpen: boolean;
   imageData: CameraData | null;
-  pickedImage:null
-  angle:number
+  pickedImage: pickedImageData | null;
+  angle:number;
 }
 
 class ProfileCameraScreen extends React.Component<Props, State> {
