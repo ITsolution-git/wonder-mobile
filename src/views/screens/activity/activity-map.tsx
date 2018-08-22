@@ -95,10 +95,10 @@ class ActivityMapScreen extends React.Component<Props, State> {
 
   renderMarker = (activity: Activity) => {
     const { onGetActivity, onUpdateAppointment } = this.props;
-    const { name, latitude, longitude, location, topic, id } = activity;
+    const { id, name, latitude, longitude, topic } = activity;
     return (
       <MarkerContainer
-        key={`${name} - ${latitude},${longitude}`}
+        key={`${id} - ${name}`}
         coordinate={{ latitude, longitude }}
       // onPress={() => onGetActivity(id)}
       >

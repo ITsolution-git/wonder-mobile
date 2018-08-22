@@ -74,6 +74,7 @@ class ProfileMediaScreen extends React.Component<Props> {
                   maxLength={200}
                   defaultValue={about}
                   onChangeText={this.onAboutChange}
+                  style={{ minHeight: 100 }}
                 />
                 <View style={{ marginTop: 10 }}>
                   <PrimaryButton title="DONE" onPress={this.onSave} />

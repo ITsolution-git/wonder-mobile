@@ -68,11 +68,11 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
     const renderedStyles: any = {};
 
     if (fullWidth) {
-      renderedStyles['width'] = '100%';
+      renderedStyles.width = '100%';
     }
 
     if (rounded) {
-      renderedStyles['borderRadius'] = 30;
+      renderedStyles.borderRadius = 30;
     }
 
     let viewProps = {};

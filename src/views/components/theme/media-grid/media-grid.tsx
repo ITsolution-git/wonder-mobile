@@ -70,7 +70,6 @@ class MediaGrid extends React.Component<Props> {
 
   render() {
     const { featured, gutter, onNewPicture, onNewVideo, currentUser } = this.props;
-    images = [];
 
     return (
       <View style={styles.container}>
@@ -81,7 +80,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(2)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images['0'] ? currentUser.images['0'].url : ''}
+              source={currentUser && currentUser.images && currentUser.images[0] ? currentUser.images[0].url : ''}
             />
           </View>
           <View style={[styles.column]}>
@@ -89,13 +88,13 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images['1'] ? currentUser.images['1'].url : ''}
+              source={currentUser && currentUser.images && currentUser.images[1] ? currentUser.images[1].url : ''}
             />
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images['2'] ? currentUser.images['2'].url : ''}
+              source={currentUser && currentUser.images && currentUser.images[2] ? currentUser.images[2].url : ''}
             />
           </View>
         </View>
@@ -105,7 +104,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images['3'] ? currentUser.images['3'].url : ''}
+              source={currentUser && currentUser.images && currentUser.images[3] ? currentUser.images[3].url : ''}
             />
           </View>
           <View style={styles.column}>
@@ -113,7 +112,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images['4'] ? currentUser.images['4'].url : ''}
+              source={currentUser && currentUser.images && currentUser.images[4] ? currentUser.images[4].url : ''}
             />
           </View>
           <View style={styles.column}>
