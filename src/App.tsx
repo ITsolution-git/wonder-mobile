@@ -4,6 +4,7 @@
  * @flow
  */
 import '../ReactotronConfig';
+import { Root } from "native-base";
 import NavigatorService from 'src/services/navigation';
 import React, { Component } from 'react';
 import {
@@ -51,7 +52,9 @@ export default class App extends Component {
 
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          {this.renderContent()}
+          <Root>
+            {this.renderContent()}
+          </Root>
         </PersistGate>
       </Provider>
 

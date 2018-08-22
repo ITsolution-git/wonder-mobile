@@ -97,7 +97,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
           <View style={styles.row}>
             <View flex={1}>
               <TextInput
-                label="Name"
+                label="First Name"
                 defaultValue={currentUser.first_name}
                 onChangeText={this.onChangeText('first_name')}
                 errorHint={errors.first_name}
@@ -105,7 +105,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
             </View>
             <View flex={1}>
               <TextInput
-                label=" "
+                label="Last Name"
                 defaultValue={currentUser.last_name}
                 onChangeText={this.onChangeText('last_name')}
                 errorHint={errors.last_name}

@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.5,
   },
   label: {
-    fontSize: 8
+    fontSize: 7
   }
 });
