@@ -1,14 +1,18 @@
 import React from 'react';
 import { Text } from '.';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextProps } from 'react-native';
 import Color from 'color';
 import theme from '../../../assets/styles/theme';
 
-export default class Label extends React.Component {
- public render() {
-    const { children } = this.props;
+interface LabelProps extends TextProps {
+
+}
+
+export default class Label extends React.Component<LabelProps> {
+  public render() {
+    const { children, style, ...rest } = this.props;
     return (
-      <Text style={styles.label}>{children}</Text>
+      <Text style={[styles.label, style]} {...rest}>{children}</Text>
     );
   }
 }

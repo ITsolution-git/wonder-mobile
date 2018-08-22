@@ -1,6 +1,6 @@
+import _ from 'lodash';
 import React from 'react';
-import { Modal, View, ModalProps, StyleSheet, ScrollView, Platform, ImageBackground } from 'react-native';
-import theme from '../../../assets/styles/theme';
+import { Modal, View, ModalProps, StyleSheet, Platform } from 'react-native';
 import { IconButton, Text, Title, Label, SubTitle, WonderImage } from '../theme';
 import TouchableOpacityOnPress from '../../../types/touchable-on-press';
 import Candidate from '../../../types/candidate';
@@ -23,7 +23,7 @@ class ProfileModal extends React.Component<Props> {
       return (
         <WonderImage
           background
-          uri={candidate.images[0].url}
+          uri={_.get(candidate, 'images[0].url')}
           style={styles.container}
         >
           <LinearGradient

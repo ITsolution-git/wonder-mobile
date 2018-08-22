@@ -1,12 +1,13 @@
+import _ from 'lodash';
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Title, SubTitle, SmallText, Strong, IconButton, TextButton } from '../theme';
-import { DecoratedAppointment } from '../../../types/appointment';
+import { DecoratedAppointment } from 'src/types/appointment';
 import moment from 'moment-timezone';
 import Avatar, { AvatarSize } from '../theme/avatar';
-import theme from '../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import TouchableOpacityOnPress from '../../../types/touchable-on-press';
+import TouchableOpacityOnPress from 'src/types/touchable-on-press';
 
 interface Props {
   item: DecoratedAppointment;
@@ -16,7 +17,7 @@ interface Props {
 class AppointmentItem extends React.Component<Props> {
   renderTitle = () => {
     const { item } = this.props;
-    const { name, users, event_at, match = {} } = item;
+    const { name, users, event_at, match } = item;
 
     const now = moment();
     if (moment(event_at).isSameOrAfter(now)) {
@@ -25,7 +26,7 @@ class AppointmentItem extends React.Component<Props> {
       );
     }
     return (
-      <Title>{name} with {users[0].first_name}</Title>
+      <Title>{name} with {match.first_name}</Title>
     );
   }
 
@@ -36,10 +37,9 @@ class AppointmentItem extends React.Component<Props> {
         <View style={styles.imageContainer}>
           <Avatar
             circle
-            uri={item.match.images.length ? item.match.images[0].url : null}
+            uri={_.get(item, 'match.images[0].url', null)}
             size={AvatarSize.md}
           />
-          <TextButton text="Leave Review" style={{ marginTop: 10, fontSize: 10 }} />
         </View>
         <View style={styles.contentContainer}>
           {this.renderTitle()}
@@ -47,15 +47,6 @@ class AppointmentItem extends React.Component<Props> {
           <View style={styles.locationRow}>
             <Icon name="map-marker" size={24} color={theme.colors.textColorLight} />
             <SmallText style={styles.locationText}>{item.location}</SmallText>
-          </View>
-          <View style={{ alignItems: 'flex-end' }}>
-            <IconButton
-              icon="comments"
-              size={24}
-              iconSize={24}
-              primary={theme.colors.primaryLight}
-              secondary="transparent"
-            />
           </View>
         </View>
       </TouchableOpacity>

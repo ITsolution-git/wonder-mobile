@@ -14,7 +14,7 @@ interface AvatarProps {
   rounded?: boolean;
   circle?: boolean;
   uri?: string | null;
-  size?: AvatarSize;
+  size?: AvatarSize | 'sm' | 'md' | 'lg';
   containerStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ImageStyle>;
 }

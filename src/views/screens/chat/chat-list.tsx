@@ -3,12 +3,13 @@ import Screen from '../../components/screen';
 import { ChatList } from '../../components/chat';
 import { Title } from '../../components/theme';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import Chat from '../../../types/chat';
-import WonderAppState from '../../../types/wonder-app-state';
+import Chat from 'src/types/chat';
+import WonderAppState from 'src/types/wonder-app-state';
 import { Dispatch } from 'redux';
-import { getConversations, getConversation } from '../../../store/sagas/conversations';
-import Conversation from '../../../types/conversation';
+import { getConversations, getConversation } from 'src/store/sagas/conversations';
+import Conversation from 'src/types/conversation';
 import { connect } from 'react-redux';
+import { selectCurrentUser } from 'src/store/selectors/user';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -18,7 +19,7 @@ interface Props {
 }
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: state.user.profile,
+  currentUser: selectCurrentUser(state),
   conversations: state.chat.conversations
 });
 

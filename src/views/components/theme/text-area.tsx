@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, StyleSheet, TextInputProps } from 'react-native';
 import Label from './label';
-import theme from '../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 
 interface Props extends TextInputProps {
   label?: string;
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   input: {
     textAlignVertical: "top",
     maxHeight: 150,
-    borderRadius: 10,
+    borderRadius: 5,
     fontFamily: theme.fonts.primary,
     borderWidth: 1,
     borderColor: 'rgb(223,223,231)',

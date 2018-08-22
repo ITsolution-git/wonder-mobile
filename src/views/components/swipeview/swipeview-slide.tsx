@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, Button, ImageBackground } from 'react-native';
+import { FlatList, View, Button, ImageBackground, ImageSourcePropType } from 'react-native';
 import { Text } from '../theme';
 import styles, { DEVICE_WIDTH } from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,8 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 interface Props {
   containerStyle?: object;
   title?: string;
-  children: any;
-  backgroundImage: any;
+  children: React.ReactNode;
+  backgroundImage: ImageSourcePropType;
 }
 
 export default class SwipeViewSlide extends React.Component<Props> {
@@ -21,7 +21,7 @@ export default class SwipeViewSlide extends React.Component<Props> {
             {title}
           </Text>
         </View>
-      )
+      );
     }
   }
 

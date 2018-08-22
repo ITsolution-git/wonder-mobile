@@ -1,7 +1,8 @@
 import User from "./user";
 import Topic from "./topic";
 
-export interface AppoinmentUser extends Partial<User> {
+export interface AppointmentUser extends Partial<User> {
+  id: number;
   first_name: string;
   last_name: string;
   location?: string;
@@ -14,8 +15,8 @@ export default interface Appointment {
   longitude?: number;
   event_at: Date;
   topic: Topic;
-  owner: AppoinmentUser;
-  users: AppoinmentUser[];
+  owner: AppointmentUser;
+  users: AppointmentUser[];
   demerits?: string[];
 
   state: 'created' | 'negotiating' | 'confirmed' | 'cancelled';
@@ -24,8 +25,8 @@ export default interface Appointment {
 }
 
 export interface DecoratedAppointment extends Appointment {
-  me: AppoinmentUser;
-  match: AppoinmentUser;
+  me: AppointmentUser;
+  match: AppointmentUser;
 }
 
 // POST body for the Create Appointment

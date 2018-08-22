@@ -1,16 +1,17 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Screen from '../../components/screen';
-import ElevatedButton from '../../components/theme/elevated-button';
-import { PrimaryButton, Text, SecondaryButton as Button, Title } from '../../components/theme';
+import Screen from 'src/views/components/screen';
+import ElevatedButton from 'src/views/components/theme/elevated-button';
+import { PrimaryButton, Text, SecondaryButton as Button, Title } from 'src/views/components/theme';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import WonderAppState from '../../../types/wonder-app-state';
+import WonderAppState from 'src/types/wonder-app-state';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import User from '../../../types/user';
-import { logoutUser, getUser } from '../../../store/sagas/user';
-import Avatar, { AvatarSize } from '../../components/theme/avatar';
-import TouchableOpacityOnPress from '../../../types/touchable-on-press';
+import User from 'src/types/user';
+import { logoutUser, getUser } from 'src/store/sagas/user';
+import Avatar, { AvatarSize } from 'src/views/components/theme/avatar';
+import TouchableOpacityOnPress from 'src/types/touchable-on-press';
+import { selectCurrentUser } from 'src/store/selectors/user';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -20,7 +21,7 @@ interface Props {
 }
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: state.user.profile
+  currentUser: selectCurrentUser(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({

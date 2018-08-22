@@ -14,6 +14,7 @@ import User from 'src/types/user';
 import { getConversation, sendMessage } from 'src/store/sagas/conversations';
 import { DecoratedConversation, ConversationNewMessage } from 'src/types/conversation';
 import { getDecoratedConversation } from 'src/store/selectors/conversation';
+import { selectCurrentUser } from 'src/store/selectors/user';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -24,7 +25,7 @@ interface Props {
 }
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: state.user.profile,
+  currentUser: selectCurrentUser(state),
   conversation: getDecoratedConversation(state)
 });
 

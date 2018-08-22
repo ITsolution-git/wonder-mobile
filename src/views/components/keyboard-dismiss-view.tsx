@@ -1,9 +1,9 @@
-import React, { ReactChildren } from 'react';
+import React from 'react';
 import { Keyboard, TouchableWithoutFeedback, View, StyleProp, ViewStyle } from 'react-native';
 
 interface Props {
   style?: StyleProp<ViewStyle>;
-  children: any;
+  children: React.ReactNode;
 }
 
 export class KeyboardDismissView extends React.Component<Props> {

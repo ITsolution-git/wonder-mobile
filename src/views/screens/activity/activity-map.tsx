@@ -1,25 +1,26 @@
 import React from 'react';
-import Screen from '../../components/screen';
+import Screen from 'src/views/components/screen';
 import MapView, { Marker as MarkerContainer, Callout } from 'react-native-maps';
-import Marker from '../../components/map/marker';
-import ActivityCallout from '../../components/map/activity-callout';
-import Activity from '../../../types/activity';
-import WonderAppState from '../../../types/wonder-app-state';
+import Marker from 'src/views/components/map/marker';
+import ActivityCallout from 'src/views/components/map/activity-callout';
+import Activity from 'src/types/activity';
+import WonderAppState from 'src/types/wonder-app-state';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import User from '../../../types/user';
-import { getPartnerActivities, getActivityDetails } from '../../../store/sagas/partner';
-import { NavigationScreenProp, NavigationParams } from '../../../../node_modules/@types/react-navigation';
-import ActivityDetailsModal from '../../components/modals/activity-details-modal';
-import ActivityDetails from '../../../types/activity-details';
-import { persistActivity } from '../../../store/reducers/chat';
+import User from 'src/types/user';
+import { getPartnerActivities, getActivityDetails } from 'src/store/sagas/partner';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import ActivityDetailsModal from 'src/views/components/modals/activity-details-modal';
+import ActivityDetails from 'src/types/activity-details';
+import { persistActivity } from 'src/store/reducers/chat';
 import { GeolocationReturnType, Alert, PermissionsAndroid, Platform } from 'react-native';
-import { persistAppointmentData, AppointmentState } from '../../../store/reducers/appointment';
-import askForDeviceLocation from '../../../services/gps';
-import Coordinate from '../../../types/coordinate';
+import { persistAppointmentData, AppointmentState } from 'src/store/reducers/appointment';
+import askForDeviceLocation from 'src/services/gps';
+import Coordinate from 'src/types/coordinate';
+import { selectCurrentUser } from 'src/store/selectors/user';
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: state.user.profile,
+  currentUser: selectCurrentUser(state),
   activities: state.chat.activities,
   details: state.chat.activity
 });

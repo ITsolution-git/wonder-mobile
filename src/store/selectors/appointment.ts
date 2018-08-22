@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { createSelector, OutputSelector } from 'reselect';
 import WonderAppState from '../../types/wonder-app-state';
-import Appointment, { DecoratedAppointment } from '../../types/appointment';
+import Appointment, { DecoratedAppointment, AppointmentUser } from '../../types/appointment';
 import { selectCurrentUser } from './user';
 import User from '../../types/user';
 import moment from 'moment-timezone';
@@ -14,7 +14,7 @@ const decorateAppointment = (appointment: Appointment, me: User): DecoratedAppoi
     const result: DecoratedAppointment = {
       ...appointment,
       me,
-      match: appointment.users.find((user: User) => user.id !== me.id)
+      match: appointment.users.find((user: AppointmentUser) => user.id !== me.id)
     };
 
     return result;

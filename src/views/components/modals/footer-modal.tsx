@@ -5,7 +5,7 @@ import { TextButton } from '../theme';
 interface Props extends ModalProps {
   visible: boolean;
   closeText: string;
-  children: any;
+  children: React.ReactNode;
   onClose: Function;
 }
 

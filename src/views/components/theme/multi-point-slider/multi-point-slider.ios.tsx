@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import RangeSlider from 'react-native-range-slider';
-import theme from '../../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 
 export interface MultiPointSliderValue {
   selectedMinimum: number;
