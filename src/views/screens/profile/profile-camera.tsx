@@ -24,6 +24,7 @@ interface Props {
 interface State {
   modalOpen: boolean;
   imageData: CameraData | null;
+  pickedImage:null
   angle:number
 }
 
@@ -31,7 +32,6 @@ class ProfileCameraScreen extends React.Component<Props, State> {
   state = {
     imageData: null,
     modalOpen: false,
-
     pickedImage: null,
     angle:0
   };
@@ -57,7 +57,7 @@ class ProfileCameraScreen extends React.Component<Props, State> {
   }
 
   pickImageHandler = () => {
-    ImagePicker.launchImageLibrary({ title: "Pick an Image", maxWidth: 1200, maxHeight: 1600 }, res => {
+    ImagePicker.launchImageLibrary({ title: "Pick an Image" }, res => {
       
       if (res.didCancel) {
         console.log("User cancelled!");
@@ -183,11 +183,11 @@ export default connect(null, mapDispatch)(ProfileCameraScreen);
 // export default ProfileCameraScreen;
 
 const styles = StyleSheet.create({
-    imgcontainer:{
-flex: 1,
-flexDirection: 'column',
-padding: 20
-    },
+  imgcontainer:{
+    flex: 1,
+    flexDirection: 'column',
+    padding: 20
+  },
   container: {
     flex: 1,
     flexDirection: 'column',
