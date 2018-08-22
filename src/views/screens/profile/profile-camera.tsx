@@ -113,7 +113,6 @@ class ProfileCameraScreen extends React.Component<Props, State> {
             </View>
             <View style={styles.footerCol}>
               <PrimaryButton
-                fullWidth
                 rounded={false}
                 title="RETAKE"
                 onPress={this.openModal}

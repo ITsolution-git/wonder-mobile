@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import TouchableOpacityOnPress from '../../../../types/touchable-on-press';
 import WonderImage from '../wonder-image';
-import Video from 'react-native-video';
+import VideoPlayer from 'react-native-video-player';
 import api, { ApiConfig } from '../../../../services/api';
 import NavigatorService from 'src/services/navigation';
 
@@ -19,8 +19,8 @@ interface Props {
 
 export default class MediaGridItem extends React.Component<Props> {
 
-  state:any = {
-    isActive:true
+  state: any = {
+    isActive: true
   }
   static defaultProps = {
     source: undefined,
@@ -28,7 +28,7 @@ export default class MediaGridItem extends React.Component<Props> {
     size: 75,
     gutter: 0,
     video: false,
-    isFocused:true
+    isFocused: true
   };
 
   renderContainerStyles = () => {
@@ -43,15 +43,14 @@ export default class MediaGridItem extends React.Component<Props> {
 
   renderMediaContent = () => {
     const { source, video } = this.props;
-    console.log('current nav --- ',NavigatorService.getCurrentRoute());
+    console.log("source :", source);
+    console.log('current nav --- ', NavigatorService.getCurrentRoute());
     if (source) {
       if (video) {
         return (
-          <Video
-            source={{ uri: `${ApiConfig.defaults.baseURL.replace('/v1', '')}${source}` }}
+          <VideoPlayer
+            video={{ uri: `${ApiConfig.defaults.baseURL.replace('/v1', '')}${source}` }}
             style={{ width: '100%', height: '100%' , zIndex:0}}
-            pause={false}
-            controls={false}
           />
         );
       }

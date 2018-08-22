@@ -1,10 +1,11 @@
 import React from 'react';
 import { RNCamera } from 'react-native-camera';
 import Screen from '../../components/screen';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 import { Text,TextButton,PrimaryButton } from '../../components/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Video from 'react-native-video';
+// import Video from 'react-native-video';
+import VideoPlayer from 'react-native-video-player';
 import theme from '../../../assets/styles/theme';
 import { IconButton } from '../../components/theme';
 import { Dispatch } from 'redux';
@@ -50,7 +51,7 @@ class ProfileVideoScreen extends React.Component<Props, State> {
     if (this.camera) {
       const { onUpdateVideo, navigation } = this.props;
       this.startTimer();
-      const options = { maxDuration: this.state.duration }
+      const options = { maxDuration: this.state.duration, quality: RNCamera.Constants.VideoQuality["720p"] }
       const data = await this.camera.recordAsync(options)
       this.setState({ path: data.uri })
       this.setState({ recorded: false })
@@ -116,12 +117,17 @@ class ProfileVideoScreen extends React.Component<Props, State> {
       return(
     <View flex={1} >
       <View style={[styles.container, { padding: 0 }]}>
-      <Video
+      {/* <Video
             source={{ uri: path }}
             style={{ width: '100%', height: '100%', zIndex:2}}
            
             controls={false}
-          />
+          /> */}
+          <VideoPlayer
+          video={{ uri: path }}
+          videoWidth={Dimensions.get("window").width}
+          videoHeight={Dimensions.get("window").height-150}
+        />
       </View>
       <View style={styles.footer}>
         <View style={styles.footerCol}>
