@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
+import io.codebakery.imagerotate.ImageRotatePackage;
+import com.imagepicker.ImagePickerPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.brentvatne.react.ReactVideoPackage;
 import org.reactnative.camera.RNCameraPackage;
@@ -31,6 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ImageRotatePackage(),
+            new ImagePickerPackage(),
             new ReactNativePushNotificationPackage(),
             new ReactVideoPackage(),
             new RNCameraPackage(),
