@@ -21,23 +21,15 @@ interface Props {
   onUpdateImage: Function;
 }
 
-interface pickedImageData {
-  uri : string
-}
-
 interface State {
   modalOpen: boolean;
   imageData: CameraData | null;
-  pickedImage: pickedImageData | null;
-  angle:number;
 }
 
 class ProfileCameraScreen extends React.Component<Props, State> {
-  state = {
+  state: State = {
     imageData: null,
     modalOpen: false,
-    pickedImage: null,
-    angle:0
   };
 
   openModal = () => this.setState({ modalOpen: true });
@@ -55,57 +47,64 @@ class ProfileCameraScreen extends React.Component<Props, State> {
 
   saveOne = () => {
     const { onUpdateImage, navigation } = this.props;
-    const { pickedImage } = this.state;
-    onUpdateImage(pickedImage);
+    const { imageData } = this.state;
+    onUpdateImage(imageData);
     navigation.goBack();
   }
 
   pickImageHandler = () => {
-    ImagePicker.launchImageLibrary({ title: "Pick an Image" }, res => {
-      
+    ImagePicker.launchImageLibrary({ title: "Pick an Image" }, (res) => {
       if (res.didCancel) {
-        console.log("User cancelled!");
+        // console.log("User cancelled!");
       } else if (res.error) {
-        console.log("Error", res.error);
+        // console.log("Error", res.error);
       } else {
-        this.setState({ imageData: res }, this.closeModal)       
+        this.setState({ imageData: res }, this.closeModal);
       }
     });
   }
+
   rotate = () => {
-    ImageRotate.rotateImage(
-      this.state.imageData.uri,
-      90,
-      (uri) => {
-        let imgdt = this.state.imageData;
-        imgdt.uri = uri;
-        this.setState({ imageData: imgdt })        
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    const { imageData } = this.state;
+    if (imageData !== null) {
+      ImageRotate.rotateImage(
+        imageData.uri,
+        90,
+        (uri: string) => {
+          this.setState({
+            imageData: {
+              ...imageData,
+              uri
+            }
+          });
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
+
   }
 
   renderContent = () => {
-    const { imageData, pickedImage, modalOpen } = this.state;
+    const { imageData, modalOpen } = this.state;
     if (imageData) {
       return (
         <View flex={1} >
-<View style={[styles.imgcontainer, { padding: 0 }]}>
+          <View style={[styles.imgcontainer, { padding: 0 }]}>
             <Image
               source={{ uri: imageData.uri }}
-              style={{ flex:1, width: null, height: null, resizeMode:'stretch' }}
+              style={{ flex: 1, width: null, height: null, resizeMode: 'stretch' }}
             />
           </View>
-          <View style={styles.footer}>           
-            <View style={styles.footerCol}>              
-               <PrimaryButton
+          <View style={styles.footer}>
+            <View style={styles.footerCol}>
+              <PrimaryButton
                 fullWidth
                 rounded={false}
                 title="ROTATE"
                 onPress={this.rotate}
-              />            
+              />
             </View>
           </View>
           <View style={styles.footer}>
@@ -126,24 +125,24 @@ class ProfileCameraScreen extends React.Component<Props, State> {
               <TextButton
                 text="SAVE"
                 onPress={this.save}
-              />              
+              />
             </View>
           </View>
-          
+
         </View>
       );
     }
-    if (pickedImage) {
+    if (imageData) {
       return (
         <View flex={1} >
           <View style={[styles.container, { padding: 0 }]}>
             <Image
-              source={{ uri: pickedImage.uri }}
+              source={{ uri: imageData.uri }}
               style={{ flex: 1 }}
             />
           </View>
         </View>
-      )
+      );
     }
     return (
       <View flex={1}>
@@ -187,7 +186,7 @@ export default connect(null, mapDispatch)(ProfileCameraScreen);
 // export default ProfileCameraScreen;
 
 const styles = StyleSheet.create({
-  imgcontainer:{
+  imgcontainer: {
     flex: 1,
     flexDirection: 'column',
     padding: 20

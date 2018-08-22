@@ -1,22 +1,21 @@
 import React from 'react';
 import { RNCamera } from 'react-native-camera';
-import Screen from '../../components/screen';
+import Screen from 'src/views/components/screen';
 import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
-import { Text,TextButton,PrimaryButton } from '../../components/theme';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Text, TextButton, PrimaryButton } from 'src/views/components/theme';
 import VideoPlayer from 'react-native-video-player';
-import theme from '../../../assets/styles/theme';
-import { IconButton } from '../../components/theme';
+import theme from 'src/assets/styles/theme';
+import { IconButton } from 'src/views/components/theme';
 import { Dispatch } from 'redux';
-import { updateVideo } from '../../../store/sagas/user';
+import { updateVideo } from 'src/store/sagas/user';
 import { connect } from 'react-redux';
-import { NavigationScreenProp, NavigationParams } from '../../../../node_modules/@types/react-navigation';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 
 interface State {
-  path: "",
-  recorded: Boolean,
-  isRecording: Boolean,
-  duration: number,
+  path: string;
+  recorded: Boolean;
+  isRecording: Boolean;
+  duration: number;
   time: number;
 }
 
@@ -34,7 +33,7 @@ class ProfileVideoScreen extends React.Component<Props, State> {
   timer = 0;
 
   state: State = {
-    path: "",
+    path: '',
     recorded: false,
     isRecording: false,
     duration: 14,
@@ -42,27 +41,30 @@ class ProfileVideoScreen extends React.Component<Props, State> {
   };
 
   takeVideo = () => {
-    this.state.isRecording ? this.stopRecord() : this.saveVideo();
-    this.state.isRecording ? this.setState({ isRecording: false }) : this.setState({ isRecording: true })
+    const { isRecording } = this.state;
+    isRecording ? this.stopRecord() : this.saveVideo();
+    this.setState({ isRecording: !isRecording });
   }
 
   saveVideo = async () => {
     if (this.camera) {
       const { onUpdateVideo, navigation } = this.props;
       this.startTimer();
-      const options = { maxDuration: this.state.duration, quality: RNCamera.Constants.VideoQuality["720p"] }
-      const data = await this.camera.recordAsync(options)
-      this.setState({ path: data.uri })
-      this.setState({ recorded: false })
+      const options = {
+        maxDuration: this.state.duration,
+        quality: RNCamera.Constants.VideoQuality["720p"]
+      };
+      const data = await this.camera.recordAsync(options);
+      this.setState({ path: data.uri });
+      this.setState({ recorded: false });
     }
   }
 
   uploadVideo = () => {
     const { path } = this.state;
     const { onUpdateVideo, navigation } = this.props;
-    if(path)
-    {
-      onUpdateVideo({uri:path});
+    if (path) {
+      onUpdateVideo({ uri: path });
       navigation.goBack();
     }
   }
@@ -73,9 +75,10 @@ class ProfileVideoScreen extends React.Component<Props, State> {
   }
 
   countDown = () => {
-    let seconds = this.state.time - 1;
+    const { time } = this.state;
+    const seconds = time - 1;
     this.setState({ time: seconds });
-    if (seconds == 0) {
+    if (seconds === 0) {
       clearInterval(this.timer);
     }
   }
@@ -102,54 +105,49 @@ class ProfileVideoScreen extends React.Component<Props, State> {
       duration: 14,
       time: 14,
     });
-    this.takeVideo()
+    this.takeVideo();
   }
- 
 
-  render() {
+  renderContent = () => {
     const { path } = this.state;
-    if(path)
-    {
-      return(
-    <View flex={1} >
-      <View style={[styles.container, { padding: 0 }]}>      
-          <VideoPlayer
-          video={{ uri: path }}
-          videoWidth={Dimensions.get("window").width}
-          videoHeight={Dimensions.get("window").height-150}
-        />
-      </View>
-      <View style={styles.footer}>
-        <View style={styles.footerCol}>
-          <TextButton
-            text="DELETE"
-            onPress={this.goBack}
-          />
+
+    if (path) {
+      return (
+        <View flex={1} >
+          <View style={[styles.container, { padding: 0 }]}>
+            <VideoPlayer
+              video={{ uri: path }}
+              videoWidth={Dimensions.get("window").width}
+              videoHeight={Dimensions.get("window").height - 150}
+            />
+          </View>
+          <View style={styles.footer}>
+            <View style={styles.footerCol}>
+              <TextButton
+                text="DELETE"
+                onPress={this.goBack}
+              />
+            </View>
+            <View style={styles.footerCol}>
+              <TextButton
+                text="RETAKE"
+                onPress={this.retakeVideo}
+              />
+            </View>
+            <View style={styles.footerCol}>
+              <TextButton
+                text="SAVE"
+                onPress={this.uploadVideo}
+              />
+            </View>
+          </View>
         </View>
-        <View style={styles.footerCol}>
-          <TextButton
-            text="RETAKE"
-            onPress={this.retakeVideo}
-          />
-        </View>
-        <View style={styles.footerCol}>
-          <TextButton
-            text="SAVE"
-            onPress={this.uploadVideo}
-          />
-        </View>
-      </View> 
-    </View>
-      )
+      );
     }
-    else
-    {
-
     return (
-      <Screen>
+      <>
         <RNCamera
-
-          ref={ref => { this.camera = ref; }}
+          ref={(ref) => { this.camera = ref; }}
           style={styles.preview}
           type={RNCamera.Constants.Type.front}
           flashMode={RNCamera.Constants.FlashMode.auto}
@@ -175,13 +173,21 @@ class ProfileVideoScreen extends React.Component<Props, State> {
             <Text>{this.state.time}</Text>
           </View>
         </View>
+      </>
+    );
+  }
+
+  render() {
+    return (
+      <Screen>
+        {this.renderContent()}
       </Screen>
-    )   
-  } 
+    );
   }
 }
+
 export default connect(null, mapDispatch)(ProfileVideoScreen);
-// export default ProfileVideoScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
