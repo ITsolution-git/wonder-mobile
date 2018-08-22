@@ -4,7 +4,6 @@ import Screen from '../../components/screen';
 import { StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
 import { Text,TextButton,PrimaryButton } from '../../components/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import Video from 'react-native-video';
 import VideoPlayer from 'react-native-video-player';
 import theme from '../../../assets/styles/theme';
 import { IconButton } from '../../components/theme';
@@ -116,13 +115,7 @@ class ProfileVideoScreen extends React.Component<Props, State> {
     {
       return(
     <View flex={1} >
-      <View style={[styles.container, { padding: 0 }]}>
-      {/* <Video
-            source={{ uri: path }}
-            style={{ width: '100%', height: '100%', zIndex:2}}
-           
-            controls={false}
-          /> */}
+      <View style={[styles.container, { padding: 0 }]}>      
           <VideoPlayer
           video={{ uri: path }}
           videoWidth={Dimensions.get("window").width}

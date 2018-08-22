@@ -7,6 +7,7 @@ import WonderImage from '../wonder-image';
 import VideoPlayer from 'react-native-video-player';
 import api, { ApiConfig } from '../../../../services/api';
 import NavigatorService from 'src/services/navigation';
+import Video from 'react-native-video';
 
 interface Props {
   source?: string;
@@ -48,9 +49,11 @@ export default class MediaGridItem extends React.Component<Props> {
     if (source) {
       if (video) {
         return (
-          <VideoPlayer
-            video={{ uri: `${ApiConfig.defaults.baseURL.replace('/v1', '')}${source}` }}
-            style={{ width: '100%', height: '100%' , zIndex:0}}
+          <Video
+            source={{ uri: `${ApiConfig.defaults.baseURL.replace('/v1', '')}${source}` }}
+            style={{ width: '100%', height: '100%', zIndex:2}}
+           
+            controls={false}
           />
         );
       }

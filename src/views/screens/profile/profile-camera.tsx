@@ -91,7 +91,7 @@ class ProfileCameraScreen extends React.Component<Props, State> {
           <View style={[styles.container, { padding: 0 }]}>
             <Image
               source={{ uri: imageData.uri }}
-              style={{ flex: 1 }}
+              style={{ flex: 1, width : '100%', height:'auto' }}
             />
           </View>
           <View style={styles.footer}>           
