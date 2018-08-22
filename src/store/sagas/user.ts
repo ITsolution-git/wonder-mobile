@@ -165,7 +165,6 @@ export function* updateImageSaga(action: Action<any>) {
       name: Date.now() + '.jpg',
     };
     body.append('image', photo);
-    console.log("photo :", photo);
     const { data }: { data: any } = yield call(api, {
       method: 'POST',
       url: `/users/${auth.uid}/images`,

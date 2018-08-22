@@ -72,8 +72,6 @@ class MediaGrid extends React.Component<Props> {
     const { featured, gutter, onNewPicture, onNewVideo, currentUser } = this.props;
     images = [];
 
-    console.log("currentUser :", currentUser);
-
     return (
       <View style={styles.container}>
         <View style={styles.row}>

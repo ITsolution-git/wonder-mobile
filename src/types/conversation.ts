@@ -1,4 +1,3 @@
-// import ChatResponseMessage from "./chat-message";
 import ChatResponseMessage from "./chat-response-message";
 import User from "./user";
 import GiftedChatMessage from "./chat-message";

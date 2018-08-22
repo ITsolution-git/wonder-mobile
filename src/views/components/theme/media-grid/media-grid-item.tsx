@@ -44,8 +44,6 @@ export default class MediaGridItem extends React.Component<Props> {
 
   renderMediaContent = () => {
     const { source, video } = this.props;
-    console.log("source :", source);
-    console.log('current nav --- ', NavigatorService.getCurrentRoute());
     if (source) {
       if (video) {
         return (

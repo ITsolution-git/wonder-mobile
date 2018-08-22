@@ -54,9 +54,6 @@ class ProfileVideoScreen extends React.Component<Props, State> {
       const data = await this.camera.recordAsync(options)
       this.setState({ path: data.uri })
       this.setState({ recorded: false })
-      console.log('video data ',data);
-      //onUpdateVideo(data);
-      //navigation.goBack();
     }
   }
 

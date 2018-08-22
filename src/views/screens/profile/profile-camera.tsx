@@ -1,6 +1,6 @@
 import React from 'react';
 import Screen from 'src/views/components/screen';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { Text, PrimaryButton, TextButton } from 'src/views/components/theme';
 import theme from 'src/assets/styles/theme';
 import CameraModal from 'src/views/components/modals/camera-modal';
@@ -58,7 +58,7 @@ class ProfileCameraScreen extends React.Component<Props, State> {
 
   pickImageHandler = () => {
     ImagePicker.launchImageLibrary({ title: "Pick an Image", maxWidth: 1200, maxHeight: 1600 }, res => {
-      console.log("res of image :", res);
+      
       if (res.didCancel) {
         console.log("User cancelled!");
       } else if (res.error) {
@@ -88,10 +88,10 @@ class ProfileCameraScreen extends React.Component<Props, State> {
     if (imageData) {
       return (
         <View flex={1} >
-          <View style={[styles.container, { padding: 0 }]}>
+<View style={[styles.imgcontainer, { padding: 0 }]}>
             <Image
               source={{ uri: imageData.uri }}
-              style={{ flex: 1, width : '100%', height:'auto' }}
+              style={{ flex:1, width: null, height: null, resizeMode:'stretch' }}
             />
           </View>
           <View style={styles.footer}>           
@@ -170,7 +170,7 @@ class ProfileCameraScreen extends React.Component<Props, State> {
           animationType="slide"
           transparent={false}
           onCancel={this.closeModal}
-          openGalary={this.pickImageHandler}
+          openGallery={this.pickImageHandler}
           direction="front"
           visible={modalOpen}
         />
@@ -183,6 +183,11 @@ export default connect(null, mapDispatch)(ProfileCameraScreen);
 // export default ProfileCameraScreen;
 
 const styles = StyleSheet.create({
+    imgcontainer:{
+flex: 1,
+flexDirection: 'column',
+padding: 20
+    },
   container: {
     flex: 1,
     flexDirection: 'column',
