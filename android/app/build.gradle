@@ -148,6 +148,8 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-image-rotate')
+    compile project(':react-native-image-picker')
     compile project(':react-native-push-notification')
     compile project(':react-native-video')
     // implementation (project(':react-native-camera')) {

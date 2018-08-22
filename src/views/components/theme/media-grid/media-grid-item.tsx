@@ -6,6 +6,7 @@ import TouchableOpacityOnPress from '../../../../types/touchable-on-press';
 import WonderImage from '../wonder-image';
 import Video from 'react-native-video';
 import api, { ApiConfig } from '../../../../services/api';
+import NavigatorService from 'src/services/navigation';
 
 interface Props {
   source?: string;
@@ -17,12 +18,17 @@ interface Props {
 }
 
 export default class MediaGridItem extends React.Component<Props> {
+
+  state:any = {
+    isActive:true
+  }
   static defaultProps = {
     source: undefined,
     featured: false,
     size: 75,
     gutter: 0,
     video: false,
+    isFocused:true
   };
 
   renderContainerStyles = () => {
@@ -34,15 +40,18 @@ export default class MediaGridItem extends React.Component<Props> {
     };
   }
 
+
   renderMediaContent = () => {
     const { source, video } = this.props;
+    console.log('current nav --- ',NavigatorService.getCurrentRoute());
     if (source) {
       if (video) {
         return (
           <Video
             source={{ uri: `${ApiConfig.defaults.baseURL.replace('/v1', '')}${source}` }}
-            style={{ width: '100%', height: '100%' }}
+            style={{ width: '100%', height: '100%' , zIndex:0}}
             pause={false}
+            controls={false}
           />
         );
       }

@@ -43,6 +43,10 @@ target 'WonderApp' do
 
   pod 'react-native-video', :path => '../node_modules/react-native-video'
 
+  pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
+
+  pod 'RNImageRotate', :path => '../node_modules/react-native-image-rotate'
+
 end
 
 post_install do |installer|

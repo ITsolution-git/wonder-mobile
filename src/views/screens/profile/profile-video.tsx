@@ -2,8 +2,9 @@ import React from 'react';
 import { RNCamera } from 'react-native-camera';
 import Screen from '../../components/screen';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { Text } from '../../components/theme';
+import { Text,TextButton,PrimaryButton } from '../../components/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Video from 'react-native-video';
 import theme from '../../../assets/styles/theme';
 import { IconButton } from '../../components/theme';
 import { Dispatch } from 'redux';
@@ -53,7 +54,18 @@ class ProfileVideoScreen extends React.Component<Props, State> {
       const data = await this.camera.recordAsync(options)
       this.setState({ path: data.uri })
       this.setState({ recorded: false })
-      onUpdateVideo(data);
+      console.log('video data ',data);
+      //onUpdateVideo(data);
+      //navigation.goBack();
+    }
+  }
+
+  uploadVideo = () => {
+    const { path } = this.state;
+    const { onUpdateVideo, navigation } = this.props;
+    if(path)
+    {
+      onUpdateVideo({uri:path});
       navigation.goBack();
     }
   }
@@ -79,7 +91,64 @@ class ProfileVideoScreen extends React.Component<Props, State> {
     }
   }
 
+  goBack = () => {
+    const { navigation } = this.props;
+    this.setState({ path: '' });
+    navigation.goBack();
+  }
+
+  retakeVideo = () => {
+    this.setState({
+      path: "",
+      recorded: false,
+      isRecording: false,
+      duration: 14,
+      time: 14,
+    });
+    this.takeVideo()
+  }
+ 
+
   render() {
+    const { path } = this.state;
+    if(path)
+    {
+      return(
+    <View flex={1} >
+      <View style={[styles.container, { padding: 0 }]}>
+      <Video
+            source={{ uri: path }}
+            style={{ width: '100%', height: '100%', zIndex:2}}
+           
+            controls={false}
+          />
+      </View>
+      <View style={styles.footer}>
+        <View style={styles.footerCol}>
+          <TextButton
+            text="DELETE"
+            onPress={this.goBack}
+          />
+        </View>
+        <View style={styles.footerCol}>
+          <TextButton
+            text="RETAKE"
+            onPress={this.retakeVideo}
+          />
+        </View>
+        <View style={styles.footerCol}>
+          <TextButton
+            text="SAVE"
+            onPress={this.uploadVideo}
+          />
+        </View>
+      </View> 
+    </View>
+      )
+    }
+    else
+    {
+
     return (
       <Screen>
         <RNCamera
@@ -110,15 +179,13 @@ class ProfileVideoScreen extends React.Component<Props, State> {
             <Text>{this.state.time}</Text>
           </View>
         </View>
-
       </Screen>
-    )
+    )   
+  } 
   }
 }
-
 export default connect(null, mapDispatch)(ProfileVideoScreen);
 // export default ProfileVideoScreen;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

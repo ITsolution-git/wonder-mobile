@@ -8,10 +8,10 @@ import TouchableOpacityOnPress from 'src/types/touchable-on-press';
 import WonderAppState from 'src/types/wonder-app-state';
 import User from 'src/types/user';
 import { connect } from 'react-redux';
-import { selectCurrentUser } from 'src/store/selectors/user';
+let images: any = [];
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state)
+  currentUser: state.user.profile
 });
 
 interface Props {
@@ -23,7 +23,7 @@ interface Props {
   onNewVideo?: TouchableOpacityOnPress;
   gutter: number;
   width: number;
-  currentUser: User;
+  currentUser: any;
 }
 
 class MediaGrid extends React.Component<Props> {
@@ -71,6 +71,8 @@ class MediaGrid extends React.Component<Props> {
   render() {
     const { featured, gutter, onNewPicture, onNewVideo, currentUser } = this.props;
     images = [];
+
+    console.log("currentUser :", currentUser);
 
     return (
       <View style={styles.container}>

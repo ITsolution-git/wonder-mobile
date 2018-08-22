@@ -9,6 +9,8 @@ import CameraData from 'src/types/camera-data';
 import { updateImage } from 'src/store/sagas/user';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import ImagePicker from 'react-native-image-picker';
+import ImageRotate from 'react-native-image-rotate';
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateImage: (data: any) => dispatch(updateImage(data))
@@ -22,12 +24,16 @@ interface Props {
 interface State {
   modalOpen: boolean;
   imageData: CameraData | null;
+  angle:number
 }
 
 class ProfileCameraScreen extends React.Component<Props, State> {
   state = {
     imageData: null,
-    modalOpen: false
+    modalOpen: false,
+
+    pickedImage: null,
+    angle:0
   };
 
   openModal = () => this.setState({ modalOpen: true });
@@ -43,8 +49,42 @@ class ProfileCameraScreen extends React.Component<Props, State> {
     navigation.goBack();
   }
 
+  saveOne = () => {
+    const { onUpdateImage, navigation } = this.props;
+    const { pickedImage } = this.state;
+    onUpdateImage(pickedImage);
+    navigation.goBack();
+  }
+
+  pickImageHandler = () => {
+    ImagePicker.launchImageLibrary({ title: "Pick an Image", maxWidth: 1200, maxHeight: 1600 }, res => {
+      console.log("res of image :", res);
+      if (res.didCancel) {
+        console.log("User cancelled!");
+      } else if (res.error) {
+        console.log("Error", res.error);
+      } else {
+        this.setState({ imageData: res }, this.closeModal)       
+      }
+    });
+  }
+  rotate = () => {
+    ImageRotate.rotateImage(
+      this.state.imageData.uri,
+      90,
+      (uri) => {
+        let imgdt = this.state.imageData;
+        imgdt.uri = uri;
+        this.setState({ imageData: imgdt })        
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
   renderContent = () => {
-    const { imageData, modalOpen } = this.state;
+    const { imageData, pickedImage, modalOpen } = this.state;
     if (imageData) {
       return (
         <View flex={1} >
@@ -53,6 +93,16 @@ class ProfileCameraScreen extends React.Component<Props, State> {
               source={{ uri: imageData.uri }}
               style={{ flex: 1 }}
             />
+          </View>
+          <View style={styles.footer}>           
+            <View style={styles.footerCol}>              
+               <PrimaryButton
+                fullWidth
+                rounded={false}
+                title="ROTATE"
+                onPress={this.rotate}
+              />            
+            </View>
           </View>
           <View style={styles.footer}>
             <View style={styles.footerCol}>
@@ -73,11 +123,24 @@ class ProfileCameraScreen extends React.Component<Props, State> {
               <TextButton
                 text="SAVE"
                 onPress={this.save}
-              />
+              />              
             </View>
           </View>
+          
         </View>
       );
+    }
+    if (pickedImage) {
+      return (
+        <View flex={1} >
+          <View style={[styles.container, { padding: 0 }]}>
+            <Image
+              source={{ uri: pickedImage.uri }}
+              style={{ flex: 1 }}
+            />
+          </View>
+        </View>
+      )
     }
     return (
       <View flex={1}>
@@ -108,6 +171,7 @@ class ProfileCameraScreen extends React.Component<Props, State> {
           animationType="slide"
           transparent={false}
           onCancel={this.closeModal}
+          openGalary={this.pickImageHandler}
           direction="front"
           visible={modalOpen}
         />

@@ -12,10 +12,9 @@ import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view'
 import { Dispatch } from 'redux';
 import { updateUser } from 'src/store/sagas/user';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import { selectCurrentUser } from 'src/store/selectors/user';
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state)
+  currentUser: state.user.profile
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({

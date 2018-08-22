@@ -9,6 +9,7 @@ import CameraData from '../../../types/camera-data';
 interface Props extends ModalProps {
   direction?: 'front' | 'back';
   onCancel?: TouchableOpacityOnPress;
+  openGalary?: TouchableOpacityOnPress;
   onSuccess?: Function;
 }
 
@@ -31,7 +32,7 @@ class CameraModal extends React.Component<Props> {
   }
 
   render() {
-    const { direction, onCancel, onSuccess, onRequestClose, ...rest } = this.props;
+    const { direction, onCancel, openGalary, onSuccess, onRequestClose, ...rest } = this.props;
     return (
       <Modal
         onRequestClose={onRequestClose}
@@ -54,7 +55,7 @@ class CameraModal extends React.Component<Props> {
               <IconButton circle icon="camera" onPress={this.takePicture} />
             </View>
             <View style={styles.footerCol}>
-              <IconButton icon="image" primary="#FFF" secondary="transparent" onPress={onCancel} />
+              <IconButton icon="image" primary="#FFF" secondary="transparent" onPress={openGalary} />
             </View>
           </View>
         </View>
