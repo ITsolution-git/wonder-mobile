@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery, select } from 'redux-saga/effects';
 import { createAction } from 'redux-actions';
 import { Action } from 'redux';
 import axios from 'axios';
@@ -22,11 +22,11 @@ export function* watchGetTopics() {
   yield takeEvery(GET_TOPICS, getTopicsSaga);
 }
 
-
 export const SUGGEST_TOPIC = 'SUGGEST_TOPIC';
 export const suggestTopic = createAction(SUGGEST_TOPIC);
 export function* suggestTopicSaga(action: Action) {
   try {
+    yield select();
     // yield put();
   } catch (error) {
 

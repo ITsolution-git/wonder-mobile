@@ -2,12 +2,12 @@ import _ from 'lodash';
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, Title, SubTitle, SmallText, Strong, IconButton, TextButton } from '../theme';
-import { DecoratedAppointment } from 'src/types/appointment';
+
 import moment from 'moment-timezone';
-import Avatar, { AvatarSize } from '../theme/avatar';
+import Avatar, { AvatarSize } from 'src/views/components/theme/avatar';
 import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import TouchableOpacityOnPress from 'src/types/touchable-on-press';
+import { DecoratedAppointment } from 'src/models/appointment';
 
 interface Props {
   item: DecoratedAppointment;

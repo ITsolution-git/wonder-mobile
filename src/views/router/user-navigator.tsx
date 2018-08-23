@@ -21,10 +21,10 @@ import {
   Feedback
 } from '../screens';
 
-import TabIcon from '../components/tabs/secondary-tab-icon';
-import theme from '../../assets/styles/theme';
+import TabIcon from 'src/views/components/tabs/secondary-tab-icon';
+import theme from 'src/assets/styles/theme';
 
-// import SecondaryTabIcon from '../components/tab/secondary-tab-icon';
+// import SecondaryTabIcon from 'src/views/components/tab/secondary-tab-icon';
 
 function hideTabsForNestedRoutes({ navigation }: { navigation: NavigationScreenProp<NavigationRoute> }) {
   if (navigation.state.index >= 1) {

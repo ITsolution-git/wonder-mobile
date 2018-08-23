@@ -12,7 +12,7 @@ export default class ShadowBox extends React.Component<Props> {
       <View style={styles.container}>
         {this.props.children}
       </View>
-    )
+    );
   }
 }
 

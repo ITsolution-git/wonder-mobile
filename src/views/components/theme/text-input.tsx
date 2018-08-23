@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { View, StyleSheet, TextInput as Input, TextInputProps } from 'react-native';
-import theme from '../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import Color from 'color';
 import Label from './label';
 import Icon from 'react-native-vector-icons/FontAwesome';

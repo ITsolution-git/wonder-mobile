@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import Text, { Props } from './text';
-import theme from '../../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 
 export default class Strong extends React.Component<Props> {
   render() {

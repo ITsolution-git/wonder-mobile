@@ -1,10 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Image, WebView } from 'react-native';
-import { Text } from '../theme';
-import Activity from '../../../types/activity';
-import PricingIndicator from '../pricing-indicator';
-import ActivityDetails from '../../../types/activity-details';
-import TouchableOpacityOnPress from '../../../types/touchable-on-press';
+import { Text } from 'src/views/components/theme';
+
+import PricingIndicator from 'src/views/components/pricing-indicator';
+import Activity from 'src/models/activity';
 
 interface Props {
   activity: Activity;

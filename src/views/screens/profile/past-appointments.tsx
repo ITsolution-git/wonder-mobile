@@ -1,13 +1,15 @@
 import React from 'react';
-import Screen from '../../components/screen';
-import { AppointmentList } from '../../components/appointment-list';
+import Screen from 'src/views/components/screen';
+import { AppointmentList } from 'src/views/components/appointment-list';
 import { connect } from 'react-redux';
-import WonderAppState from '../../../types/wonder-app-state';
+
 import { Dispatch } from 'redux';
-import { getAppointments } from '../../../store/sagas/appointment';
-import Appointment, { DecoratedAppointment } from '../../../types/appointment';
-import { selectPastAppointments } from '../../../store/selectors/appointment';
+import { getAppointments } from 'src/store/sagas/appointment';
+
+import { selectPastAppointments } from 'src/store/selectors/appointment';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import WonderAppState from 'src/models/wonder-app-state';
+import { DecoratedAppointment } from 'src/models/appointment';
 
 const mapState = (state: WonderAppState) => ({
   appointments: selectPastAppointments(state)

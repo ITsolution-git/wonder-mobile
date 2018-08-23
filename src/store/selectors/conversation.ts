@@ -1,10 +1,10 @@
-import WonderAppState from "src/types/wonder-app-state";
+import WonderAppState from "src/models/wonder-app-state";
 import { createSelector } from "reselect";
-import Conversation, { DecoratedConversation } from "src/types/conversation";
+import Conversation, { DecoratedConversation } from "src/models/conversation";
 import { selectCurrentUser } from "./user";
-import User from "src/types/user";
-import ChatResponseMessage from "src/types/chat-response-message";
-import GiftedChatMessage from "src/types/chat-message";
+import User from "src/models/user";
+import ChatResponseMessage from "src/models/chat-response-message";
+import GiftedChatMessage from "src/models/chat-message";
 
 const selectConversation = (state: WonderAppState) => state.chat.conversation;
 

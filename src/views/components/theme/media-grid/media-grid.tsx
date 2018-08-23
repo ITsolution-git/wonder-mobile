@@ -1,14 +1,13 @@
+import _ from 'lodash';
 import React from 'react';
 import { StyleSheet, View, Image, ImageSourcePropType, TouchableOpacity } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import theme from 'src/assets/styles/theme';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import MediaGridItem from './media-grid-item';
-import TouchableOpacityOnPress from 'src/types/touchable-on-press';
-import WonderAppState from 'src/types/wonder-app-state';
-import User from 'src/types/user';
+
 import { connect } from 'react-redux';
 import { selectCurrentUser } from 'src/store/selectors/user';
+import { Response } from 'src/models/image-picker';
+import User from 'src/models/user';
+import WonderAppState from 'src/models/wonder-app-state';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state)
@@ -19,8 +18,8 @@ interface Props {
   items?: any;
   images?: any[];
   video?: any;
-  onNewPicture?: TouchableOpacityOnPress;
-  onNewVideo?: TouchableOpacityOnPress;
+  onNewPicture: (data: Response | null) => void;
+  onNewVideo: (data: Response | null) => void;
   gutter: number;
   width: number;
   currentUser: User;
@@ -31,30 +30,6 @@ class MediaGrid extends React.Component<Props> {
     gutter: 5,
     width: 200,
   };
-
-  renderFeatured = () => {
-    const { featured, onNewPicture, onNewVideo } = this.props;
-
-    if (featured) {
-      return (
-        <View style={styles.featuredContainer}>
-          <Image source={featured} />
-        </View>
-      );
-    }
-
-    return (
-      <LinearGradient
-        start={{ x: 0, y: 0 }}
-        style={styles.featuredContainer}
-        colors={[theme.colors.primary, theme.colors.primaryLight]}
-      >
-        <TouchableOpacity onPress={onNewPicture}>
-          <Icon name="plus" size={16} color="#FFF" />
-        </TouchableOpacity>
-      </LinearGradient>
-    );
-  }
 
   calcGridSpace = (span: number) => {
     const { gutter, width } = this.props;
@@ -80,7 +55,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(2)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images[0] ? currentUser.images[0].url : ''}
+              source={_.get(currentUser, 'images[0]', '')}
             />
           </View>
           <View style={[styles.column]}>
@@ -88,13 +63,13 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images[1] ? currentUser.images[1].url : ''}
+              source={_.get(currentUser, 'images[1]', '')}
             />
             <MediaGridItem
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images[2] ? currentUser.images[2].url : ''}
+              source={_.get(currentUser, 'images[2]', '')}
             />
           </View>
         </View>
@@ -104,7 +79,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images[3] ? currentUser.images[3].url : ''}
+              source={_.get(currentUser, 'images[3]', '')}
             />
           </View>
           <View style={styles.column}>
@@ -112,7 +87,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewPicture}
-              source={currentUser && currentUser.images && currentUser.images[4] ? currentUser.images[4].url : ''}
+              source={_.get(currentUser, 'images[4]', '')}
             />
           </View>
           <View style={styles.column}>
@@ -121,7 +96,7 @@ class MediaGrid extends React.Component<Props> {
               size={this.calcGridSpace(1)}
               gutter={gutter}
               onPress={onNewVideo}
-              source={currentUser && currentUser.video ? currentUser.video : ''}
+              videoSource={_.get(currentUser, 'video')}
             />
           </View>
         </View>

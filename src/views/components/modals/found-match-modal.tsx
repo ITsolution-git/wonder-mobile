@@ -2,12 +2,14 @@ import Color from 'color';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { StyleSheet, ModalProps, Modal, View, Image } from 'react-native';
-import Proposal from '../../../types/proposal';
-import theme from '../../../assets/styles/theme';
+
+import theme from 'src/assets/styles/theme';
 import { Text, PrimaryButton, OutlineButton } from '../theme';
 import Avatar, { AvatarSize } from '../theme/avatar';
-import User from '../../../types/user';
-import Images from '../../../assets/images';
+
+import Images from 'src/assets/images';
+import Proposal from 'src/models/proposal';
+import User from 'src/models/user';
 
 function lighten(color: string, value: number) {
   return Color(color).fade(value).toString();
@@ -41,7 +43,6 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
     }
     return null;
   }
-
 
   renderModalContent = () => {
     const { proposal, onRequestClose, onSuccess } = this.props;

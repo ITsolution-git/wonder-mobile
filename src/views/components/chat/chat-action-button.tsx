@@ -1,8 +1,8 @@
 import React from 'react';
-import theme from '../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import Color from 'color';
-import { BaseButton } from '../theme';
-import { BaseButtonProps } from '../theme/buttons/base-button';
+import { BaseButton } from 'src/views/components/theme';
+import { BaseButtonProps } from 'src/views/components/theme/buttons/base-button';
 
 function lighten(color: string, value: number) {
   return Color(color).lighten(value).toString();

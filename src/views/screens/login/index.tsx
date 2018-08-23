@@ -1,17 +1,19 @@
 import React from 'react';
 import { View, Button, StyleSheet, Image } from 'react-native';
-import { Text, RoundedTextInput, PrimaryButton } from '../../components/theme';
-import theme from '../../../assets/styles/theme';
-import Screen from '../../components/screen';
-import Images, { Logo } from '../../../assets/images';
-import TextButton from '../../components/theme/text-button';
+import { Text, RoundedTextInput, PrimaryButton } from 'src/views/components/theme';
+import theme from 'src/assets/styles/theme';
+import Screen from 'src/views/components/screen';
+import Images, { Logo } from 'src/assets/images';
+import TextButton from 'src/views/components/theme/text-button';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
-import WonderAppState from '../../../types/wonder-app-state';
+
 import { Dispatch } from 'redux';
-import { loginUser } from '../../../store/sagas/user';
-import UserCredentials from '../../../types/user-credentials';
+import { loginUser } from 'src/store/sagas/user';
+
 import validator from 'validator';
+import WonderAppState from 'src/models/wonder-app-state';
+import UserCredentials from 'src/models/user-credentials';
 
 const mapState = (state: WonderAppState) => ({
 
@@ -101,7 +103,7 @@ class LoginScreen extends React.Component<Props> {
           <View style={{ width: '100%' }}>
             <RoundedTextInput
               returnKeyType="next"
-              getRef={(input) => { this.inputs.email = input; }}
+              getRef={(input: RoundedTextInput) => { this.inputs.email = input; }}
               onSubmitEditing={this.focusOn('password')}
               autoCapitalize="none"
               autoCorrect={false}
@@ -115,7 +117,7 @@ class LoginScreen extends React.Component<Props> {
           <View style={{ marginTop: 10, width: '100%' }}>
             <RoundedTextInput
               returnKeyType="done"
-              getRef={(input) => { this.inputs.password = input; }}
+              getRef={(input: RoundedTextInput) => { this.inputs.password = input; }}
               type="password"
               autoCapitalize="none"
               autoCorrect={false}

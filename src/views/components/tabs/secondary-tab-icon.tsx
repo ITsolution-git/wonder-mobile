@@ -13,7 +13,7 @@ class SecondaryTabIcon extends React.Component<Props> {
       <View style={styles.container}>
         <Text style={styles.txt}>A</Text>
       </View>
-    )
+    );
   }
 }
 
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%'
   }
-})
+});

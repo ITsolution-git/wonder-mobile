@@ -1,16 +1,18 @@
 import React from 'react';
-import Screen from '../../components/screen';
-import { SubHeader, Text, Toggle, PrimaryButton } from '../../components/theme';
+import Screen from 'src/views/components/screen';
+import { SubHeader, Text, Toggle, PrimaryButton } from 'src/views/components/theme';
 import { View, StyleSheet, ScrollView, Slider, RefreshControl } from 'react-native';
-import theme from '../../../assets/styles/theme';
-import DistanceUnit from '../../../types/distance-unit';
-import User from '../../../types/user';
+import theme from 'src/assets/styles/theme';
+
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
-import WonderAppState from '../../../types/wonder-app-state';
+
 import { Dispatch } from 'redux';
-import { updateUser, getUser } from '../../../store/sagas/user';
-import MultiPointSlider, { MultiPointSliderValue } from '../../components/theme/multi-point-slider/multi-point-slider';
+import { updateUser, getUser } from 'src/store/sagas/user';
+import MultiPointSlider, { MultiPointSliderValue } from 'src/views/components/theme/multi-point-slider/multi-point-slider';
+import WonderAppState from 'src/models/wonder-app-state';
+import User from 'src/models/user';
+import DistanceUnit from 'src/models/distance-unit';
 
 const mapState = (state: WonderAppState) => ({
   profile: state.user.profile

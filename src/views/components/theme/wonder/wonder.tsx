@@ -2,9 +2,10 @@ import _ from 'lodash';
 import React from 'react';
 import { StyleSheet, View } from "react-native";
 import { Text } from 'src/views/components/theme';
-import Topic from 'src/types/topic';
+
 import theme from 'src/assets/styles/theme';
 import WonderImage from '../wonder-image';
+import Topic from 'src/models/topic';
 
 interface WonderProps {
   topic: Topic;

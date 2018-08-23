@@ -1,15 +1,17 @@
 import React from 'react';
-import Screen from '../../components/screen';
-import { ChatList } from '../../components/chat';
-import { Title } from '../../components/theme';
+import Screen from 'src/views/components/screen';
+import { ChatList } from 'src/views/components/chat';
+import { Title } from 'src/views/components/theme';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import Chat from 'src/types/chat';
-import WonderAppState from 'src/types/wonder-app-state';
+
 import { Dispatch } from 'redux';
 import { getConversations, getConversation } from 'src/store/sagas/conversations';
-import Conversation from 'src/types/conversation';
+
 import { connect } from 'react-redux';
 import { selectCurrentUser } from 'src/store/selectors/user';
+import Conversation from 'src/models/conversation';
+import WonderAppState from 'src/models/wonder-app-state';
+import Chat from 'src/models/chat';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;

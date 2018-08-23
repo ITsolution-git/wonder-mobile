@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, DatePickerAndroid, TouchableOpacity, TimePickerAndroid } from 'react-native';
 import { Label, Text } from '..';
 import moment from 'moment-timezone';
-import theme from '../../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import Color from 'color';
 import ErrorHint from '../text/error-hint';
 import Icon from 'react-native-vector-icons/FontAwesome';

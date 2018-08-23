@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { Text, SmallText } from '../theme';
-import theme from '../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface Props {

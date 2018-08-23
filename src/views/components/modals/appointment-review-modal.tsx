@@ -2,14 +2,15 @@ import React from 'react';
 import _ from 'lodash';
 import { Modal, View, ModalProps, StyleSheet, Platform, ScrollView } from 'react-native';
 import { Text, TextArea, Title, SubTitle, Strong, Label, PrimaryButton, TextButton } from '../theme';
-import { DecoratedAppointment } from 'src/types/appointment';
-import User from 'src/types/user';
+
 import Avatar from '../theme/avatar';
 import { Card, CardItem, Body, Content } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
-import theme from '../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import BooleanToggle from '../theme/boolean-toggle';
 import StarRatingInput from '../theme/star-rating-input';
+import { DecoratedAppointment } from 'src/models/appointment';
+import User from 'src/models/user';
 
 interface AppointmentReviewModalProps extends ModalProps {
   currentUser: User;
@@ -30,7 +31,7 @@ class AppointmentReviewModal extends React.Component<AppointmentReviewModalProps
     return (
       <Modal {...rest} animationType="fade" transparent>
         <LinearGradient colors={[theme.colors.cottonCandyBlue, theme.colors.cottonCandyPink]} style={styles.modal}>
-          <Content showsVerticalScrollIndicator={false}>
+          <Content>
             <Card style={styles.container}>
               <CardItem header style={styles.header}>
                 <Title style={{ textAlign: 'center' }}>

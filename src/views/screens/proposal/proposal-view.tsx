@@ -2,17 +2,19 @@ import React from 'react';
 import { View } from 'react-native';
 import Screen from 'src/views/components/screen';
 import ProposalSwiper from 'src/views/components/proposal-swiper/proposal-swiper';
-import Proposal from 'src/types/proposal';
-import WonderAppState from 'src/types/wonder-app-state';
+
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { getNewProposal, rateProposal } from 'src/store/sagas/proposal';
-import User from 'src/types/user';
+
 import ProfileModal from 'src/views/components/modals/profile-modal';
 import FoundMatchModal from 'src/views/components/modals/found-match-modal';
 import { persistCurrentMatch } from 'src/store/reducers/wonder';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { selectCurrentUser } from 'src/store/selectors/user';
+import WonderAppState from 'src/models/wonder-app-state';
+import Proposal from 'src/models/proposal';
+import User from 'src/models/user';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),

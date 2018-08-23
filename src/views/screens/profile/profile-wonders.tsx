@@ -3,15 +3,18 @@ import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Text, PrimaryButton, TextInput, WonderPicker } from 'src/views/components/theme';
 import Screen from 'src/views/components/screen';
-import Topic from 'src/types/topic';
+
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { getTopics } from 'src/store/sagas/topics';
-import WonderAppState from 'src/types/wonder-app-state';
+
 import { updateUser } from 'src/store/sagas/user';
-import User from 'src/types/user';
+
 import { selectCurrentUser } from 'src/store/selectors/user';
+import User from 'src/models/user';
+import Topic from 'src/models/topic';
+import WonderAppState from 'src/models/wonder-app-state';
 
 interface Props {
   currentUser: User;

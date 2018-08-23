@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import React from 'react';
 import { View, StyleSheet} from 'react-native';
-import { Text, PrimaryButton, TextInput, WonderPicker } from '../../components/theme';
-import Screen from '../../components/screen';
-import Topic from '../../../types/topic';
+import { Text, PrimaryButton, TextInput, WonderPicker } from 'src/views/components/theme';
+import Screen from 'src/views/components/screen';
+
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { getTopics } from '../../../store/sagas/topics';
-import WonderAppState from '../../../types/wonder-app-state';
+
 import { persistRegistrationInfo } from '../../../store/reducers/registration';
 import { registerUser } from '../../../store/sagas/user';
 

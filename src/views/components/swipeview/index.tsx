@@ -1,47 +1,45 @@
 import React from 'react';
-import { ScrollView, View, Text, Button, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import styles, { DEVICE_WIDTH } from './styles';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import SwipeViewSlide from './swipeview-slide';
-import Theme from '../../../assets/styles/theme';
-import TouchableOpacityOnPress from '../../../types/touchable-on-press';
+import Theme from 'src/assets/styles/theme';
+import TouchableOpacityOnPress from 'src/models/touchable-on-press';
 
-interface Props {
+interface SwipeViewProps {
   children?: any;
   config?: SwipeViewConfig;
   onSkip: TouchableOpacityOnPress;
   onComplete: TouchableOpacityOnPress;
 }
 
-interface State {
-  currentIndex: number
-};
-
-interface SwipeViewConfig {
-  showControls?: boolean,
-  allowSkip?: boolean
+interface SwipeViewState {
+  currentIndex: number;
 }
 
+interface SwipeViewConfig {
+  showControls?: boolean;
+  allowSkip?: boolean;
+}
 
-
-export default class SwipeView extends React.Component<Props, State> {
+export default class SwipeView extends React.Component<SwipeViewProps, SwipeViewState> {
   static Slide = SwipeViewSlide;
 
-  constructor(props: Props) {
+  constructor(props: SwipeViewProps) {
     super(props);
   }
 
-  state = {
+  state: SwipeViewState = {
     currentIndex: 0
-  }
+  };
 
-  _list: any;
+  list: ScrollView | null = null;
 
   numOfSlides = () => React.Children.count(this.props.children);
 
   goTo = (idx: number) => {
     if (idx >= 0 && idx < this.numOfSlides()) {
-      this._list.scrollTo({ x: DEVICE_WIDTH * idx });
+      this.list.scrollTo({ x: DEVICE_WIDTH * idx });
       this.setState({ currentIndex: idx });
     }
   }
@@ -80,7 +78,7 @@ export default class SwipeView extends React.Component<Props, State> {
           <Text style={styles.skipTxt}>{isLast ? 'GET STARTED' : 'SKIP'}</Text>
         </TouchableOpacity>
       </View>
-    )
+    );
   }
 
   onScroll = (e: any) => {
@@ -106,18 +104,15 @@ export default class SwipeView extends React.Component<Props, State> {
           onScroll={this.onScroll}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          ref={(list) => { this._list = list; }}
+          ref={(list) => { this.list = list; }}
           horizontal
         >
           {children}
         </ScrollView>
         <View style={styles.footer}>
-          {/* <Button title="Back" onPress={() => this.goTo(this.state.currentIndex - 1)} /> */}
           {this.renderDots()}
-          {/* <Button title={this.numOfSlides().toString()} onPress={() => this.goTo(this.state.currentIndex + 1)} /> */}
         </View>
       </View>
-    )
+    );
   }
-
 }

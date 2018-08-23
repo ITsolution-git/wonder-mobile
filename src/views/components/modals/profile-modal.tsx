@@ -2,12 +2,14 @@ import _ from 'lodash';
 import React from 'react';
 import { Modal, View, ModalProps, StyleSheet, Platform } from 'react-native';
 import { IconButton, Text, Title, Label, SubTitle, WonderImage } from '../theme';
-import TouchableOpacityOnPress from '../../../types/touchable-on-press';
-import Candidate from '../../../types/candidate';
+
 import moment from 'moment-timezone';
 import LinearGradient from 'react-native-linear-gradient';
-import Topic from '../../../types/topic';
+
 import Wonder from '../theme/wonder/wonder';
+import Candidate from 'src/models/candidate';
+import TouchableOpacityOnPress from 'src/models/touchable-on-press';
+import Topic from 'src/models/topic';
 
 interface Props extends ModalProps {
   candidate?: Candidate | null;

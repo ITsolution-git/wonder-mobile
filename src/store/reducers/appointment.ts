@@ -1,9 +1,9 @@
 import { handleActions, createAction, Action } from 'redux-actions';
-import Conversation from '../../types/conversation';
-import Activity from '../../types/activity';
-import ActivityDetails from '../../types/activity-details';
-import User from '../../types/user';
-import Topic from '../../types/topic';
+
+
+
+
+
 
 export interface AppointmentState {
   readonly match?: Partial<User> | null;

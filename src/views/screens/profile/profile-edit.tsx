@@ -3,13 +3,14 @@ import Screen from 'src/views/components/screen';
 import validator from 'validator';
 import { PrimaryButton, TextInput } from 'src/views/components/theme';
 import { View, StyleSheet } from 'react-native';
-import WonderAppState from 'src/types/wonder-app-state';
-import User from 'src/types/user';
+
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { updateUser } from 'src/store/sagas/user';
 import { selectCurrentUser } from 'src/store/selectors/user';
+import WonderAppState from 'src/models/wonder-app-state';
+import User from 'src/models/user';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state)

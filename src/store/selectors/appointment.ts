@@ -1,11 +1,14 @@
 import _ from 'lodash';
 import { createSelector, OutputSelector } from 'reselect';
-import WonderAppState from '../../types/wonder-app-state';
-import Appointment, { DecoratedAppointment, AppointmentUser } from '../../types/appointment';
+
+
 import { selectCurrentUser } from './user';
-import User from '../../types/user';
+
 import moment from 'moment-timezone';
 import { isAppointmentBeforeToday, isAppointmentAfterToday } from '../../utils/appointment';
+import WonderAppState from '../../models/wonder-app-state';
+import Appointment, { DecoratedAppointment, AppointmentUser } from '../../models/appointment';
+import User from '../../models/user';
 
 const allAppointments = (state: WonderAppState) => state.wonder.appointments;
 

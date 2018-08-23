@@ -4,7 +4,7 @@ import { StyleProp, TextStyle, StyleSheet } from 'react-native';
 
 interface Props {
   children?: any;
-  style?: StyleProp<TextStyle>
+  style?: StyleProp<TextStyle>;
 }
 
 class SubHeader extends React.Component<Props> {
@@ -12,7 +12,7 @@ class SubHeader extends React.Component<Props> {
     const { children, style } = this.props;
     return (
       <Text style={[styles.header, style]}>{children}</Text>
-    )
+    );
   }
 }
 
@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     // fontWeight: 'bold',
     textAlign: 'center'
   }
-})
+});
+
 
 export default SubHeader;

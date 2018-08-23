@@ -3,12 +3,14 @@ import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { createAction, Action } from 'redux-actions';
 import api from '../../services/api';
 import { persistProposal } from '../actions/proposal';
-import User from '../../types/user';
-import UserCredentials, { UserCredentialsResponse } from '../../types/user-credentials';
-import WonderAppState from '../../types/wonder-app-state';
-import Proposal from '../../types/proposal';
+
+
+
+
 import { Alert } from 'react-native';
 import { persistCurrentMatch } from '../reducers/wonder';
+import WonderAppState from '../../models/wonder-app-state';
+import Proposal from '../../models/proposal';
 
 const GET_NEW_PROPOSAL = 'GET_NEW_PROPOSAL';
 export const getNewProposal = createAction(GET_NEW_PROPOSAL);

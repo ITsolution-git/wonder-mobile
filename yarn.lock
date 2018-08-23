@@ -5132,13 +5132,6 @@ react-native-calendars@^1.19.4:
     prop-types "^15.5.10"
     xdate "^0.8.0"
 
-react-native-camera@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-1.1.4.tgz#5a01be906507cc2f232405f903c52c9d99988dba"
-  dependencies:
-    lodash "^4.17.4"
-    prop-types "^15.5.10"
-
 react-native-communications@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"

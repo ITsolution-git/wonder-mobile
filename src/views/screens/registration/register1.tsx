@@ -7,19 +7,19 @@ import {
   Platform,
   ScrollView
 } from "react-native";
-import { RoundedTextInput, PrimaryButton } from "../../components/theme";
-import Screen from "../../components/screen";
-import { Logo } from "../../../assets/images";
+import { RoundedTextInput, PrimaryButton } from "src/views/components/theme";
+import Screen from "src/views/components/screen";
+import { Logo } from "src/assets/images";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import validator from "validator";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import WonderAppState from "../../../types/wonder-app-state";
+import WonderAppState from "../../../models/wonder-app-state";
 import {
   persistRegistrationInfo,
   resetRegistration
-} from "../../../store/reducers/registration";
-import { KeyboardDismissView } from "../../components/keyboard-dismiss-view";
+} from "src/store/reducers/registration";
+import { KeyboardDismissView } from "src/views/components/keyboard-dismiss-view";
 
 interface Props {
   onSave: Function;

@@ -6,15 +6,17 @@ import Screen from 'src/views/components/screen';
 import ElevatedButton from 'src/views/components/theme/elevated-button';
 import { PrimaryButton, Text, SecondaryButton as Button, Title } from 'src/views/components/theme';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import WonderAppState from 'src/types/wonder-app-state';
+
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import User from 'src/types/user';
+
 import { logoutUser, getUser } from 'src/store/sagas/user';
 import Avatar, { AvatarSize } from 'src/views/components/theme/avatar';
-import TouchableOpacityOnPress from 'src/types/touchable-on-press';
+
 import { selectCurrentUser } from 'src/store/selectors/user';
-import { Toast } from 'native-base';
+import User from 'src/models/user';
+import TouchableOpacityOnPress from 'src/models/touchable-on-press';
+import WonderAppState from 'src/models/wonder-app-state';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;

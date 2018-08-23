@@ -1,8 +1,7 @@
 import React from 'react';
 import { View, FlatList, FlatListProps, RefreshControl } from 'react-native';
 import AppointmentItem from './appointment-item';
-import Appointment, { DecoratedAppointment } from '../../../types/appointment';
-import TouchableOpacityOnPress from '../../../types/touchable-on-press';
+import { DecoratedAppointment } from 'src/models/appointment';
 
 interface Props {
   data: DecoratedAppointment[];

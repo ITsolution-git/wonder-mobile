@@ -5,14 +5,15 @@ import { MediaGrid } from 'src/views/components/theme/media-grid';
 import { TextArea, PrimaryButton } from 'src/views/components/theme';
 import { View, KeyboardAvoidingView } from 'react-native';
 import { Device } from 'src/assets/styles/theme';
-import WonderAppState from 'src/types/wonder-app-state';
-import User from 'src/types/user';
 import { connect } from 'react-redux';
 import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view';
 import { Dispatch } from 'redux';
 import { updateUser } from 'src/store/sagas/user';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { selectCurrentUser } from 'src/store/selectors/user';
+import WonderAppState from 'src/models/wonder-app-state';
+import User from 'src/models/user';
+import { Response } from 'src/models/image-picker';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state)
@@ -48,6 +49,7 @@ class ProfileMediaScreen extends React.Component<Props> {
   onAboutChange = (text: string) => {
     this.setState({ about: text });
   }
+
   render() {
     const { navigation } = this.props;
     const { about } = this.state;
@@ -58,15 +60,14 @@ class ProfileMediaScreen extends React.Component<Props> {
           style={{ flex: 1 }}
           contentContainerStyle={{ flex: 1 }}
         >
-
           <View style={{ flex: 1, justifyContent: 'center' }}>
             <ShadowBox>
               <KeyboardDismissView>
                 <MediaGrid
                   width={Device.WIDTH - 80}
                   gutter={2}
-                  onNewPicture={() => navigation.navigate('ProfileCamera')}
-                  onNewVideo={() => navigation.navigate('ProfileVideo')}
+                  onNewPicture={(data: Response | null) => navigation.navigate('ProfileCamera', { data })}
+                  onNewVideo={(data: Response | null) => navigation.navigate('ProfileVideo', { data })}
                 />
                 <TextArea
                   label="About Me"

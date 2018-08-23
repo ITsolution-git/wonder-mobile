@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import UserNavigator from './user-navigator';
 import RegistrationNavigator from './registration-navigator';
-import theme from '../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import ChatNavigator from './chat-navigator';
 
 // Manages the Matches and Scheduling flow
@@ -72,14 +72,12 @@ const AuthenticatedNavigator = createMaterialTopTabNavigator({
     initialRouteName: 'User'
   });
 
-
 // Manages Onboarding and Registration
 const OnboardingNavigator = createStackNavigator({
   Onboarding: { screen: Onboarding },
   Register: { screen: RegistrationNavigator },
   Main: { screen: AuthenticatedNavigator }
 }, { headerMode: 'none' });
-
 
 const MainNavigator = createSwitchNavigator({
   AppLoading: {

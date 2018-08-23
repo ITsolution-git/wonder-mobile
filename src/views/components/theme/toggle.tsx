@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import React from 'react';
 import { Switch } from 'react-native';
-import theme from '../../../assets/styles/theme';
-import SwitchValueChange from '../../../types/switch-value-change';
+import theme from 'src/assets/styles/theme';
+import SwitchValueChange from 'src/models/switch-value-change';
 
 interface Props {
   disabled?: boolean;

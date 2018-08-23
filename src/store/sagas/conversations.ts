@@ -1,11 +1,13 @@
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { createAction, Action } from 'redux-actions';
 import api from '../../services/api';
-import WonderAppState from '../../types/wonder-app-state';
+
 import { Alert } from 'react-native';
-import Conversation from '../../types/conversation';
+
 import { persistConversations, persistConversation, persistNewMessage } from '../reducers/chat';
-import ChatResponseMessage from '../../types/chat-response-message';
+import Conversation from '../../models/conversation';
+import WonderAppState from '../../models/wonder-app-state';
+import ChatResponseMessage from '../../models/chat-response-message';
 
 // Get all conversations (Chats)
 export const GET_CONVERSATIONS = 'GET_CONVERSATIONS';

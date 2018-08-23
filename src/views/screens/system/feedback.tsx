@@ -5,11 +5,13 @@ import { Text, Strong, TextArea, PrimaryButton, TextInput } from 'src/views/comp
 import theme from 'src/assets/styles/theme';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view';
-import WonderAppState from 'src/types/wonder-app-state';
+
 import { Dispatch } from 'redux';
 import { submitFeedback } from 'src/store/sagas/feedback';
 import { connect } from 'react-redux';
-import SupportMessage from 'src/types/support-message';
+import SupportMessage from 'src/models/support-message';
+import WonderAppState from 'src/models/wonder-app-state';
+
 
 interface FeedbackScreenProps {
   navigation: NavigationScreenProp<any, NavigationParams>;

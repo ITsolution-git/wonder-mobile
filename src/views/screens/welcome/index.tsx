@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import { Text, Button, PrimaryButton } from '../../components/theme';
-import theme from '../../../assets/styles/theme';
-import Screen from '../../components/screen';
-import Images, { Logo } from '../../../assets/images';
-import TextButton from '../../components/theme/text-button';
+import { Text, Button, PrimaryButton } from 'src/views/components/theme';
+import theme from 'src/assets/styles/theme';
+import Screen from 'src/views/components/screen';
+import Images, { Logo } from 'src/assets/images';
+import TextButton from 'src/views/components/theme/text-button';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 
 interface Props {
