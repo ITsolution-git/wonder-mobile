@@ -6,7 +6,7 @@ import { TextButton, PrimaryButton, Text } from 'src/views/components/theme';
 import VideoPlayer from 'react-native-video-player';
 import theme from 'src/assets/styles/theme';
 import { Dispatch } from 'redux';
-import { updateVideo } from 'src/store/sagas/user';
+import { updateVideo, deleteProfileVideo } from 'src/store/sagas/user';
 import { connect } from 'react-redux';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
@@ -16,12 +16,14 @@ import ImageToolbar from '../../components/camera/image-toolbar';
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   onUpdateVideo: Function;
+  onDeleteVideo: Function;
 }
 interface State {
   data: Response | null;
 }
 const mapDispatch = (dispatch: Dispatch) => ({
-  onUpdateVideo: (data: any) => dispatch(updateVideo(data))
+  onUpdateVideo: (data: any) => dispatch(updateVideo(data)),
+  onDeleteVideo: () => dispatch(deleteProfileVideo())
 });
 
 class ProfileVideoScreen extends React.Component<Props, State> {
@@ -30,6 +32,21 @@ class ProfileVideoScreen extends React.Component<Props, State> {
   state: State = {
     data: null,
   };
+
+  onDelete = () => {
+    this.props.onDeleteVideo();
+  }
+
+  onClear = () => { this.setState({ data: null }); }
+
+  onSave = () => {
+    const { data } = this.state;
+    const { onUpdateVideo, navigation } = this.props;
+    if (data) {
+      onUpdateVideo(data);
+      navigation.goBack();
+    }
+  }
 
   getVideo = () => {
     const options: Options = {
@@ -82,11 +99,10 @@ class ProfileVideoScreen extends React.Component<Props, State> {
           <ImageToolbar
             mode="video"
             isNew={!currentVideo}
-            // onRotate={this.rotate}
-            onRetake={_.noop}
-            onCancel={_.noop}
-            onDelete={_.noop}
-            onSave={() => { }}
+            onRetake={this.getVideo}
+            onCancel={this.onClear}
+            onDelete={this.onDelete}
+            onSave={this.onSave}
           />
 
         </View>

@@ -221,6 +221,35 @@ export function* watchDeleteProfileImageSaga() {
   yield takeEvery(DELETE_PROFILE_IMAGE, deleteProfileImageSaga);
 }
 
+const DELETE_PROFILE_VIDEO = 'DELETE_PROFILE_VIDEO';
+export const deleteProfileVideo = createAction(DELETE_PROFILE_VIDEO);
+export function* deleteProfileVideoSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+    const { auth } = state.user;
+
+    const { data }: { data: any } = yield call(api, {
+      method: 'DELETE',
+      url: `/users/${auth.uid}/video`
+    }, state.user);
+
+    yield put(getUser());
+
+  } catch (error) {
+    if (error.response) {
+      Alert.alert('API Error', JSON.stringify(error.response.data));
+    } else {
+      console.warn(error);
+    }
+  } finally {
+
+  }
+}
+
+export function* watchDeleteProfileVideoSaga() {
+  yield takeEvery(DELETE_PROFILE_VIDEO, deleteProfileVideoSaga);
+}
+
 const UPDATE_VIDEO = 'UPDATE_VIDEO';
 export const updateVideo = createAction(UPDATE_VIDEO);
 export function* updateVideoSaga(action: Action<any>) {
