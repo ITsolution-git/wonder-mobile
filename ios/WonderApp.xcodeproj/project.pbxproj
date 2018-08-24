@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -24,6 +25,7 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		1E1F52CAF54345EABAEDE26D /* Poppins-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADB1DF4D377C4DB18185F877 /* Poppins-Black.ttf */; };
+		1E5D1F72212FEB9500419E22 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1E5D1F44212FEB9500419E22 /* GoogleService-Info.plist */; };
 		26822F27646E4D3A8F1A74EE /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41760A64B8634C74B17F582D /* Poppins-SemiBoldItalic.ttf */; };
 		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -143,6 +145,104 @@
 			proxyType = 2;
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
+		};
+		1E5D1F84212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6347C992C85614109C55F6D9CFF14DAD;
+			remoteInfo = DoubleConversion;
+		};
+		1E5D1F86212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 910F907CDC3CCDE440393BB3B125E4D7;
+			remoteInfo = Folly;
+		};
+		1E5D1F88212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B3CB12ABE20951F1A7035EC3BDC1D9F;
+			remoteInfo = glog;
+		};
+		1E5D1F8A212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 7A8018BAD6D5691FC9BDED3BAC4ECE39;
+			remoteInfo = "Google-Maps-iOS-Utils";
+		};
+		1E5D1F8C212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BE923407FBBAA3F0FBFEFB39EE70314D;
+			remoteInfo = GoogleToolboxForMac;
+		};
+		1E5D1F8E212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5F5415F65B8404DA4A6E570B0A2CA207;
+			remoteInfo = nanopb;
+		};
+		1E5D1F90212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A3320ADA02D5820EC77954F995BE72BB;
+			remoteInfo = "Pods-WonderApp";
+		};
+		1E5D1F92212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 137D846980E213B79DC171A3255BB1CD;
+			remoteInfo = Protobuf;
+		};
+		1E5D1F94212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = B620C6ED3945FA5C5EE6063DE27F9DAD;
+			remoteInfo = "react-native-camera";
+		};
+		1E5D1F96212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E47908CEC5274FA4E17C1CA98E974307;
+			remoteInfo = "react-native-fcm";
+		};
+		1E5D1F98212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2DAD7CD3C4478F929081E19701DC920B;
+			remoteInfo = "react-native-google-maps";
+		};
+		1E5D1F9A212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 24A7AD3B6E3D0376F4CE62AC54592423;
+			remoteInfo = "react-native-maps";
+		};
+		1E5D1F9C212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8B172670E54FFE9AC8848B1A5D55FFA5;
+			remoteInfo = "react-native-video";
+		};
+		1E5D1F9E212FEC1F00419E22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 136FDCD7EFB26EB62499F244201AD937;
+			remoteInfo = yoga;
 		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -438,6 +538,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WonderApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = WonderApp/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		1E5D1F44212FEB9500419E22 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "WonderApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		209A289DD15A4351A6A25141 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		267404022FBF49D3B58407AA /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		27826AEDED054386A5B666D2 /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -635,6 +737,7 @@
 		13B07FAE1A68108700A75B9A /* WonderApp */ = {
 			isa = PBXGroup;
 			children = (
+				1E5D1F44212FEB9500419E22 /* GoogleService-Info.plist */,
 				49FF70B22119EC4200AE86E6 /* WonderApp.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -666,6 +769,27 @@
 				2DF0FFE92056DD460020B375 /* libdouble-conversion.a */,
 				2DF0FFEB2056DD460020B375 /* libprivatedata.a */,
 				2DF0FFED2056DD460020B375 /* libprivatedata-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1E5D1F74212FEC1F00419E22 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1E5D1F85212FEC1F00419E22 /* libDoubleConversion.a */,
+				1E5D1F87212FEC1F00419E22 /* libFolly.a */,
+				1E5D1F89212FEC1F00419E22 /* libglog.a */,
+				1E5D1F8B212FEC1F00419E22 /* libGoogle-Maps-iOS-Utils.a */,
+				1E5D1F8D212FEC1F00419E22 /* libGoogleToolboxForMac.a */,
+				1E5D1F8F212FEC1F00419E22 /* libnanopb.a */,
+				1E5D1F91212FEC1F00419E22 /* libPods-WonderApp.a */,
+				1E5D1F93212FEC1F00419E22 /* libProtobuf.a */,
+				1E5D1F95212FEC1F00419E22 /* libreact-native-camera.a */,
+				1E5D1F97212FEC1F00419E22 /* libreact-native-fcm.a */,
+				1E5D1F99212FEC1F00419E22 /* libreact-native-google-maps.a */,
+				1E5D1F9B212FEC1F00419E22 /* libreact-native-maps.a */,
+				1E5D1F9D212FEC1F00419E22 /* libreact-native-video.a */,
+				1E5D1F9F212FEC1F00419E22 /* libyoga.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -797,6 +921,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -1009,6 +1134,10 @@
 					ProjectRef = 08975297F4DB4CC2858AC415 /* BVLinearGradient.xcodeproj */;
 				},
 				{
+					ProductGroup = 1E5D1F74212FEC1F00419E22 /* Products */;
+					ProjectRef = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+				},
+				{
 					ProductGroup = 49DEB36A2107DAF800D72FFE /* Products */;
 					ProjectRef = BE09B25F675142C68A846F6B /* RangeSlider.xcodeproj */;
 				},
@@ -1138,6 +1267,104 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F85212FEC1F00419E22 /* libDoubleConversion.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libDoubleConversion.a;
+			remoteRef = 1E5D1F84212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F87212FEC1F00419E22 /* libFolly.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFolly.a;
+			remoteRef = 1E5D1F86212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F89212FEC1F00419E22 /* libglog.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libglog.a;
+			remoteRef = 1E5D1F88212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F8B212FEC1F00419E22 /* libGoogle-Maps-iOS-Utils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libGoogle-Maps-iOS-Utils.a";
+			remoteRef = 1E5D1F8A212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F8D212FEC1F00419E22 /* libGoogleToolboxForMac.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGoogleToolboxForMac.a;
+			remoteRef = 1E5D1F8C212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F8F212FEC1F00419E22 /* libnanopb.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libnanopb.a;
+			remoteRef = 1E5D1F8E212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F91212FEC1F00419E22 /* libPods-WonderApp.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libPods-WonderApp.a";
+			remoteRef = 1E5D1F90212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F93212FEC1F00419E22 /* libProtobuf.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libProtobuf.a;
+			remoteRef = 1E5D1F92212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F95212FEC1F00419E22 /* libreact-native-camera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-camera.a";
+			remoteRef = 1E5D1F94212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F97212FEC1F00419E22 /* libreact-native-fcm.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-fcm.a";
+			remoteRef = 1E5D1F96212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F99212FEC1F00419E22 /* libreact-native-google-maps.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-google-maps.a";
+			remoteRef = 1E5D1F98212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F9B212FEC1F00419E22 /* libreact-native-maps.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-maps.a";
+			remoteRef = 1E5D1F9A212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F9D212FEC1F00419E22 /* libreact-native-video.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-video.a";
+			remoteRef = 1E5D1F9C212FEC1F00419E22 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1E5D1F9F212FEC1F00419E22 /* libyoga.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libyoga.a;
+			remoteRef = 1E5D1F9E212FEC1F00419E22 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */ = {
@@ -1442,6 +1669,7 @@
 				6F15EFE193704463A104548C /* Poppins-LightItalic.ttf in Resources */,
 				10D6CA8152C64316BFDC2C22 /* Poppins-Medium.ttf in Resources */,
 				415EA43E6B044FC9A8429B01 /* Poppins-MediumItalic.ttf in Resources */,
+				1E5D1F72212FEB9500419E22 /* GoogleService-Info.plist in Resources */,
 				484DDA7E6D944687A37938AF /* Poppins-Regular.ttf in Resources */,
 				ABD87F99E6674B9699225D2A /* Poppins-SemiBold.ttf in Resources */,
 				26822F27646E4D3A8F1A74EE /* Poppins-SemiBoldItalic.ttf in Resources */,
@@ -1689,6 +1917,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-range-slider/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = WonderApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1721,6 +1950,7 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-range-slider/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = WonderApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
