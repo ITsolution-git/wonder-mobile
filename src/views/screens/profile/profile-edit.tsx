@@ -3,13 +3,14 @@ import Screen from 'src/views/components/screen';
 import validator from 'validator';
 import { PrimaryButton, TextInput } from 'src/views/components/theme';
 import { View, StyleSheet } from 'react-native';
-import WonderAppState from 'src/types/wonder-app-state';
-import User from 'src/types/user';
+
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { updateUser } from 'src/store/sagas/user';
 import { selectCurrentUser } from 'src/store/selectors/user';
+import WonderAppState from 'src/models/wonder-app-state';
+import User from 'src/models/user';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state)
@@ -97,7 +98,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
           <View style={styles.row}>
             <View flex={1}>
               <TextInput
-                label="Name"
+                label="First Name"
                 defaultValue={currentUser.first_name}
                 onChangeText={this.onChangeText('first_name')}
                 errorHint={errors.first_name}
@@ -105,7 +106,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
             </View>
             <View flex={1}>
               <TextInput
-                label=" "
+                label="Last Name"
                 defaultValue={currentUser.last_name}
                 onChangeText={this.onChangeText('last_name')}
                 errorHint={errors.last_name}

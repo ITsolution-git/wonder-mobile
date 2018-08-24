@@ -149,28 +149,11 @@ android {
 
 dependencies {
     compile project(':react-native-fcm')
+    compile project(':react-native-image-rotate')
+    compile project(':react-native-image-picker')
     compile project(':react-native-push-notification')
     compile project(':react-native-video')
-    // implementation (project(':react-native-camera')) {
-    //     exclude group: "com.google.android.gms"
-    //     exclude group: "com.android.support"
-    // }
 
-    implementation (project(':react-native-camera')) {
-        exclude group: "com.google.android.gms"
-        exclude group: "com.android.support"
-        compile "com.android.support:exifinterface:${rootProject.ext.supportLibVersion}"
-        compile ("com.google.android.gms:play-services-vision:${rootProject.ext.googlePlayServicesVersion}") {
-            force = true
-        }
-    }
-//     compile (project(':react-native-camera')) {
-//     exclude group: "com.google.android.gms"
-//     compile 'com.android.support:exifinterface:25.+'
-//     compile ('com.google.android.gms:play-services-vision:12.0.1') {
-//         force = true
-//     }
-// }
     implementation(project(':react-native-maps')){
         exclude group: 'com.google.android.gms', module: 'play-services-base'
         exclude group: 'com.google.android.gms', module: 'play-services-maps'

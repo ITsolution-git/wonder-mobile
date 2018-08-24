@@ -1,20 +1,20 @@
 import React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import Screen from 'src/views/components/screen';
-import Chat from 'src/types/chat';
 import theme from 'src/assets/styles/theme';
 import { View, StyleSheet } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import ChatActionButton from 'src/views/components/chat/chat-action-button';
-import ChatMessage from 'src/types/chat-message';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import WonderAppState from 'src/types/wonder-app-state';
-import User from 'src/types/user';
 import { getConversation, sendMessage } from 'src/store/sagas/conversations';
-import { DecoratedConversation, ConversationNewMessage } from 'src/types/conversation';
 import { getDecoratedConversation } from 'src/store/selectors/conversation';
 import { selectCurrentUser } from 'src/store/selectors/user';
+import User from 'src/models/user';
+import { DecoratedConversation, ConversationNewMessage } from 'src/models/conversation';
+import WonderAppState from 'src/models/wonder-app-state';
+import Chat from 'src/models/chat';
+import ChatResponseMessage from 'src/models/chat-response-message';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -49,7 +49,7 @@ class ChatScreen extends React.Component<Props> {
     navigation.navigate('WonderMap', { id: conversation.partner.id });
   }
 
-  onSend = (messages: ChatMessage[] = []) => {
+  onSend = (messages: ChatResponseMessage[] = []) => {
     const { conversation } = this.props;
     this.props.onSendMessage({ conversation_id: conversation.partner.id, message: { body: messages[0].text } });
   }

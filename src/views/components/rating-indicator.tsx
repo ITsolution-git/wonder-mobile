@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import theme from '../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 
 interface Props {
   rating: number;

@@ -1,6 +1,6 @@
 import React from 'react';
 import BaseButton, { BaseButtonProps } from './base-button';
-import theme from '../../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import Color from 'color';
 
 const palette = Color(theme.colors.backgroundPrimary);

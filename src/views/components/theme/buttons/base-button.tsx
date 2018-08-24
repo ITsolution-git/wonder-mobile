@@ -1,12 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, TextInput as Input, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { Text } from '..';
-import theme from '../../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from 'color';
 import LinearGradient from 'react-native-linear-gradient';
-import GradientPoint from '../../../../types/gradient-point';
-import TouchableOpacityOnPress from '../../../../types/touchable-on-press';
+import GradientPoint from 'src/models/gradient-point';
+import TouchableOpacityOnPress from 'src/models/touchable-on-press';
 
 const palette = Color(theme.colors.backgroundPrimary);
 
@@ -68,11 +68,11 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
     const renderedStyles: any = {};
 
     if (fullWidth) {
-      renderedStyles['width'] = '100%';
+      renderedStyles.width = '100%';
     }
 
     if (rounded) {
-      renderedStyles['borderRadius'] = 30;
+      renderedStyles.borderRadius = 30;
     }
 
     let viewProps = {};

@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import _ from 'lodash';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import theme from '../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 
 interface StarRatingInputProps {
   size?: number;

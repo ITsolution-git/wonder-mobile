@@ -2,13 +2,14 @@ import React from 'react';
 import { DeckSwiper, Card, CardItem, Body } from 'native-base';
 import { Text, Title, WonderImage, SubTitle, IconButton } from '../theme';
 import { View, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
-import Proposal from '../../../types/proposal';
+
 import moment from 'moment-timezone';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ProfileImage from '../../../types/profile-image';
+
 import LinearGradient from 'react-native-linear-gradient';
 import Wonder from '../theme/wonder/wonder';
-import Topic from '../../../types/topic';
+import Proposal from 'src/models/proposal';
+import ProfileImage from 'src/models/profile-image';
 
 interface Props {
   proposal: Proposal | null;

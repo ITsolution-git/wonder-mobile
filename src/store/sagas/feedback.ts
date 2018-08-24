@@ -1,9 +1,10 @@
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { createAction, Action } from 'redux-actions';
 import api from 'src/services/api';
-import WonderAppState from '../../types/wonder-app-state';
+
 import { Alert } from 'react-native';
 import { AxiosResponse } from 'axios';
+import WonderAppState from '../../models/wonder-app-state';
 
 export const SUBMIT_FEEDBACK = 'SUBMIT_FEEDBACK';
 export const submitFeedback = createAction(SUBMIT_FEEDBACK);

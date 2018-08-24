@@ -3,12 +3,16 @@ import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { createAction, Action } from 'redux-actions';
 import api from '../../services/api';
 import { persistUser, persistAuth } from '../actions/user';
-import User from '../../types/user';
-import UserCredentials, { UserCredentialsResponse } from '../../types/user-credentials';
-import WonderAppState from '../../types/wonder-app-state';
+
+
+
 import { NavigationActions } from 'react-navigation';
 import { Alert } from 'react-native';
 import { resetRegistration } from '../reducers/registration';
+import WonderAppState from '../../models/wonder-app-state';
+import User from '../../models/user';
+import UserCredentials from '../../models/user-credentials';
+import ProfileImage from '../../models/profile-image';
 
 export const REGISTER_USER = 'REGISTER_USER';
 export const registerUser = createAction(REGISTER_USER);
@@ -186,15 +190,75 @@ export function* watchUpdateImage() {
   yield takeEvery(UPDATE_IMAGE, updateImageSaga);
 }
 
+const DELETE_PROFILE_IMAGE = 'DELETE_PROFILE_IMAGE';
+export const deleteProfileImage = createAction(DELETE_PROFILE_IMAGE);
+export function* deleteProfileImageSaga(action: Action<any>) {
+  try {
+    const asset: ProfileImage = action.payload;
+    if (asset) {
+      const state: WonderAppState = yield select();
+      const { auth } = state.user;
+
+      const { data }: { data: any } = yield call(api, {
+        method: 'DELETE',
+        url: `/users/${auth.uid}/images/${asset.id}`
+      }, state.user);
+
+      yield put(getUser());
+    }
+  } catch (error) {
+    if (error.response) {
+      Alert.alert('API Error', JSON.stringify(error.response.data));
+    } else {
+      console.warn(error);
+    }
+  } finally {
+
+  }
+}
+
+export function* watchDeleteProfileImageSaga() {
+  yield takeEvery(DELETE_PROFILE_IMAGE, deleteProfileImageSaga);
+}
+
+const DELETE_PROFILE_VIDEO = 'DELETE_PROFILE_VIDEO';
+export const deleteProfileVideo = createAction(DELETE_PROFILE_VIDEO);
+export function* deleteProfileVideoSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+    const { auth } = state.user;
+
+    const { data }: { data: any } = yield call(api, {
+      method: 'DELETE',
+      url: `/users/${auth.uid}/video`
+    }, state.user);
+
+    yield put(getUser());
+
+  } catch (error) {
+    if (error.response) {
+      Alert.alert('API Error', JSON.stringify(error.response.data));
+    } else {
+      console.warn(error);
+    }
+  } finally {
+
+  }
+}
+
+export function* watchDeleteProfileVideoSaga() {
+  yield takeEvery(DELETE_PROFILE_VIDEO, deleteProfileVideoSaga);
+}
+
 const UPDATE_VIDEO = 'UPDATE_VIDEO';
 export const updateVideo = createAction(UPDATE_VIDEO);
 export function* updateVideoSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
-    var body = new FormData();
+    const body = new FormData();
     const profile: Partial<any> = action.payload;
-    var video = {
+    const video = {
       uri: profile.uri,
       type: 'video/mp4',
       name: Date.now() + '.mp4',
@@ -207,7 +271,6 @@ export function* updateVideoSaga(action: Action<any>) {
     }, state.user);
     yield put(getUser());
   } catch (error) {
-    console.log(error)
     if (error.response) {
       Alert.alert('API Error', JSON.stringify(error.response.data));
     } else {

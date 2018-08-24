@@ -78,6 +78,8 @@ PODS:
     - Google-Maps-iOS-Utils (= 2.1.0)
     - GoogleMaps (= 2.5.0)
     - React
+  - react-native-image-picker (0.14.3):
+    - React
   - react-native-maps (0.21.0):
     - React
   - react-native-video (3.2.0):
@@ -129,6 +131,8 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - RNImageRotate (2.1.0):
+    - React
   - yoga (0.56.0.React)
 
 DEPENDENCIES:
@@ -142,6 +146,7 @@ DEPENDENCIES:
   - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-fcm (from `../node_modules/react-native-fcm`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-video (from `../node_modules/react-native-video`)
   - React/Core (from `../node_modules/react-native`)
@@ -158,6 +163,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNImageRotate (from `../node_modules/react-native-image-rotate`)
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
@@ -189,10 +195,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-fcm"
   react-native-google-maps:
     :path: "../node_modules/react-native-maps"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-maps:
     :path: "../node_modules/react-native-maps"
   react-native-video:
     :path: "../node_modules/react-native-video"
+  RNImageRotate:
+    :path: "../node_modules/react-native-image-rotate"
   yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
@@ -215,8 +225,10 @@ SPEC CHECKSUMS:
   react-native-camera: 68ad5143d2d0636236d46c7de8d2a6455ca52a36
   react-native-fcm: 7de3ba1108aba709c3d2b4237594554eb5f6f026
   react-native-google-maps: 2cfe3b01f8422c7dae51d8764139fd70f888cfce
+  react-native-image-picker: b303e31c3c4ada1d7cb1342423d328d2efb07fb3
   react-native-maps: 066c2afcc89e18726377bcc685315f989ca22449
   react-native-video: 6db316323366025251a815c49ca0e2edabe30a2a
+  RNImageRotate: 3c909e81f0bd78a91ab7d4528e29c7cd33571320
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
 PODFILE CHECKSUM: e874b979f8b357ea990149f1c1bb8d4c4c5ab64b

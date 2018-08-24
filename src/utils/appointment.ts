@@ -1,4 +1,4 @@
-import Appointment from "../types/appointment";
+import Appointment from "../models/appointment";
 import moment from 'moment-timezone';
 
 export const isAppointmentBeforeToday = (appointment?: Appointment): boolean => {

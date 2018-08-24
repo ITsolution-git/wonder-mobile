@@ -1,17 +1,22 @@
+import _ from 'lodash';
 import React from 'react';
+
 import { View, StyleSheet } from 'react-native';
 import Screen from 'src/views/components/screen';
 import ElevatedButton from 'src/views/components/theme/elevated-button';
 import { PrimaryButton, Text, SecondaryButton as Button, Title } from 'src/views/components/theme';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import WonderAppState from 'src/types/wonder-app-state';
+
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import User from 'src/types/user';
+
 import { logoutUser, getUser } from 'src/store/sagas/user';
 import Avatar, { AvatarSize } from 'src/views/components/theme/avatar';
-import TouchableOpacityOnPress from 'src/types/touchable-on-press';
+
 import { selectCurrentUser } from 'src/store/selectors/user';
+import User from 'src/models/user';
+import TouchableOpacityOnPress from 'src/models/touchable-on-press';
+import WonderAppState from 'src/models/wonder-app-state';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -109,7 +114,7 @@ class ProfileViewScreen extends React.Component<Props> {
               <ElevatedButton
                 icon="question"
                 title="FAQ"
-                onPress={() => { }}
+                onPress={_.noop}
               />
             </View>
           </View>
@@ -120,7 +125,7 @@ class ProfileViewScreen extends React.Component<Props> {
             <PrimaryButton
               fullWidth
               title="UPGRADE TO WONDER PREMIUM"
-              onPress={() => { }}
+              onPress={_.noop}
             />
           </View>
           <View style={styles.row}>
@@ -133,7 +138,11 @@ class ProfileViewScreen extends React.Component<Props> {
               />
             </View>
             <View style={styles.col}>
-              <Button rounded title="Deactivate" />
+              <Button
+                rounded
+                title="Deactivate"
+                onPress={_.noop}
+              />
             </View>
           </View>
         </View>

@@ -2,16 +2,18 @@ import _ from 'lodash';
 import React from 'react';
 import { connect } from "react-redux";
 import Screen from 'src/views/components/screen';
-import { DecoratedAppointment } from 'src/types/appointment';
+
 import { Title, Text, SubTitle, BaseButton } from 'src/views/components/theme';
 import { ScrollView, View, StyleSheet } from 'react-native';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import AppointmentReviewModal from 'src/views/components/modals/appointment-review-modal';
-import User from 'src/types/user';
-import WonderAppState from 'src/types/wonder-app-state';
+
 import { selectCurrentUser } from 'src/store/selectors/user';
 import { Dispatch } from 'redux';
-import Avatar from '../../components/theme/avatar';
+import Avatar from 'src/views/components/theme/avatar';
+import User from 'src/models/user';
+import { DecoratedAppointment } from 'src/models/appointment';
+import WonderAppState from 'src/models/wonder-app-state';
 
 interface AppointmentViewProps {
   currentUser: User;

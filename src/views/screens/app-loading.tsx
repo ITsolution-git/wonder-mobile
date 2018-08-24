@@ -1,5 +1,5 @@
 import React from 'react';
-import WonderAppState from "../../types/wonder-app-state";
+import WonderAppState from "../../models/wonder-app-state";
 import { Dispatch } from "redux";
 import { connect } from 'react-redux';
 

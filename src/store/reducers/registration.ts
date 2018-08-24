@@ -1,5 +1,5 @@
 import { handleActions, createAction, Action } from 'redux-actions';
-import Topic from '../../types/topic';
+
 
 export interface RegistrationState {
   readonly first_name: string | null;

@@ -1,13 +1,14 @@
 
 import React from 'react';
-import { ImageProps, Image, ImageBackground } from "react-native";
-import api, { ApiConfig } from '../../../services/api';
-import Omit from '../../../types/omit';
+import { ImageProps, Image, ImageBackground, ImageStyle, StyleProp } from "react-native";
+import api, { ApiConfig } from 'src/services/api';
+import Omit from 'src/models/omit';
 
 interface Props extends Omit<ImageProps, "source"> {
   uri: string;
   background?: boolean;
   children?: any;
+  style?: StyleProp<ImageStyle>;
 }
 
 class WonderImage extends React.Component<Props> {

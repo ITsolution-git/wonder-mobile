@@ -1,19 +1,19 @@
 import React from "react";
 import { connect } from "react-redux";
-import Screen from "../../components/screen";
-import { Text, Strong, PrimaryButton } from "../../components/theme";
+import Screen from "src/views/components/screen";
+import { Text, Strong, PrimaryButton } from "src/views/components/theme";
 import { Dispatch } from "redux";
 import { Calendar } from "react-native-calendars";
 import moment from "moment-timezone";
-import CalendarDate, { DATE_STRING_FORMAT } from "../../../types/calendar-date";
-import theme from "../../../assets/styles/theme";
+import CalendarDate, { DATE_STRING_FORMAT } from "src/models/calendar-date";
+import theme from "src/assets/styles/theme";
 import { View, StyleSheet } from "react-native";
-import WonderAppState from "../../../types/wonder-app-state";
+import WonderAppState from "src/models/wonder-app-state";
 import {
   AppointmentState,
   persistAppointmentData
-} from "../../../store/reducers/appointment";
-import TimePicker from "../../components/theme/pickers/time-picker";
+} from "src/store/reducers/appointment";
+import TimePicker from "src/views/components/theme/pickers/time-picker";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 
 const mapState = (state: WonderAppState) => ({
@@ -36,12 +36,6 @@ interface State {
   selectedTime: Date;
 }
 
-// markedDates={{
-//   '2012-05-16': {selected: true, marked: true, selectedColor: 'blue'},
-//   '2012-05-17': {marked: true},
-//   '2012-05-18': {marked: true, dotColor: 'red', activeOpacity: 0},
-//   '2012-05-19': {disabled: true, disableTouchEvent: true}
-// }}
 class AppointmentInviteScreen extends React.Component<
   AppointmentInviteProps,
   State

@@ -2,11 +2,13 @@ import NavigatorService from '../../services/navigation';
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { createAction, Action } from 'redux-actions';
 import api from '../../services/api';
-import WonderAppState from '../../types/wonder-app-state';
+
 import { Alert } from 'react-native';
-import Appointment from '../../types/appointment';
+
 import { persistAppointments } from '../reducers/wonder';
 import appointment, { AppointmentState, persistAppointmentData, resetAppointment } from '../reducers/appointment';
+import WonderAppState from '../../models/wonder-app-state';
+import Appointment from '../../models/appointment';
 
 export const GET_APPOINTMENTS = 'GET_APPOINTMENTS';
 export const getAppointments = createAction(GET_APPOINTMENTS);

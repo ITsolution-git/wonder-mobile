@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '.';
 import { StyleSheet, TextProps } from 'react-native';
 import Color from 'color';
-import theme from '../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 
 interface LabelProps extends TextProps {
 

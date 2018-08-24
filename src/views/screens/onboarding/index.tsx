@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Image } from 'react-native';
-import { Text } from '../../components/theme';
-import SwipeView from '../../components/swipeview';
-import Assets from '../../../assets/images';
-import { NavigationScreenProp, NavigationParams, NavigationActions, StackActions } from 'react-navigation';
+import { Text } from 'src/views/components/theme';
+import SwipeView from 'src/views/components/swipeview';
+import Assets from 'src/assets/images';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
-import WonderAppState from '../../../types/wonder-app-state';
+
 import { Dispatch } from 'redux';
-import images from '../../../assets/images';
+import WonderAppState from 'src/models/wonder-app-state';
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 
 interface Props {
@@ -33,7 +33,7 @@ class Onboarding extends React.Component<Props> {
             <View flex={1} />
             <View style={styles.halfCircleFooter}>
               <Text style={styles.body}>
-                Welcome to <Image source={images.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} />{'\n'}
+                Welcome to <Image source={Assets.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} />{'\n'}
                 We make it easy to connect you with people that enjoy the activities that you do.</Text>
             </View>
           </SwipeView.Slide>
@@ -50,7 +50,7 @@ class Onboarding extends React.Component<Props> {
           >
             <View flex={1} />
             <View style={styles.halfCircleFooter}>
-              <Text style={styles.body}>View and schedule activities{'\n'}with your <Image source={images.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} /> matches!</Text>
+              <Text style={styles.body}>View and schedule activities{'\n'}with your <Image source={Assets.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} /> matches!</Text>
             </View>
           </SwipeView.Slide>
         </SwipeView>

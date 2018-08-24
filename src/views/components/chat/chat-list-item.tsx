@@ -1,10 +1,11 @@
 import React from 'react';
 import { Text, Title, SmallText } from '../theme';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import TouchableOpacityOnPress from '../../../types/touchable-on-press';
-import Conversation from '../../../types/conversation';
-import Avatar from '../theme/avatar';
-import theme from '../../../assets/styles/theme';
+
+import Avatar from 'src/views/components/theme/avatar';
+import theme from 'src/assets/styles/theme';
+import Conversation from 'src/models/conversation';
+import TouchableOpacityOnPress from 'src/models/touchable-on-press';
 
 interface ChatListItemProps {
   chat: Conversation;

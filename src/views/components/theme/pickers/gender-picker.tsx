@@ -2,8 +2,8 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Label } from '..';
-import theme from '../../../../assets/styles/theme';
-import Gender from '../../../../types/gender';
+import theme from 'src/assets/styles/theme';
+import Gender from 'src/models/gender';
 
 interface OptionProps {
   option: string;

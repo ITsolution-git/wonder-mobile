@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text as NativeText, TextProps, StyleSheet } from 'react-native';
-import Theme from '../../../../assets/styles/theme';
+import Theme from 'src/assets/styles/theme';
 
 export interface Props extends TextProps {
   color?: string;
@@ -10,7 +10,7 @@ export default class Text extends React.Component<Props, any> {
   static defaultProps = {
     style: {},
     color: Theme.colors.textColor,
-  }
+  };
 
   render() {
     const {
@@ -36,4 +36,4 @@ const styles = StyleSheet.create({
     color: Theme.colors.textColor,
     fontFamily: Theme.fonts.primary
   }
-})
+});

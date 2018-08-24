@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
-import { View, StyleSheet, TextInput as Input, TextInputProps } from 'react-native';
-import theme from '../../../assets/styles/theme';
+import { View, StyleSheet, TextInput as Input, TextInputProps, StyleProp, ViewStyle } from 'react-native';
+import theme from 'src/assets/styles/theme';
 import Color from 'color';
 import Label from './label';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -16,6 +16,7 @@ interface Props extends TextInputProps {
   padLeft?: boolean;
   disabled?: boolean;
   onValidate?: Function;
+  containerStyles?: StyleProp<ViewStyle>;
 }
 
 interface State {
@@ -71,11 +72,11 @@ export default class TextInput extends React.Component<Props, State> {
   }
 
   render() {
-    const { disabled, autoCorrect, label, style, padLeft, getRef, ...rest } = this.props;
+    const { disabled, autoCorrect, label, style, containerStyles, padLeft, getRef, ...rest } = this.props;
     return (
       <View style={styles.container}>
         {label && <Label>{label.toUpperCase()}</Label>}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, containerStyles]}>
           {this.renderIcon()}
           {padLeft && <View flex={1} />}
           <Input

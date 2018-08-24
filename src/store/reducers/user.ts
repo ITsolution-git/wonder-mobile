@@ -1,6 +1,6 @@
 import { handleActions, createAction } from 'redux-actions';
-import User from '../../types/user';
-import { UserAuth } from '../../types/user-credentials';
+
+
 
 export interface UserState {
   readonly profile: User;

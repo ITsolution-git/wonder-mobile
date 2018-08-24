@@ -13,23 +13,23 @@ import {
   PrimaryButton,
   DatePicker,
   Title
-} from "../../components/theme";
-import ShadowBox from "../../components/theme/shadow-box";
-import Screen from "../../components/screen";
+} from "src/views/components/theme";
+import ShadowBox from "src/views/components/theme/shadow-box";
+import Screen from "src/views/components/screen";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import Gender from "../../../types/gender";
+import Gender from "../../../models/gender";
 import moment from "moment-timezone";
 import validator from "validator";
 import { connect } from "react-redux";
-import WonderAppState from "../../../types/wonder-app-state";
+import WonderAppState from "../../../models/wonder-app-state";
 import { Dispatch } from "redux";
 import registration, {
   persistRegistrationInfo,
   RegistrationState
 } from "../../../store/reducers/registration";
 import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
-import theme from "../../../assets/styles/theme";
-import { KeyboardDismissView } from "../../components/keyboard-dismiss-view";
+import theme from "src/assets/styles/theme";
+import { KeyboardDismissView } from "src/views/components/keyboard-dismiss-view";
 
 interface Props {
   registration: RegistrationState;

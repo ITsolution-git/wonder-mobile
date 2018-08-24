@@ -1,12 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
 import { View, StyleSheet, TextInput as Input, TextInputProps } from 'react-native';
-import { Text } from '.';
-import theme from '../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from 'color';
 import LinearGradient from 'react-native-linear-gradient';
-import GradientPoint from '../../../types/gradient-point';
+
 import ErrorHint from './text/error-hint';
 
 const palette = Color(theme.colors.backgroundPrimary);

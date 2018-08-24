@@ -5,9 +5,10 @@ import android.app.Application;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
 import com.evollu.react.fcm.FIRMessagingPackage;
+import io.codebakery.imagerotate.ImageRotatePackage;
+import com.imagepicker.ImagePickerPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.brentvatne.react.ReactVideoPackage;
-import org.reactnative.camera.RNCameraPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.apsl.versionnumber.RNVersionNumberPackage;
@@ -33,9 +34,10 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new FIRMessagingPackage(),
+            new ImageRotatePackage(),
+            new ImagePickerPackage(),
             new ReactNativePushNotificationPackage(),
             new ReactVideoPackage(),
-            new RNCameraPackage(),
             new LinearGradientPackage(),
             new VectorIconsPackage(),
             new RNVersionNumberPackage(),

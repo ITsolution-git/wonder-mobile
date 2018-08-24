@@ -1,14 +1,17 @@
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { createAction, Action } from 'redux-actions';
 import api from 'src/services/api';
-import WonderAppState from 'src/types/wonder-app-state';
+
 import { Alert } from 'react-native';
-import Partner from 'src/types/partner';
+
 import { persistActivities, persistActivity } from 'src/store/reducers/chat';
-import Activity from 'src/types/activity';
-import ActivityDetails from 'src/types/activity-details';
-import Coordinate from 'src/types/coordinate';
+
 import _ from 'lodash';
+import WonderAppState from '../../models/wonder-app-state';
+import Partner from '../../models/partner';
+import Coordinate from '../../models/coordinate';
+import Activity from '../../models/activity';
+import ActivityDetails from '../../models/activity-details';
 
 export const GET_PARTNERS = 'GET_PARTNERS';
 export const getPartners = createAction(GET_PARTNERS);

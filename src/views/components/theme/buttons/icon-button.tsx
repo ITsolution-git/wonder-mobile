@@ -1,8 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import theme from '../../../../assets/styles/theme';
-import TouchableOpacityOnPress from '../../../../types/touchable-on-press';
+import theme from 'src/assets/styles/theme';
+import TouchableOpacityOnPress from 'src/models/touchable-on-press';
 
 interface IconButtonProps {
   disabled?: boolean;

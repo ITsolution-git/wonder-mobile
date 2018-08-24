@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import WonderAppState from 'src/types/wonder-app-state';
+
 import Screen from 'src/views/components/screen';
 import { selectCurrentUser } from 'src/store/selectors/user';
+import WonderAppState from 'src/models/wonder-app-state';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state)

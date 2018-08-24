@@ -1,10 +1,11 @@
 import React from 'react';
 import { Modal, View, ModalProps, StyleSheet, Image } from 'react-native';
 import { Title, Text, PrimaryButton, SmallText, SubTitle } from '../theme';
-import ActivityDetails from '../../../types/activity-details';
-import TouchableOpacityOnPress from '../../../types/touchable-on-press';
+
 import PricingIndicator from '../pricing-indicator';
 import RatingIndicator from '../rating-indicator';
+import ActivityDetails from 'src/models/activity-details';
+import TouchableOpacityOnPress from 'src/models/touchable-on-press';
 
 interface ActivityDetailsModalProps extends ModalProps {
   details: ActivityDetails | null;

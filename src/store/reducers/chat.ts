@@ -1,9 +1,9 @@
 
 import { handleActions, createAction, Action } from 'redux-actions';
-import Conversation from '../../types/conversation';
-import Activity from '../../types/activity';
-import ActivityDetails from '../../types/activity-details';
-import ChatResponseMessage from '../../types/chat-response-message';
+
+
+
+
 
 export interface ChatState {
   readonly conversations: Conversation[];

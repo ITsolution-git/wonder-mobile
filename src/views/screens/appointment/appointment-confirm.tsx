@@ -1,21 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
-import Screen from "../../components/screen";
-import { Text, Strong, PrimaryButton } from "../../components/theme";
+import Screen from "src/views/components/screen";
+import { Text, Strong, PrimaryButton } from "src/views/components/theme";
 import { Dispatch } from "redux";
-import { Calendar } from "react-native-calendars";
 import moment from "moment-timezone";
-import CalendarDate, { DATE_STRING_FORMAT } from "../../../types/calendar-date";
-import theme from "../../../assets/styles/theme";
 import { View, StyleSheet } from "react-native";
-import WonderAppState from "../../../types/wonder-app-state";
+import WonderAppState from "src/models/wonder-app-state";
 import {
   AppointmentState,
   persistAppointmentData
-} from "../../../store/reducers/appointment";
+} from "src/store/reducers/appointment";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import { createAppointment } from "../../../store/sagas/appointment";
-import Avatar, { AvatarSize } from "../../components/theme/avatar";
+import { createAppointment } from "src/store/sagas/appointment";
+import Avatar, { AvatarSize } from "src/views/components/theme/avatar";
 import { Title } from "native-base";
 
 const mapState = (state: WonderAppState) => ({

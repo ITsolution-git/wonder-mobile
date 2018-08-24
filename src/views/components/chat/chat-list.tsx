@@ -2,9 +2,7 @@ import React from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { Title } from '../theme';
 import { ChatListItem } from '.';
-import Chat from '../../../types/chat';
-import TouchableOpacityOnPress from '../../../types/touchable-on-press';
-import Conversation from '../../../types/conversation';
+import Conversation from 'src/models/conversation';
 
 interface ChatListProps {
   chats?: Conversation[];

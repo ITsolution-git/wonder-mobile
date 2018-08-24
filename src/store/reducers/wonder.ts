@@ -1,8 +1,8 @@
 import { handleActions, createAction, Action } from 'redux-actions';
-import Topic from '../../types/topic';
-import Proposal from '../../types/proposal';
-import Partner from '../../types/partner';
-import Appointment, { AppointmentPayload } from '../../types/appointment';
+
+
+
+
 
 export interface WonderState {
   topics: Topic[];

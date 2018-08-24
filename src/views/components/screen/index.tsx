@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, ImageBackground, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import GradientPoint from '../../../types/gradient-point';
+import GradientPoint from 'src/models/gradient-point';
 
 interface Props {
   children?: any;
@@ -55,14 +55,14 @@ class Screen extends React.Component<Props> {
         >
           {children}
         </LinearGradient>
-      )
+      );
     }
 
     return (
       <View style={[styles.container, style, renderedStyles]}>
         {children}
       </View>
-    )
+    );
   }
 }
 

@@ -1,116 +1,160 @@
 import React from 'react';
 import Screen from 'src/views/components/screen';
-import { StyleSheet, View, Image } from 'react-native';
+import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { Text, PrimaryButton, TextButton } from 'src/views/components/theme';
 import theme from 'src/assets/styles/theme';
-import CameraModal from 'src/views/components/modals/camera-modal';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import CameraData from 'src/types/camera-data';
-import { updateImage } from 'src/store/sagas/user';
+import { updateImage, deleteProfileImage } from 'src/store/sagas/user';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import ImagePicker from 'react-native-image-picker';
+import ImageRotate from 'react-native-image-rotate';
+import { Options, Response } from 'src/models/image-picker';
+import ImageToolbar from 'src/views/components/camera/image-toolbar';
+import ProfileImage from 'src/models/profile-image';
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onUpdateImage: (data: any) => dispatch(updateImage(data))
+  onUpdateImage: (data: Response) => dispatch(updateImage(data)),
+  onDeleteImage: (data: ProfileImage) => dispatch(deleteProfileImage(data))
 });
 
-interface Props {
+interface ProfileCameraScreenProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
-  onUpdateImage: Function;
+  onUpdateImage: (data: Response) => void;
+  onDeleteImage: (data: ProfileImage) => void;
 }
 
-interface State {
-  modalOpen: boolean;
-  imageData: CameraData | null;
+interface ProfileCameraScreenState {
+  data: Response | null;
 }
 
-class ProfileCameraScreen extends React.Component<Props, State> {
-  state = {
-    imageData: null,
-    modalOpen: false
+class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, ProfileCameraScreenState> {
+  state: ProfileCameraScreenState = {
+    data: null
   };
 
-  openModal = () => this.setState({ modalOpen: true });
-  closeModal = () => this.setState({ modalOpen: false });
-
-  onImageTaken = (data: CameraData) => this.setState({ imageData: data }, this.closeModal);
-
-  clear = () => this.setState({ imageData: null });
-  save = () => {
+  onClear = () => this.setState({ data: null });
+  onSave = () => {
     const { onUpdateImage, navigation } = this.props;
-    const { imageData } = this.state;
-    onUpdateImage(imageData);
+    const { data } = this.state;
+    onUpdateImage(data);
     navigation.goBack();
   }
 
+  getImage = () => {
+    const options: Options = {
+      title: 'Upload a Photo',
+      mediaType: 'photo'
+    };
+
+    ImagePicker.showImagePicker(options, (res: Response) => {
+      if (res.didCancel) {
+        // console.log("User cancelled!");
+      } else if (res.error) {
+        // console.log("Error", res.error);
+      } else {
+        this.setState({ data: res });
+      }
+    });
+  }
+
+  onRotate = () => {
+    const { data } = this.state;
+    if (data !== null) {
+      ImageRotate.rotateImage(
+        data.uri,
+        90,
+        (uri: string) => {
+          this.setState({
+            data: {
+              ...data,
+              uri
+            }
+          });
+        },
+        (error: Error) => {
+          console.error(error);
+        }
+      );
+    }
+
+  }
+
+  onDeleteImage = () => {
+    const { navigation, onDeleteImage } = this.props;
+    const currentImage: ProfileImage = navigation.getParam('data');
+    if (currentImage) {
+      onDeleteImage(currentImage);
+      // Delete the image
+      navigation.goBack();
+    }
+  }
+
   renderContent = () => {
-    const { imageData, modalOpen } = this.state;
-    if (imageData) {
+    const { navigation } = this.props;
+    const { data } = this.state;
+    const currentImage = navigation.getParam('data');
+
+    let image = null;
+    if (currentImage) {
+      image = (
+        <Image
+          source={currentImage}
+          style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }}
+        />
+      );
+    }
+    if (data) {
+      image = (
+        <Image
+          source={data}
+          style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }}
+        />
+      );
+    }
+    if (image) {
       return (
         <View flex={1} >
-          <View style={[styles.container, { padding: 0 }]}>
-            <Image
-              source={{ uri: imageData.uri }}
-              style={{ flex: 1 }}
-            />
+          <View style={[styles.imgcontainer, { padding: 0 }]}>
+            {image}
           </View>
-          <View style={styles.footer}>
-            <View style={styles.footerCol}>
-              <TextButton
-                text="DELETE"
-                onPress={this.clear}
-              />
-            </View>
-            <View style={styles.footerCol}>
-              <PrimaryButton
-                fullWidth
-                rounded={false}
-                title="RETAKE"
-                onPress={this.openModal}
-              />
-            </View>
-            <View style={styles.footerCol}>
-              <TextButton
-                text="SAVE"
-                onPress={this.save}
-              />
-            </View>
-          </View>
+          <ImageToolbar
+            mode="photo"
+            isNew={!currentImage || !!data}
+            onRotate={this.onRotate}
+            onRetake={this.getImage}
+            onCancel={this.onClear}
+            onDelete={this.onDeleteImage}
+            onSave={this.onSave}
+          />
         </View>
       );
     }
+
     return (
-      <View flex={1}>
+      <View flex={1} >
         <View style={styles.container}>
           <Text>
             Take a selfie to express who you are.
             Your profile images are displayed for other
             people who match your interests
-        </Text>
+          </Text>
         </View>
-        <PrimaryButton
-          rounded={false}
-          title="Open Camera"
-          onPress={this.openModal}
-        />
+        <View>
+          <PrimaryButton
+            rounded={false}
+            title="SELECT IMAGE"
+            onPress={this.getImage}
+          />
+        </View>
       </View>
     );
   }
+
   render() {
-    const { navigation } = this.props;
-    const { modalOpen } = this.state;
     return (
       <Screen>
         {this.renderContent()}
-        <CameraModal
-          onRequestClose={this.closeModal}
-          onSuccess={this.onImageTaken}
-          animationType="slide"
-          transparent={false}
-          onCancel={this.closeModal}
-          direction="front"
-          visible={modalOpen}
-        />
       </Screen>
     );
   }
@@ -120,6 +164,11 @@ export default connect(null, mapDispatch)(ProfileCameraScreen);
 // export default ProfileCameraScreen;
 
 const styles = StyleSheet.create({
+  imgcontainer: {
+    flex: 1,
+    flexDirection: 'column',
+    padding: 20
+  },
   container: {
     flex: 1,
     flexDirection: 'column',

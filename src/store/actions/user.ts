@@ -1,6 +1,6 @@
 import { handleActions, createAction, Action, ActionFunctionAny } from 'redux-actions';
-import User from '../../types/user';
-import { UserCredentialsResponse } from '../../types/user-credentials';
+
+
 
 export interface UserPayload {
   user: User;
