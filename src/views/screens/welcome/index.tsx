@@ -23,8 +23,9 @@ export default class Welcome extends React.Component<Props> {
           <Image style={{ width: '80%' }} source={Logo.DARK} resizeMode="contain" />
         </View>
         <View style={styles.body}>
-          <View>
+          <View style={{width: '100%'}}>
             <PrimaryButton
+              fullWidth
               icon="envelope-o"
               title="CREATE ACCOUNT"
               onPress={() => navigation.navigate('Register1')}

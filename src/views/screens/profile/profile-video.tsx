@@ -34,10 +34,14 @@ class ProfileVideoScreen extends React.Component<Props, State> {
   };
 
   onDelete = () => {
-    this.props.onDeleteVideo();
+    const { navigation, onDeleteVideo } = this.props;
+    onDeleteVideo();
+    navigation.goBack();
   }
 
-  onClear = () => { this.setState({ data: null }); }
+  onClear = () => {
+    this.setState({ data: null });
+  }
 
   onSave = () => {
     const { data } = this.state;
@@ -98,7 +102,7 @@ class ProfileVideoScreen extends React.Component<Props, State> {
           </View>
           <ImageToolbar
             mode="video"
-            isNew={!currentVideo}
+            isNew={!currentVideo || !!data}
             onRetake={this.getVideo}
             onCancel={this.onClear}
             onDelete={this.onDelete}

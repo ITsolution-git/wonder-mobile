@@ -15,6 +15,7 @@ import { selectCurrentUser } from 'src/store/selectors/user';
 import User from 'src/models/user';
 import Topic from 'src/models/topic';
 import WonderAppState from 'src/models/wonder-app-state';
+import theme from '../../../assets/styles/theme';
 
 interface Props {
   currentUser: User;
@@ -118,8 +119,10 @@ class ProfileWondersScreen extends React.Component<Props, State> {
             Please select 3 Wonders for us to find people and activities in your area.
           </Text>
         </View> */}
-        <View style={{ paddingVertical: 15 }}>
+        <View style={{ paddingVertical: 15, width: '70%', alignSelf: 'center' }}>
           <TextInput
+            color={theme.colors.primaryLight}
+            containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
             autoCorrect={false}
             autoCapitalize="none"
             icon="search"

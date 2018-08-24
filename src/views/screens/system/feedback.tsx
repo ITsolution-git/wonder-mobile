@@ -11,6 +11,7 @@ import { submitFeedback } from 'src/store/sagas/feedback';
 import { connect } from 'react-redux';
 import SupportMessage from 'src/models/support-message';
 import WonderAppState from 'src/models/wonder-app-state';
+import { Content } from 'native-base';
 
 
 interface FeedbackScreenProps {
@@ -55,29 +56,29 @@ class FeedbackScreen extends React.Component<FeedbackScreenProps, FeedbackScreen
     const { navigation } = this.props;
     return (
       <Screen horizontalPadding={20} style={{ paddingBottom: 20 }}>
-        <KeyboardAvoidingView
-          behavior="position"
-          style={{ flex: 1 }}
-          contentContainerStyle={{ flex: 1 }}
-        >
-          <KeyboardDismissView style={{ flex: 1 }}>
-            <View flex={1} style={styles.container}>
-              <Text style={styles.infoText}>
-                We want you to have a{' '}
-                <Strong style={{ color: theme.colors.primary }}>Wonderful</Strong>{' '}
-                experience! We would love to hear your feedback.
+        <Content>
+          {/* <KeyboardAvoidingView
+            behavior="position"
+            style={{ flex: 1 }}
+            contentContainerStyle={{ flex: 1 }}
+          >
+            <KeyboardDismissView style={{ flex: 1 }}> */}
+          <Text style={styles.infoText}>
+            We want you to have a{' '}
+            <Strong style={{ color: theme.colors.primary }}>Wonderful</Strong>{' '}
+            experience! We would love to hear your feedback.
               </Text>
-              <View>
-                <TextInput placeholder="Subject" onChangeText={this.onChangeSubjectText} />
-                <TextArea
-                  onChangeText={this.onChangebodyText}
-                  placeholder="Message..."
-                  style={{ minHeight: 150, backgroundColor: '#E1E1E1', color: '#444' }}
-                />
-              </View>
-            </View>
-          </KeyboardDismissView>
-        </KeyboardAvoidingView>
+          <View>
+            <TextInput placeholder="Subject" onChangeText={this.onChangeSubjectText} />
+            <TextArea
+              onChangeText={this.onChangebodyText}
+              placeholder="Message..."
+              style={{ minHeight: 150, backgroundColor: '#E1E1E1', color: '#444' }}
+            />
+          </View>
+          {/* </KeyboardDismissView>
+          </KeyboardAvoidingView> */}
+        </Content>
         <PrimaryButton
           title="Submit"
           onPress={this.submit}

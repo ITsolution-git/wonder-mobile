@@ -120,7 +120,7 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
           </View>
           <ImageToolbar
             mode="photo"
-            isNew={!currentImage}
+            isNew={!currentImage || !!data}
             onRotate={this.onRotate}
             onRetake={this.getImage}
             onCancel={this.onClear}

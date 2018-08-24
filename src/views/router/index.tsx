@@ -69,7 +69,7 @@ const AuthenticatedNavigator = createMaterialTopTabNavigator({
       activeTintColor: theme.colors.primaryLight,
       inactiveTintColor: theme.colors.textColor,
     },
-    initialRouteName: 'User'
+    initialRouteName: 'Home'
   });
 
 // Manages Onboarding and Registration

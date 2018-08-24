@@ -47,7 +47,7 @@ const RegistrationNavigator = createStackNavigator({
   Register4: {
     screen: Register4,
     navigationOptions: {
-      title: 'PICK WONDERS',
+      title: 'YOUR WONDERS',
       ...theme.NavBar.transparent
     }
   }

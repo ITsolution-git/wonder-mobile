@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { View, StyleSheet} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Text, PrimaryButton, TextInput, WonderPicker } from 'src/views/components/theme';
 import Screen from 'src/views/components/screen';
 
@@ -11,6 +11,9 @@ import { getTopics } from '../../../store/sagas/topics';
 
 import { persistRegistrationInfo } from '../../../store/reducers/registration';
 import { registerUser } from '../../../store/sagas/user';
+import theme from '../../../assets/styles/theme';
+import Topic from '../../../models/topic';
+import WonderAppState from '../../../models/wonder-app-state';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -109,11 +112,13 @@ class Register4 extends React.Component<Props, State> {
       <Screen horizontalPadding={10}>
         <View style={{ paddingVertical: 15 }}>
           <Text style={{ textAlign: 'center' }}>
-            Please select 3 Wonders for us to find people and activities in your area.
+            Please select 3 Wonders to help us find people &amp; activities in your area.
           </Text>
         </View>
-        <View style={{ paddingVertical: 15 }}>
+        <View style={{ paddingVertical: 15, width: '80%', alignSelf: 'center' }}>
           <TextInput
+            color={theme.colors.primaryLight}
+            containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
             autoCorrect={false}
             autoCapitalize="none"
             icon="search"
