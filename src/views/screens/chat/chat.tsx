@@ -15,13 +15,15 @@ import { DecoratedConversation, ConversationNewMessage } from 'src/models/conver
 import WonderAppState from 'src/models/wonder-app-state';
 import Chat from 'src/models/chat';
 import ChatResponseMessage from 'src/models/chat-response-message';
+import { AppointmentState, persistAppointmentData } from '../../../store/reducers/appointment';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   currentUser: User;
   conversation: DecoratedConversation;
-  onGetMessage: (userId: number) => any;
-  onSendMessage: (chatMessage: ConversationNewMessage) => any;
+  onGetMessage: (userId: number) => void;
+  onSendMessage: (chatMessage: ConversationNewMessage) => void;
+  onUpdateAppointment: (data: AppointmentState) => void;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -32,6 +34,8 @@ const mapState = (state: WonderAppState) => ({
 const mapDispatch = (dispatch: Dispatch) => ({
   onGetMessage: (userId: number) => dispatch(getConversation(userId)),
   onSendMessage: (data: any) => dispatch(sendMessage(data)),
+  onUpdateAppointment: (data: AppointmentState) =>
+    dispatch(persistAppointmentData(data))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -45,7 +49,8 @@ class ChatScreen extends React.Component<Props> {
   }
 
   scheduleWonder = () => {
-    const { navigation, conversation } = this.props;
+    const { navigation, conversation, onUpdateAppointment } = this.props;
+    onUpdateAppointment({ match: conversation.partner });
     navigation.navigate('WonderMap', { id: conversation.partner.id });
   }
 

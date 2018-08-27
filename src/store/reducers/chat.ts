@@ -1,5 +1,8 @@
 
 import { handleActions, createAction, Action } from 'redux-actions';
+import Conversation from '../../models/conversation';
+import Activity from '../../models/activity';
+import ActivityDetails from '../../models/activity-details';
 
 
 

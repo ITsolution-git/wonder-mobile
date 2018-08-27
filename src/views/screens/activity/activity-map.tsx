@@ -131,24 +131,24 @@ class ActivityMapScreen extends React.Component<Props, State> {
       <Screen>
         <MapView
           showsUserLocation
-          followsUserLocation
+          // followsUserLocation
           showsMyLocationButton
           rotateEnabled={false}
           // provider={PROVIDER_GOOGLE}
           // customMapStyle={MapTheme}
           style={{ flex: 1 }}
-          initialRegion={{
-            latitude: position.lat,
-            longitude: position.lng,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.1,
-          }}
-          // region={{
+          // initialRegion={{
           //   latitude: position.lat,
           //   longitude: position.lng,
           //   latitudeDelta: 0.1,
           //   longitudeDelta: 0.1,
           // }}
+          region={{
+            latitude: position.lat,
+            longitude: position.lng,
+            latitudeDelta: 0.1,
+            longitudeDelta: 0.1,
+          }}
         >
           {activities.map(this.renderMarker)}
         </MapView>

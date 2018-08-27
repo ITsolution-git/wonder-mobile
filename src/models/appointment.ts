@@ -9,7 +9,9 @@ export interface AppointmentUser extends Partial<User> {
 }
 
 export default interface Appointment {
+  id: number;
   name: string; // Activity name
+  phone: string | null;
   location: string;
   latitude?: number;
   longitude?: number;
@@ -17,7 +19,6 @@ export default interface Appointment {
   topic: Topic;
   owner: AppointmentUser;
   users: AppointmentUser[];
-  demerits?: string[];
 
   state: 'created' | 'negotiating' | 'confirmed' | 'cancelled';
   invited_at: Date;

@@ -42,6 +42,8 @@ const ChatNavigator = createStackNavigator({
       ...theme.NavBar.transparent
     }
   }
+}, {
+  initialRouteName: 'ChatList'
 });
 
 export default ChatNavigator;

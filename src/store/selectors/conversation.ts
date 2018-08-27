@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import WonderAppState from "src/models/wonder-app-state";
 import { createSelector } from "reselect";
 import Conversation, { DecoratedConversation } from "src/models/conversation";
@@ -14,9 +15,10 @@ export const getDecoratedConversation = createSelector([selectCurrentUser, selec
   });
 
 export const decorateMessagesForGiftedChat = (currentUser: User, conversation: Conversation): DecoratedConversation => {
+  const messages: ChatResponseMessage[] =  _.get(conversation, 'messages', []);
   return {
     ...conversation,
-    giftedChatMessages: conversation.messages.map((message: ChatResponseMessage) => {
+    giftedChatMessages: messages.map((message: ChatResponseMessage) => {
       const owner: User = message.sender_id === currentUser.id ? currentUser : conversation.partner;
       const o: GiftedChatMessage = {
         _id: message.id,

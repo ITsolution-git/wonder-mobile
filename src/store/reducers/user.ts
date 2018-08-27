@@ -1,6 +1,6 @@
 import { handleActions, createAction } from 'redux-actions';
-
-
+import User from '../../models/user';
+import { UserAuth } from '../../models/user-credentials';
 
 export interface UserState {
   readonly profile: User;
@@ -8,7 +8,9 @@ export interface UserState {
 }
 
 export const initialState: UserState = {
-  profile: {},
+  profile: {
+
+  },
   auth: {
     token: null,
     uid: null,
