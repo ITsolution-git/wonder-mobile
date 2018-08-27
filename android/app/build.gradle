@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-svg')
     compile project(':react-native-fcm')
     compile project(':react-native-image-rotate')
     compile project(':react-native-image-picker')
