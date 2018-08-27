@@ -45,7 +45,7 @@ const AuthenticatedNavigator = createMaterialTopTabNavigator({
       tabBarIcon: ({ tintColor }) => <Icon name="sun-o" size={24} color={tintColor} />
     }
   },
-  Chat: {
+  Messages: {
     screen: ChatNavigator, navigationOptions: {
       tabBarIcon: ({ tintColor }) => <Icon name="comments" size={24} color={tintColor} />
     }

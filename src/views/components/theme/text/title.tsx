@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import Text, { Props } from './text';
+import Text, { ThemeTextProps } from './text';
 
-export default class Title extends React.Component<Props> {
+export default class Title extends React.Component<ThemeTextProps> {
   render() {
     const { children, style, ...rest } = this.props;
     return (

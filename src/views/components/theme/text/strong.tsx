@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import Text, { Props } from './text';
+import Text, { ThemeTextProps } from './text';
 import theme from 'src/assets/styles/theme';
 
-export default class Strong extends React.Component<Props> {
+export default class Strong extends React.Component<ThemeTextProps> {
   render() {
     const { children, style, ...rest } = this.props;
     return (

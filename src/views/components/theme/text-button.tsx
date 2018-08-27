@@ -1,20 +1,22 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, StyleProp } from "react-native";
+import { TouchableOpacity, StyleSheet, StyleProp, TextStyle, ViewStyle } from "react-native";
 import { Text } from '.';
+import { ThemeTextProps } from './text/text';
 
-interface Props {
+interface Props extends ThemeTextProps {
   text: string;
   color?: string;
   onPress?: any;
-  style?: StyleProp<any>;
+  style?: StyleProp<TextStyle>;
+  btnStyle?: StyleProp<ViewStyle>;
 }
 
 export default class TextButton extends React.Component<Props> {
   render() {
-    const { text, onPress, style } = this.props;
+    const { btnStyle, text, onPress, style, align, color, size } = this.props;
     return (
-      <TouchableOpacity onPress={onPress}>
-        <Text style={[styles.txt, style]}>{text}</Text>
+      <TouchableOpacity onPress={onPress} style={btnStyle}>
+        <Text align={align} color={color} size={size} style={[styles.txt, style]}>{text}</Text>
       </TouchableOpacity>
     );
   }

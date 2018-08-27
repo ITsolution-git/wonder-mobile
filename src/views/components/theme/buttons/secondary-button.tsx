@@ -4,7 +4,7 @@ import theme from 'src/assets/styles/theme';
 import Color from 'color';
 
 const palette = Color(theme.colors.backgroundPrimary);
-export default class OutlineButton extends React.Component<BaseButtonProps> {
+export default class SecondaryButton extends React.Component<BaseButtonProps> {
   render() {
     const { disabled } = this.props;
     return (

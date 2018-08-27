@@ -2,12 +2,15 @@ import React from 'react';
 import { View, FlatList, FlatListProps, RefreshControl } from 'react-native';
 import AppointmentItem from './appointment-item';
 import { DecoratedAppointment } from 'src/models/appointment';
+import { SwipeRow, Button } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface Props {
   data: DecoratedAppointment[];
   onRefresh?: () => void;
   isLoading?: boolean;
   onPress?: Function;
+  onDelete?: (appointment: DecoratedAppointment) => void;
 }
 
 class AppointmentList extends React.Component<Props> {
@@ -17,12 +20,20 @@ class AppointmentList extends React.Component<Props> {
 
   keyExtractor = (item: any, index: number) => item.id.toString();
 
-  renderRow = ({ item }: { item: any }) => {
-    const { onPress } = this.props;
+  renderRow = ({ item }: { item: DecoratedAppointment }) => {
+    const { onPress, onDelete } = this.props;
     return (
-      <AppointmentItem
-        item={item}
-        onPress={onPress}
+      <SwipeRow
+        rightOpenValue={-75}
+        right={(
+          <Button danger onPress={() => onDelete && onDelete(item)}>
+            <Icon name="trash" size={36} color="#FFF" />
+          </Button>
+        )}
+        body={<AppointmentItem
+          item={item}
+          onPress={onPress}
+        />}
       />
     );
   }

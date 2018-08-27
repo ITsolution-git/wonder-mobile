@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert, AlertButton, AlertOptions } from 'react-native';
 import Screen from 'src/views/components/screen';
 import ElevatedButton from 'src/views/components/theme/elevated-button';
 import { PrimaryButton, Text, SecondaryButton as Button, Title } from 'src/views/components/theme';
@@ -21,8 +21,8 @@ import WonderAppState from 'src/models/wonder-app-state';
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   currentUser: User;
-  onLogout: TouchableOpacityOnPress;
-  onRefreshProfile: Function;
+  onLogout: () => void;
+  onRefreshProfile: () => void;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -54,6 +54,15 @@ class ProfileViewScreen extends React.Component<Props> {
       return currentUser.images[0].url;
     }
     return null;
+  }
+
+  promptLogout = () => {
+    const options = [
+      { text: 'Cancel', onPress: _.noop },
+      { text: 'Yes, Logout', onPress: this.props.onLogout || _.noop },
+    ];
+
+    Alert.alert('Confirm Logout', 'Are you sure you want to logout?', options);
   }
 
   render() {
@@ -134,7 +143,7 @@ class ProfileViewScreen extends React.Component<Props> {
               <Button
                 rounded
                 title="Logout"
-                onPress={onLogout}
+                onPress={this.promptLogout}
               />
             </View>
             <View style={styles.col}>

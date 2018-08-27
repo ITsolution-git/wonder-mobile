@@ -6,7 +6,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 export enum AvatarSize {
   sm = 'sm',
   md = 'md',
-  lg = 'lg'
+  lg = 'lg',
+  xl = 'xl',
 }
 
 interface AvatarProps {
@@ -14,7 +15,7 @@ interface AvatarProps {
   rounded?: boolean;
   circle?: boolean;
   uri?: string | null;
-  size?: AvatarSize | 'sm' | 'md' | 'lg';
+  size?: AvatarSize | 'sm' | 'md' | 'lg' | 'xl';
   containerStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ImageStyle>;
 }
@@ -31,7 +32,8 @@ class Avatar extends React.Component<AvatarProps> {
   static Sizes = {
     sm: 64,
     md: 96,
-    lg: 128
+    lg: 128,
+    xl: 160
   };
 
   getDimensions = () => {

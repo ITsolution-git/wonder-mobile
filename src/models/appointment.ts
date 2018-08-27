@@ -1,5 +1,6 @@
 import User from "./user";
 import Topic from "./topic";
+import { Moment } from "moment-timezone";
 
 export interface AppointmentUser extends Partial<User> {
   id: number;
@@ -28,6 +29,7 @@ export default interface Appointment {
 export interface DecoratedAppointment extends Appointment {
   me: AppointmentUser;
   match: AppointmentUser;
+  eventMoment?: Moment;
 }
 
 export interface AppointmentPayload {

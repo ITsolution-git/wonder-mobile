@@ -43,11 +43,6 @@ class ChatScreen extends React.Component<Props> {
     title: 'Chat',
   })
 
-  getChat = (): Chat => {
-    const { navigation } = this.props;
-    return (navigation.getParam('chat') as Chat);
-  }
-
   scheduleWonder = () => {
     const { navigation, conversation, onUpdateAppointment } = this.props;
     onUpdateAppointment({ match: conversation.partner });

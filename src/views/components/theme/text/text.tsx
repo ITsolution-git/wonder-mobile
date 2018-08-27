@@ -2,18 +2,24 @@ import React from 'react';
 import { Text as NativeText, TextProps, StyleSheet } from 'react-native';
 import Theme from 'src/assets/styles/theme';
 
-export interface Props extends TextProps {
+export interface ThemeTextProps extends TextProps {
   color?: string;
+  size?: number;
+  align?: 'left' | 'center' | 'right';
 }
 
-export default class Text extends React.Component<Props, any> {
+export default class Text extends React.Component<ThemeTextProps, any> {
   static defaultProps = {
     style: {},
     color: Theme.colors.textColor,
+    fontSize: 14,
+    align: 'left'
   };
 
   render() {
     const {
+      size,
+      align,
       children,
       style,
       color,
@@ -23,7 +29,7 @@ export default class Text extends React.Component<Props, any> {
     return (
       <NativeText
         {...rest}
-        style={[styles.text, { color }, style]}
+        style={[styles.text, { color, fontSize: size, textAlign: align }, style]}
       >
         {children}
       </NativeText>
@@ -34,6 +40,7 @@ export default class Text extends React.Component<Props, any> {
 const styles = StyleSheet.create({
   text: {
     color: Theme.colors.textColor,
-    fontFamily: Theme.fonts.primary
+    fontFamily: Theme.fonts.primary,
+    // fontSize: 14
   }
 });

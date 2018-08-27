@@ -3,8 +3,16 @@ import React from 'react';
 import { connect } from "react-redux";
 import Screen from 'src/views/components/screen';
 
-import { Title, Text, SubTitle, BaseButton } from 'src/views/components/theme';
-import { ScrollView, View, StyleSheet } from 'react-native';
+import {
+  Title,
+  Text,
+  SubTitle,
+  PrimaryButton,
+  IconButton,
+  TextButton,
+  SecondaryButton
+} from 'src/views/components/theme';
+import { ScrollView, View, StyleSheet, Linking, Alert } from 'react-native';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import AppointmentReviewModal from 'src/views/components/modals/appointment-review-modal';
 
@@ -14,11 +22,16 @@ import Avatar from 'src/views/components/theme/avatar';
 import User from 'src/models/user';
 import { DecoratedAppointment } from 'src/models/appointment';
 import WonderAppState from 'src/models/wonder-app-state';
+import theme from '../../../assets/styles/theme';
+import { Toast } from 'native-base';
+import { getConversation } from '../../../store/sagas/conversations';
+import { isAppointmentBeforeToday } from '../../../utils/appointment';
 
 interface AppointmentViewProps {
   currentUser: User;
   navigation: NavigationScreenProp<any, NavigationParams>;
   appointment: DecoratedAppointment;
+  onGetConversation: (partnerId: number) => void;
 }
 
 interface AppointmentViewState {
@@ -30,7 +43,7 @@ const mapState = (state: WonderAppState) => ({
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-
+  onGetConversation: (partnerId: number) => dispatch(getConversation(partnerId))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -45,6 +58,12 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     isModalOpen: false
   };
 
+  isPastAppointment = () => {
+    const { navigation } = this.props;
+    const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
+    return isAppointmentBeforeToday(appointment);
+  }
+
   openReviewModal = () => {
     this.setState({ isModalOpen: true });
   }
@@ -53,23 +72,138 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     this.setState({ isModalOpen: false });
   }
 
+  onCall = async (url: string) => {
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      }
+    } catch (error) {
+      Toast.show({ text: `Cannot open ${url}` });
+    }
+  }
+
+  onServicePress = (url: string) => {
+    Alert.alert('Third Party', `This would go to ${url}`);
+  }
+
+  goToChat = () => {
+    const { navigation, onGetConversation } = this.props;
+    const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
+
+    onGetConversation(appointment.match.id);
+    navigation.navigate('Chat');
+  }
+
   render() {
     const { navigation, currentUser } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
+    const isPast = this.isPastAppointment();
     return (
       <Screen horizontalPadding={20}>
-        <ScrollView
+        {/* <ScrollView
           style={{ flex: 1, paddingTop: 20 }}
           contentContainerStyle={{ flex: 1 }}
-        >
+        > */}
+        <View flex={1}>
           <View style={styles.header}>
-            <Avatar circle size="lg" uri={_.get(appointment, 'match.images[0].url', null)} />
-            <Title>{appointment.match.first_name}</Title>
+            <Avatar circle size="xl" uri={_.get(appointment, 'match.images[0].url', null)} />
           </View>
-          <Title>{appointment.name}</Title>
-          <SubTitle>{appointment.location}</SubTitle>
-          <BaseButton title="Leave Review" onPress={this.openReviewModal} />
-        </ScrollView>
+
+          <View style={{ marginTop: 15 }}>
+            <Title align="center">{appointment.name} with {appointment.match.first_name} {isPast.toString()}</Title>
+
+            <SubTitle align="center">{appointment.location}</SubTitle>
+            {appointment.phone && (
+              <TextButton
+                btnStyle={{ alignSelf: 'center' }}
+                text="appointment.phone"
+                onPress={() => this.onCall(`tel:${appointment.phone}`)}
+              />
+            )}
+            {appointment.eventMoment && (
+              <Text align="center">
+                {appointment.eventMoment.format('MMMM Do, YYYY [at] h:mma')}
+              </Text>
+            )}
+          </View>
+        </View>
+
+        <View>
+          <PrimaryButton title="Leave Review" onPress={this.openReviewModal} />
+          <View style={[styles.row, styles.buttonRow]}>
+            {!isPast &&
+              (
+                <View style={styles.col}>
+                  <IconButton
+                    size={50}
+                    iconSize={44}
+                    icon="car"
+                    primary={theme.colors.primaryLight}
+                    secondary="transparent"
+                    onPress={() => this.onServicePress('Uber')}
+                  />
+                  <Text style={styles.btnLabel}>Catch a Ride</Text>
+                </View>
+              )
+            }
+            {!isPast &&
+              (
+                <View style={styles.col}>
+                  <IconButton
+                    size={50}
+                    iconSize={44}
+                    icon="shopping-cart"
+                    primary={theme.colors.primaryLight}
+                    secondary="transparent"
+                    onPress={() => this.onServicePress('Amazon')}
+                  />
+                  <Text style={styles.btnLabel}>Shop Amazon</Text>
+                </View>
+              )
+            }
+            {isPast &&
+              (
+                <View style={styles.col}>
+                  <IconButton
+                    size={50}
+                    iconSize={44}
+                    icon="gift"
+                    primary={theme.colors.primaryLight}
+                    secondary="transparent"
+                    onPress={() => this.onServicePress('1-800-Flowers')}
+                  />
+                  <Text style={styles.btnLabel}>Send Flowers</Text>
+                </View>
+              )
+            }
+            <View style={styles.col}>
+              <IconButton
+                size={50}
+                iconSize={44}
+                icon="comments"
+                primary={theme.colors.primaryLight}
+                secondary="transparent"
+                onPress={this.goToChat}
+              />
+              <Text style={styles.btnLabel}>Chat</Text>
+            </View>
+          </View>
+
+          <View style={[styles.row, { marginVertical: 15, justifyContent: 'space-between' }]}>
+            {!isPast &&
+              (
+                <View style={styles.col}>
+                  <SecondaryButton title="Cancel" onPress={_.noop} />
+                </View>
+              )
+            }
+            <View style={styles.col}>
+              <SecondaryButton title="Delete" onPress={_.noop} />
+            </View>
+          </View>
+        </View>
+        {/* </ScrollView> */}
         <AppointmentReviewModal
           onRequestClose={this.closeReviewModal}
           visible={this.state.isModalOpen}
@@ -87,5 +221,20 @@ export default connect(mapState, mapDispatch)(AppointmentViewScreen);
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center'
+  },
+  buttonRow: {
+    marginVertical: 15
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-around'
+  },
+  col: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  btnLabel: {
+    textAlign: 'center',
+    fontSize: 12
   }
 });
