@@ -5256,9 +5256,9 @@ react-native-lightbox@^0.7.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-linear-gradient@^2.4.0:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.4.1.tgz#89a1e36e0e1db3c1955af95c56ef05bfe51773d1"
+react-native-linear-gradient@2.4.2:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.4.2.tgz#9d3acd0a198b9d4566e8f6253ef1f60fef0ff2be"
 
 react-native-maps@^0.21.0:
   version "0.21.0"
