@@ -63,14 +63,6 @@ PODS:
   - Protobuf (3.5.0)
   - React (0.56.0):
     - React/Core (= 0.56.0)
-  - react-native-camera (1.2.0):
-    - React
-    - react-native-camera/RCT (= 1.2.0)
-    - react-native-camera/RN (= 1.2.0)
-  - react-native-camera/RCT (1.2.0):
-    - React
-  - react-native-camera/RN (1.2.0):
-    - React
   - react-native-fcm (16.2.0):
     - Firebase/Messaging
     - React
@@ -143,7 +135,6 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Google-Maps-iOS-Utils
   - GoogleMaps
-  - react-native-camera (from `../node_modules/react-native-camera`)
   - react-native-fcm (from `../node_modules/react-native-fcm`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -189,8 +180,6 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
-  react-native-camera:
-    :path: "../node_modules/react-native-camera"
   react-native-fcm:
     :path: "../node_modules/react-native-fcm"
   react-native-google-maps:
@@ -222,7 +211,6 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 8a9838fba8dae3389230e1b7f8c104aa32389c03
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
-  react-native-camera: 68ad5143d2d0636236d46c7de8d2a6455ca52a36
   react-native-fcm: 7de3ba1108aba709c3d2b4237594554eb5f6f026
   react-native-google-maps: 2cfe3b01f8422c7dae51d8764139fd70f888cfce
   react-native-image-picker: b303e31c3c4ada1d7cb1342423d328d2efb07fb3
@@ -231,6 +219,6 @@ SPEC CHECKSUMS:
   RNImageRotate: 3c909e81f0bd78a91ab7d4528e29c7cd33571320
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: e874b979f8b357ea990149f1c1bb8d4c4c5ab64b
+PODFILE CHECKSUM: 01f46d5ff99a99599c91796ab477d017803bff9f
 
 COCOAPODS: 1.5.3
