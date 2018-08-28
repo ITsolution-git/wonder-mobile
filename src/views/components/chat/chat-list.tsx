@@ -5,6 +5,7 @@ import { ChatListItem } from '.';
 import Conversation from 'src/models/conversation';
 
 interface ChatListProps {
+  onRefresh?: () => void;
   chats?: Conversation[];
   onPressChat: Function;
 }
@@ -26,7 +27,7 @@ class ChatList extends React.Component<ChatListProps> {
         onPress={() => onPressChat(chat)}
       />
     );
-  };
+  }
 
   renderEmpty = () => {
     return (
@@ -37,10 +38,12 @@ class ChatList extends React.Component<ChatListProps> {
   }
 
   render() {
-    const { chats } = this.props;
+    const { chats, onRefresh } = this.props;
     if (!chats || chats.length) {
       return (
         <FlatList
+          refreshing={false}
+          onRefresh={onRefresh}
           showsVerticalScrollIndicator={false}
           data={chats || []}
           keyExtractor={this.keyExtractor}

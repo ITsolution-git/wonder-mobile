@@ -1,8 +1,9 @@
+import ActionCable from 'react-native-actioncable';
 import React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import Screen from 'src/views/components/screen';
 import theme from 'src/assets/styles/theme';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import ChatActionButton from 'src/views/components/chat/chat-action-button';
 import { connect } from 'react-redux';
@@ -15,11 +16,13 @@ import { DecoratedConversation, ConversationNewMessage } from 'src/models/conver
 import WonderAppState from 'src/models/wonder-app-state';
 import Chat from 'src/models/chat';
 import ChatResponseMessage from 'src/models/chat-response-message';
-import { AppointmentState, persistAppointmentData } from '../../../store/reducers/appointment';
+import { AppointmentState, persistAppointmentData } from 'src/store/reducers/appointment';
+import { DOMAIN } from 'src/services/api';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   currentUser: User;
+  token: string;
   conversation: DecoratedConversation;
   onGetMessage: (userId: number) => void;
   onSendMessage: (chatMessage: ConversationNewMessage) => void;
@@ -27,6 +30,7 @@ interface Props {
 }
 
 const mapState = (state: WonderAppState) => ({
+  token: state.user.auth.token,
   currentUser: selectCurrentUser(state),
   conversation: getDecoratedConversation(state)
 });
@@ -39,9 +43,44 @@ const mapDispatch = (dispatch: Dispatch) => ({
 });
 
 class ChatScreen extends React.Component<Props> {
+  cable: any;
+  appChat: any;
   static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<any, NavigationParams> }) => ({
     title: 'Chat',
   })
+
+  componentWillMount() {
+    const { conversation, token, onGetMessage } = this.props;
+    this.appChat = {};
+    this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
+    this.appChat = this.cable.subscriptions.create({
+      channel: "ConversationChannel",
+      recipient_id: conversation.partner.id
+    }, {
+        connected() {
+          console.log('Connected to Chat', conversation.id);
+          // this.perform('deliver', { body: new Date().toString() });
+          // this.perform('read', { message_id: conversation.partner.id });
+        },
+        received: (data: any) => {
+          onGetMessage(conversation.partner.id);
+          console.log('message', data);
+        },
+        deliver(message: string) {
+          this.perform('deliver', { body: message });
+        },
+        disconnected: () => {
+          // alert('disconnected');
+        },
+      });
+  }
+
+  componentWillUnmount() {
+    if (this.appChat) {
+      // this.cable.subscriptions.remote(this.appChat);
+    }
+  }
+
 
   scheduleWonder = () => {
     const { navigation, conversation, onUpdateAppointment } = this.props;
@@ -50,8 +89,7 @@ class ChatScreen extends React.Component<Props> {
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
-    const { conversation } = this.props;
-    this.props.onSendMessage({ conversation_id: conversation.partner.id, message: { body: messages[0].text } });
+    this.appChat.deliver(messages[0].text);
   }
 
   renderBubble(props: any) {
@@ -116,6 +154,7 @@ const bubbleWrapperStyle = StyleSheet.create({
       height: 1
     },
     backgroundColor: '#FFF',
+    marginVertical: 5
   },
   left: {
     padding: 10,
@@ -129,6 +168,7 @@ const bubbleWrapperStyle = StyleSheet.create({
       height: 1
     },
     backgroundColor: theme.colors.primaryLight,
+    marginVertical: 5
   },
 });
 

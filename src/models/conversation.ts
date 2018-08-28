@@ -3,6 +3,7 @@ import User from "./user";
 import GiftedChatMessage from "./chat-message";
 
 interface Conversation {
+  id: number;
   partner: User;
   last_message: ChatResponseMessage;
   messages: ChatResponseMessage[];

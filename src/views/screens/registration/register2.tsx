@@ -14,7 +14,6 @@ import {
   DatePicker,
   Title
 } from "src/views/components/theme";
-import ShadowBox from "src/views/components/theme/shadow-box";
 import Screen from "src/views/components/screen";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import Gender from "../../../models/gender";
@@ -23,13 +22,12 @@ import validator from "validator";
 import { connect } from "react-redux";
 import WonderAppState from "../../../models/wonder-app-state";
 import { Dispatch } from "redux";
-import registration, {
+import {
   persistRegistrationInfo,
   RegistrationState
 } from "../../../store/reducers/registration";
 import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
 import theme from "src/assets/styles/theme";
-import { KeyboardDismissView } from "src/views/components/keyboard-dismiss-view";
 
 interface Props {
   registration: RegistrationState;
@@ -90,7 +88,7 @@ class Register2 extends React.Component<Props, State> {
     } else {
       this.setState({ geolocation: null });
     }
-  };
+  }
 
   formattedGeo = () => {
     const { geolocation } = this.state;
@@ -98,7 +96,7 @@ class Register2 extends React.Component<Props, State> {
       return ` (${geolocation.city}, ${geolocation.state})`;
     }
     return "";
-  };
+  }
 
   public render() {
     const { errors, birthdate } = this.state;
@@ -116,7 +114,7 @@ class Register2 extends React.Component<Props, State> {
           >
             {/* <KeyboardDismissView style={{ flex: 1 }}> */}
             <Title
-              style={{ color: theme.colors.primaryLight, textAlign: "center" }}
+              style={{ color: theme.colors.primary, textAlign: "center", fontWeight: 'bold' }}
             >
               Hello, {registration.first_name}
             </Title>

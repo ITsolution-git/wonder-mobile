@@ -58,7 +58,7 @@ const ProfileNavigator = createStackNavigator({
   ProfileWonders: {
     screen: ProfileWonders,
     navigationOptions: {
-      title: 'Wonders',
+      title: 'Pick Your Wonders',
       ...theme.NavBar.transparent
     }
   },

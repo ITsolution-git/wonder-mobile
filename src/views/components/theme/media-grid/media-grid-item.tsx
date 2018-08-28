@@ -3,7 +3,7 @@ import { StyleSheet, View, ImageBackground, Image, TouchableOpacity, StyleProp }
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import WonderImage from '../wonder-image';
-import api, { ApiConfig } from 'src/services/api';
+import api, { ApiConfig, BASE_URL } from 'src/services/api';
 import Video from 'react-native-video';
 import { Response } from 'src/models/image-picker';
 import ProfileImage from 'src/models/profile-image';
@@ -49,7 +49,7 @@ export default class MediaGridItem extends React.Component<Props> {
       return (
         <Video
           paused
-          source={{ uri: `${ApiConfig.defaults.baseURL.replace('/v1', '')}${videoSource}` }}
+          source={{ uri: `${BASE_URL}/${videoSource}` }}
           style={{ width: '100%', height: '100%', zIndex: 2 }}
           controls={false}
         />
@@ -64,9 +64,9 @@ export default class MediaGridItem extends React.Component<Props> {
     const { source, videoSource, onPress } = this.props;
 
     if (source) {
-      onPress({ ...source, uri: `${ApiConfig.defaults.baseURL.replace('/v1', '')}${source.url}` });
+      onPress({ ...source, uri: `${BASE_URL}/${source.url}` });
     } else if (videoSource) {
-      onPress({ uri: `${ApiConfig.defaults.baseURL.replace('/v1', '')}${videoSource}` });
+      onPress({ uri: `${BASE_URL}/${videoSource}` });
     }
   }
 

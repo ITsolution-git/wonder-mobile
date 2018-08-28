@@ -2,6 +2,7 @@ interface ChatResponseMessage {
   id: number;
   sender_id: number;
   recipient_id: number;
+  text: string;
   body: string;
   aasm_state?: string;
   state?: string;

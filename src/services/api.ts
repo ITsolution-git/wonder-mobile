@@ -1,8 +1,13 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { UserState } from '../store/reducers/user';
 
+export const DOMAIN = 'api.getwonderapp.com';
+export const BASE_URL = 'https://' + DOMAIN;
+export const API_PATH = '/v1';
+export const CABLE_PATH = '/cable';
+
 const wonderApi = axios.create({
-  baseURL: 'https://api.getwonderapp.com/v1',
+  baseURL: BASE_URL + API_PATH,
   // timeout: 1000,
   headers: {
     'Accept': 'application/json',

@@ -12,12 +12,13 @@ import { selectCurrentUser } from 'src/store/selectors/user';
 import Conversation from 'src/models/conversation';
 import WonderAppState from 'src/models/wonder-app-state';
 import Chat from 'src/models/chat';
+import ChatSocket from '../../../services/chat-websocket';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   conversations: Conversation[];
-  onRefreshConversations: Function;
-  onGetConversation: Function;
+  onRefreshConversations: () => void;
+  onGetConversation: (partnerId: number) => void;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -42,11 +43,12 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   render() {
-    const { conversations } = this.props;
+    const { conversations, onRefreshConversations } = this.props;
     return (
       <Screen horizontalPadding={20}>
         <Title>Latest Matches</Title>
         <ChatList
+          onRefresh={onRefreshConversations}
           chats={conversations}
           onPressChat={this.goToChat}
         />

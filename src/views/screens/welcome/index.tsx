@@ -23,7 +23,7 @@ export default class Welcome extends React.Component<Props> {
           <Image style={{ width: '80%' }} source={Logo.DARK} resizeMode="contain" />
         </View>
         <View style={styles.body}>
-          <View style={{width: '100%'}}>
+          <View style={{ width: '100%' }}>
             <PrimaryButton
               fullWidth
               icon="envelope-o"
@@ -41,7 +41,7 @@ export default class Welcome extends React.Component<Props> {
             />
           </View>
           <View style={{ marginTop: 25 }}>
-            <Text>Already have an account?</Text>
+            <Text color="#FFF">Already have an account?</Text>
             <TextButton
               style={{ textAlign: 'center', color: theme.colors.primary }}
               text="Sign In"
