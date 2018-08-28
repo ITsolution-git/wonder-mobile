@@ -18,6 +18,7 @@
     "native-base": "^2.7.2",
     "react": "16.4.1",
     "react-native": "0.56.0",
+    "react-native-actioncable": "^0.0.3",
     "react-native-calendars": "^1.19.4",
     "react-native-device-info": "^0.21.5",
     "react-native-fcm": "^16.2.0",
@@ -42,6 +43,7 @@
     "redux-persist": "^5.10.0",
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
+    "socket.io-client": "^2.1.1",
     "validator": "^10.4.0"
   },
   "devDependencies": {
@@ -57,6 +59,7 @@
     "@types/react-redux": "^6.0.3",
     "@types/react-test-renderer": "^16.0.1",
     "@types/redux-actions": "^2.3.0",
+    "@types/socket.io-client": "^1.4.32",
     "@types/validator": "^9.4.1",
     "babel-jest": "23.2.0",
     "babel-preset-react-native": "5.0.0",
