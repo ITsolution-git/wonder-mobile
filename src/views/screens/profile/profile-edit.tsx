@@ -129,7 +129,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
             <TextInput
               label="Zip Code"
               disabled
-              defaultValue={currentUser.location}
+              defaultValue={currentUser.zipcode}
             />
           </View>
         </View>

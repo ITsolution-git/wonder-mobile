@@ -40,7 +40,7 @@ interface StateErrors {
   birthdate?: string;
   education?: string;
   occupation?: string;
-  location?: string;
+  zipcode?: string;
 }
 
 interface State {
@@ -48,7 +48,7 @@ interface State {
   birthdate: Date;
   education: string;
   occupation: string;
-  location: string;
+  zipcode: string;
   geolocation: GoogleGeoLocation | null;
   errors: StateErrors;
 }
@@ -70,19 +70,19 @@ class Register2 extends React.Component<Props, State> {
     birthdate: this.eighteenYearsAgoToday.toDate(),
     education: "",
     occupation: "",
-    location: "",
+    zipcode: "",
     geolocation: null,
     errors: {}
   };
 
-  lookupLocation = async () => {
-    const { location } = this.state;
+  lookupZipcode = async () => {
+    const { zipcode } = this.state;
     if (
-      !validator.isEmpty(location) &&
-      validator.isPostalCode(location, "US")
+      !validator.isEmpty(zipcode) &&
+      validator.isPostalCode(zipcode, "US")
     ) {
       const geolocation: GoogleGeoLocation = await googleMaps.geocodeByZipCode(
-        location
+        zipcode
       );
       this.setState({ geolocation });
     } else {
@@ -155,11 +155,11 @@ class Register2 extends React.Component<Props, State> {
               }
               keyboardType="number-pad"
               label={`ZIP CODE${this.formattedGeo()}`}
-              errorHint={errors.location}
+              errorHint={errors.zipcode}
               autoCorrect={false}
               autoCapitalize="words"
-              onChangeText={this.onChangeText("location")}
-              onBlur={this.lookupLocation}
+              onChangeText={this.onChangeText("zipcode")}
+              onBlur={this.lookupZipcode}
             />
             <View style={{ marginVertical: 10 }}>
               <PrimaryButton title="Next" onPress={this.validate} />
@@ -191,7 +191,7 @@ class Register2 extends React.Component<Props, State> {
   private validate = () => {
     const errors: StateErrors = {};
     const { navigation, onSave } = this.props;
-    const { gender, education, occupation, birthdate, location } = this.state;
+    const { gender, education, occupation, birthdate, zipcode } = this.state;
 
     if (GenderPicker.Genders.indexOf(gender) < 0) {
       errors.gender = "Please select a gender";
@@ -211,10 +211,10 @@ class Register2 extends React.Component<Props, State> {
       errors.occupation = "Please enter your occupation";
     }
 
-    if (validator.isEmpty(location)) {
-      errors.location = "Please enter a Postal Code";
-    } else if (!validator.isPostalCode(location, "US")) {
-      errors.location = "Please enter a valid Postal Code";
+    if (validator.isEmpty(zipcode)) {
+      errors.zipcode = "Please enter a Postal Code";
+    } else if (!validator.isPostalCode(zipcode, "US")) {
+      errors.zipcode = "Please enter a valid Postal Code";
     }
 
     if (Object.keys(errors).length) {
@@ -224,7 +224,7 @@ class Register2 extends React.Component<Props, State> {
 
     onSave({
       gender,
-      location,
+      zipcode,
       school: education,
       occupation,
       birthdate: birthdate.toISOString().split("T")[0]

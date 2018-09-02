@@ -14,7 +14,7 @@ interface User {
   last_name: string;
   email: string;
   birthdate: Date;
-  location: string;
+  zipcode: string;
   occupation: string;
   school: string;
   gender: Gender;
