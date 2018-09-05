@@ -14,7 +14,6 @@ import { selectCurrentUser } from 'src/store/selectors/user';
 import User from 'src/models/user';
 import { DecoratedConversation, ConversationNewMessage } from 'src/models/conversation';
 import WonderAppState from 'src/models/wonder-app-state';
-import Chat from 'src/models/chat';
 import ChatResponseMessage from 'src/models/chat-response-message';
 import { AppointmentState, persistAppointmentData } from 'src/store/reducers/appointment';
 import { DOMAIN } from 'src/services/api';
@@ -36,7 +35,7 @@ const mapState = (state: WonderAppState) => ({
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onGetMessage: (userId: number) => dispatch(getConversation(userId)),
+  onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
   onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data))
@@ -77,10 +76,9 @@ class ChatScreen extends React.Component<Props> {
 
   componentWillUnmount() {
     if (this.appChat) {
-      // this.cable.subscriptions.remote(this.appChat);
+      this.cable.subscriptions.remove(this.appChat);
     }
   }
-
 
   scheduleWonder = () => {
     const { navigation, conversation, onUpdateAppointment } = this.props;

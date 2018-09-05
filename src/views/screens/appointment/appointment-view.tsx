@@ -12,7 +12,7 @@ import {
   TextButton,
   SecondaryButton
 } from 'src/views/components/theme';
-import { ScrollView, View, StyleSheet, Linking, Alert } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import AppointmentReviewModal from 'src/views/components/modals/appointment-review-modal';
 
@@ -22,10 +22,13 @@ import Avatar from 'src/views/components/theme/avatar';
 import User from 'src/models/user';
 import { DecoratedAppointment } from 'src/models/appointment';
 import WonderAppState from 'src/models/wonder-app-state';
-import theme from '../../../assets/styles/theme';
+import theme from 'src/assets/styles/theme';
+import { getConversation } from 'src/store/sagas/conversations';
+import { isAppointmentBeforeToday } from 'src/utils/appointment';
+import { callPhoneNumber } from 'src/services/communication';
+import UserService from 'src/services/uber';
+import AmazonService from 'src/services/amazon';
 import { Toast } from 'native-base';
-import { getConversation } from '../../../store/sagas/conversations';
-import { isAppointmentBeforeToday } from '../../../utils/appointment';
 
 interface AppointmentViewProps {
   currentUser: User;
@@ -43,7 +46,7 @@ const mapState = (state: WonderAppState) => ({
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onGetConversation: (partnerId: number) => dispatch(getConversation(partnerId))
+  onGetConversation: (partnerId: number) => dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -72,19 +75,36 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     this.setState({ isModalOpen: false });
   }
 
-  onCall = async (url: string) => {
-    try {
-      const supported = await Linking.canOpenURL(url);
-      if (supported) {
-        await Linking.openURL(url);
-      }
-    } catch (error) {
-      Toast.show({ text: `Cannot open ${url}` });
-    }
+  onCall = async (url?: string | null) => {
+    await callPhoneNumber(url);
   }
 
   onServicePress = (url: string) => {
     Alert.alert('Third Party', `This would go to ${url}`);
+  }
+
+  onUber = async () => {
+    const { navigation } = this.props;
+    const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
+    const { location, longitude, latitude, } = appointment;
+
+    await UserService.scheduleUber({
+      formattedAddress: location,
+      longitude,
+      latitude
+    });
+  }
+
+  onAmazon = async () => {
+    const { navigation } = this.props;
+    const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
+    const { topic } = appointment;
+
+    if (topic) {
+      await AmazonService.search(topic.name);
+    } else {
+      Toast.show({ text: 'Unable to launch amazon, missing topic' });
+    }
   }
 
   goToChat = () => {
@@ -92,7 +112,6 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
 
     onGetConversation(appointment.match.id);
-    navigation.navigate('Chat');
   }
 
   render() {
@@ -118,7 +137,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               <TextButton
                 btnStyle={{ alignSelf: 'center' }}
                 text="appointment.phone"
-                onPress={() => this.onCall(`tel:${appointment.phone}`)}
+                onPress={() => this.onCall(appointment.phone)}
               />
             )}
             {appointment.eventMoment && (
@@ -141,7 +160,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                     icon="car"
                     primary={theme.colors.primaryLight}
                     secondary="transparent"
-                    onPress={() => this.onServicePress('Uber')}
+                    onPress={this.onUber}
                   />
                   <Text style={styles.btnLabel}>Catch a Ride</Text>
                 </View>
@@ -156,7 +175,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                     icon="shopping-cart"
                     primary={theme.colors.primaryLight}
                     secondary="transparent"
-                    onPress={() => this.onServicePress('Amazon')}
+                    onPress={this.onAmazon}
                   />
                   <Text style={styles.btnLabel}>Shop Amazon</Text>
                 </View>

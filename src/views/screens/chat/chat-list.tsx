@@ -12,7 +12,6 @@ import { selectCurrentUser } from 'src/store/selectors/user';
 import Conversation from 'src/models/conversation';
 import WonderAppState from 'src/models/wonder-app-state';
 import Chat from 'src/models/chat';
-import ChatSocket from '../../../services/chat-websocket';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -28,7 +27,7 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onRefreshConversations: () => dispatch(getConversations()),
-  onGetConversation: (partnerId: number) => dispatch(getConversation(partnerId))
+  onGetConversation: (partnerId: number) => dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
 });
 
 class ChatListScreen extends React.Component<Props> {
@@ -39,7 +38,6 @@ class ChatListScreen extends React.Component<Props> {
   goToChat = (chat: Chat) => {
     const { navigation, onGetConversation } = this.props;
     onGetConversation(chat.partner.id);
-    navigation.navigate('Chat', { chat });
   }
 
   render() {
