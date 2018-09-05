@@ -14,10 +14,10 @@ export default interface Appointment {
   name: string; // Activity name
   phone: string | null;
   location: string;
-  latitude?: number;
-  longitude?: number;
+  latitude: number;
+  longitude: number;
   event_at: Date;
-  topic: Topic;
+  topic: Topic | null;
   owner: AppointmentUser;
   users: AppointmentUser[];
 

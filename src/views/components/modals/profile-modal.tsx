@@ -35,7 +35,7 @@ class ProfileModal extends React.Component<Props> {
             end={{ x: 0, y: 1 }}
             locations={[0, 0.3]}
           >
-            <View>
+            <View flex={1}>
               <Title style={{ fontSize: 24 }} color="#FFF">
                 {[candidate.first_name, moment().diff(candidate.birthdate, 'years')].join(', ')}
               </Title>
@@ -49,7 +49,7 @@ class ProfileModal extends React.Component<Props> {
                   />
                 ))}
               </View>
-              <Text color="#FFF">{candidate.occupation} - {candidate.school}</Text>
+              <Text color="#FFF">{candidate.occupation}{'\n'}{candidate.school}</Text>
               {candidate.about && <Text color="#FFF">{candidate.about}</Text>}
             </View>
             <View style={{ justifyContent: 'flex-end' }}>
