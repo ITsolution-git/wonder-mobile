@@ -27,7 +27,7 @@ export function* getPartnersSaga(action: Action<any>) {
     // yield persistPar
   } catch (error) {
     if (error.response) {
-      Alert.alert('ERROR', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -60,7 +60,7 @@ export function* getPartnerActivitiesSaga(action: Action<any>) {
     // yield put(persistUser(data));
   } catch (error) {
     if (error.response) {
-      Alert.alert('ERROR', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -88,7 +88,7 @@ export function* getActivityDetailsSaga(action: Action<any>) {
     // yield put(persistUser(data));
   } catch (error) {
     if (error.response) {
-      Alert.alert('ERROR', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }

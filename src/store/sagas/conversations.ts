@@ -8,6 +8,7 @@ import { persistConversations, persistConversation, persistNewMessage } from '..
 import Conversation from '../../models/conversation';
 import WonderAppState from '../../models/wonder-app-state';
 import ChatResponseMessage from '../../models/chat-response-message';
+import navigation from '../../services/navigation';
 
 // Get all conversations (Chats)
 export const GET_CONVERSATIONS = 'GET_CONVERSATIONS';
@@ -24,7 +25,7 @@ export function* getConversationsSaga(action: Action<any>) {
     yield put(persistConversations(data));
   } catch (error) {
     if (error.response) {
-      Alert.alert('ERROR', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -41,16 +42,19 @@ export const GET_CONVERSATION = 'GET_CONVERSATION';
 export const getConversation = createAction(GET_CONVERSATION);
 export function* getConversationSaga(action: Action<any>) {
   try {
+    const { id, successRoute } = action.payload;
     const state: WonderAppState = yield select();
-
     const { data }: { data: Conversation[] } = yield call(api, {
       method: 'GET',
-      url: `/conversations/${action.payload}/messages`
+      url: `/conversations/${id}/messages`
     }, state.user);
     yield put(persistConversation(data));
+    if (successRoute) {
+      navigation.navigate(successRoute);
+    }
   } catch (error) {
     if (error.response) {
-      Alert.alert('ERROR', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -78,7 +82,7 @@ export function* sendMessageSaga(action: Action<any>) {
     yield put(persistNewMessage(data));
   } catch (error) {
     if (error.response) {
-      Alert.alert('ERROR', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }

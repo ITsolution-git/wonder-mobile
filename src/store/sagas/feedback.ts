@@ -23,7 +23,7 @@ export function* submitFeedbackSaga(action: Action<any>) {
     }
   } catch (error) {
     if (error.response) {
-      Alert.alert('ERROR', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }

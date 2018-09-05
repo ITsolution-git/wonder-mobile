@@ -32,7 +32,7 @@ export function* registerUserSaga(action: Action<any>) {
     yield put(loginUser({ email, password }));
   } catch (error) {
     if (error.response) {
-      Alert.alert('ERROR', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -68,7 +68,7 @@ export function* loginUserSaga(action: Action<UserCredentials>) {
     }
   } catch (error) {
     if (error.response) {
-      Alert.alert('API Error', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -109,7 +109,7 @@ export function* getUserSaga(action: Action<any>) {
     yield put(persistUser(data));
   } catch (error) {
     if (error.response) {
-      Alert.alert('API Error', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -142,7 +142,7 @@ export function* updateUserSaga(action: Action<any>) {
     yield put(persistUser(data));
   } catch (error) {
     if (error.response) {
-      Alert.alert('API Error', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -177,7 +177,7 @@ export function* updateImageSaga(action: Action<any>) {
     yield put(getUser());
   } catch (error) {
     if (error.response) {
-      Alert.alert('API Error', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -208,7 +208,7 @@ export function* deleteProfileImageSaga(action: Action<any>) {
     }
   } catch (error) {
     if (error.response) {
-      Alert.alert('API Error', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -237,7 +237,7 @@ export function* deleteProfileVideoSaga(action: Action<any>) {
 
   } catch (error) {
     if (error.response) {
-      Alert.alert('API Error', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -272,7 +272,7 @@ export function* updateVideoSaga(action: Action<any>) {
     yield put(getUser());
   } catch (error) {
     if (error.response) {
-      Alert.alert('API Error', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }

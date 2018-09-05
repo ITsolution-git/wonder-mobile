@@ -26,7 +26,7 @@ export function* getAppointmentsSaga(action: Action<any>) {
     // yield put(resetRegistration());
   } catch (error) {
     if (error.response) {
-      Alert.alert('ERROR', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error);
     }
@@ -73,7 +73,7 @@ export function* createAppointmentSaga(action: Action<any>) {
     NavigatorService.popToTop();
   } catch (error) {
     if (error.response) {
-      Alert.alert('ERROR', JSON.stringify(error.response.data));
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
     } else {
       console.warn(error.message);
     }
