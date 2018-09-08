@@ -54,7 +54,7 @@ class AppLoadingScreen extends React.Component<Props> {
   
 
   onPNRegister = (token:any) => {
-    this.props.onSave({apn_device_id: token.token, apn_device_name: token.os});
+    this.props.onSave({ push_device_id: token.token, push_device_type: token.os});
   }
 
   onPNNotification = (notification:PushNotification) => {

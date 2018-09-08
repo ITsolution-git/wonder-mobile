@@ -9,5 +9,6 @@ export default {
   ONBOARDING_1: require('./backgrounds/onboard_1.png'),
   ONBOARDING_2: require('./backgrounds/onboard_2.png'),
   ONBOARDING_3: require('./backgrounds/onboard_3.png'),
-  WELCOME: require('./backgrounds/welcome.png')
+  WELCOME: require('./backgrounds/welcome.png'),
+  GhostButton: require('./buttons/ghosting.png')
 };
