@@ -5,7 +5,6 @@ import android.app.Application;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
 import com.horcrux.svg.SvgPackage;
-import com.evollu.react.fcm.FIRMessagingPackage;
 import io.codebakery.imagerotate.ImageRotatePackage;
 import com.imagepicker.ImagePickerPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
@@ -35,7 +34,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new SvgPackage(),
-            new FIRMessagingPackage(),
             new ImageRotatePackage(),
             new ImagePickerPackage(),
             new ReactNativePushNotificationPackage(),

@@ -5,7 +5,7 @@ const colors = {
   white: '#FFF',
   black: '#000',
   primary: '#F68E56',
-  primaryLight: 'rgb(251, 223, 194)',
+  primaryLight: 'rgb(251, 223, 194)', // If this changes, don't forget to update /android/app/src/main/res/values/colors.xml
   // primaryLight: '#FDE0C1',
   secondary: 'rgb(255, 238, 75)',
   backgroundPrimary: '#ECECEC',

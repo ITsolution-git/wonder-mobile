@@ -19,7 +19,6 @@ import {
   persistRegistrationInfo,
   resetRegistration
 } from "src/store/reducers/registration";
-import FCM from "react-native-fcm";
 import { KeyboardDismissView } from "src/views/components/keyboard-dismiss-view";
 
 interface Props {
@@ -75,13 +74,7 @@ class Register1 extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    FCM.requestPermissions();
-    FCM.getFCMToken().then(token => {
-      this.setState({
-        push_device_id: token,
-        push_device_type: 'fcm'
-      });
-    });
+
   }
 
   componentWillMount() {

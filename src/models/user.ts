@@ -32,6 +32,8 @@ interface User {
   distance_unit?: DistanceUnit;
   apn_new_matches?: boolean;
   apn_new_messages?: boolean;
+  apn_device_id?: string;
+  apn_device_name?: string;
   apn_message_likes?: boolean;
   apn_message_super_likes?: boolean;
   ghosts_cache?: number;

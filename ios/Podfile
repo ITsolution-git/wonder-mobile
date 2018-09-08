@@ -42,7 +42,6 @@ target 'WonderApp' do
 
   pod 'react-native-video', :path => '../node_modules/react-native-video'
 
-  pod 'react-native-fcm', :path => '../node_modules/react-native-fcm'
   pod 'Firebase'
   pod 'Firebase/Messaging'
   pod 'react-native-image-picker', :path => '../node_modules/react-native-image-picker'
