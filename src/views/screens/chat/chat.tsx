@@ -3,7 +3,7 @@ import React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import Screen from 'src/views/components/screen';
 import theme from 'src/assets/styles/theme';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import ChatActionButton from 'src/views/components/chat/chat-action-button';
 import { connect } from 'react-redux';
@@ -13,10 +13,14 @@ import { getDecoratedConversation } from 'src/store/selectors/conversation';
 import { selectCurrentUser } from 'src/store/selectors/user';
 import User from 'src/models/user';
 import { DecoratedConversation, ConversationNewMessage } from 'src/models/conversation';
+import ChatGhostingModal from '../../components/modals/chat-ghosting-modal';
 import WonderAppState from 'src/models/wonder-app-state';
 import ChatResponseMessage from 'src/models/chat-response-message';
 import { AppointmentState, persistAppointmentData } from 'src/store/reducers/appointment';
 import { DOMAIN } from 'src/services/api';
+import { IconButton } from '../../components/theme';
+import Assets from 'src/assets/images';
+
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -26,6 +30,10 @@ interface Props {
   onGetMessage: (userId: number) => void;
   onSendMessage: (chatMessage: ConversationNewMessage) => void;
   onUpdateAppointment: (data: AppointmentState) => void;
+}
+
+interface ChatViewState {
+  isGhostingModalOpen: boolean;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -47,6 +55,10 @@ class ChatScreen extends React.Component<Props> {
   static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<any, NavigationParams> }) => ({
     title: 'Chat',
   })
+
+  state: ChatViewState = {
+    isGhostingModalOpen: false
+  }
 
   componentWillMount() {
     const { conversation, token, onGetMessage } = this.props;
@@ -86,6 +98,20 @@ class ChatScreen extends React.Component<Props> {
     navigation.navigate('WonderMap', { id: conversation.partner.id });
   }
 
+  ghostPartner = (ghostMessage: string) => {
+    const { conversation } = this.props;
+    this.props.conversation.giftedChatMessages.push(new GiftedChatMessage())
+    this.appChat.deliver(ghostMessage)  //  Send the message
+  }
+
+  openGhostingModal = () => {
+    this.setState({ isGhostingModalOpen: true });
+  }
+
+  closeGhostingModal = () => {
+    this.setState({ isGhostingModalOpen: false });
+  }
+
   onSend = (messages: ChatResponseMessage[] = []) => {
     this.appChat.deliver(messages[0].text);
   }
@@ -108,6 +134,10 @@ class ChatScreen extends React.Component<Props> {
             title="Schedule Wonder"
             onPress={this.scheduleWonder}
           />
+          <TouchableOpacity onPress={this.openGhostingModal}>
+            <Image source={Assets.GhostButton} />
+          </TouchableOpacity>
+          
         </View>
       </View>
     );
@@ -123,6 +153,10 @@ class ChatScreen extends React.Component<Props> {
           messages={conversation.giftedChatMessages}
           renderFooter={this.renderFooter}
           onSend={this.onSend}
+        />
+        <ChatGhostingModal
+          onSuccess = { this.ghostPartner }
+          onCancel = { this.closeGhostingModal}
         />
       </Screen>
     );
@@ -176,5 +210,8 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0
-  }
+  },
+  ghostButtonStyle: {
+
+  },
 });
