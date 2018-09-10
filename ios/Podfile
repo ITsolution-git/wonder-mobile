@@ -50,6 +50,7 @@ target 'WonderApp' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+
 end
 
 post_install do |installer|

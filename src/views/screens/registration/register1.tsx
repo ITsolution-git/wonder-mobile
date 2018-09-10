@@ -73,10 +73,6 @@ class Register1 extends React.Component<Props, State> {
     push_device_type: ''
   };
 
-  componentDidMount() {
-
-  }
-
   componentWillMount() {
     this.props.onReset();
   }
@@ -85,7 +81,7 @@ class Register1 extends React.Component<Props, State> {
     if (this.inputs[key]) {
       this.inputs[key].focus();
     }
-  };
+  }
 
   render() {
     const { errors } = this.state;
@@ -110,7 +106,7 @@ class Register1 extends React.Component<Props, State> {
             <View style={styles.body}>
               <View style={{ width: "100%" }}>
                 <RoundedTextInput
-                  getRef={input => {
+                  getRef={(input: any) => {
                     this.inputs.first_name = input;
                   }}
                   onSubmitEditing={this.focusNext("last_name")}
@@ -130,7 +126,7 @@ class Register1 extends React.Component<Props, State> {
               </View>
               <View style={{ marginTop: 10, width: "100%" }}>
                 <RoundedTextInput
-                  getRef={input => {
+                  getRef={(input: any) => {
                     this.inputs.last_name = input;
                   }}
                   onSubmitEditing={this.focusNext("email")}
@@ -150,7 +146,7 @@ class Register1 extends React.Component<Props, State> {
               </View>
               <View style={{ marginTop: 10, width: "100%" }}>
                 <RoundedTextInput
-                  getRef={input => {
+                  getRef={(input: any) => {
                     this.inputs.email = input;
                   }}
                   onSubmitEditing={this.focusNext("phone")}
@@ -168,7 +164,7 @@ class Register1 extends React.Component<Props, State> {
               </View>
               <View style={{ marginTop: 10, width: "100%" }}>
                 <RoundedTextInput
-                  getRef={input => {
+                  getRef={(input: any) => {
                     this.inputs.phone = input;
                   }}
                   onSubmitEditing={this.focusNext("password")}
@@ -250,12 +246,13 @@ class Register1 extends React.Component<Props, State> {
     }
     onSave({ first_name, last_name, email, phone, password, push_device_id, push_device_type });
     navigation.navigate("Register2");
-  };
+  }
 
   private onChangeText = (key: string) => {
     const { errors } = this.state;
     return (text: string) => {
       this.setState({
+        ...this.state,
         [key]: text,
         errors: {
           ...errors,
@@ -263,7 +260,7 @@ class Register1 extends React.Component<Props, State> {
         }
       });
     };
-  };
+  }
 }
 
 export default connect(
