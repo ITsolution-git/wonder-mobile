@@ -13,7 +13,6 @@ import SupportMessage from 'src/models/support-message';
 import WonderAppState from 'src/models/wonder-app-state';
 import { Content } from 'native-base';
 
-
 interface FeedbackScreenProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
   onSubmitFeedback: (body: SupportMessage) => any;
