@@ -857,6 +857,10 @@
     "@types/react-native" "*"
     "@types/xdate" "*"
 
+"@types/react-native-push-notification@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@types/react-native-push-notification/-/react-native-push-notification-3.0.2.tgz#ab732ada08b18e060e3a53c6ecf67dc9258edfea"
+
 "@types/react-native-vector-icons@^4.6.1":
   version "4.6.3"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-4.6.3.tgz#eb0e487c1bfbd8c9c68a297eb03d494420bb5e6b"
@@ -5310,10 +5314,6 @@ react-native-easy-grid@0.2.0:
   resolved "https://registry.yarnpkg.com/react-native-easy-grid/-/react-native-easy-grid-0.2.0.tgz#4718031aa1baaa2613b829fc807da288eb0d2797"
   dependencies:
     lodash "^4.11.1"
-
-react-native-fcm@^16.2.0:
-  version "16.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-fcm/-/react-native-fcm-16.2.0.tgz#abd6ca80337080279d13c561753025ef44fa655b"
 
 react-native-gifted-chat@^0.4.3:
   version "0.4.3"
