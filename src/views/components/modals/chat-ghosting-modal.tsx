@@ -1,53 +1,48 @@
 import React from 'react';
 import { Modal, View, ModalProps, StyleSheet, Platform } from 'react-native';
-import { IconButton, TextArea, Title, PrimaryButton } from '../theme';
+import { IconButton, TextArea, Title, PrimaryButton, Text } from '../theme';
 
 import TouchableOpacityOnPress from '../../../models/touchable-on-press';
 import LinearGradient from 'react-native-linear-gradient';
+import theme from 'src/assets/styles/theme';
 
 interface Props extends ModalProps {
     onCancel?: TouchableOpacityOnPress;
-    onSuccess?: Function;
+    onSuccess?: TouchableOpacityOnPress;
 }
 
 class ChatGhostingModal extends React.Component<Props> {
     state = {
         ghostMessage: 'It’s been fun chatting but I’m not interested at the moment.'
-    }
+    };
 
     renderContent = () => {
         const { onCancel, onSuccess } = this.props;
 
         return (
             <LinearGradient
-                style={styles.textContainer}
-                colors={['transparent', 'rgb(22,22,22)']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 0, y: 1 }}
-                locations={[0, 0.3]}
+                colors={[theme.colors.cottonCandyBlue, theme.colors.cottonCandyPink]} 
+                style={styles.modal}
             >
-                <View flex={1}>
+                <View flexDirection={"column"} flex={1}>
                     <Title style={{ fontSize: 24 }} color="#FFF">
-                        {'Poof!'}
+                        {'Poof! Time to disappear!'}
                     </Title>
-                    <View style={{ flexDirection: 'row' }}>
+                    <View>
+                        <Text style={{color: '#333'}}>Ghosting is pseudo-permanent. Say something nice.</Text>
                         <TextArea
                             onChangeText={(ghostMessage) => this.setState({ghostMessage})}
-                            value = {this.state.ghostMessage} 
-                            style={{ minHeight: 100 }}
-                            />
+                            value={this.state.ghostMessage}
+                            style={{ backgroundColor: 'white', minHeight: 100 }}
+                        />
+                    </View>
+                    <View flex={1} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
+                        <PrimaryButton title="Submit" onPress={onSuccess} />
+                        <PrimaryButton title="Cancel" onPress={onCancel} />
                     </View>
                 </View>
-                <View height={48}>
-                <View flex={1}>
-                        <PrimaryButton title="Submit" onPress={onSuccess} />
-                </View>
-                <View style={{ justifyContent: 'flex-end' }}>
-                    <IconButton size={44} icon="chevron-down" onPress={onCancel} primary="#FFF" secondary="transparent" />
-                </View>
-                </View>
             </LinearGradient>
-        )
+        );
 
     }
 
@@ -58,18 +53,22 @@ class ChatGhostingModal extends React.Component<Props> {
                 onRequestClose={onRequestClose}
                 {...rest}
             >
-                <View flex={1}>
+                <View flex={1} style={{maxHeight: 300}}>
                     {this.renderContent()}
                 </View>
             </Modal>
         );
     }
-};
-
+}
 
 export default ChatGhostingModal;
 
 const styles = StyleSheet.create({
+    modal: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 20
+    },
     header: {
         marginTop: Platform.select({ ios: 20, android: 0 }),
         height: 44,

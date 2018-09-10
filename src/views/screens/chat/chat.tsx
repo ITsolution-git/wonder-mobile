@@ -13,6 +13,7 @@ import { getDecoratedConversation } from 'src/store/selectors/conversation';
 import { selectCurrentUser } from 'src/store/selectors/user';
 import User from 'src/models/user';
 import { DecoratedConversation, ConversationNewMessage } from 'src/models/conversation';
+import GiftedChatMessage from 'src/models/chat-message';
 import ChatGhostingModal from '../../components/modals/chat-ghosting-modal';
 import WonderAppState from 'src/models/wonder-app-state';
 import ChatResponseMessage from 'src/models/chat-response-message';
@@ -20,7 +21,6 @@ import { AppointmentState, persistAppointmentData } from 'src/store/reducers/app
 import { DOMAIN } from 'src/services/api';
 import { IconButton } from '../../components/theme';
 import Assets from 'src/assets/images';
-
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -58,7 +58,7 @@ class ChatScreen extends React.Component<Props> {
 
   state: ChatViewState = {
     isGhostingModalOpen: false
-  }
+  };
 
   componentWillMount() {
     const { conversation, token, onGetMessage } = this.props;
@@ -69,13 +69,13 @@ class ChatScreen extends React.Component<Props> {
       recipient_id: conversation.partner.id
     }, {
         connected() {
-          console.log('Connected to Chat', conversation.id);
+          // console.log('Connected to Chat', conversation.id);
           // this.perform('deliver', { body: new Date().toString() });
           // this.perform('read', { message_id: conversation.partner.id });
         },
         received: (data: any) => {
           onGetMessage(conversation.partner.id);
-          console.log('message', data);
+          // console.log('message', data);
         },
         deliver(message: string) {
           this.perform('deliver', { body: message });
@@ -99,9 +99,9 @@ class ChatScreen extends React.Component<Props> {
   }
 
   ghostPartner = (ghostMessage: string) => {
-    const { conversation } = this.props;
-    this.props.conversation.giftedChatMessages.push(new GiftedChatMessage())
-    this.appChat.deliver(ghostMessage)  //  Send the message
+    // const { conversation, currentUser } = this.props;
+    // this.props.conversation.giftedChatMessages.push(new GiftedChatMessage())
+    this.appChat.deliver(ghostMessage);  //  Send the message
   }
 
   openGhostingModal = () => {
@@ -129,15 +129,14 @@ class ChatScreen extends React.Component<Props> {
   renderFooter = () => {
     return (
       <View style={{ marginBottom: 10, flexDirection: 'row', justifyContent: 'center' }}>
-        <View style={{ width: '50%' }}>
+        <View style={{ width: '50%' }} flexDirection={"row"}>
           <ChatActionButton
             title="Schedule Wonder"
             onPress={this.scheduleWonder}
           />
-          <TouchableOpacity onPress={this.openGhostingModal}>
-            <Image source={Assets.GhostButton} />
+          <TouchableOpacity onPress={this.openGhostingModal} style={styles.ghostButtonStyle}>
+            <Image source={Assets.GhostButton} style={{width: 32, height: 36}} />
           </TouchableOpacity>
-          
         </View>
       </View>
     );
@@ -155,8 +154,9 @@ class ChatScreen extends React.Component<Props> {
           onSend={this.onSend}
         />
         <ChatGhostingModal
-          onSuccess = { this.ghostPartner }
-          onCancel = { this.closeGhostingModal}
+          visible={this.state.isGhostingModalOpen}
+          onSuccess={this.ghostPartner}
+          onCancel={this.closeGhostingModal}
         />
       </Screen>
     );
@@ -212,6 +212,9 @@ const styles = StyleSheet.create({
     right: 0
   },
   ghostButtonStyle: {
-
+    paddingLeft: 12,
+    paddingRight: 12,
+    borderRadius: 10,
+    backgroundColor: '#FFF'
   },
 });
