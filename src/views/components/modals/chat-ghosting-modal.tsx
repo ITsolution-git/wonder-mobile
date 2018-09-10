@@ -51,6 +51,7 @@ class ChatGhostingModal extends React.Component<Props> {
         return (
             <Modal
                 onRequestClose={onRequestClose}
+                transparent
                 {...rest}
             >
                 <View flex={1} style={{maxHeight: 300}}>
