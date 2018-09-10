@@ -22,7 +22,6 @@ import { DOMAIN } from 'src/services/api';
 import { IconButton } from '../../components/theme';
 import Assets from 'src/assets/images';
 
-
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   currentUser: User;
@@ -59,7 +58,7 @@ class ChatScreen extends React.Component<Props> {
 
   state: ChatViewState = {
     isGhostingModalOpen: false
-  }
+  };
 
   componentWillMount() {
     const { conversation, token, onGetMessage } = this.props;
@@ -70,13 +69,13 @@ class ChatScreen extends React.Component<Props> {
       recipient_id: conversation.partner.id
     }, {
         connected() {
-          console.log('Connected to Chat', conversation.id);
+          // console.log('Connected to Chat', conversation.id);
           // this.perform('deliver', { body: new Date().toString() });
           // this.perform('read', { message_id: conversation.partner.id });
         },
         received: (data: any) => {
           onGetMessage(conversation.partner.id);
-          console.log('message', data);
+          // console.log('message', data);
         },
         deliver(message: string) {
           this.perform('deliver', { body: message });
@@ -100,10 +99,9 @@ class ChatScreen extends React.Component<Props> {
   }
 
   ghostPartner = (ghostMessage: string) => {
-    //const { conversation, currentUser } = this.props;
-    
-    //this.props.conversation.giftedChatMessages.push(new GiftedChatMessage())
-    this.appChat.deliver(ghostMessage)  //  Send the message
+    // const { conversation, currentUser } = this.props;
+    // this.props.conversation.giftedChatMessages.push(new GiftedChatMessage())
+    this.appChat.deliver(ghostMessage);  //  Send the message
   }
 
   openGhostingModal = () => {
@@ -156,9 +154,9 @@ class ChatScreen extends React.Component<Props> {
           onSend={this.onSend}
         />
         <ChatGhostingModal
-          visible = { this.state.isGhostingModalOpen }
-          onSuccess = { this.ghostPartner }
-          onCancel = { this.closeGhostingModal}
+          visible={this.state.isGhostingModalOpen}
+          onSuccess={this.ghostPartner}
+          onCancel={this.closeGhostingModal}
         />
       </Screen>
     );
@@ -216,7 +214,7 @@ const styles = StyleSheet.create({
   ghostButtonStyle: {
     paddingLeft: 12,
     paddingRight: 12,
-    borderRadius:10,
+    borderRadius: 10,
     backgroundColor: '#FFF'
   },
 });
