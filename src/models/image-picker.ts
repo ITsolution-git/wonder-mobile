@@ -48,10 +48,3 @@ export interface Options {
   noData?: boolean;
   storageOptions?: StorageOptions;
 }
-
-
-// export class ImagePicker {
-//   static showImagePicker(options: Options, callback: (response: Response) => void): void;
-//   static launchCamera(options: Options, callback: (response: Response) => void): void;
-//   static launchImageLibrary(options: Options, callback: (response: Response) => void): void;
-// }

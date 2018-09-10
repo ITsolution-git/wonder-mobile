@@ -18,8 +18,8 @@ interface Props {
   items?: any;
   images?: any[];
   video?: any;
-  onNewPicture: (data: Response | null) => void;
-  onNewVideo: (data: Response | null) => void;
+  onNewPicture?: (data: Response | null) => void;
+  onNewVideo?: (data: Response | null) => void;
   gutter: number;
   width: number;
   currentUser: User;
