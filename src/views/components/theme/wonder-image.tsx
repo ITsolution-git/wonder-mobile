@@ -26,7 +26,7 @@ class WonderImage extends React.Component<Props> {
           <SvgUri
             height={_.get(style, 'height', 15)}
             width={_.get(style, 'width', 15)}
-            source={{ uri: `${BASE_URL}/${uri}` }}
+            source={{ uri: `${BASE_URL}/${uri}`, cache: "force-cache" }}
             {...rest}
           />
         );
@@ -34,7 +34,8 @@ class WonderImage extends React.Component<Props> {
 
       if (background) {
         return (
-          <ImageBackground style={style} {...rest} source={{ uri: `${BASE_URL}/${uri}` }}>
+          <ImageBackground
+            style={style} {...rest} source={{ uri: `${BASE_URL}/${uri}`, cache: "force-cache" }}>
             {children}
           </ImageBackground>
         );
@@ -42,7 +43,7 @@ class WonderImage extends React.Component<Props> {
       return (
         <Image
           style={style}
-          source={{ uri: `${BASE_URL}/${uri}` }}
+          source={{ uri: `${BASE_URL}/${uri}`, cache: "force-cache" }}
           {...rest}
         />
       );
