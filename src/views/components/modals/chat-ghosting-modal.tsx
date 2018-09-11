@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, View, ModalProps, StyleSheet, Platform } from 'react-native';
-import { IconButton, TextArea, Title, PrimaryButton, Text } from '../theme';
+import { IconButton, TextArea, Title, SecondaryButton, Text } from '../theme';
 
 import TouchableOpacityOnPress from '../../../models/touchable-on-press';
 import LinearGradient from 'react-native-linear-gradient';
@@ -21,24 +21,27 @@ class ChatGhostingModal extends React.Component<Props> {
 
         return (
             <LinearGradient
-                colors={[theme.colors.cottonCandyBlue, theme.colors.cottonCandyPink]} 
+                colors={['#FFF', '#feec5a', '#f48e5c']} 
                 style={styles.modal}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 0, y: 1 }}
+                locations={[0.5, 0.8, 1]}
             >
                 <View flexDirection={"column"} flex={1}>
-                    <Title style={{ fontSize: 24 }} color="#FFF">
-                        {'Poof! Time to disappear!'}
+                    <Title style={{ fontSize: 24 }} color="#333">
+                        {'Time to disappear!'}
                     </Title>
                     <View>
-                        <Text style={{color: '#333'}}>Ghosting is pseudo-permanent. Say something nice.</Text>
+                        <Text style={{color: '#333'}}>Curb-kickin' time?</Text>
                         <TextArea
                             onChangeText={(ghostMessage) => this.setState({ghostMessage})}
                             value={this.state.ghostMessage}
                             style={{ backgroundColor: 'white', minHeight: 100 }}
                         />
                     </View>
-                    <View flex={1} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
-                        <PrimaryButton title="Submit" onPress={onSuccess} />
-                        <PrimaryButton title="Cancel" onPress={onCancel} />
+                    <View flex={1} style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 12 }}>
+                        <SecondaryButton title="Submit" onPress={onSuccess} />
+                        <SecondaryButton title="Cancel" onPress={onCancel} />
                     </View>
                 </View>
             </LinearGradient>
@@ -69,6 +72,10 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: 20
+    },
+    modalButton: {
+        maxWidth: 100,
+        backgroundColor: '#aaa'
     },
     header: {
         marginTop: Platform.select({ ios: 20, android: 0 }),
