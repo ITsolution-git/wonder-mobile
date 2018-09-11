@@ -1,7 +1,7 @@
 import React from 'react';
-import { DeckSwiper, Card, CardItem, Body } from 'native-base';
+import { DeckSwiper } from 'native-base';
 import { Text, Title, WonderImage, SubTitle, IconButton } from '../theme';
-import { View, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, TouchableWithoutFeedback, Dimensions, Animated } from 'react-native';
 
 import moment from 'moment-timezone';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -11,49 +11,59 @@ import Wonder from '../theme/wonder/wonder';
 import Proposal from 'src/models/proposal';
 import ProfileImage from 'src/models/profile-image';
 import Topic from '../../../models/topic';
+import Candidate from '../../../models/candidate';
+
+const deviceHeight = Dimensions.get('window').height
 
 interface Props {
   proposal: Proposal | null;
   onSwipeLeft: Function;
   onSwipeRight: Function;
-  onTap?: Function;
 }
 
-class ProposalSwiper extends React.Component<Props> {
+interface CardDetailsOverlayProps {
+  candidate: Candidate;
+  children: any;
+}
 
-  renderProfileImage = (images?: ProfileImage[]) => {
-    if (images && images.length) {
-      return (
-        <View style={styles.noImageContainer}>
-          <WonderImage
-            style={{ width: '100%', height: '100%' }}
-            uri={images[0].url}
-            resizeMode="cover"
-
-          />
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.noImageContainer}>
-          <Icon name="user" color="#CCC" size={100} />
-        </View>
-      );
+class CardDetailsOverlay extends React.Component<CardDetailsOverlayProps> {
+  constructor(props){
+    super(props)
+    const animation = new Animated.Value()
+    animation.setValue(0)
+    this.state = {
+      showDetails: false,
+      animation,
     }
   }
 
-  renderCard = (proposal: Proposal) => {
-    const { onTap } = this.props;
-    const { candidate } = proposal;
-
-    const onPress = () => {
-      if (onTap) {
-        onTap(candidate);
+  const toggleDetails = () => {
+    const showDetails = !this.state.showDetails
+    const { contentHeight } = this.state
+    const fromValue = showDetails ? 0 : contentHeight
+    const toValue = showDetails ? contentHeight : 0
+    this.state.animation.setValue(fromValue)
+    Animated.timing(
+      this.state.animation,
+      {
+        toValue,
+        duration: 100,
       }
-    };
+    ).start()
+    this.setState({showDetails})
+  }
 
+  render(){
+    const { showDetails } = this.state
+    const { candidate } = this.props
+    const details = (
+      <React.Fragment>
+        <Text color="#FFF">{candidate.occupation}{'\n'}{candidate.school}</Text>
+        { candidate.about && <Text color="#FFF">{candidate.about}</Text>}
+      </React.Fragment>
+    )
     return (
-      <TouchableOpacity onPress={onPress}>
+      <TouchableWithoutFeedback style={styles.cardOverlayContainer} onPress={this.toggleDetails}>
         <WonderImage
           background
           uri={candidate.images[0].url}
@@ -80,21 +90,56 @@ class ProposalSwiper extends React.Component<Props> {
                   />
                 ))}
               </View>
-              <Text color="#FFF">{candidate.occupation}{'\n'}{candidate.school}</Text>
-              {candidate.about && <Text color="#FFF">{candidate.about}</Text>}
+              <Animated.View style={{height: this.state.animation}}>
+                {details}
+              </Animated.View>
+              <View style={{position: 'absolute', bottom: (-deviceHeight)}} onLayout={(event) => this.setState({contentHeight: event.nativeEvent.layout.height})}>
+                {details}
+              </View>
             </View>
             <View style={{ justifyContent: 'flex-end' }}>
-              <IconButton size={44} icon="chevron-up" onPress={onPress} primary="#FFF" secondary="transparent" />
+              <IconButton
+                size={44}
+                icon={showDetails ? "chevron-down"  : "chevron-up"}
+                onPress={this.toggleDetails}
+                primary="#FFF"
+                secondary="transparent" />
             </View>
           </LinearGradient>
         </WonderImage>
-      </TouchableOpacity>
-    );
+      </TouchableWithoutFeedback>
+    )
   }
+}
+
+class ProposalSwiper extends React.Component<Props> {
+
+  renderProfileImage = (images?: ProfileImage[]) => {
+    if (images && images.length) {
+      return (
+        <View style={styles.noImageContainer}>
+          <WonderImage
+            style={{ width: '100%', height: '100%' }}
+            uri={images[0].url}
+            resizeMode="cover"
+          />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.noImageContainer}>
+          <Icon name="user" color="#CCC" size={100} />
+        </View>
+      );
+    }
+  }
+
+  renderCard = (proposal: Proposal) => <CardDetailsOverlay candidate={proposal.candidate} />
 
   render() {
     const { proposal, onSwipeLeft, onSwipeRight } = this.props;
     const data = [proposal];
+    // TODO: prefetch one more proposal
     if (proposal) {
       return (
         <DeckSwiper
@@ -104,13 +149,14 @@ class ProposalSwiper extends React.Component<Props> {
           renderItem={this.renderCard}
         />
       );
+    } else {
+      return (
+        <View style={styles.noMatchesContainer}>
+          <Title style={[styles.messageText, styles.titleText]}>Looks like you&apos;re out of people...</Title>
+          <Text style={styles.messageText}>Check back soon!</Text>
+        </View>
+      );
     }
-    return (
-      <View style={styles.noMatchesContainer}>
-        <Title style={[styles.messageText, styles.titleText]}>Looks like you&apos;re out of people...</Title>
-        <Text style={styles.messageText}>Check back soon!</Text>
-      </View>
-    );
   }
 }
 
@@ -133,7 +179,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#EEE',
     justifyContent: 'center',
-    // alignItems: 'center'
   },
   titleText: {
     fontSize: 24
@@ -147,5 +192,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEE',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  cardOverlayContainer: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0
   }
 });

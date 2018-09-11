@@ -7,7 +7,6 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { getNewProposal, rateProposal } from 'src/store/sagas/proposal';
 
-import ProfileModal from 'src/views/components/modals/profile-modal';
 import FoundMatchModal from 'src/views/components/modals/found-match-modal';
 import { persistCurrentMatch } from 'src/store/reducers/wonder';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
@@ -93,13 +92,6 @@ class ProposalViewScreen extends React.Component<Props, State> {
             onTap={this.setCandidate}
           />
         </View>
-        <ProfileModal
-          animationType="slide"
-          visible={!!candidate}
-          candidate={candidate}
-          onCancel={this.clearCandidate}
-          onRequestClose={this.clearCandidate}
-        />
         <FoundMatchModal
           currentUser={currentUser}
           onSuccess={this.goToChat}
