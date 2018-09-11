@@ -21,7 +21,7 @@ class ChatGhostingModal extends React.Component<Props> {
 
         return (
             <LinearGradient
-                colors={['#FFF', '#feec5a', '#f48e5c']} 
+                colors={['#FFF', '#feec5a', '#f48e5c']}
                 style={styles.modal}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
