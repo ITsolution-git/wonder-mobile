@@ -37,13 +37,13 @@ export default class Welcome extends React.Component<Props> {
               title="LOGIN WITH FACEBOOK"
               onPress={() => navigation.navigate('Login')}
               fullWidth
-              style={{ backgroundColor: '#FFF', marginTop: 10 }}
+              style={styles.facebookLoginButton}
             />
           </View>
           <View style={{ marginTop: 25 }}>
-            <Text color="#FFF">Already have an account?</Text>
+            <Text color="#FFF" style={{fontWeight: 'bold'}}>Already have an account?</Text>
             <TextButton
-              style={{ textAlign: 'center', color: theme.colors.primary }}
+              style={{ textAlign: 'center', color: theme.colors.primary, fontWeight: 'bold' }}
               text="Sign In"
               onPress={() => navigation.navigate('Login')}
             />
@@ -65,5 +65,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20
+  },
+  facebookLoginButton: {
+    backgroundColor: '#FFF',
+    marginTop: 10,
+    shadowOffset: {
+      width: 0,
+      height: 5
+    },
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 1
   }
 });
