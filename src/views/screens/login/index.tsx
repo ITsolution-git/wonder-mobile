@@ -135,7 +135,7 @@ class LoginScreen extends React.Component<Props> {
             />
           </View>
           <View style={{ marginTop: 25 }}>
-            <Text>Need an account?</Text>
+            <Text>Don't have an account?</Text>
             <TextButton
               style={{ textAlign: 'center', color: theme.colors.primary }}
               text="Register"
@@ -148,7 +148,7 @@ class LoginScreen extends React.Component<Props> {
   }
 }
 
-export default connect(mapState, mapDispatch)(LoginScreen)
+export default connect(mapState, mapDispatch)(LoginScreen);
 
 const styles = StyleSheet.create({
   header: {
