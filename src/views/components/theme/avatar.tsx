@@ -15,7 +15,7 @@ interface AvatarProps {
   rounded?: boolean;
   circle?: boolean;
   uri?: string | null;
-  size?: AvatarSize | 'sm' | 'md' | 'lg' | 'xl';
+  size?: AvatarSize | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   containerStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ImageStyle>;
 }
@@ -30,6 +30,7 @@ class Avatar extends React.Component<AvatarProps> {
   };
 
   static Sizes = {
+    xs: 32,
     sm: 64,
     md: 96,
     lg: 128,

@@ -19,8 +19,8 @@ import WonderAppState from 'src/models/wonder-app-state';
 import ChatResponseMessage from 'src/models/chat-response-message';
 import { AppointmentState, persistAppointmentData } from 'src/store/reducers/appointment';
 import { DOMAIN } from 'src/services/api';
-import { IconButton } from '../../components/theme';
 import Assets from 'src/assets/images';
+import Avatar from 'src/views/components/theme/avatar';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -34,6 +34,7 @@ interface Props {
 
 interface ChatViewState {
   isGhostingModalOpen: boolean;
+  conversationMessages: GiftedChatMessage[]
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -52,12 +53,14 @@ const mapDispatch = (dispatch: Dispatch) => ({
 class ChatScreen extends React.Component<Props> {
   cable: any;
   appChat: any;
+
   static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<any, NavigationParams> }) => ({
     title: 'Chat',
   })
 
   state: ChatViewState = {
-    isGhostingModalOpen: false
+    isGhostingModalOpen: false,
+    conversationMessages: this.props.conversation.giftedChatMessages
   };
 
   componentWillMount() {
@@ -67,23 +70,19 @@ class ChatScreen extends React.Component<Props> {
     this.appChat = this.cable.subscriptions.create({
       channel: "ConversationChannel",
       recipient_id: conversation.partner.id
-    }, {
-        connected() {
-          // console.log('Connected to Chat', conversation.id);
-          // this.perform('deliver', { body: new Date().toString() });
-          // this.perform('read', { message_id: conversation.partner.id });
-        },
-        received: (data: any) => {
-          onGetMessage(conversation.partner.id);
-          // console.log('message', data);
-        },
-        deliver(message: string) {
-          this.perform('deliver', { body: message });
-        },
-        disconnected: () => {
-          // alert('disconnected');
-        },
-      });
+    },
+    {
+      received: (data: any) => {
+        const { conversation, onGetMessage } = this.props;
+
+        Alert.alert("Message for you, sir!");
+        this.setState({ conversationMessages: [data, ...this.state.conversationMessages] });
+        onGetMessage(conversation.partner.id);  // What does this even do?
+      },
+      deliver: (message: string) => {
+        this.appChat.perform('deliver', { body: message })
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -102,6 +101,7 @@ class ChatScreen extends React.Component<Props> {
     // const { conversation, currentUser } = this.props;
     // this.props.conversation.giftedChatMessages.push(new GiftedChatMessage())
     this.appChat.deliver(ghostMessage);  //  Send the message
+    this.closeGhostingModal();
   }
 
   openGhostingModal = () => {
@@ -113,16 +113,27 @@ class ChatScreen extends React.Component<Props> {
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
-    this.appChat.deliver(messages[0].text);
+    for(var i = 0; i < messages.length; i++) {
+      this.appChat.deliver(messages[i].text);
+    }
   }
 
   renderBubble(props: any) {
+    const profileImage = (props.currentUser && props.currentUser.images && props.currentUser.images.length > 0) ? props.currentUser.images[0].url : null;
+    Alert.alert(JSON.stringify(props));
     return (
+      <View>
+        <Avatar
+          circle
+          size='xs'
+          uri={profileImage}
+        />
       <Bubble
         {...props}
         textStyle={bubbleTextStyle}
         wrapperStyle={bubbleWrapperStyle}
       />
+      </View>
     );
   }
 
@@ -145,20 +156,20 @@ class ChatScreen extends React.Component<Props> {
   render() {
     const { currentUser, conversation } = this.props;
     return (
-      <Screen>
-        <GiftedChat
-          user={{ _id: currentUser.id }}
-          renderBubble={this.renderBubble}
-          messages={conversation.giftedChatMessages}
-          renderFooter={this.renderFooter}
-          onSend={this.onSend}
-        />
-        <ChatGhostingModal
-          visible={this.state.isGhostingModalOpen}
-          onSuccess={this.ghostPartner}
-          onCancel={this.closeGhostingModal}
-        />
-      </Screen>
+        <Screen>
+          <GiftedChat
+            user={{ _id: currentUser.id }}
+            renderBubble={this.renderBubble}
+            messages={this.state.conversationMessages}
+            renderFooter={this.renderFooter}
+            onSend={this.onSend}
+          />
+          <ChatGhostingModal
+            visible={this.state.isGhostingModalOpen}
+            onSuccess={this.ghostPartner}
+            onCancel={this.closeGhostingModal}
+          />
+        </Screen>
     );
   }
 }
@@ -166,16 +177,20 @@ class ChatScreen extends React.Component<Props> {
 export default connect(mapState, mapDispatch)(ChatScreen);
 const bubbleTextStyle = StyleSheet.create({
   right: {
-    color: '#000'
+    color: '#FFF',
+    fontWeight: 'bold'
   },
   left: {
-    color: '#FFF',
+    color: '#000',
+    fontWeight: 'bold'
   }
 });
 
 const bubbleWrapperStyle = StyleSheet.create({
   right: {
-    padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10,
     borderRadius: 5,
     elevation: 3,
     shadowColor: '#000',
@@ -185,11 +200,13 @@ const bubbleWrapperStyle = StyleSheet.create({
       width: 3,
       height: 1
     },
-    backgroundColor: '#FFF',
+    backgroundColor: theme.colors.primaryLight,
     marginVertical: 5
   },
   left: {
-    padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10,
     borderRadius: 5,
     elevation: 3,
     shadowColor: 'blue',
@@ -198,8 +215,8 @@ const bubbleWrapperStyle = StyleSheet.create({
     shadowOffset: {
       width: -3,
       height: 1
-    },
-    backgroundColor: theme.colors.primaryLight,
+    }, 
+    backgroundColor: '#FFF',
     marginVertical: 5
   },
 });
