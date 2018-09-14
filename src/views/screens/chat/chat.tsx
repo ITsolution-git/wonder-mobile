@@ -35,7 +35,6 @@ interface Props {
 interface ChatViewState {
   isGhostingModalOpen: boolean;
   conversationMessages: GiftedChatMessage[];
-  tempMessage: string;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -61,8 +60,7 @@ class ChatScreen extends React.Component<Props> {
 
   state: ChatViewState = {
     isGhostingModalOpen: false,
-    conversationMessages: this.props.conversation.giftedChatMessages,
-    tempMessage: ''
+    conversationMessages: this.props.conversation.giftedChatMessages
   };
 
   componentWillMount() {
@@ -76,9 +74,17 @@ class ChatScreen extends React.Component<Props> {
     {
       received: (data: any) => {
         const { conversation, onGetMessage } = this.props;
-
+        const receivedMessage: GiftedChatMessage = {
+          _id: data.id,
+          text: data.body,
+          createdAt: data.sent_at,
+          user: {
+            _id: data.sender.id,
+            name: data.sender.first_name,
+          }
+        }
         
-        this.setState({ tempMessage: data, conversationMessages: [data, ...this.state.conversationMessages] });
+        this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
         onGetMessage(conversation.partner.id);  // What does this even do?
       },
       deliver: (message: string) => {
@@ -115,28 +121,18 @@ class ChatScreen extends React.Component<Props> {
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
-    for(var i = 0; i < messages.length; i++) {
-      Alert.alert(JSON.stringify(messages[i]));
-      this.appChat.deliver(messages[i].text);
+    for (const message of messages) {
+      this.appChat.deliver(message.text);
     }
   }
 
   renderBubble(props: any) {
-    const profileImage = (props.currentUser && props.currentUser.images && props.currentUser.images.length > 0) ? props.currentUser.images[0].url : null;
-    Alert.alert(JSON.stringify(props.currentMessage));
     return (
-      <View>
-        <Avatar
-          circle
-          size='xs'
-          uri={profileImage}
-        />
       <Bubble
         {...props}
         textStyle={bubbleTextStyle}
         wrapperStyle={bubbleWrapperStyle}
       />
-      </View>
     );
   }
 
@@ -218,7 +214,7 @@ const bubbleWrapperStyle = StyleSheet.create({
     shadowOffset: {
       width: -3,
       height: 1
-    }, 
+    },
     backgroundColor: '#FFF',
     marginVertical: 5
   },
