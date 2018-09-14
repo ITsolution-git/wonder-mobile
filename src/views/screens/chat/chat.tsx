@@ -34,7 +34,8 @@ interface Props {
 
 interface ChatViewState {
   isGhostingModalOpen: boolean;
-  conversationMessages: GiftedChatMessage[]
+  conversationMessages: GiftedChatMessage[];
+  tempMessage: string;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -60,7 +61,8 @@ class ChatScreen extends React.Component<Props> {
 
   state: ChatViewState = {
     isGhostingModalOpen: false,
-    conversationMessages: this.props.conversation.giftedChatMessages
+    conversationMessages: this.props.conversation.giftedChatMessages,
+    tempMessage: ''
   };
 
   componentWillMount() {
@@ -75,8 +77,8 @@ class ChatScreen extends React.Component<Props> {
       received: (data: any) => {
         const { conversation, onGetMessage } = this.props;
 
-        Alert.alert("Message for you, sir!");
-        this.setState({ conversationMessages: [data, ...this.state.conversationMessages] });
+        
+        this.setState({ tempMessage: data, conversationMessages: [data, ...this.state.conversationMessages] });
         onGetMessage(conversation.partner.id);  // What does this even do?
       },
       deliver: (message: string) => {
@@ -114,13 +116,14 @@ class ChatScreen extends React.Component<Props> {
 
   onSend = (messages: ChatResponseMessage[] = []) => {
     for(var i = 0; i < messages.length; i++) {
+      Alert.alert(JSON.stringify(messages[i]));
       this.appChat.deliver(messages[i].text);
     }
   }
 
   renderBubble(props: any) {
     const profileImage = (props.currentUser && props.currentUser.images && props.currentUser.images.length > 0) ? props.currentUser.images[0].url : null;
-    Alert.alert(JSON.stringify(props));
+    Alert.alert(JSON.stringify(props.currentMessage));
     return (
       <View>
         <Avatar
@@ -193,7 +196,7 @@ const bubbleWrapperStyle = StyleSheet.create({
     paddingTop: 10,
     borderRadius: 5,
     elevation: 3,
-    shadowColor: '#000',
+    shadowColor: 'blue',
     shadowOpacity: 0.3,
     shadowRadius: 5,
     shadowOffset: {
@@ -209,7 +212,7 @@ const bubbleWrapperStyle = StyleSheet.create({
     paddingTop: 10,
     borderRadius: 5,
     elevation: 3,
-    shadowColor: 'blue',
+    shadowColor: '#000',
     shadowOpacity: 0.3,
     shadowRadius: 5,
     shadowOffset: {
