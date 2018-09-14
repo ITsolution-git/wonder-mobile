@@ -3,7 +3,7 @@ import React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import Screen from 'src/views/components/screen';
 import theme from 'src/assets/styles/theme';
-import { View, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import ChatActionButton from 'src/views/components/chat/chat-action-button';
 import { connect } from 'react-redux';
@@ -20,7 +20,6 @@ import ChatResponseMessage from 'src/models/chat-response-message';
 import { AppointmentState, persistAppointmentData } from 'src/store/reducers/appointment';
 import { DOMAIN } from 'src/services/api';
 import Assets from 'src/assets/images';
-import Avatar from 'src/views/components/theme/avatar';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -64,7 +63,7 @@ class ChatScreen extends React.Component<Props> {
   };
 
   componentWillMount() {
-    const { conversation, token, onGetMessage } = this.props;
+    const { conversation, token } = this.props;
     this.appChat = {};
     this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
     this.appChat = this.cable.subscriptions.create({
@@ -82,13 +81,12 @@ class ChatScreen extends React.Component<Props> {
             _id: data.sender.id,
             name: data.sender.first_name,
           }
-        }
-        
+        };
         this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
         onGetMessage(conversation.partner.id);  // What does this even do?
       },
       deliver: (message: string) => {
-        this.appChat.perform('deliver', { body: message })
+        this.appChat.perform('deliver', { body: message });
       }
     });
   }
