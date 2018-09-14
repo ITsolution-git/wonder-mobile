@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
+import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.horcrux.svg.SvgPackage;
 import io.codebakery.imagerotate.ImageRotatePackage;
 import com.imagepicker.ImagePickerPackage;
@@ -33,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new FBSDKPackage(),
             new SvgPackage(),
             new ImageRotatePackage(),
             new ImagePickerPackage(),
