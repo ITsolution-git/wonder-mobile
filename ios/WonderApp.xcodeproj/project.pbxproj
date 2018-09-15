@@ -2011,7 +2011,7 @@
 				CODE_SIGN_ENTITLEMENTS = WonderApp/WonderApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 50;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = B99YWDZPRP;
 				HEADER_SEARCH_PATHS = (
@@ -2045,7 +2045,7 @@
 				CODE_SIGN_ENTITLEMENTS = WonderApp/WonderApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 47;
+				CURRENT_PROJECT_VERSION = 50;
 				DEVELOPMENT_TEAM = B99YWDZPRP;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
