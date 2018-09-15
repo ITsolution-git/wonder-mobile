@@ -51,11 +51,15 @@ Please make all contributions based off the `develop` branch. The `develop` bran
 ## Beta Release
 We use fastlane for automated releases to hockeyapp where our Android and iOS beta apps are released.
 
-
-
 - Ruby (>= 2.3.6)
 - bundler (gem install bundler)
 - fastlane (gem install fastlane)
+
+## Integrations
+
+FaceBook
+- App ID: `2172025979530425`
+- App Token: `7bea5ee8e73c5fdba2d7533cc8dbc061`
 
 ## Outstanding Issues
 - Proposal Swiper styling (Miguel)
