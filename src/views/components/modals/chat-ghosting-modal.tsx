@@ -8,13 +8,21 @@ import theme from 'src/assets/styles/theme';
 
 interface Props extends ModalProps {
     onCancel?: TouchableOpacityOnPress;
-    onSuccess?: TouchableOpacityOnPress;
+    onSuccess?: Function;
 }
+
+
 
 class ChatGhostingModal extends React.Component<Props> {
     state = {
         ghostMessage: 'It’s been fun chatting but I’m not interested at the moment.'
     };
+
+    onSendGhost = () => {
+        if(this.props.onSuccess) {
+            this.props.onSuccess(this.state.ghostMessage);
+        }
+    }
 
     renderContent = () => {
         const { onCancel, onSuccess } = this.props;
@@ -40,7 +48,7 @@ class ChatGhostingModal extends React.Component<Props> {
                         />
                     </View>
                     <View flex={1} style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 12 }}>
-                        <SecondaryButton title="Submit" onPress={onSuccess} />
+                        <SecondaryButton title="Submit" onPress={this.onSendGhost} />
                         <SecondaryButton title="Cancel" onPress={onCancel} />
                     </View>
                 </View>

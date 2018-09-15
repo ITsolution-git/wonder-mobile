@@ -3,7 +3,7 @@ import React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import Screen from 'src/views/components/screen';
 import theme from 'src/assets/styles/theme';
-import { View, StyleSheet, Alert, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import ChatActionButton from 'src/views/components/chat/chat-action-button';
 import { connect } from 'react-redux';
@@ -19,7 +19,6 @@ import WonderAppState from 'src/models/wonder-app-state';
 import ChatResponseMessage from 'src/models/chat-response-message';
 import { AppointmentState, persistAppointmentData } from 'src/store/reducers/appointment';
 import { DOMAIN } from 'src/services/api';
-import { IconButton } from '../../components/theme';
 import Assets from 'src/assets/images';
 
 interface Props {
@@ -34,6 +33,7 @@ interface Props {
 
 interface ChatViewState {
   isGhostingModalOpen: boolean;
+  conversationMessages: GiftedChatMessage[];
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -52,38 +52,43 @@ const mapDispatch = (dispatch: Dispatch) => ({
 class ChatScreen extends React.Component<Props> {
   cable: any;
   appChat: any;
+
   static navigationOptions = ({ navigation }: { navigation: NavigationScreenProp<any, NavigationParams> }) => ({
     title: 'Chat',
   })
 
   state: ChatViewState = {
-    isGhostingModalOpen: false
+    isGhostingModalOpen: false,
+    conversationMessages: this.props.conversation.giftedChatMessages
   };
 
   componentWillMount() {
-    const { conversation, token, onGetMessage } = this.props;
+    const { conversation, token } = this.props;
     this.appChat = {};
     this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
     this.appChat = this.cable.subscriptions.create({
       channel: "ConversationChannel",
       recipient_id: conversation.partner.id
-    }, {
-        connected() {
-          // console.log('Connected to Chat', conversation.id);
-          // this.perform('deliver', { body: new Date().toString() });
-          // this.perform('read', { message_id: conversation.partner.id });
-        },
-        received: (data: any) => {
-          onGetMessage(conversation.partner.id);
-          // console.log('message', data);
-        },
-        deliver(message: string) {
-          this.perform('deliver', { body: message });
-        },
-        disconnected: () => {
-          // alert('disconnected');
-        },
-      });
+    },
+    {
+      received: (data: any) => {
+        const { conversation, onGetMessage } = this.props;
+        const receivedMessage: GiftedChatMessage = {
+          _id: data.id,
+          text: data.body,
+          createdAt: data.sent_at,
+          user: {
+            _id: data.sender.id,
+            name: data.sender.first_name,
+          }
+        };
+        this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
+        onGetMessage(conversation.partner.id);  // What does this even do?
+      },
+      deliver: (message: string) => {
+        this.appChat.perform('deliver', { body: message });
+      }
+    });
   }
 
   componentWillUnmount() {
@@ -102,6 +107,7 @@ class ChatScreen extends React.Component<Props> {
     // const { conversation, currentUser } = this.props;
     // this.props.conversation.giftedChatMessages.push(new GiftedChatMessage())
     this.appChat.deliver(ghostMessage);  //  Send the message
+    this.closeGhostingModal();
   }
 
   openGhostingModal = () => {
@@ -113,7 +119,9 @@ class ChatScreen extends React.Component<Props> {
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
-    this.appChat.deliver(messages[0].text);
+    messages.forEach((message) => {
+      this.appChat.deliver(message.text);
+    });
   }
 
   renderBubble(props: any) {
@@ -145,20 +153,20 @@ class ChatScreen extends React.Component<Props> {
   render() {
     const { currentUser, conversation } = this.props;
     return (
-      <Screen>
-        <GiftedChat
-          user={{ _id: currentUser.id }}
-          renderBubble={this.renderBubble}
-          messages={conversation.giftedChatMessages}
-          renderFooter={this.renderFooter}
-          onSend={this.onSend}
-        />
-        <ChatGhostingModal
-          visible={this.state.isGhostingModalOpen}
-          onSuccess={this.ghostPartner}
-          onCancel={this.closeGhostingModal}
-        />
-      </Screen>
+        <Screen>
+          <GiftedChat
+            user={{ _id: currentUser.id }}
+            renderBubble={this.renderBubble}
+            messages={this.state.conversationMessages}
+            renderFooter={this.renderFooter}
+            onSend={this.onSend}
+          />
+          <ChatGhostingModal
+            visible={this.state.isGhostingModalOpen}
+            onSuccess={this.ghostPartner}
+            onCancel={this.closeGhostingModal}
+          />
+        </Screen>
     );
   }
 }
@@ -166,40 +174,46 @@ class ChatScreen extends React.Component<Props> {
 export default connect(mapState, mapDispatch)(ChatScreen);
 const bubbleTextStyle = StyleSheet.create({
   right: {
-    color: '#000'
+    color: '#FFF',
+    fontWeight: 'bold'
   },
   left: {
-    color: '#FFF',
+    color: '#000',
+    fontWeight: 'bold'
   }
 });
 
 const bubbleWrapperStyle = StyleSheet.create({
   right: {
-    padding: 10,
-    borderRadius: 5,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    shadowOffset: {
-      width: 3,
-      height: 1
-    },
-    backgroundColor: '#FFF',
-    marginVertical: 5
-  },
-  left: {
-    padding: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10,
     borderRadius: 5,
     elevation: 3,
     shadowColor: 'blue',
     shadowOpacity: 0.3,
     shadowRadius: 5,
     shadowOffset: {
-      width: -3,
+      width: 3,
       height: 1
     },
     backgroundColor: theme.colors.primaryLight,
+    marginVertical: 5
+  },
+  left: {
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 10,
+    borderRadius: 5,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    shadowOffset: {
+      width: -3,
+      height: 1
+    },
+    backgroundColor: '#FFF',
     marginVertical: 5
   },
 });
