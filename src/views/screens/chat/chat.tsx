@@ -119,9 +119,9 @@ class ChatScreen extends React.Component<Props> {
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
-    for (const message of messages) {
+    messages.forEach((message) => {
       this.appChat.deliver(message.text);
-    }
+    });
   }
 
   renderBubble(props: any) {
