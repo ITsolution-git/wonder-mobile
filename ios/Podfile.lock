@@ -120,7 +120,7 @@ PODS:
     - React
   - react-native-maps (0.21.0):
     - React
-  - react-native-video (3.2.0):
+  - react-native-video (3.2.1):
     - React
   - React/Core (0.56.0):
     - yoga (= 0.56.0.React)
