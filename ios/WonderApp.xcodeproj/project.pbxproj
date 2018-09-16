@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -124,6 +125,41 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
 			remoteInfo = WonderApp;
+		};
+		070BEB65214EDECB00309E64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5616EB716379B5BD0A3F36D3E6942C06;
+			remoteInfo = Bolts;
+		};
+		070BEB67214EDECB00309E64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C9CD7DCC6646E20CDE2BCC66CCE0D300;
+			remoteInfo = FBSDKCoreKit;
+		};
+		070BEB69214EDECB00309E64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D5BCC890F6265E489DBBC97C430B74C;
+			remoteInfo = FBSDKLoginKit;
+		};
+		070BEB6B214EDECB00309E64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 686FA610E535DC9C3F3802AE7517D4BE;
+			remoteInfo = FBSDKShareKit;
+		};
+		070BEB6D214EDECB00309E64 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A998E846A0663AC3C26561B4D8A14FAC;
+			remoteInfo = "react-native-fbsdk";
 		};
 		0769D628214369D200DB2301 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -250,13 +286,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 137D846980E213B79DC171A3255BB1CD;
 			remoteInfo = Protobuf;
-		};
-		1E5D1F96212FEC1F00419E22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = E47908CEC5274FA4E17C1CA98E974307;
-			remoteInfo = "react-native-fcm";
 		};
 		1E5D1F98212FEC1F00419E22 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -829,7 +858,11 @@
 		1E5D1F74212FEC1F00419E22 /* Products */ = {
 			isa = PBXGroup;
 			children = (
+				070BEB66214EDECB00309E64 /* libBolts.a */,
 				1E5D1F85212FEC1F00419E22 /* libDoubleConversion.a */,
+				070BEB68214EDECB00309E64 /* libFBSDKCoreKit.a */,
+				070BEB6A214EDECB00309E64 /* libFBSDKLoginKit.a */,
+				070BEB6C214EDECB00309E64 /* libFBSDKShareKit.a */,
 				0769D629214369D200DB2301 /* libFirebaseCore.a */,
 				0769D62B214369D200DB2301 /* libFirebaseMessaging.a */,
 				1E5D1F87212FEC1F00419E22 /* libFolly.a */,
@@ -839,7 +872,7 @@
 				1E5D1F8F212FEC1F00419E22 /* libnanopb.a */,
 				1E5D1F91212FEC1F00419E22 /* libPods-WonderApp.a */,
 				1E5D1F93212FEC1F00419E22 /* libProtobuf.a */,
-				1E5D1F97212FEC1F00419E22 /* libreact-native-fcm.a */,
+				070BEB6E214EDECB00309E64 /* libreact-native-fbsdk.a */,
 				1E5D1F99212FEC1F00419E22 /* libreact-native-google-maps.a */,
 				0769D62F214369D200DB2301 /* libreact-native-image-picker.a */,
 				1E5D1F9B212FEC1F00419E22 /* libreact-native-maps.a */,
@@ -1156,6 +1189,9 @@
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
+							com.apple.Keychain = {
+								enabled = 1;
+							};
 							com.apple.Push = {
 								enabled = 1;
 							};
@@ -1310,6 +1346,41 @@
 			remoteRef = 00C302E31ABCB9EE00DB3ED1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		070BEB66214EDECB00309E64 /* libBolts.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBolts.a;
+			remoteRef = 070BEB65214EDECB00309E64 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		070BEB68214EDECB00309E64 /* libFBSDKCoreKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFBSDKCoreKit.a;
+			remoteRef = 070BEB67214EDECB00309E64 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		070BEB6A214EDECB00309E64 /* libFBSDKLoginKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFBSDKLoginKit.a;
+			remoteRef = 070BEB69214EDECB00309E64 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		070BEB6C214EDECB00309E64 /* libFBSDKShareKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFBSDKShareKit.a;
+			remoteRef = 070BEB6B214EDECB00309E64 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		070BEB6E214EDECB00309E64 /* libreact-native-fbsdk.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-fbsdk.a";
+			remoteRef = 070BEB6D214EDECB00309E64 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		0769D629214369D200DB2301 /* libFirebaseCore.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1434,13 +1505,6 @@
 			fileType = archive.ar;
 			path = libProtobuf.a;
 			remoteRef = 1E5D1F92212FEC1F00419E22 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1E5D1F97212FEC1F00419E22 /* libreact-native-fcm.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libreact-native-fcm.a";
-			remoteRef = 1E5D1F96212FEC1F00419E22 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		1E5D1F99212FEC1F00419E22 /* libreact-native-google-maps.a */ = {
@@ -1836,10 +1900,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-WonderApp/Pods-WonderApp-resources.sh",
+				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/FacebookSDKStrings.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

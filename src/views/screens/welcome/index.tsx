@@ -1,17 +1,33 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Alert } from 'react-native';
 import { Text, Button, PrimaryButton } from 'src/views/components/theme';
 import theme from 'src/assets/styles/theme';
 import Screen from 'src/views/components/screen';
 import Images, { Logo } from 'src/assets/images';
 import TextButton from 'src/views/components/theme/text-button';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import { LoginManager } from 'react-native-fbsdk';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
 }
 
 export default class Welcome extends React.Component<Props> {
+
+  onFacebookLogin() {
+    LoginManager.logInWithReadPermissions( ['email', 'public_profile'] ).then(
+      (result) => {
+        if (result.isCancelled) {
+          Alert.alert("login cancelled");
+        } else {
+          Alert.alert("login successful with permissions: " + result.grantedPermissions.toString());
+        }
+      },
+      (error) => {
+        Alert.alert("login failed with error: " + error);
+      }
+    );
+  }
 
   render() {
     const { navigation } = this.props;
@@ -35,7 +51,7 @@ export default class Welcome extends React.Component<Props> {
               color="#3D90F0"
               icon="facebook"
               title="LOGIN WITH FACEBOOK"
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => this.onFacebookLogin()}
               fullWidth
               style={styles.facebookLoginButton}
             />
