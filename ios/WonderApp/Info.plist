@@ -110,5 +110,20 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+		<key>FacebookAppID</key>
+		<string>2172025979530425</string>
+		<key>FacebookDisplayName</key>
+		<string>Wonder Dating App</string>
+		<key>CFBundleURLTypes</key>
+		<array>
+			<dict>
+				<key>CFBundleURLSchemes</key>
+				<array>
+					<string>fb2172025979530425</string>
+				</array>
+			</dict>
+		</array>
+
 </dict>
 </plist>
