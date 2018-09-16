@@ -11,7 +11,7 @@ import WonderAppState from "../../models/wonder-app-state";
 import User from "../../models/user";
 import UserCredentials from "../../models/user-credentials";
 import ProfileImage from "../../models/profile-image";
-import pushNotification from "../../services/push-notification";
+import PushNotificationService from "../../services/push-notification";
 
 export const REGISTER_USER = "REGISTER_USER";
 export const registerUser = createAction(REGISTER_USER);
@@ -66,14 +66,7 @@ export function* loginUserSaga(action: Action<UserCredentials>) {
 
       yield put(persistAuth(response.data));
       yield put(resetRegistration());
-      if (pushNotification.token) {
-        yield put(
-          updateUser({
-            push_device_id: pushNotification.token.token,
-            push_device_type: pushNotification.token.os
-          })
-        );
-      }
+      PushNotificationService.configure();
       NavigatorService.reset("Main", null);
     }
   } catch (error) {

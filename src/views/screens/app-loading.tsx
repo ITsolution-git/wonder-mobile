@@ -4,7 +4,6 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { updateUser } from "src/store/sagas/user";
 import { selectCurrentUser } from "src/store/selectors/user";
-import PushNotificationService from "src/services/push-notification";
 
 const mapState = (state: WonderAppState) => ({
   token: state.user.auth.token,
@@ -28,7 +27,6 @@ interface UserPushNotificationOptions {
 
 class AppLoadingScreen extends React.Component<Props> {
   componentDidMount() {
-    PushNotificationService.configure();
     if (this.props.token) {
       this.props.navigation.navigate("Main");
       return;
