@@ -34,8 +34,6 @@ interface State {
   phone: string;
   password: string;
   errors: StateErrors;
-  push_device_id: string;
-  push_device_type: string;
 }
 
 interface StateErrors {
@@ -68,9 +66,7 @@ class Register1 extends React.Component<Props, State> {
     email: "",
     phone: "",
     password: "",
-    errors: {},
-    push_device_id: '',
-    push_device_type: ''
+    errors: {}
   };
 
   componentWillMount() {
@@ -216,7 +212,7 @@ class Register1 extends React.Component<Props, State> {
   private validate = () => {
     const errors: StateErrors = {};
     const { navigation, onSave } = this.props;
-    const { first_name, last_name, email, phone, password, push_device_id, push_device_type } = this.state;
+    const { first_name, last_name, email, phone, password } = this.state;
 
     if (validator.isEmpty(first_name)) {
       errors.first_name = "Please enter your first name";
@@ -244,7 +240,7 @@ class Register1 extends React.Component<Props, State> {
       this.setState({ errors });
       return;
     }
-    onSave({ first_name, last_name, email, phone, password, push_device_id, push_device_type });
+    onSave({ first_name, last_name, email, phone, password });
     navigation.navigate("Register2");
   }
 
