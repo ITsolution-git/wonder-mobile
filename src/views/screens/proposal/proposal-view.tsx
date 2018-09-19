@@ -77,7 +77,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
     if (pushNotification.token && !currentUser.push_device_id) {
       updatePushToken({
         push_device_id: pushNotification.token.token,
-        push_device_type: pushNotification.token.os
+        push_device_type: (pushNotification.token.os === 'ios') ? 'apns' : 'fcm'
       });
     }
   }
