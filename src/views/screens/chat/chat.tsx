@@ -3,12 +3,12 @@ import React from 'react';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import Screen from 'src/views/components/screen';
 import theme from 'src/assets/styles/theme';
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import ChatActionButton from 'src/views/components/chat/chat-action-button';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { getConversation, sendMessage } from 'src/store/sagas/conversations';
+import { getConversation, sendMessage, ghostContact } from 'src/store/sagas/conversations';
 import { getDecoratedConversation } from 'src/store/selectors/conversation';
 import { selectCurrentUser } from 'src/store/selectors/user';
 import User from 'src/models/user';
@@ -29,6 +29,7 @@ interface Props {
   onGetMessage: (userId: number) => void;
   onSendMessage: (chatMessage: ConversationNewMessage) => void;
   onUpdateAppointment: (data: AppointmentState) => void;
+  onGhostContact: (data: User) => void;
 }
 
 interface ChatViewState {
@@ -46,7 +47,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
   onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
-    dispatch(persistAppointmentData(data))
+    dispatch(persistAppointmentData(data)),
+  onGhostContact: (data: User) => dispatch(ghostContact(data))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -104,10 +106,13 @@ class ChatScreen extends React.Component<Props> {
   }
 
   ghostPartner = (ghostMessage: string) => {
-    // const { conversation, currentUser } = this.props;
-    // this.props.conversation.giftedChatMessages.push(new GiftedChatMessage())
+    const { navigation, onGhostContact, conversation } = this.props;
+    
     this.appChat.deliver(ghostMessage);  //  Send the message
+    onGhostContact(conversation.partner);
     this.closeGhostingModal();
+    navigation.navigate('ChatList');
+
   }
 
   openGhostingModal = () => {
