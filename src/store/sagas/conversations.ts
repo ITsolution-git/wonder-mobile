@@ -99,11 +99,11 @@ export function* watchSendMessage() {
 export const GHOST_CONTACT = 'GHOST_CONTACT';
 export const ghostContact = createAction(GHOST_CONTACT);
 export function* ghostContactSaga(action: Action<any>) {
-  // Alert.alert(JSON.stringify(action));
+  Alert.alert(JSON.stringify(action.payload));
   try {
     yield call(api, {
       method: 'DELETE',
-      url: `/conversations/${action.payload.partner.id}/ghost`,
+      url: `/conversations/${action.payload.id}/ghost`,
     });
   } catch (error) {
     if (error.response) {

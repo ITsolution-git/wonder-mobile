@@ -29,7 +29,7 @@ interface Props {
   onGetMessage: (userId: number) => void;
   onSendMessage: (chatMessage: ConversationNewMessage) => void;
   onUpdateAppointment: (data: AppointmentState) => void;
-  onGhostContact: (data: DecoratedConversation) => void;
+  onGhostContact: (data: User) => void;
 }
 
 interface ChatViewState {
@@ -48,7 +48,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
-  onGhostContact: (data: DecoratedConversation) => dispatch(ghostContact(data))
+  onGhostContact: (data: User) => dispatch(ghostContact(data))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -109,9 +109,9 @@ class ChatScreen extends React.Component<Props> {
     const { navigation, onGhostContact, conversation } = this.props;
     
     this.appChat.deliver(ghostMessage);  //  Send the message
-    onGhostContact(conversation);
-    this.closeGhostingModal();
-    navigation.navigate('ChatList');
+    onGhostContact(conversation.partner);
+    //this.closeGhostingModal();
+    //navigation.navigate('ChatList');
 
   }
 
