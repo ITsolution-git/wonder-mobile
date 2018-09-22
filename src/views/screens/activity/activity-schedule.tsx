@@ -72,18 +72,31 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
   };
 
   mapDaysToAgendaObjectFormat = () => {
-    let datesArray = this.mapOutDays();
+    let datesArray = this.mapOutDays(); // <--returns a date of arrays
     let agendaitems = {};
-    console.log(this.props.appointments);
 
-    datesArray = datesArray.map((date: string) => {
+    // datesArray = datesArray.map((date: string) => {
+    //   agendaitems[date] = [];
+    //   return date;
+    // });
+    //
+    //Makes each date into a key of an object to conform to agenda item format
+    let date;
+    for (let currentdate = 0; currentdate < datesArray.length; currentdate++) {
+      date = datesArray[currentdate];
       agendaitems[date] = [];
-      return date;
-    });
-
+    }
+    //
+    //Attaches calendar items to calendar dates
     let appointmentdate = "";
     let markedDates = {};
-    this.props.appointments.map((appointment: object) => {
+    let appointment;
+    for (
+      let currentappointment = 0;
+      currentappointment < this.props.appointments.length;
+      currentappointment++
+    ) {
+      appointment = this.props.appointments[currentappointment];
       appointmentdate = moment(appointment["eventAt"], "MM-DD-YYYY").format(
         "YYYY-MM-DD"
       );
@@ -96,8 +109,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           " " +
           appointment.match.last_name
       });
-      return appointment;
-    });
+    }
 
     this.setState({ agendaitems, markedDates });
   };
