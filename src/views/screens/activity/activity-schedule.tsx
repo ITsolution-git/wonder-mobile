@@ -56,7 +56,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
   };
 
   componentWillMount() {
-    // this.props.getAllDates() <------ not written yet but for future reference (gets all appointmentss from the database)
+    // this.props.getAllDates() <------ not written yet but for future reference (gets all appointmentss from the database or from asyncstorage)
     this.mapDaysToAgendaObjectFormat();
   }
 
@@ -76,14 +76,14 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     let agendaitems = {};
     console.log(this.props.appointments);
 
-    datesArray = datesArray.map(date => {
+    datesArray = datesArray.map((date: string) => {
       agendaitems[date] = [];
       return date;
     });
 
     let appointmentdate = "";
     let markedDates = {};
-    this.props.appointments.map(appointment => {
+    this.props.appointments.map((appointment: object) => {
       appointmentdate = moment(appointment["eventAt"], "MM-DD-YYYY").format(
         "YYYY-MM-DD"
       );
@@ -146,7 +146,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
       <Text>Select Date and Time</Text>
     </View>
   );
-  selectTime = selectedTime => {
+  selectTime = (selectedTime: object) => {
     this.setState({ selectedTime });
   };
   selectDay = ({ dateString }) => {
@@ -162,8 +162,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         <Agenda
           markedDates={markedDates}
           items={agendaitems}
-          loadItemsForMonth={month => {}}
-          onCalendarToggled={calendarOpened => {}}
+          onCalendarToggled={(calendarOpened: boolean) => {}}
           onDayPress={this.selectDay}
           // callback that gets called when day changes while scrolling agenda list
           onDayChange={this.selectDay}
@@ -177,7 +176,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           renderEmptyData={() => {
             return <View />;
           }}
-          renderItem={(item, firstItemInDay) => {
+          renderItem={(item: object, firstItemInDay: boolean) => {
             return <AgendaDayItem {...item} />;
           }}
           renderEmptyDate={() => {
@@ -190,7 +189,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
               </View>
             );
           }}
-          rowHasChanged={(r1, r2) => {
+          rowHasChanged={(r1: object, r2: object) => {
             return r1.text !== r2.text;
           }}
           scrollingEnabled
