@@ -110,8 +110,8 @@ class ChatScreen extends React.Component<Props> {
     
     this.appChat.deliver(ghostMessage);  //  Send the message
     onGhostContact(conversation.partner);
-    //this.closeGhostingModal();
-    //navigation.navigate('ChatList');
+    this.closeGhostingModal();
+    navigation.navigate('ChatList');
 
   }
 
