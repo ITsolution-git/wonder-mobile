@@ -94,3 +94,28 @@ export function* sendMessageSaga(action: Action<any>) {
 export function* watchSendMessage() {
   yield takeEvery(SEND_MESSAGE, sendMessageSaga);
 }
+
+// ghost contact
+export const GHOST_CONTACT = 'GHOST_CONTACT';
+export const ghostContact = createAction(GHOST_CONTACT);
+export function* ghostContactSaga(action: Action<any>) {
+  // Alert.alert(JSON.stringify(action));
+  try {
+    yield call(api, {
+      method: 'DELETE',
+      url: `/conversations/${action.payload.partner.id}/ghost`,
+    });
+  } catch (error) {
+    if (error.response) {
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
+    } else {
+      console.warn(error);
+    }
+  } finally {
+    // yield put(getUser());
+  }
+}
+
+export function* watchGhostContact() {
+  yield takeEvery(GHOST_CONTACT, ghostContactSaga);
+}

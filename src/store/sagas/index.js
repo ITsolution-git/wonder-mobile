@@ -4,7 +4,7 @@ import { watchLoginUser, watchLogoutUser, watchGetUser, watchUpdateUser, watchRe
 import { watchGetNewProposal, watchRateProposal } from './proposal';
 import { watchCreateAppointment, watchGetAppointments } from './appointment';
 import { watchGetPartners, watchGetPartnerActivities, watchGetActivityDetails } from './partner';
-import { watchGetConversation, watchGetConversations, watchSendMessage } from './conversations';
+import { watchGetConversation, watchGetConversations, watchSendMessage, watchGhostContact } from './conversations';
 import { watchSubmitFeedback } from './feedback';
 
 export default function* rootSaga() {
@@ -39,6 +39,7 @@ export default function* rootSaga() {
     watchGetConversation(),
     watchGetConversations(),
     watchSendMessage(),
+    watchGhostContact(),
 
     // Feedback
     watchSubmitFeedback()
