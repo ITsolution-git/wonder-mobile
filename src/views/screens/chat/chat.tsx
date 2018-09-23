@@ -116,10 +116,12 @@ class ChatScreen extends React.Component<Props> {
 
   ghostPartner = (ghostMessage: string) => {
     const { navigation, onGhostContact, conversation } = this.props;
+
     this.appChat.deliver(ghostMessage);  //  Send the message
     onGhostContact(conversation.partner);
     this.closeGhostingModal();
     navigation.navigate('ChatList');
+    
   }
   openGhostingModal = () => {
     this.setState({ isGhostingModalOpen: true });
