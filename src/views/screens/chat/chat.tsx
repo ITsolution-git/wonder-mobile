@@ -12,6 +12,7 @@ import { getConversation, sendMessage } from "src/store/sagas/conversations";
 import { getDecoratedConversation } from "src/store/selectors/conversation";
 import { selectCurrentUser } from "src/store/selectors/user";
 import User from "src/models/user";
+
 import {
   DecoratedConversation,
   ConversationNewMessage
