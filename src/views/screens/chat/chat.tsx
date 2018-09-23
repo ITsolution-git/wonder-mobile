@@ -3,16 +3,19 @@ import React from "react";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import Screen from "src/views/components/screen";
 import theme from "src/assets/styles/theme";
-import { View, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
 import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
-import { getConversation, sendMessage } from "src/store/sagas/conversations";
+import {
+  getConversation,
+  sendMessage,
+  ghostContact
+} from "src/store/sagas/conversations";
 import { getDecoratedConversation } from "src/store/selectors/conversation";
 import { selectCurrentUser } from "src/store/selectors/user";
 import User from "src/models/user";
-
 import {
   DecoratedConversation,
   ConversationNewMessage
