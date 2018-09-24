@@ -1,9 +1,9 @@
-import { handleActions, createAction, Action } from 'redux-actions';
-import Topic from '../../models/topic';
-import Proposal from '../../models/proposal';
-import Partner from '../../models/partner';
-import Appointment from '../../models/appointment';
-
+import { handleActions, createAction, Action } from "redux-actions";
+import Topic from "../../models/topic";
+import Proposal from "../../models/proposal";
+import Partner from "../../models/partner";
+import Appointment from "../../models/appointment";
+import { MockAppointments } from "../mockdata/appointments";
 export interface WonderState {
   topics: Topic[];
   proposal: Proposal | null;
@@ -17,34 +17,38 @@ const defaultState: WonderState = {
   proposal: null,
   partners: [],
   currentMatch: {},
-  appointments: []
+  appointments: MockAppointments
+  // MockAppointments <--- fake appointments for testing purposes
 };
 
-export const persistTopics = createAction('PERSIST_TOPICS');
-export const persistPartners = createAction('PERSIST_PARTNERS');
-export const persistCurrentMatch = createAction('PERSIST_CURRENT_MATCH');
-export const persistAppointments = createAction('PERSIST_APPOINTMENTS');
+export const persistTopics = createAction("PERSIST_TOPICS");
+export const persistPartners = createAction("PERSIST_PARTNERS");
+export const persistCurrentMatch = createAction("PERSIST_CURRENT_MATCH");
+export const persistAppointments = createAction("PERSIST_APPOINTMENTS");
 // export const persist
 
-export default handleActions({
-  PERSIST_CURRENT_MATCH: (state: WonderState, action: Action<any>) => ({
-    ...state,
-    currentMatch: action.payload || defaultState.currentMatch
-  }),
-  PERSIST_TOPICS: (state: WonderState, action: Action<any>): WonderState => ({
-    ...state,
-    topics: action.payload || defaultState.topics
-  }),
-  PERSIST_PROPOSAL: (state: WonderState, action: Action<any>) => ({
-    ...state,
-    proposal: action.payload || defaultState.proposal
-  }),
-  PERSIST_PARTNERS: (state: WonderState, action: Action<any>) => ({
-    ...state,
-    partners: action.payload || defaultState.partners
-  }),
-  PERSIST_APPOINTMENTS: (state: WonderState, action: Action<any>) => ({
-    ...state,
-    appointments: action.payload || defaultState.appointments
-  })
-}, defaultState);
+export default handleActions(
+  {
+    PERSIST_CURRENT_MATCH: (state: WonderState, action: Action<any>) => ({
+      ...state,
+      currentMatch: action.payload || defaultState.currentMatch
+    }),
+    PERSIST_TOPICS: (state: WonderState, action: Action<any>): WonderState => ({
+      ...state,
+      topics: action.payload || defaultState.topics
+    }),
+    PERSIST_PROPOSAL: (state: WonderState, action: Action<any>) => ({
+      ...state,
+      proposal: action.payload || defaultState.proposal
+    }),
+    PERSIST_PARTNERS: (state: WonderState, action: Action<any>) => ({
+      ...state,
+      partners: action.payload || defaultState.partners
+    }),
+    PERSIST_APPOINTMENTS: (state: WonderState, action: Action<any>) => ({
+      ...state,
+      appointments: action.payload || defaultState.appointments
+    })
+  },
+  defaultState
+);

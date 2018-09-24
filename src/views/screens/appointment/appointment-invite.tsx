@@ -39,10 +39,10 @@ interface State {
 class AppointmentInviteScreen extends React.Component<
   AppointmentInviteProps,
   State
-  > {
+> {
   static navigationOptions = ({ navigation }) => ({
     title: "Invite to Wonder"
-  })
+  });
 
   private init = (): CalendarDate => {
     const now = moment();
@@ -53,11 +53,13 @@ class AppointmentInviteScreen extends React.Component<
       timestamp: now.utc().valueOf(),
       dateString: now.format(DATE_STRING_FORMAT)
     };
-  }
+  };
 
   state: State = {
     selected: this.init(),
-    selectedTime: moment().add(15, 'minutes').toDate()
+    selectedTime: moment()
+      .add(15, "minutes")
+      .toDate()
   };
 
   today = () => moment().startOf("day");
@@ -65,18 +67,18 @@ class AppointmentInviteScreen extends React.Component<
   onDateChange = (date: any) => {
     const selected: CalendarDate = date as CalendarDate;
     this.setState({ selected });
-  }
+  };
 
   onTimeChange = (selectedTime: Date) => {
     this.setState({ selectedTime });
-  }
+  };
 
   getMarkedDates = () => ({
     [this.state.selected.dateString]: {
       selected: true,
       selectedDotColor: theme.colors.primaryLight
     }
-  })
+  });
 
   onComplete = () => {
     const { onUpdateAppointment, navigation } = this.props;
@@ -84,29 +86,31 @@ class AppointmentInviteScreen extends React.Component<
     // const dateTime = result.format('YYYY-MM-DD[T]HH:mm:ssZ');
 
     onUpdateAppointment({ eventAt: result.toDate() });
-    navigation.navigate('AppointmentConfirm');
-  }
+    navigation.navigate("AppointmentConfirm");
+  };
 
   renderTitle = () => {
     const { activity } = this.props.appointment;
     if (activity) {
       return (
         <View style={styles.header}>
-          <Strong style={{ textAlign: 'center' }}>{activity.name}</Strong>
+          <Strong style={{ textAlign: "center" }}>{activity.name}</Strong>
         </View>
       );
     }
-  }
+  };
 
   getCombinedMoment = () => {
     const { selected, selectedTime } = this.state;
     const timeMoment = moment(selectedTime);
     const dateMoment = moment(selected.dateString, DATE_STRING_FORMAT);
 
-    dateMoment.hour(timeMoment.hour()).minutes(timeMoment.minutes()).seconds(0);
+    dateMoment
+      .hour(timeMoment.hour())
+      .minutes(timeMoment.minutes())
+      .seconds(0);
     return dateMoment;
-
-  }
+  };
 
   render() {
     const { selected } = this.state;
@@ -136,13 +140,20 @@ class AppointmentInviteScreen extends React.Component<
         <View flex={1} style={{ paddingHorizontal: 20 }}>
           <TimePicker
             label="Select a time"
-            minDate={moment().add(15, 'minutes').toDate()}
-            initialDate={moment().add(15, 'minutes').toDate()}
+            minDate={moment()
+              .add(15, "minutes")
+              .toDate()}
+            initialDate={moment()
+              .add(15, "minutes")
+              .toDate()}
             onChange={this.onTimeChange}
           />
         </View>
-        <View flex={1} style={{ justifyContent: 'flex-end', margin: 10 }}>
-          <PrimaryButton title={this.getCombinedMoment().format('MMMM Do [@] h:mma')} onPress={this.onComplete} />
+        <View flex={1} style={{ justifyContent: "flex-end", margin: 10 }}>
+          <PrimaryButton
+            title={this.getCombinedMoment().format("MMMM Do [@] h:mma")}
+            onPress={this.onComplete}
+          />
         </View>
       </Screen>
     );
