@@ -57,7 +57,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
   onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
-    dispatch(persistAppointmentData(data)),
+  dispatch(persistAppointmentData(data)),
   onGhostContact: (data: User) => dispatch(ghostContact(data))
 });
 
@@ -114,13 +114,13 @@ class ChatScreen extends React.Component<Props> {
   }
 
   scheduleWonder = () => {
-    const { navigation, conversation, onUpdateAppointment } = this.props;
+    const { navigation, conversation, onUpdateAppointment, currentUser } = this.props;
+    let param = {
+     currentUser}
     onUpdateAppointment({ match: conversation.partner });
-    console.log(conversation);
     navigation.navigate(
-      "WonderSchedule"
-      // ,
-      // {id: conversation.0.partner.id }
+      "WonderSchedule",
+      param
     );
   };
 

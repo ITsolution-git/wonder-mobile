@@ -47,8 +47,11 @@ interface State {
   agendaItems: object;
   markedDates: object;
 }
+interface Agenda {
+  [key:string]: object[]
+}
 
-class ActivityScheduleScreen extends React.Component<Props, State> {
+class ActivityScheduleScreen extends React.Component<Props, State, Agenda> {
   state: State = {
     selectedDate: moment().format("YYYY-MM-DD"),
     selectedTime: { hour: moment().format("H"), minute: moment().format("mm") },
@@ -62,6 +65,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
   componentWillMount() {
     // this.props.getAllDates() <------ not written yet but for future reference (gets all appointmentss from the database or from asyncstorage)
     this.mapDaysToAgendaObjectFormat();
+
   }
 
   mapDaysToAgendaObjectFormat = () => {
@@ -118,10 +122,10 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     RNCalendarEvents.authorizeEventStore().then(() => {
       //
       //gets todays utc and from a month from now
-      let utcToday = moment()
+      const utcToday = moment()
         .utc()
         .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-      let utcMonthFromNow = moment()
+      const utcMonthFromNow = moment()
         .utc()
         .add(1, "M")
         .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
@@ -129,7 +133,6 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
       //Fetch all events from native calendar
       RNCalendarEvents.fetchAllEvents(utcToday, utcMonthFromNow).then(
         events => {
-          console.log(events);
           let event = {};
           let wonderstartdate;
           let wonderstarttime;
@@ -157,7 +160,6 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
               eventend,
               "YYYY-MM-DDTHH:mm:ss.SSSSZ"
             ).format("hh:ssA");
-            console.log(agendaitems, wonderstartdate);
             // // //
             // // //
             agendaitems[wonderstartdate] = [
@@ -178,7 +180,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     });
   };
 
-  mapWonderAppointmentsToAgenda = (agenda: object) => {
+  mapWonderAppointmentsToAgenda = (agenda: Agenda) => {
     // //
     // //Attaches calendar items to calendar dates
     let appointmentdate = "";
@@ -222,8 +224,9 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     this.mapNativeCalendarEventsToAgenda();
   };
 
-  ActivityTitle = () => (
-    <View
+  ActivityTitle = () => {
+    const {navigation} = this.props
+    return <View
       style={{
         alignItems: "center",
         justifyContent: "space-around",
@@ -231,16 +234,15 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         paddingBottom: 15
       }}
     >
-      {console.log(this.props)}
       <Avatar
         circle
         uri={
           "https://images.pexels.com/photos/407035/model-face-beautiful-black-and-white-407035.jpeg?auto=compress&cs=tinysrgb&h=350"
         }
       />
-      <Text>Name Goes Here</Text>
+      <Text>{navigation.getParam('currentUser').first_name + " "+ navigation.getParam('currentUser').last_name}</Text>
     </View>
-  );
+  }
 
   selectTime = (selectedTime: object) => {
     this.setState({ selectedTime });
@@ -288,7 +290,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
             return r1.text !== r2.text;
           }}
           scrollingEnabled
-          onRefresh={() => console.log("refreshing...")}
+          onRefresh={() => null}
           refreshing={false}
           refreshControl={null}
           theme={{
