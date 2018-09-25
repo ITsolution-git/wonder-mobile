@@ -29,7 +29,7 @@ class UpcomingAppointmentsScreen extends React.Component<
   UpcomingAppointmentsProps
 > {
   componentDidMount() {
-    // this.props.onRefreshAppointments();
+    this.props.onRefreshAppointments();
   }
 
   goToAppointment = (appointment: DecoratedAppointment) => {

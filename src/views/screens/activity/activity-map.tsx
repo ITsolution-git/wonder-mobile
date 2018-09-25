@@ -1,28 +1,38 @@
-import React from 'react';
-import Screen from 'src/views/components/screen';
-import MapView, { Marker as MarkerContainer, Callout } from 'react-native-maps';
-import Marker from 'src/views/components/map/marker';
-import ActivityCallout from 'src/views/components/map/activity-callout';
+import React from "react";
+import Screen from "src/views/components/screen";
+import MapView, { Marker as MarkerContainer, Callout } from "react-native-maps";
+import Marker from "src/views/components/map/marker";
+import ActivityCallout from "src/views/components/map/activity-callout";
 
+import { Dispatch } from "redux";
+import { connect } from "react-redux";
 
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import {
+  getPartnerActivities,
+  getActivityDetails
+} from "src/store/sagas/partner";
+import { NavigationScreenProp, NavigationParams } from "react-navigation";
+import ActivityDetailsModal from "src/views/components/modals/activity-details-modal";
 
-import { getPartnerActivities, getActivityDetails } from 'src/store/sagas/partner';
-import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import ActivityDetailsModal from 'src/views/components/modals/activity-details-modal';
+import { persistActivity } from "src/store/reducers/chat";
+import {
+  GeolocationReturnType,
+  Alert,
+  PermissionsAndroid,
+  Platform
+} from "react-native";
+import {
+  persistAppointmentData,
+  AppointmentState
+} from "src/store/reducers/appointment";
+import askForDeviceLocation from "src/services/gps";
 
-import { persistActivity } from 'src/store/reducers/chat';
-import { GeolocationReturnType, Alert, PermissionsAndroid, Platform } from 'react-native';
-import { persistAppointmentData, AppointmentState } from 'src/store/reducers/appointment';
-import askForDeviceLocation from 'src/services/gps';
-
-import { selectCurrentUser } from 'src/store/selectors/user';
-import WonderAppState from 'src/models/wonder-app-state';
-import Coordinate from 'src/models/coordinate';
-import User from 'src/models/user';
-import Activity from 'src/models/activity';
-import ActivityDetails from 'src/models/activity-details';
+import { selectCurrentUser } from "src/store/selectors/user";
+import WonderAppState from "src/models/wonder-app-state";
+import Coordinate from "src/models/coordinate";
+import User from "src/models/user";
+import Activity from "src/models/activity";
+import ActivityDetails from "src/models/activity-details";
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),
@@ -31,9 +41,11 @@ const mapState = (state: WonderAppState) => ({
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onGetActivities: (id: number, coordinate?: Coordinate) => dispatch(getPartnerActivities({ id, coordinate })),
+  onGetActivities: (id: number, coordinate?: Coordinate) =>
+    dispatch(getPartnerActivities({ id, coordinate })),
   onGetActivity: (id: string) => dispatch(getActivityDetails({ id })),
-  onUpdateAppointment: (data: AppointmentState) => dispatch(persistAppointmentData(data)),
+  onUpdateAppointment: (data: AppointmentState) =>
+    dispatch(persistAppointmentData(data)),
   clearActivity: () => dispatch(persistActivity(null))
 });
 
@@ -62,7 +74,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
 
   componentWillMount() {
     const { navigation, onGetActivities, clearActivity } = this.props;
-    const partnerId: number = navigation.getParam('id', 0);
+    const partnerId: number = navigation.getParam("id", 0);
     onGetActivities(partnerId);
     clearActivity();
   }
@@ -73,7 +85,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
 
   updatePosition = (position: GeolocationReturnType) => {
     const { navigation, onGetActivities, clearActivity } = this.props;
-    const partnerId: number = navigation.getParam('id', 0);
+    const partnerId: number = navigation.getParam("id", 0);
     const { coords } = position;
     this.setState({
       position: {
@@ -83,15 +95,19 @@ class ActivityMapScreen extends React.Component<Props, State> {
     });
 
     onGetActivities(partnerId, coords);
-  }
+  };
 
   onInviteMatch = () => {
-    const { details, navigation, clearActivity, onUpdateAppointment } = this.props;
+    const {
+      details,
+      navigation,
+      clearActivity,
+      onUpdateAppointment
+    } = this.props;
     clearActivity();
-
     onUpdateAppointment({ activity: details });
-    navigation.navigate('AppointmentInvite');
-  }
+    navigation.navigate("WonderSchedule");
+  };
 
   // {
   //   "lat": 41.887528,
@@ -105,25 +121,20 @@ class ActivityMapScreen extends React.Component<Props, State> {
       <MarkerContainer
         key={`${id} - ${name}`}
         coordinate={{ latitude, longitude }}
-      // onPress={() => onGetActivity(id)}
+        // onPress={() => onGetActivity(id)}
       >
-        <Marker
-          title={topic.name}
-          icon={topic.icon}
-        />
+        <Marker title={topic.name} icon={topic.icon} />
         <Callout
           onPress={() => {
             onGetActivity(id);
             onUpdateAppointment({ topic: activity.topic });
           }}
         >
-          <ActivityCallout
-            activity={activity}
-          />
+          <ActivityCallout activity={activity} />
         </Callout>
       </MarkerContainer>
     );
-  }
+  };
 
   render() {
     const { activities, details, clearActivity } = this.props;
@@ -139,7 +150,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
             latitude: position.lat,
             longitude: position.lng,
             latitudeDelta: 0.1,
-            longitudeDelta: 0.1,
+            longitudeDelta: 0.1
           }}
         >
           {activities.map(this.renderMarker)}
@@ -155,4 +166,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
   }
 }
 
-export default connect(mapState, mapDispatch)(ActivityMapScreen);
+export default connect(
+  mapState,
+  mapDispatch
+)(ActivityMapScreen);

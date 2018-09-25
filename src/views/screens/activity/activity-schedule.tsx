@@ -22,6 +22,9 @@ import {
   AppointmentState,
   persistAppointmentData
 } from "src/store/reducers/appointment";
+import RNCalendarEvents from "react-native-calendar-events";
+import { createAppointment } from "src/store/sagas/appointment";
+
 const mapState = (state: WonderAppState) => ({
   appointments: selectUpcomingAppointments(state)
 });
@@ -44,6 +47,7 @@ interface State {
   agendaItems: object;
   markedDates: object;
 }
+
 class ActivityScheduleScreen extends React.Component<Props, State> {
   state: State = {
     selectedDate: moment().format("YYYY-MM-DD"),
@@ -60,25 +64,9 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     this.mapDaysToAgendaObjectFormat();
   }
 
-  schedule = () => {
-    const time = moment(
-      this.state.selectedTime.hour + ":" + this.state.selectedTime.minute,
-      "HH:mm"
-    ).format("hh:mm");
-    const DateandTime = this.state.selectedDate + " " + time;
-    this.props.onUpdateAppointment({ eventAt: DateandTime });
-    console.log(DateandTime);
-    this.props.navigation.navigate("AppointmentConfirm");
-  };
-
   mapDaysToAgendaObjectFormat = () => {
     let datesArray = this.mapOutDays(); // <--returns a date of arrays
     let agendaitems = {};
-
-    // datesArray = datesArray.map((date: string) => {
-    //   agendaitems[date] = [];
-    //   return date;
-    // });
     //
     //Makes each date into a key of an object to conform to agenda item format
     let date;
@@ -86,32 +74,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
       date = datesArray[currentdate];
       agendaitems[date] = [];
     }
-    //
-    //Attaches calendar items to calendar dates
-    let appointmentdate = "";
-    let markedDates = {};
-    let appointment;
-    for (
-      let currentappointment = 0;
-      currentappointment < this.props.appointments.length;
-      currentappointment++
-    ) {
-      appointment = this.props.appointments[currentappointment];
-      appointmentdate = moment(appointment["eventAt"], "MM-DD-YYYY").format(
-        "YYYY-MM-DD"
-      );
-      markedDates[appointmentdate] = { disabled: true };
-      agendaitems[appointmentdate] = agendaitems[appointmentdate].concat({
-        dateAt: appointmentdate,
-        text:
-          "Date with " +
-          appointment.match.first_name +
-          " " +
-          appointment.match.last_name
-      });
-    }
-
-    this.setState({ agendaitems, markedDates });
+    this.mapWonderAppointmentsToAgenda(agendaitems);
   };
 
   mapOutDays = () => {
@@ -139,25 +102,146 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     return datesForAgenda;
   };
 
+  schedule = () => {
+    const time = moment(
+      this.state.selectedTime.hour + ":" + this.state.selectedTime.minute,
+      "HH:mm"
+    ).format("hh:mm");
+    const DateandTime = this.state.selectedDate + " " + time;
+    this.props.onUpdateAppointment({ eventAt: DateandTime });
+    this.props.navigation.navigate("AppointmentConfirm");
+  };
+
+  mapNativeCalendarEventsToAgenda = () => {
+    //
+    // Attaches native calendar events to wonder agenda
+    RNCalendarEvents.authorizeEventStore().then(() => {
+      //
+      //gets todays utc and from a month from now
+      let utcToday = moment()
+        .utc()
+        .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+      let utcMonthFromNow = moment()
+        .utc()
+        .add(1, "M")
+        .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
+      //
+      //Fetch all events from native calendar
+      RNCalendarEvents.fetchAllEvents(utcToday, utcMonthFromNow).then(
+        events => {
+          console.log(events);
+          let event = {};
+          let wonderstartdate;
+          let wonderstarttime;
+          let agendaitems = {};
+          let eventstart;
+          let eventend;
+          let eventtext;
+          let markedDates = {};
+          for (
+            let currentEvent = 0;
+            currentEvent < events.length;
+            currentEvent++
+          ) {
+            event = events[currentEvent];
+            eventstart = event["startDate"];
+            eventend = event["endDate"];
+            eventtext = event["title"];
+            // // //
+            // // //converts callback time to agenda format time
+            wonderstartdate = moment(
+              eventstart,
+              "YYYY-MM-DDTHH:mm:ss.SSSSZ"
+            ).format("YYYY-MM-DD");
+            wonderstarttime = moment(
+              eventend,
+              "YYYY-MM-DDTHH:mm:ss.SSSSZ"
+            ).format("hh:ssA");
+            console.log(agendaitems, wonderstartdate);
+            // // //
+            // // //
+            agendaitems[wonderstartdate] = [
+              ...this.state.agendaitems[wonderstartdate],
+              {
+                date_at: wonderstarttime,
+                text: eventtext
+              }
+            ];
+            markedDates[wonderstartdate] = { marked: true };
+          }
+          this.setState({
+            agendaitems: { ...this.state.agendaitems, ...agendaitems },
+            markedDates
+          });
+        }
+      );
+    });
+  };
+
+  mapWonderAppointmentsToAgenda = (agenda: object) => {
+    // //
+    // //Attaches calendar items to calendar dates
+    let appointmentdate = "";
+    let markedDates = {};
+    let appointment;
+    let agendaitems = agenda;
+    for (
+      let currentappointment = 0;
+      currentappointment < this.props.appointments.length;
+      currentappointment++
+    ) {
+      //
+      //
+      appointment = this.props.appointments[currentappointment];
+      //
+      //
+      appointmentdate = moment(
+        appointment["event_at"],
+        "YYYY-MM-DDTHH:mm:ss.SSSSZ"
+      ).format("YYYY-MM-DD");
+      let displaytime = moment(
+        appointment["event_at"],
+        "YYYY-MM-DDTHH:mm:ss.SSSSZ"
+      ).format("HH:ssA");
+      //
+      //
+      markedDates[appointmentdate] = { marked: true };
+      agendaitems[appointmentdate] = [
+        ...agendaitems[appointmentdate],
+        {
+          date_at: displaytime,
+          text:
+            "Date with " +
+            appointment.match.first_name +
+            " " +
+            appointment.match.last_name
+        }
+      ];
+    }
+    this.setState({ agendaitems, markedDates });
+    this.mapNativeCalendarEventsToAgenda();
+  };
+
   ActivityTitle = () => (
     <View
       style={{
         alignItems: "center",
         justifyContent: "space-around",
-        height: 180,
+        height: 160,
         paddingBottom: 15
       }}
     >
+      {console.log(this.props)}
       <Avatar
         circle
         uri={
           "https://images.pexels.com/photos/407035/model-face-beautiful-black-and-white-407035.jpeg?auto=compress&cs=tinysrgb&h=350"
         }
       />
-      <Text>Michelle</Text>
-      <Text>Select Date and Time</Text>
+      <Text>Name Goes Here</Text>
     </View>
   );
+
   selectTime = (selectedTime: object) => {
     this.setState({ selectedTime });
   };
@@ -167,7 +251,6 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
 
   render() {
     const { selected, agendaitems, markedDates } = this.state;
-
     return (
       <Screen>
         {this.ActivityTitle()}

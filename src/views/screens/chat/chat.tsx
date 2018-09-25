@@ -1,25 +1,35 @@
-import ActionCable from 'react-native-actioncable';
-import React from 'react';
-import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import Screen from 'src/views/components/screen';
-import theme from 'src/assets/styles/theme';
-import { View, StyleSheet, TouchableOpacity, Image, Alert } from 'react-native';
-import { GiftedChat, Bubble } from 'react-native-gifted-chat';
-import ChatActionButton from 'src/views/components/chat/chat-action-button';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { getConversation, sendMessage, ghostContact } from 'src/store/sagas/conversations';
-import { getDecoratedConversation } from 'src/store/selectors/conversation';
-import { selectCurrentUser } from 'src/store/selectors/user';
-import User from 'src/models/user';
-import { DecoratedConversation, ConversationNewMessage } from 'src/models/conversation';
-import GiftedChatMessage from 'src/models/chat-message';
-import ChatGhostingModal from '../../components/modals/chat-ghosting-modal';
-import WonderAppState from 'src/models/wonder-app-state';
-import ChatResponseMessage from 'src/models/chat-response-message';
-import { AppointmentState, persistAppointmentData } from 'src/store/reducers/appointment';
-import { DOMAIN } from 'src/services/api';
-import Assets from 'src/assets/images';
+import ActionCable from "react-native-actioncable";
+import React from "react";
+import { NavigationScreenProp, NavigationParams } from "react-navigation";
+import Screen from "src/views/components/screen";
+import theme from "src/assets/styles/theme";
+import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
+import { GiftedChat, Bubble } from "react-native-gifted-chat";
+import ChatActionButton from "src/views/components/chat/chat-action-button";
+import { connect } from "react-redux";
+import { Dispatch } from "redux";
+import {
+  getConversation,
+  sendMessage,
+  ghostContact
+} from "src/store/sagas/conversations";
+import { getDecoratedConversation } from "src/store/selectors/conversation";
+import { selectCurrentUser } from "src/store/selectors/user";
+import User from "src/models/user";
+import {
+  DecoratedConversation,
+  ConversationNewMessage
+} from "src/models/conversation";
+import GiftedChatMessage from "src/models/chat-message";
+import ChatGhostingModal from "../../components/modals/chat-ghosting-modal";
+import WonderAppState from "src/models/wonder-app-state";
+import ChatResponseMessage from "src/models/chat-response-message";
+import {
+  AppointmentState,
+  persistAppointmentData
+} from "src/store/reducers/appointment";
+import { DOMAIN } from "src/services/api";
+import Assets from "src/assets/images";
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -106,25 +116,22 @@ class ChatScreen extends React.Component<Props> {
   scheduleWonder = () => {
     const { navigation, conversation, onUpdateAppointment } = this.props;
     onUpdateAppointment({ match: conversation.partner });
+    console.log(conversation);
     navigation.navigate(
       "WonderSchedule"
-      //<--------------------------------- Commented out for calendar dev and so I can access the schedule calendar screeen
-      // note: change route back to "WonderMap" after calendar screen has been completed and re route accodingly
-      // "WonderMap"
-
-      // { id: conversation.partner.id }
+      // ,
+      // {id: conversation.0.partner.id }
     );
   };
 
   ghostPartner = (ghostMessage: string) => {
     const { navigation, onGhostContact, conversation } = this.props;
 
-    this.appChat.deliver(ghostMessage);  //  Send the message
+    this.appChat.deliver(ghostMessage); //  Send the message
     onGhostContact(conversation.partner);
     this.closeGhostingModal();
-    navigation.navigate('ChatList');
-
-  }
+    navigation.navigate("ChatList");
+  };
   openGhostingModal = () => {
     this.setState({ isGhostingModalOpen: true });
   };

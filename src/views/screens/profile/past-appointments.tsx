@@ -29,7 +29,7 @@ interface PastAppointmentsProps {
 
 class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
   componentDidMount() {
-    // this.props.onRefreshAppointments();
+    this.props.onRefreshAppointments();
   }
 
   goToAppointment = (appointment: DecoratedAppointment) => {

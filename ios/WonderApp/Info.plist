@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
+
 <dict>
+
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -58,6 +60,8 @@
 	<string>Access your photos to upload for your profile</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Access your photos to upload for your profile</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>This app requires access to the calendar</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
@@ -110,20 +114,18 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-
-		<key>FacebookAppID</key>
-		<string>2172025979530425</string>
-		<key>FacebookDisplayName</key>
-		<string>Wonder Dating App</string>
-		<key>CFBundleURLTypes</key>
-		<array>
-			<dict>
-				<key>CFBundleURLSchemes</key>
-				<array>
-					<string>fb2172025979530425</string>
-				</array>
-			</dict>
-		</array>
-
+	<key>FacebookAppID</key>
+	<string>2172025979530425</string>
+	<key>FacebookDisplayName</key>
+	<string>Wonder Dating App</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb2172025979530425</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

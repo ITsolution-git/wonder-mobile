@@ -17,7 +17,7 @@ const defaultState: WonderState = {
   proposal: null,
   partners: [],
   currentMatch: {},
-  appointments: MockAppointments
+  appointments: []
   // MockAppointments <--- fake appointments for testing purposes
 };
 

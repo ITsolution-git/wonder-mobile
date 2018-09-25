@@ -51,31 +51,7 @@ class ChatListScreen extends React.Component<Props> {
         <Title>Latest Matches</Title>
         <ChatList
           onRefresh={onRefreshConversations}
-          chats={
-            //               <--------Fake chats used to access schedule wonder screen
-            [
-              {
-                id: 8,
-                partner: {
-                  id: 9,
-                  first_name: "fake",
-                  last_name: "user",
-                  email: "fake@email.com",
-                  birthdate: "09-09-1993",
-                  zipcode: "90210",
-                  occupation: "Nurse",
-                  school: "SDSU",
-                  gender: "male",
-                  online: true,
-                  last_seen_at: "The Beach",
-                  number: "888-888-8888"
-                },
-                last_message: {},
-                messages: []
-              }
-            ]
-            //
-          }
+          chats={conversations}
           onPressChat={this.goToChat}
         />
       </Screen>

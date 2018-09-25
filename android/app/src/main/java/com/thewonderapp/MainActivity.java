@@ -2,7 +2,7 @@ package com.thewonderapp;
 
 import com.facebook.react.ReactActivity;
 import android.content.Intent;
-
+import com.calendarevents.CalendarEventsPackage;
 public class MainActivity extends ReactActivity {
 
     /**
@@ -25,4 +25,9 @@ public class MainActivity extends ReactActivity {
         super.onActivityResult(requestCode, resultCode, data);
         MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data);
     }
+    @Override
+  public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+      CalendarEventsPackage.onRequestPermissionsResult(requestCode, permissions, grantResults);
+      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+  }
 }

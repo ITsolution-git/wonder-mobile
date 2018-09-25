@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { Text } from "src/views/components/theme";
 
-const AgendaDayItem = ({ text }) => (
+const AgendaDayItem = ({ date_at, text }) => (
   <View
     style={{
       width: "100%",
@@ -10,12 +10,18 @@ const AgendaDayItem = ({ text }) => (
       alignItems: "center",
       backgroundColor: "white",
       borderRadius: 15,
-      minHeight: 100,
-      maxHeight: 600,
-      marginTop: 15
+      padding: 15,
+      marginTop: 10,
+      marginBottom: 5,
+      minHeight: 50,
+      elevation: 2
     }}
   >
-    <Text>{text}</Text>
+    <Text>
+      {text === null
+        ? "Untitled event" + " at " + date_at
+        : text + " at " + date_at}
+    </Text>
   </View>
 );
 
