@@ -37,12 +37,13 @@ const mapDispatch = (dispatch: Dispatch) => ({
 class ChatListScreen extends React.Component<Props> {
   componentWillMount() {
     this.props.onRefreshConversations();
+    this.props.navigation.navigate('AppointmentInvite');
   }
 
   goToChat = (chat: Chat) => {
     const { navigation, onGetConversation } = this.props;
     onGetConversation(chat.partner.id);
-  };
+  }
 
   render() {
     const { conversations, onRefreshConversations } = this.props;

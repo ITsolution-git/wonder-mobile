@@ -98,6 +98,8 @@ PODS:
   - Protobuf (3.6.1)
   - React (0.56.0):
     - React/Core (= 0.56.0)
+  - react-native-calendar-events (1.6.3):
+    - React
   - react-native-fbsdk (0.8.0):
     - React
     - react-native-fbsdk/Core (= 0.8.0)
@@ -185,6 +187,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - Google-Maps-iOS-Utils
   - GoogleMaps
+  - react-native-calendar-events (from `../node_modules/react-native-calendar-events`)
   - react-native-fbsdk (from `../node_modules/react-native-fbsdk`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
@@ -236,6 +239,8 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
   React:
     :path: "../node_modules/react-native"
+  react-native-calendar-events:
+    :path: "../node_modules/react-native-calendar-events"
   react-native-fbsdk:
     :path: "../node_modules/react-native-fbsdk"
   react-native-google-maps:
@@ -274,6 +279,7 @@ SPEC CHECKSUMS:
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
   Protobuf: 1eb9700044745f00181c136ef21b8ff3ad5a0fd5
   React: 1fe0eb13d90b625d94c3b117c274dcfd2e760e11
+  react-native-calendar-events: fe6fbc8ed337a7423c98f2c9012b25f20444de09
   react-native-fbsdk: d5f98cc5abecbcc463e3c35c04743d716d002d37
   react-native-google-maps: 2cfe3b01f8422c7dae51d8764139fd70f888cfce
   react-native-image-picker: b303e31c3c4ada1d7cb1342423d328d2efb07fb3
@@ -283,6 +289,6 @@ SPEC CHECKSUMS:
   RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: 6c5a2495b369d7f11236cdf1e9937c7243fdb825
+PODFILE CHECKSUM: e685ac764f96522031ed80de8be26b974dfaa376
 
 COCOAPODS: 1.5.3

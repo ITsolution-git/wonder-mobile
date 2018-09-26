@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -61,7 +62,6 @@
 		9E7D49D976484276A55AB5F3 /* Roboto_medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B81C7FF99234C108CF3CFBA /* Roboto_medium.ttf */; };
 		A552A1B30515409883F1D3FE /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0670086BB1A545F78D14FE9A /* Foundation.ttf */; };
 		A857D9E145CE44E191DA23D6 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EE8C3FF4B254A92A41A0B23 /* Poppins-Bold.ttf */; };
-		AB7C1F0EF70A4568B2F17B28 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 403D7CDAAB014277B82A58E6 /* Feather.ttf */; };
 		ABD87F99E6674B9699225D2A /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 394A1D9B35BB4CBBBBDDDDC6 /* Poppins-SemiBold.ttf */; };
 		AC925CE1A5D84B288B020564 /* Poppins-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5ED4EDFA846D427FAC706D27 /* Poppins-ThinItalic.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
@@ -489,6 +489,13 @@
 			remoteGlobalIDString = 3D3CD9181DE5FBD800167DC4;
 			remoteInfo = "jschelpers-tvOS";
 		};
+		493F1EDE215B026D0047FC5E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 09B3A67680FA708EEAD7821CAF4EC8FF;
+			remoteInfo = "react-native-calendar-events";
+		};
 		49DEB3662107DAF800D72FFE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9DD516E0781E4A8C9893F6EC /* RNDeviceInfo.xcodeproj */;
@@ -871,6 +878,7 @@
 				1E5D1F8F212FEC1F00419E22 /* libnanopb.a */,
 				1E5D1F91212FEC1F00419E22 /* libPods-WonderApp.a */,
 				1E5D1F93212FEC1F00419E22 /* libProtobuf.a */,
+				493F1EDF215B026D0047FC5E /* libreact-native-calendar-events.a */,
 				070BEB6E214EDECB00309E64 /* libreact-native-fbsdk.a */,
 				1E5D1F99212FEC1F00419E22 /* libreact-native-google-maps.a */,
 				0769D62F214369D200DB2301 /* libreact-native-image-picker.a */,
@@ -1702,6 +1710,13 @@
 			remoteRef = 3DAD3EAE1DF850E9000B6D8A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		493F1EDF215B026D0047FC5E /* libreact-native-calendar-events.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-calendar-events.a";
+			remoteRef = 493F1EDE215B026D0047FC5E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		49DEB3672107DAF800D72FFE /* libRNDeviceInfo.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1842,7 +1857,6 @@
 				26822F27646E4D3A8F1A74EE /* Poppins-SemiBoldItalic.ttf in Resources */,
 				D2F5505BBEA84BEB848DB6A3 /* Poppins-Thin.ttf in Resources */,
 				AC925CE1A5D84B288B020564 /* Poppins-ThinItalic.ttf in Resources */,
-				AB7C1F0EF70A4568B2F17B28 /* Feather.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2089,6 +2103,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = WonderApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2122,6 +2137,7 @@
 					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
 				);
 				INFOPLIST_FILE = WonderApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",

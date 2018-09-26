@@ -2,7 +2,11 @@ import React from "react";
 import { View } from "react-native";
 import { Text } from "src/views/components/theme";
 
-const AgendaDayItem = ({ date_at, text }) => (
+export interface AgendaDayItemProps {
+  date_at: string;
+  text: string;
+}
+const AgendaDayItem: React.SFC<AgendaDayItemProps> = ({ date_at, text }) => (
   <View
     style={{
       width: "100%",

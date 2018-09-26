@@ -1,29 +1,28 @@
 import React from "react";
-import Screen from "src/views/components/screen";
-import { CalendarList, Agenda } from "react-native-calendars";
+import { View, Alert } from "react-native";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { View, Dimensions } from "react-native";
-import Avatar from "src/views/components/theme/avatar";
-import { Text } from "src/views/components/theme";
+import _ from 'lodash';
+import RNCalendarEvents, { RNCalendarEvent } from 'react-native-calendar-events';
+import { Agenda } from "react-native-calendars";
+
+import Screen from "src/views/components/screen";
 import {
   Text,
-  Strong,
   PrimaryButton,
-  Avatar
 } from "src/views/components/theme";
-import AgendaDayItem from "../../components/calendar/agenda-day-item";
+import AgendaDayItem, { AgendaDayItemProps } from "src/views/components/calendar/agenda-day-item";
 import moment from "moment";
-import TimePicker from "src/views/components/theme/pickers/time-picker";
+import TimePicker from 'src/views/components/theme/pickers/time-picker';
 import { selectUpcomingAppointments } from "src/store/selectors/appointment";
 import WonderAppState from "src/models/wonder-app-state";
-import { newWonderSaga } from "";
 import {
   AppointmentState,
   persistAppointmentData
 } from "src/store/reducers/appointment";
-import RNCalendarEvents from "react-native-calendar-events";
-import { createAppointment } from "src/store/sagas/appointment";
+import { NavigationParams, NavigationScreenProp } from "react-navigation";
+import Avatar from "src/views/components/theme/avatar";
+import { DecoratedAppointment } from "src/models/appointment";
 
 const mapState = (state: WonderAppState) => ({
   appointments: selectUpcomingAppointments(state)
@@ -42,20 +41,22 @@ interface Props {
 }
 
 interface State {
-  selected: string;
-  selectedTime: object;
-  agendaItems: object;
+  selected?: string;
+  selectedDate: string;
+  selectedTime: {
+    hour: string;
+    minute: string;
+  };
+  agendaItems: any;
   markedDates: object;
 }
-interface Agenda {
-  [key:string]: object[]
-}
 
-class ActivityScheduleScreen extends React.Component<Props, State, Agenda> {
+class ActivityScheduleScreen extends React.Component<Props, State> {
   state: State = {
+    selected: undefined,
     selectedDate: moment().format("YYYY-MM-DD"),
     selectedTime: { hour: moment().format("H"), minute: moment().format("mm") },
-    agendaitems: {},
+    agendaItems: {},
     markedDates: {}
     // moment()
     //   .add(15, "minutes")
@@ -63,153 +64,128 @@ class ActivityScheduleScreen extends React.Component<Props, State, Agenda> {
   };
 
   componentWillMount() {
-    // this.props.getAllDates() <------ not written yet but for future reference (gets all appointmentss from the database or from asyncstorage)
-    this.mapDaysToAgendaObjectFormat();
+    // not written yet but for future reference
+    // (gets all appointmentss from the database or from asyncstorage)
+    // this.props.getAllDates()
+    // this.mapDaysToAgendaObjectFormat();
+    this.mapNativeCalendarEventsToAgenda();
 
   }
 
   mapDaysToAgendaObjectFormat = () => {
-    let datesArray = this.mapOutDays(); // <--returns a date of arrays
-    let agendaitems = {};
+    const datesArray = this.mapOutDays(); // <--returns a date of arrays
+
     //
-    //Makes each date into a key of an object to conform to agenda item format
-    let date;
-    for (let currentdate = 0; currentdate < datesArray.length; currentdate++) {
-      date = datesArray[currentdate];
-      agendaitems[date] = [];
-    }
-    this.mapWonderAppointmentsToAgenda(agendaitems);
-  };
+    // Makes each date into a key of an object to conform to agenda item format
+    const agendaItems = datesArray.reduce((result: any, date: any) => {
+      result[date] = [];
+      return result;
+    }, {});
+    this.mapWonderAppointmentsToAgenda(agendaItems);
+  }
 
   mapOutDays = () => {
     //
-    //starts on the current day
-    const today = moment().format("YYYY-MM-DD");
-    let datesForAgenda = [today];
-    let daysFromToday = 30;
-    let currentDayFromToday = 0;
-    while (currentDayFromToday < daysFromToday) {
+    // starts on the current day
+    const today = moment();
+    const otherDates = _.range(0, 30).map((i: number) => {
       //
-      //Date that is added to the items props in agenda component(see below)
-      let dateBeingAddedToAgendaScroll = moment(
-        datesForAgenda[currentDayFromToday],
-        "YYYY-MM-DD"
-      )
-        .add(1, "days")
-        .format("YYYY-MM-DD");
-      //
-      //added plus one because the date being added is going based on the next day
-      datesForAgenda[currentDayFromToday + 1] = dateBeingAddedToAgendaScroll;
-      currentDayFromToday++;
-    }
-
-    return datesForAgenda;
-  };
+      // Date that is added to the items props in agenda component(see below)
+      return today.clone().add(1, 'day').format("YYYY-MM-DD");
+    });
+    return [today.format('YYYY-MM-DD'), ...otherDates];
+  }
 
   schedule = () => {
-    const time = moment(
-      this.state.selectedTime.hour + ":" + this.state.selectedTime.minute,
-      "HH:mm"
-    ).format("hh:mm");
-    const DateandTime = this.state.selectedDate + " " + time;
-    this.props.onUpdateAppointment({ eventAt: DateandTime });
+    const { selectedDate, selectedTime } = this.state;
+    const time = moment(`${selectedDate}T${selectedTime.hour}:${selectedTime.minute}`,
+      "YYYY-MM-DD[T]HH:mm")
+      .toDate();
+    this.props.onUpdateAppointment({ eventAt: time });
     this.props.navigation.navigate("AppointmentConfirm");
-  };
+  }
 
-  mapNativeCalendarEventsToAgenda = () => {
+  mapNativeCalendarEventsToAgenda = async () => {
+    const TO_RCE_TIME_FORMAT = "YYYY-MM-DDTHH:mm:ss.SSS[Z]";
+    const RCE_TIME_FORMAT = "YYYY-MM-DDTHH:mm:ss.SSSSZ";
     //
     // Attaches native calendar events to wonder agenda
-    RNCalendarEvents.authorizeEventStore().then(() => {
-      //
-      //gets todays utc and from a month from now
-      const utcToday = moment()
-        .utc()
-        .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-      const utcMonthFromNow = moment()
-        .utc()
-        .add(1, "M")
-        .format("YYYY-MM-DDTHH:mm:ss.SSS[Z]");
-      //
-      //Fetch all events from native calendar
-      RNCalendarEvents.fetchAllEvents(utcToday, utcMonthFromNow).then(
-        events => {
-          let event = {};
-          let wonderstartdate;
-          let wonderstarttime;
-          let agendaitems = {};
-          let eventstart;
-          let eventend;
-          let eventtext;
-          let markedDates = {};
-          for (
-            let currentEvent = 0;
-            currentEvent < events.length;
-            currentEvent++
-          ) {
-            event = events[currentEvent];
-            eventstart = event["startDate"];
-            eventend = event["endDate"];
-            eventtext = event["title"];
-            // // //
-            // // //converts callback time to agenda format time
-            wonderstartdate = moment(
-              eventstart,
-              "YYYY-MM-DDTHH:mm:ss.SSSSZ"
-            ).format("YYYY-MM-DD");
-            wonderstarttime = moment(
-              eventend,
-              "YYYY-MM-DDTHH:mm:ss.SSSSZ"
-            ).format("hh:ssA");
-            // // //
-            // // //
-            agendaitems[wonderstartdate] = [
-              ...this.state.agendaitems[wonderstartdate],
-              {
-                date_at: wonderstarttime,
-                text: eventtext
-              }
-            ];
-            markedDates[wonderstartdate] = { marked: true };
-          }
-          this.setState({
-            agendaitems: { ...this.state.agendaitems, ...agendaitems },
-            markedDates
-          });
-        }
-      );
-    });
-  };
+    try {
+      const granted: string = await RNCalendarEvents.authorizeEventStore();
+      Alert.alert('Permission', granted);
+      if (granted === 'authorized') {
+        //
+        // gets todays utc and from a month from now
+        const today = moment();
+        const nextMonth = moment()
+          .add(1, "month");
 
-  mapWonderAppointmentsToAgenda = (agenda: Agenda) => {
+        //
+        // Fetch all events from native calendar
+        const events = await RNCalendarEvents.fetchAllEvents(
+          today.utc().format(TO_RCE_TIME_FORMAT),
+          nextMonth.utc().format(TO_RCE_TIME_FORMAT)
+        );
+
+        const agendaItems: any = {};
+        const markedDates: any = {};
+
+        events.map((event: RNCalendarEvent) => {
+          const { startDate, endDate, title } = event;
+
+          // // //
+          // // // converts callback time to agenda format time
+          const eventStartDate = moment(
+            startDate,
+            RCE_TIME_FORMAT
+          ).format("YYYY-MM-DD");
+
+          const eventEndDate = moment(
+            endDate,
+            RCE_TIME_FORMAT
+          ).format("hh:ssA");
+
+          agendaItems[eventStartDate] = [
+            ...this.state.agendaItems[eventStartDate],
+            {
+              date_at: eventStartDate,
+              text: title
+            }
+          ];
+          markedDates[eventStartDate] = { marked: true };
+        });
+        this.setState({
+          agendaItems: { ...this.state.agendaItems, ...agendaItems },
+          markedDates
+        });
+      }
+    } catch (error) {
+      Alert.alert('DEV ERROR', error.message);
+    }
+  }
+
+  mapWonderAppointmentsToAgenda = (appointments: DecoratedAppointment[]) => {
     // //
     // //Attaches calendar items to calendar dates
+    const { agendaItems } = this.state;
+    const markedDates: any = {};
     let appointmentdate = "";
-    let markedDates = {};
-    let appointment;
-    let agendaitems = agenda;
-    for (
-      let currentappointment = 0;
-      currentappointment < this.props.appointments.length;
-      currentappointment++
-    ) {
-      //
-      //
-      appointment = this.props.appointments[currentappointment];
-      //
-      //
+
+    appointments.map((appointment: DecoratedAppointment) => {
       appointmentdate = moment(
-        appointment["event_at"],
+        appointment.event_at,
         "YYYY-MM-DDTHH:mm:ss.SSSSZ"
       ).format("YYYY-MM-DD");
-      let displaytime = moment(
-        appointment["event_at"],
+
+      const displaytime = moment(
+        appointment.event_at,
         "YYYY-MM-DDTHH:mm:ss.SSSSZ"
       ).format("HH:ssA");
       //
       //
       markedDates[appointmentdate] = { marked: true };
-      agendaitems[appointmentdate] = [
-        ...agendaitems[appointmentdate],
+      agendaItems[appointmentdate] = [
+        ...agendaItems[appointmentdate],
         {
           date_at: displaytime,
           text:
@@ -219,47 +195,50 @@ class ActivityScheduleScreen extends React.Component<Props, State, Agenda> {
             appointment.match.last_name
         }
       ];
-    }
-    this.setState({ agendaitems, markedDates });
-    this.mapNativeCalendarEventsToAgenda();
-  };
+    });
 
-  ActivityTitle = () => {
-    const {navigation} = this.props
-    return <View
-      style={{
-        alignItems: "center",
-        justifyContent: "space-around",
-        height: 160,
-        paddingBottom: 15
-      }}
-    >
-      <Avatar
-        circle
-        uri={
-          "https://images.pexels.com/photos/407035/model-face-beautiful-black-and-white-407035.jpeg?auto=compress&cs=tinysrgb&h=350"
-        }
-      />
-      <Text>{navigation.getParam('currentUser').first_name + " "+ navigation.getParam('currentUser').last_name}</Text>
-    </View>
+    this.setState({ agendaItems, markedDates });
+    this.mapNativeCalendarEventsToAgenda();
   }
 
-  selectTime = (selectedTime: object) => {
+  ActivityTitle = () => {
+    const { navigation } = this.props;
+    return (
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "space-around",
+          height: 160,
+          paddingBottom: 15
+        }}
+      >
+        <Avatar
+          circle
+        />
+        <Text>
+          {navigation.getParam('currentUser').first_name + " " + navigation.getParam('currentUser').last_name}
+        </Text>
+      </View>
+    );
+  }
+
+  selectTime = (selectedTime: { hour: string, minute: string }) => {
     this.setState({ selectedTime });
-  };
-  selectDay = ({ dateString }) => {
+  }
+
+  selectDay = ({ dateString }: { dateString: string }) => {
     this.setState({ selectedDate: dateString });
-  };
+  }
 
   render() {
-    const { selected, agendaitems, markedDates } = this.state;
+    const { selected, agendaItems, markedDates } = this.state;
     return (
       <Screen>
         {this.ActivityTitle()}
         <Agenda
           markedDates={markedDates}
-          items={agendaitems}
-          onCalendarToggled={(calendarOpened: boolean) => {}}
+          items={agendaItems}
+          // onCalendarToggled={(calendarOpened: boolean) => { }}
           onDayPress={this.selectDay}
           // callback that gets called when day changes while scrolling agenda list
           onDayChange={this.selectDay}
@@ -270,15 +249,9 @@ class ActivityScheduleScreen extends React.Component<Props, State, Agenda> {
             .format("YYYY-MM-DD")}
           pastScrollRange={50}
           futureScrollRange={50}
-          renderEmptyData={() => {
-            return <View />;
-          }}
-          renderItem={(item: object, firstItemInDay: boolean) => {
-            return <AgendaDayItem {...item} />;
-          }}
-          renderEmptyDate={() => {
-            return <View />;
-          }}
+          renderEmptyData={() => <View />}
+          renderItem={(item: AgendaDayItemProps, firstItemInDay: boolean) => <AgendaDayItem {...item} />}
+          renderEmptyDate={() => <View />}
           renderKnob={() => {
             return (
               <View>
@@ -286,13 +259,11 @@ class ActivityScheduleScreen extends React.Component<Props, State, Agenda> {
               </View>
             );
           }}
-          rowHasChanged={(r1: object, r2: object) => {
-            return r1.text !== r2.text;
-          }}
-          scrollingEnabled
-          onRefresh={() => null}
-          refreshing={false}
-          refreshControl={null}
+          rowHasChanged={(r1: any, r2: any) => r1.text !== r2.text}
+          // scrollingEnabled
+          // onRefresh={() => null}
+          // refreshing={false}
+          // refreshControl={null}
           theme={{
             todayTextColor: "#F68E56",
             selectedDayBackgroundColor: "#F68E56",

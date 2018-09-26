@@ -4,6 +4,11 @@ import android.app.Application;
 
 import com.airbnb.android.react.maps.MapsPackage;
 import com.facebook.react.ReactApplication;
+import com.apsl.versionnumber.RNVersionNumberPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.airbnb.android.react.maps.MapsPackage;
+import com.BV.LinearGradient.LinearGradientPackage;
+import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.calendarevents.CalendarEventsPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.horcrux.svg.SvgPackage;
@@ -44,6 +49,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNVersionNumberPackage(),
+            new VectorIconsPackage(),
+            new MapsPackage(),
+            new LinearGradientPackage(),
+            new RNDeviceInfo(),
             new CalendarEventsPackage(),
             new FBSDKPackage(mCallbackManager),
             new SvgPackage(),

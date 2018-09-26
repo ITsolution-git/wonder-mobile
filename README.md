@@ -1,6 +1,5 @@
 # Wonder App
 
-
 ## Mobile Tech Stack
 - Node 10.4.1
 - React Native 0.56
@@ -26,6 +25,7 @@
 - `gem install cocoapods` - Install cocoapods on your machine
 - `cd ios` and run `pod install` - Install the pods needed for the iOS
 - `yarn dev` or `npm run dev` - start the iPhone 5s simulator (see package.json)
+- Make sure you have TSLint installed and configured in your editor
 
 ## Project Structure
 |-- `src`

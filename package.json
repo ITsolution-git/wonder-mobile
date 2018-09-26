@@ -64,7 +64,7 @@
     "@types/redux-actions": "^2.3.0",
     "@types/validator": "^9.4.1",
     "babel-jest": "23.2.0",
-    "babel-preset-react-native": "4.0.0",
+    "babel-preset-react-native": "^5.0.1",
     "jest": "23.2.0",
     "react-native-typescript-transformer": "^1.2.10",
     "react-test-renderer": "16.3.1",
