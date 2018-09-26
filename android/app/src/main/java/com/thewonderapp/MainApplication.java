@@ -3,10 +3,8 @@ package com.thewonderapp;
 import android.app.Application;
 
 import com.airbnb.android.react.maps.MapsPackage;
-import com.facebook.react.ReactApplication;
 import com.apsl.versionnumber.RNVersionNumberPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.airbnb.android.react.maps.MapsPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.calendarevents.CalendarEventsPackage;
@@ -16,10 +14,7 @@ import io.codebakery.imagerotate.ImageRotatePackage;
 import com.imagepicker.ImagePickerPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.brentvatne.react.ReactVideoPackage;
-import com.BV.LinearGradient.LinearGradientPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.apsl.versionnumber.RNVersionNumberPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
+import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -60,12 +55,7 @@ public class MainApplication extends Application implements ReactApplication {
             new ImageRotatePackage(),
             new ImagePickerPackage(),
             new ReactNativePushNotificationPackage(),
-            new ReactVideoPackage(),
-            new LinearGradientPackage(),
-            new VectorIconsPackage(),
-            new RNVersionNumberPackage(),
-            new RNDeviceInfo(),
-            new MapsPackage()
+            new ReactVideoPackage()
       );
     }
 
