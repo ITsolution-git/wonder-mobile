@@ -106,13 +106,11 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
   }
 
   mapNativeCalendarEventsToAgenda = async () => {
-    const TO_RCE_TIME_FORMAT = "YYYY-MM-DDTHH:mm:ss.SSS[Z]";
     const RCE_TIME_FORMAT = "YYYY-MM-DDTHH:mm:ss.SSSSZ";
     //
     // Attaches native calendar events to wonder agenda
     try {
       const granted: string = await RNCalendarEvents.authorizeEventStore();
-      Alert.alert('Permission', granted);
       if (granted === 'authorized') {
         //
         // gets todays utc and from a month from now
@@ -123,14 +121,11 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         //
         // Fetch all events from native calendar
         const events = await RNCalendarEvents.fetchAllEvents(
-          today.utc().format(TO_RCE_TIME_FORMAT),
-          nextMonth.utc().format(TO_RCE_TIME_FORMAT)
+          today.utc().toDate(),
+          nextMonth.utc().toDate()
         );
 
-        const agendaItems: any = {};
-        const markedDates: any = {};
-
-        events.map((event: RNCalendarEvent) => {
+        const agendaItems: any = events.reduce((result: any, event: RNCalendarEvent) => {
           const { startDate, endDate, title } = event;
 
           // // //
@@ -138,25 +133,27 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           const eventStartDate = moment(
             startDate,
             RCE_TIME_FORMAT
-          ).format("YYYY-MM-DD");
+          );
 
           const eventEndDate = moment(
             endDate,
             RCE_TIME_FORMAT
           ).format("hh:ssA");
 
-          agendaItems[eventStartDate] = [
-            ...this.state.agendaItems[eventStartDate],
-            {
-              date_at: eventStartDate,
-              text: title
-            }
-          ];
-          markedDates[eventStartDate] = { marked: true };
-        });
+          if (!result[eventStartDate.format("YYYY-MM-DD")]) {
+            result[eventStartDate.format("YYYY-MM-DD")] = [];
+          }
+
+          result[eventStartDate.format("YYYY-MM-DD")].push({
+            date: eventStartDate.toDate(),
+            text: title
+          });
+
+          return result;
+        }, {});
+
         this.setState({
-          agendaItems: { ...this.state.agendaItems, ...agendaItems },
-          markedDates
+          agendaItems: { ...this.state.agendaItems, ...agendaItems }
         });
       }
     } catch (error) {
@@ -201,8 +198,17 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     this.mapNativeCalendarEventsToAgenda();
   }
 
-  ActivityTitle = () => {
+  selectTime = (selectedTime: { hour: string, minute: string }) => {
+    this.setState({ selectedTime });
+  }
+
+  selectDay = ({ dateString }: { dateString: string }) => {
+    this.setState({ selectedDate: dateString });
+  }
+
+  renderHeader = () => {
     const { navigation } = this.props;
+    const { first_name, last_name } = navigation.getParam('currentUser', {});
     return (
       <View
         style={{
@@ -216,49 +222,40 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           circle
         />
         <Text>
-          {navigation.getParam('currentUser').first_name + " " + navigation.getParam('currentUser').last_name}
+          {first_name + " " + last_name}
         </Text>
       </View>
     );
   }
 
-  selectTime = (selectedTime: { hour: string, minute: string }) => {
-    this.setState({ selectedTime });
-  }
-
-  selectDay = ({ dateString }: { dateString: string }) => {
-    this.setState({ selectedDate: dateString });
-  }
-
   render() {
-    const { selected, agendaItems, markedDates } = this.state;
+    const { selected, selectedDate, agendaItems, markedDates } = this.state;
+    const today = moment();
     return (
       <Screen>
-        {this.ActivityTitle()}
+        {this.renderHeader()}
         <Agenda
-          markedDates={markedDates}
+          // markedDates={markedDates}
           items={agendaItems}
           // onCalendarToggled={(calendarOpened: boolean) => { }}
           onDayPress={this.selectDay}
           // callback that gets called when day changes while scrolling agenda list
           onDayChange={this.selectDay}
-          selected={moment().format("YYYY-MM-DD")}
-          minDate={moment().format("YYYY-MM-DD")}
-          maxDate={moment()
-            .add(1, "M")
-            .format("YYYY-MM-DD")}
-          pastScrollRange={50}
-          futureScrollRange={50}
+          selected={selectedDate}
+          minDate={today.format("YYYY-MM-DD")}
+          maxDate={today.clone().add(1, "month").format("YYYY-MM-DD")}
+          // pastScrollRange={50}
+          // futureScrollRange={50}
           renderEmptyData={() => <View />}
           renderItem={(item: AgendaDayItemProps, firstItemInDay: boolean) => <AgendaDayItem {...item} />}
           renderEmptyDate={() => <View />}
-          renderKnob={() => {
-            return (
-              <View>
-                <Text>Show Calendar</Text>
-              </View>
-            );
-          }}
+          // renderKnob={() => {
+          //   return (
+          //     <View>
+          //       <Text>Show Calendar</Text>
+          //     </View>
+          //   );
+          // }}
           rowHasChanged={(r1: any, r2: any) => r1.text !== r2.text}
           // scrollingEnabled
           // onRefresh={() => null}

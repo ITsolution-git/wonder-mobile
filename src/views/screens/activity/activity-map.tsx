@@ -95,7 +95,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
     });
 
     onGetActivities(partnerId, coords);
-  };
+  }
 
   onInviteMatch = () => {
     const {
@@ -107,7 +107,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
     clearActivity();
     onUpdateAppointment({ activity: details });
     navigation.navigate("WonderSchedule");
-  };
+  }
 
   // {
   //   "lat": 41.887528,
@@ -134,7 +134,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
         </Callout>
       </MarkerContainer>
     );
-  };
+  }
 
   render() {
     const { activities, details, clearActivity } = this.props;

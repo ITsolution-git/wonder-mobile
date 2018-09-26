@@ -15,6 +15,7 @@ import { selectCurrentUser } from "src/store/selectors/user";
 import Conversation from "src/models/conversation";
 import WonderAppState from "src/models/wonder-app-state";
 import Chat from "src/models/chat";
+import { Button } from "react-native";
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -37,7 +38,6 @@ const mapDispatch = (dispatch: Dispatch) => ({
 class ChatListScreen extends React.Component<Props> {
   componentWillMount() {
     this.props.onRefreshConversations();
-    this.props.navigation.navigate('AppointmentInvite');
   }
 
   goToChat = (chat: Chat) => {

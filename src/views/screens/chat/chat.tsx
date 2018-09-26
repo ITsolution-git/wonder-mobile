@@ -1,4 +1,3 @@
-import ActionCable from "react-native-actioncable";
 import React from "react";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import Screen from "src/views/components/screen";
@@ -28,7 +27,6 @@ import {
   AppointmentState,
   persistAppointmentData
 } from "src/store/reducers/appointment";
-import { DOMAIN } from "src/services/api";
 import Assets from "src/assets/images";
 
 interface Props {
@@ -57,7 +55,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
   onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
-  dispatch(persistAppointmentData(data)),
+    dispatch(persistAppointmentData(data)),
   onGhostContact: (data: User) => dispatch(ghostContact(data))
 });
 
@@ -68,10 +66,10 @@ class ChatScreen extends React.Component<Props> {
   static navigationOptions = ({
     navigation
   }: {
-    navigation: NavigationScreenProp<any, NavigationParams>;
-  }) => ({
-    title: "Chat"
-  });
+      navigation: NavigationScreenProp<any, NavigationParams>;
+    }) => ({
+      title: "Chat"
+    });
 
   state: ChatViewState = {
     isGhostingModalOpen: false,
@@ -115,14 +113,15 @@ class ChatScreen extends React.Component<Props> {
 
   scheduleWonder = () => {
     const { navigation, conversation, onUpdateAppointment, currentUser } = this.props;
-    let param = {
-     currentUser}
+    const param = {
+      currentUser
+    };
     onUpdateAppointment({ match: conversation.partner });
     navigation.navigate(
       "WonderSchedule",
       param
     );
-  };
+  }
 
   ghostPartner = (ghostMessage: string) => {
     const { navigation, onGhostContact, conversation } = this.props;
@@ -131,20 +130,20 @@ class ChatScreen extends React.Component<Props> {
     onGhostContact(conversation.partner);
     this.closeGhostingModal();
     navigation.navigate("ChatList");
-  };
+  }
   openGhostingModal = () => {
     this.setState({ isGhostingModalOpen: true });
-  };
+  }
 
   closeGhostingModal = () => {
     this.setState({ isGhostingModalOpen: false });
-  };
+  }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
-    messages.forEach(message => {
+    messages.forEach((message: ChatResponseMessage) => {
       this.appChat.deliver(message.text);
     });
-  };
+  }
 
   renderBubble(props: any) {
     return (
@@ -182,7 +181,7 @@ class ChatScreen extends React.Component<Props> {
         </View>
       </View>
     );
-  };
+  }
 
   render() {
     const { currentUser, conversation } = this.props;
@@ -209,6 +208,7 @@ export default connect(
   mapState,
   mapDispatch
 )(ChatScreen);
+
 const bubbleTextStyle = StyleSheet.create({
   right: {
     color: "#FFF",

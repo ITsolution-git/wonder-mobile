@@ -3,10 +3,10 @@ import { View } from "react-native";
 import { Text } from "src/views/components/theme";
 
 export interface AgendaDayItemProps {
-  date_at: string;
+  date?: Date;
   text: string;
 }
-const AgendaDayItem: React.SFC<AgendaDayItemProps> = ({ date_at, text }) => (
+const AgendaDayItem: React.SFC<AgendaDayItemProps> = ({ date, text }) => (
   <View
     style={{
       width: "100%",
@@ -23,8 +23,8 @@ const AgendaDayItem: React.SFC<AgendaDayItemProps> = ({ date_at, text }) => (
   >
     <Text>
       {text === null
-        ? "Untitled event" + " at " + date_at
-        : text + " at " + date_at}
+        ? "Event" + " at " + date
+        : text + " at " + date}
     </Text>
   </View>
 );

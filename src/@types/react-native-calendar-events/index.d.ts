@@ -4,7 +4,7 @@ declare module 'react-native-calendar-events' {
 
   export default class RNCalendarEvents {
     static authorizeEventStore(): Promise<RNCalendarEventPermissionLevel>;
-    static fetchAllEvents(startDate: Date, endDate: Date, calendars: RNCalendarCalendar[]): Promise<any>;
+    static fetchAllEvents(startDate: Date, endDate: Date, calendars?: RNCalendarCalendar[]): Promise<any>;
     static findCalendars(): Promise<RNCalendarCalendar[]>;
   }
 

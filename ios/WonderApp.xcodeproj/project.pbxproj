@@ -45,6 +45,8 @@
 		415EA43E6B044FC9A8429B01 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5DE905B5FC834A01896C1903 /* Poppins-MediumItalic.ttf */; };
 		4213065CAA274FA1AC0A9CEC /* Poppins-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 90045976E6514DBAAC31082C /* Poppins-BlackItalic.ttf */; };
 		484DDA7E6D944687A37938AF /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7F98B9D8BF6240CFBA6864B4 /* Poppins-Regular.ttf */; };
+		497D662E215B16120010C52F /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 497D65E7215B16120010C52F /* EventKit.framework */; };
+		49CB0C90215B169F00B6D13D /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49CB0C49215B169F00B6D13D /* CoreFoundation.framework */; };
 		529B6F1626404FF88E0DA290 /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 010D0D98C4084D75938A7BA7 /* Roboto.ttf */; };
 		57CC1AF11A15455992D46C65 /* libRangeSlider.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F91A0591A3F94C2AA1A3426F /* libRangeSlider.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -629,6 +631,8 @@
 		41760A64B8634C74B17F582D /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		4724574DD2A843BE99282E56 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		48570CA314F0B559F43DAA36 /* Pods-WonderApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WonderApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-WonderApp/Pods-WonderApp.release.xcconfig"; sourceTree = "<group>"; };
+		497D65E7215B16120010C52F /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
+		49CB0C49215B169F00B6D13D /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		49FF70B22119EC4200AE86E6 /* WonderApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = WonderApp.entitlements; path = WonderApp/WonderApp.entitlements; sourceTree = "<group>"; };
 		4A33189A29BF49468FACC9A0 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		51927EB25A1A4B8CB580AD33 /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
@@ -683,6 +687,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49CB0C90215B169F00B6D13D /* CoreFoundation.framework in Frameworks */,
+				497D662E215B16120010C52F /* EventKit.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -894,6 +900,8 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				49CB0C49215B169F00B6D13D /* CoreFoundation.framework */,
+				497D65E7215B16120010C52F /* EventKit.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
 				8A9F1923B39809CE106A0C9B /* libPods-WonderApp.a */,
 			);
