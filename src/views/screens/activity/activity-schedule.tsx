@@ -23,8 +23,14 @@ import {
 import { NavigationParams, NavigationScreenProp } from "react-navigation";
 import Avatar from "src/views/components/theme/avatar";
 import { DecoratedAppointment } from "src/models/appointment";
+import { getDecoratedConversation } from "src/store/selectors/conversation";
+import Conversation, { DecoratedConversation } from "src/models/conversation";
+import User from "src/models/user";
+import { selectCurrentUser } from "src/store/selectors/user";
 
 const mapState = (state: WonderAppState) => ({
+  currentUser: selectCurrentUser(state),
+  conversation: getDecoratedConversation(state),
   appointments: selectUpcomingAppointments(state)
 });
 
@@ -36,7 +42,10 @@ const mapDispatch = (dispatch: Dispatch) => ({
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
+  currentUser: User;
+  conversation: Conversation | null;
   appointment: AppointmentState;
+  appointments: DecoratedAppointment[];
   onUpdateAppointment: (data: AppointmentState) => any;
 }
 
@@ -58,32 +67,30 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     selectedTime: { hour: moment().format("H"), minute: moment().format("mm") },
     agendaItems: {},
     markedDates: {}
-    // moment()
-    //   .add(15, "minutes")
-    //   .toDate()
   };
 
   componentWillMount() {
     // not written yet but for future reference
     // (gets all appointmentss from the database or from asyncstorage)
     // this.props.getAllDates()
-    // this.mapDaysToAgendaObjectFormat();
-    this.mapNativeCalendarEventsToAgenda();
-
+    this.mapDaysToAgendaObjectFormat();
   }
 
   mapDaysToAgendaObjectFormat = () => {
-    const datesArray = this.mapOutDays(); // <--returns a date of arrays
+    // const datesArray = this.mapOutDays(); // <--returns a date of arrays
 
-    //
-    // Makes each date into a key of an object to conform to agenda item format
-    const agendaItems = datesArray.reduce((result: any, date: any) => {
-      result[date] = [];
-      return result;
-    }, {});
-    this.mapWonderAppointmentsToAgenda(agendaItems);
+    // //
+    // // Makes each date into a key of an object to conform to agenda item format
+    // const agendaItems = datesArray.reduce((result: any, date: any) => {
+    //   result[date] = [];
+    //   return result;
+    // }, {});
+    this.mapWonderAppointmentsToAgenda(this.props.appointments);
   }
 
+  /**
+   * Create an array of Dates as strings to be mapped as keys
+   */
   mapOutDays = () => {
     //
     // starts on the current day
@@ -91,7 +98,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     const otherDates = _.range(0, 30).map((i: number) => {
       //
       // Date that is added to the items props in agenda component(see below)
-      return today.clone().add(1, 'day').format("YYYY-MM-DD");
+      return today.clone().add(i, 'day').format("YYYY-MM-DD");
     });
     return [today.format('YYYY-MM-DD'), ...otherDates];
   }
@@ -105,6 +112,9 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     this.props.navigation.navigate("AppointmentConfirm");
   }
 
+  /**
+   * Reads the native calendar events from today to a month from now and loads them into state
+   */
   mapNativeCalendarEventsToAgenda = async () => {
     const RCE_TIME_FORMAT = "YYYY-MM-DDTHH:mm:ss.SSSSZ";
     //
@@ -207,22 +217,22 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
   }
 
   renderHeader = () => {
-    const { navigation } = this.props;
-    const { first_name, last_name } = navigation.getParam('currentUser', {});
+    const { navigation, conversation } = this.props;
+    const { first_name, last_name, images = [] } = _.get(conversation, 'partner', {} as User);
     return (
       <View
         style={{
           alignItems: "center",
           justifyContent: "space-around",
-          height: 160,
           paddingBottom: 15
         }}
       >
         <Avatar
           circle
+          uri={_.get(images[0], 'url', null)}
         />
         <Text>
-          {first_name + " " + last_name}
+          {[first_name, last_name].join(' ')}
         </Text>
       </View>
     );

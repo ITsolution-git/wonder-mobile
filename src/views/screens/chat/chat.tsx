@@ -69,7 +69,7 @@ class ChatScreen extends React.Component<Props> {
       navigation: NavigationScreenProp<any, NavigationParams>;
     }) => ({
       title: "Chat"
-    });
+    })
 
   state: ChatViewState = {
     isGhostingModalOpen: false,
@@ -112,15 +112,9 @@ class ChatScreen extends React.Component<Props> {
   }
 
   scheduleWonder = () => {
-    const { navigation, conversation, onUpdateAppointment, currentUser } = this.props;
-    const param = {
-      currentUser
-    };
+    const { navigation, conversation, onUpdateAppointment } = this.props;
     onUpdateAppointment({ match: conversation.partner });
-    navigation.navigate(
-      "WonderSchedule",
-      param
-    );
+    navigation.navigate("WonderMap", { id: conversation.partner.id });
   }
 
   ghostPartner = (ghostMessage: string) => {
