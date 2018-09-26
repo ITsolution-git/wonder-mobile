@@ -1,9 +1,11 @@
 import React from "react";
+import _ from 'lodash';
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
+import ActionCable from 'react-native-actioncable'
+import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import Screen from "src/views/components/screen";
 import theme from "src/assets/styles/theme";
 import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
-import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
@@ -28,16 +30,23 @@ import {
   persistAppointmentData
 } from "src/store/reducers/appointment";
 import Assets from "src/assets/images";
+import { DOMAIN } from "../../../services/api";
 
-interface Props {
-  navigation: NavigationScreenProp<any, NavigationParams>;
-  currentUser: User;
-  token: string;
-  conversation: DecoratedConversation;
+interface DispatchProps {
   onGetMessage: (userId: number) => void;
   onSendMessage: (chatMessage: ConversationNewMessage) => void;
   onUpdateAppointment: (data: AppointmentState) => void;
   onGhostContact: (data: User) => void;
+}
+
+interface StateProps {
+  currentUser: User;
+  token: string | null;
+  conversation: DecoratedConversation;
+}
+
+interface Props extends DispatchProps, StateProps {
+  navigation: NavigationScreenProp<any, NavigationParams>;
 }
 
 interface ChatViewState {
@@ -45,13 +54,13 @@ interface ChatViewState {
   conversationMessages: GiftedChatMessage[];
 }
 
-const mapState = (state: WonderAppState) => ({
+const mapState = (state: WonderAppState): StateProps => ({
   token: state.user.auth.token,
   currentUser: selectCurrentUser(state),
   conversation: getDecoratedConversation(state)
 });
 
-const mapDispatch = (dispatch: Dispatch) => ({
+const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
   onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
@@ -78,31 +87,30 @@ class ChatScreen extends React.Component<Props> {
 
   componentWillMount() {
     const { conversation, token } = this.props;
-    this.appChat = {};
-    // this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
-    // this.appChat = this.cable.subscriptions.create({
-    //   channel: "ConversationChannel",
-    //   recipient_id: conversation.partner.id
-    // },
-    // {
-    //   received: (data: any) => {
-    //     const { conversation, onGetMessage } = this.props;
-    //     const receivedMessage: GiftedChatMessage = {
-    //       _id: data.id,
-    //       text: data.body,
-    //       createdAt: data.sent_at,
-    //       user: {
-    //         _id: data.sender.id,
-    //         name: data.sender.first_name,
-    //       }
-    //     };
-    //     this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
-    //     onGetMessage(conversation.partner.id);  // What does this even do?
-    //   },
-    //   deliver: (message: string) => {
-    //     this.appChat.perform('deliver', { body: message });
-    //   }
-    // });
+    this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
+    this.appChat = this.cable.subscriptions.create({
+      channel: "ConversationChannel",
+      recipient_id: conversation.partner.id
+    },
+      {
+        received: (data: any) => {
+          const { onGetMessage } = this.props;
+          const receivedMessage: GiftedChatMessage = {
+            _id: data.id,
+            text: data.body,
+            createdAt: data.sent_at,
+            user: {
+              _id: data.sender.id,
+              name: data.sender.first_name,
+            }
+          };
+          this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
+          onGetMessage(conversation.partner.id);  // What does this even do?
+        },
+        deliver: (message: string) => {
+          this.appChat.perform('deliver', { body: message });
+        }
+      });
   }
 
   componentWillUnmount() {
