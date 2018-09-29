@@ -6,6 +6,8 @@ import { persistUser, persistAuth } from "../actions/user";
 
 import { NavigationActions } from "react-navigation";
 import { Alert } from "react-native";
+
+import { Toast } from "native-base";
 import { resetRegistration } from "../reducers/registration";
 import WonderAppState from "../../models/wonder-app-state";
 import User from "../../models/user";
@@ -47,6 +49,40 @@ export function* watchRegisterUser() {
   yield takeEvery(REGISTER_USER, registerUserSaga);
 }
 
+// send forgot password
+export const FORGOT_PASSWORD = "FORGOT_PASSWORD";
+export const forgotPassword = createAction(FORGOT_PASSWORD);
+
+export function* forgotPasswordSaga(action: Action<any>) {
+  try {
+    if (action.payload) {
+      const { forgotEmail } = action.payload;
+      const response = yield call(api, {
+        method: "POST",
+        url: "/password_resets",
+        data: {
+          email: forgotEmail
+        }
+      });
+      Toast.show({ text: `Email sent to ${forgotEmail}` });
+    }
+  } catch (error) {
+    if (error.response) {
+      Alert.alert(
+        `HTTP ${error.response.status}`,
+        JSON.stringify(error.response.data)
+      );
+    } else {
+      console.warn(error);
+    }
+  } finally {
+  }
+}
+
+export function* watchForgotPassword() {
+  yield takeEvery(FORGOT_PASSWORD, forgotPasswordSaga);
+}
+//
 export const LOGIN_USER = "LOGIN_USER";
 export const loginUser = createAction(LOGIN_USER);
 export function* loginUserSaga(action: Action<UserCredentials>) {
