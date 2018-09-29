@@ -20,6 +20,10 @@ import {
   resetRegistration
 } from "src/store/reducers/registration";
 import { KeyboardDismissView } from "src/views/components/keyboard-dismiss-view";
+import TextButton from "src/views/components/theme/text-button";
+import PrivacyPolicyModal from "../../components/modals/privacy-policy-modal";
+import TermsAndConditionsModal from "../../components/modals/terms-and-conditions-modal";
+import theme from "src/assets/styles/theme";
 
 interface Props {
   onSave: Function;
@@ -66,7 +70,9 @@ class Register1 extends React.Component<Props, State> {
     email: "",
     phone: "",
     password: "",
-    errors: {}
+    errors: {},
+    privacyModalVisible: false,
+    termsModalVisible: false
   };
 
   componentWillMount() {
@@ -77,7 +83,7 @@ class Register1 extends React.Component<Props, State> {
     if (this.inputs[key]) {
       this.inputs[key].focus();
     }
-  }
+  };
 
   render() {
     const { errors } = this.state;
@@ -205,6 +211,33 @@ class Register1 extends React.Component<Props, State> {
             {/* </KeyboardDismissView> */}
           </KeyboardAvoidingView>
         </ScrollView>
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-around",
+            padding: 20
+          }}
+        >
+          <TextButton
+            style={{ textAlign: "center", color: theme.colors.textColor }}
+            text="Privacy Policy"
+            onPress={() => this.setState({ privacyModalVisible: true })}
+          />
+          <TextButton
+            style={{ textAlign: "center", color: theme.colors.textColor }}
+            text="Terms &amp; Conditions"
+            onPress={() => this.setState({ termsModalVisible: true })}
+          />
+        </View>
+        <PrivacyPolicyModal
+          visible={this.state.privacyModalVisible}
+          onRequestClose={() => this.setState({ privacyModalVisible: false })}
+        />
+        <TermsAndConditionsModal
+          visible={this.state.termsModalVisible}
+          onRequestClose={() => this.setState({ termsModalVisible: false })}
+        />
       </Screen>
     );
   }
@@ -242,7 +275,7 @@ class Register1 extends React.Component<Props, State> {
     }
     onSave({ first_name, last_name, email, phone, password });
     navigation.navigate("Register2");
-  }
+  };
 
   private onChangeText = (key: string) => {
     const { errors } = this.state;
@@ -256,7 +289,7 @@ class Register1 extends React.Component<Props, State> {
         }
       });
     };
-  }
+  };
 }
 
 export default connect(
