@@ -24,6 +24,7 @@ import {
 import { KeyboardDismissView } from "src/views/components/keyboard-dismiss-view";
 import TextButton from "src/views/components/theme/text-button";
 import theme from "src/assets/styles/theme";
+import { HTTP_DOMAIN } from "src/services/api";
 
 interface Props {
   onSave: Function;
@@ -88,7 +89,7 @@ class Register1 extends React.Component<Props, State> {
       if (supported) {
         Linking.openURL(url);
       } else {
-        Alert.alert("Sorry! This link cannot be opened on yur device");
+        Alert.alert("Sorry! This link cannot be opened on your device");
       }
     });
   };
@@ -225,7 +226,7 @@ class Register1 extends React.Component<Props, State> {
             text="Privacy Policy"
             onPress={() =>
               this.showDocument(
-                "http://getwonderapp.com/legal/Wonder%20Privacy%20Policy%201.pdf"
+                `${HTTP_DOMAIN}/legal/Wonder%20Privacy%20Policy%201.pdf`
               )
             }
           />
@@ -234,7 +235,7 @@ class Register1 extends React.Component<Props, State> {
             text="Terms &amp; Conditions"
             onPress={() =>
               this.showDocument(
-                "http://getwonderapp.com/legal/Wonder%20Terms%20and%20Conditions.pdf"
+                `${HTTP_DOMAIN}/legal/Wonder%20Terms%20and%20Conditions.pdf`
               )
             }
           />
