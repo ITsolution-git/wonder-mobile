@@ -22,15 +22,14 @@ import UserCredentials from "src/models/user-credentials";
 
 import { Toast } from "native-base";
 
-interface Email {
-  Email: String;
-}
+type Email = string;
 
 const mapState = (state: WonderAppState) => ({});
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onLogin: (credentials: UserCredentials) => dispatch(loginUser(credentials)),
-  onForgotPassword: (email: Email) => dispatch(forgotPassword(email))
+  onForgotPassword: (email: Email) =>
+    dispatch(forgotPassword({ forgotEmail: email }))
 });
 
 interface Props {
@@ -117,9 +116,7 @@ class LoginScreen extends React.Component<Props> {
       return;
     }
     // fire the action
-    this.props.onForgotPassword({
-      forgotEmail
-    });
+    this.props.onForgotPassword(forgotEmail);
     this.setState({ modalVisible: false, errors: {} });
   };
 

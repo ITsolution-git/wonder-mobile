@@ -23,7 +23,6 @@ const ForgotPasswordModal = (props: Props) => {
       onRequestClose={() => props.onRequestClose}
     >
       <View style={styles.container}>
-        <SafeAreaView />
         <Text style={styles.descriptionText}>Forgot Your Password?</Text>
         <Text style={styles.largeText}>We can help!</Text>
         <Text style={styles.actionText}>
@@ -32,7 +31,6 @@ const ForgotPasswordModal = (props: Props) => {
         <RoundedTextInput
           returnKeyType="next"
           getRef={props.getRef}
-          // onSubmitEditing={this.focusOn("password")}
           autoCapitalize="none"
           autoCorrect={false}
           icon="envelope-o"
