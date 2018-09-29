@@ -5,7 +5,9 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  ScrollView
+  ScrollView,
+  Linking,
+  Alert
 } from "react-native";
 import { RoundedTextInput, PrimaryButton } from "src/views/components/theme";
 import Screen from "src/views/components/screen";
@@ -21,8 +23,6 @@ import {
 } from "src/store/reducers/registration";
 import { KeyboardDismissView } from "src/views/components/keyboard-dismiss-view";
 import TextButton from "src/views/components/theme/text-button";
-import PrivacyPolicyModal from "../../components/modals/privacy-policy-modal";
-import TermsAndConditionsModal from "../../components/modals/terms-and-conditions-modal";
 import theme from "src/assets/styles/theme";
 
 interface Props {
@@ -70,9 +70,7 @@ class Register1 extends React.Component<Props, State> {
     email: "",
     phone: "",
     password: "",
-    errors: {},
-    privacyModalVisible: false,
-    termsModalVisible: false
+    errors: {}
   };
 
   componentWillMount() {
@@ -83,6 +81,16 @@ class Register1 extends React.Component<Props, State> {
     if (this.inputs[key]) {
       this.inputs[key].focus();
     }
+  };
+
+  showDocument = (url: string) => {
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        Alert.alert("Sorry! This link cannot be opened on yur device");
+      }
+    });
   };
 
   render() {
@@ -211,33 +219,26 @@ class Register1 extends React.Component<Props, State> {
             {/* </KeyboardDismissView> */}
           </KeyboardAvoidingView>
         </ScrollView>
-        <View
-          style={{
-            flexDirection: "row",
-            width: "100%",
-            justifyContent: "space-around",
-            padding: 20
-          }}
-        >
+        <View style={styles.policyBtnContainer}>
           <TextButton
-            style={{ textAlign: "center", color: theme.colors.textColor }}
+            style={{ color: theme.colors.textColor }}
             text="Privacy Policy"
-            onPress={() => this.setState({ privacyModalVisible: true })}
+            onPress={() =>
+              this.showDocument(
+                "http://getwonderapp.com/legal/Wonder%20Privacy%20Policy%201.pdf"
+              )
+            }
           />
           <TextButton
-            style={{ textAlign: "center", color: theme.colors.textColor }}
+            style={{ color: theme.colors.textColor }}
             text="Terms &amp; Conditions"
-            onPress={() => this.setState({ termsModalVisible: true })}
+            onPress={() =>
+              this.showDocument(
+                "http://getwonderapp.com/legal/Wonder%20Terms%20and%20Conditions.pdf"
+              )
+            }
           />
         </View>
-        <PrivacyPolicyModal
-          visible={this.state.privacyModalVisible}
-          onRequestClose={() => this.setState({ privacyModalVisible: false })}
-        />
-        <TermsAndConditionsModal
-          visible={this.state.termsModalVisible}
-          onRequestClose={() => this.setState({ termsModalVisible: false })}
-        />
       </Screen>
     );
   }
@@ -308,5 +309,11 @@ const styles = StyleSheet.create({
     maxHeight: 125,
     flex: 0,
     alignItems: "center"
+  },
+  policyBtnContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 20
   }
 });
