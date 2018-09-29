@@ -1,11 +1,31 @@
-import { all } from 'redux-saga/effects';
-import { watchGetTopics } from './topics';
-import { watchLoginUser, watchLogoutUser, watchGetUser, watchUpdateUser, watchRegisterUser, watchUpdateImage, watchUpdateVideo, watchDeleteProfileImageSaga, watchDeleteProfileVideoSaga } from './user';
-import { watchGetNewProposal, watchRateProposal } from './proposal';
-import { watchCreateAppointment, watchGetAppointments } from './appointment';
-import { watchGetPartners, watchGetPartnerActivities, watchGetActivityDetails } from './partner';
-import { watchGetConversation, watchGetConversations, watchSendMessage, watchGhostContact } from './conversations';
-import { watchSubmitFeedback } from './feedback';
+import { all } from "redux-saga/effects";
+import { watchGetTopics } from "./topics";
+import {
+  watchLoginUser,
+  watchLogoutUser,
+  watchGetUser,
+  watchForgotPassword,
+  watchUpdateUser,
+  watchRegisterUser,
+  watchUpdateImage,
+  watchUpdateVideo,
+  watchDeleteProfileImageSaga,
+  watchDeleteProfileVideoSaga
+} from "./user";
+import { watchGetNewProposal, watchRateProposal } from "./proposal";
+import { watchCreateAppointment, watchGetAppointments } from "./appointment";
+import {
+  watchGetPartners,
+  watchGetPartnerActivities,
+  watchGetActivityDetails
+} from "./partner";
+import {
+  watchGetConversation,
+  watchGetConversations,
+  watchSendMessage,
+  watchGhostContact
+} from "./conversations";
+import { watchSubmitFeedback } from "./feedback";
 
 export default function* rootSaga() {
   yield all([
@@ -21,6 +41,7 @@ export default function* rootSaga() {
     watchUpdateVideo(),
     watchRegisterUser(),
     watchLogoutUser(),
+    watchForgotPassword(),
 
     // Proposals
     watchGetNewProposal(),
@@ -43,5 +64,5 @@ export default function* rootSaga() {
 
     // Feedback
     watchSubmitFeedback()
-  ])
+  ]);
 }
