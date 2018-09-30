@@ -5,7 +5,9 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
-  ScrollView
+  ScrollView,
+  Linking,
+  Alert
 } from "react-native";
 import { RoundedTextInput, PrimaryButton } from "src/views/components/theme";
 import Screen from "src/views/components/screen";
@@ -20,6 +22,9 @@ import {
   resetRegistration
 } from "src/store/reducers/registration";
 import { KeyboardDismissView } from "src/views/components/keyboard-dismiss-view";
+import TextButton from "src/views/components/theme/text-button";
+import theme from "src/assets/styles/theme";
+import { HTTP_DOMAIN } from "src/services/api";
 
 interface Props {
   onSave: Function;
@@ -77,7 +82,17 @@ class Register1 extends React.Component<Props, State> {
     if (this.inputs[key]) {
       this.inputs[key].focus();
     }
-  }
+  };
+
+  showDocument = (url: string) => {
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        Alert.alert("Sorry! This link cannot be opened on your device");
+      }
+    });
+  };
 
   render() {
     const { errors } = this.state;
@@ -205,6 +220,26 @@ class Register1 extends React.Component<Props, State> {
             {/* </KeyboardDismissView> */}
           </KeyboardAvoidingView>
         </ScrollView>
+        <View style={styles.policyBtnContainer}>
+          <TextButton
+            style={{ color: theme.colors.textColor }}
+            text="Privacy Policy"
+            onPress={() =>
+              this.showDocument(
+                `${HTTP_DOMAIN}/legal/Wonder%20Privacy%20Policy%201.pdf`
+              )
+            }
+          />
+          <TextButton
+            style={{ color: theme.colors.textColor }}
+            text="Terms &amp; Conditions"
+            onPress={() =>
+              this.showDocument(
+                `${HTTP_DOMAIN}/legal/Wonder%20Terms%20and%20Conditions.pdf`
+              )
+            }
+          />
+        </View>
       </Screen>
     );
   }
@@ -242,7 +277,7 @@ class Register1 extends React.Component<Props, State> {
     }
     onSave({ first_name, last_name, email, phone, password });
     navigation.navigate("Register2");
-  }
+  };
 
   private onChangeText = (key: string) => {
     const { errors } = this.state;
@@ -256,7 +291,7 @@ class Register1 extends React.Component<Props, State> {
         }
       });
     };
-  }
+  };
 }
 
 export default connect(
@@ -275,5 +310,11 @@ const styles = StyleSheet.create({
     maxHeight: 125,
     flex: 0,
     alignItems: "center"
+  },
+  policyBtnContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-around",
+    padding: 20
   }
 });
