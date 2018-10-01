@@ -28,6 +28,9 @@ import {
 } from "../../../store/reducers/registration";
 import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
 import theme from "src/assets/styles/theme";
+import StateButton from "src/views/components/theme/buttons/state-button";
+import Color from "color";
+import { Label } from "../../components/theme";
 
 interface Props {
   registration: RegistrationState;
@@ -51,6 +54,8 @@ interface State {
   zipcode: string;
   geolocation: GoogleGeoLocation | null;
   errors: StateErrors;
+  male_interest: boolean;
+  female_interest: boolean;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -72,15 +77,14 @@ class Register2 extends React.Component<Props, State> {
     occupation: "",
     zipcode: "",
     geolocation: null,
-    errors: {}
+    errors: {},
+    male_interest: false,
+    female_interest: true
   };
 
   lookupZipcode = async () => {
     const { zipcode } = this.state;
-    if (
-      !validator.isEmpty(zipcode) &&
-      validator.isPostalCode(zipcode, "US")
-    ) {
+    if (!validator.isEmpty(zipcode) && validator.isPostalCode(zipcode, "US")) {
       const geolocation: GoogleGeoLocation = await googleMaps.geocodeByZipCode(
         zipcode
       );
@@ -88,7 +92,7 @@ class Register2 extends React.Component<Props, State> {
     } else {
       this.setState({ geolocation: null });
     }
-  }
+  };
 
   formattedGeo = () => {
     const { geolocation } = this.state;
@@ -96,7 +100,15 @@ class Register2 extends React.Component<Props, State> {
       return ` (${geolocation.city}, ${geolocation.state})`;
     }
     return "";
-  }
+  };
+
+  setGenderPreference = (gender: string) => {
+    if (gender === "male") {
+      this.setState({ male_interest: !this.state.male_interest });
+    } else if (gender === "female") {
+      this.setState({ female_interest: !this.state.female_interest });
+    }
+  };
 
   public render() {
     const { errors, birthdate } = this.state;
@@ -113,17 +125,29 @@ class Register2 extends React.Component<Props, State> {
             style={{ flex: 1 }}
           >
             {/* <KeyboardDismissView style={{ flex: 1 }}> */}
-            <Title
-              style={{ color: theme.colors.primary, textAlign: "center", fontWeight: 'bold' }}
-            >
-              Hello, {registration.first_name}
-            </Title>
+            <Title style={styles.title}>Hello, {registration.first_name}</Title>
             <Text style={styles.welcome}>
               Tell us a little more about yourself
             </Text>
             <GenderPicker
               onChange={(gender: Gender) => this.onChangeText("gender")(gender)}
             />
+            <View style={styles.genderBtns}>
+              <Label>LOOKING FOR</Label>
+              <View style={styles.genderBtnsContainer}>
+                <StateButton
+                  active={this.state.male_interest}
+                  onPress={() => this.setGenderPreference("male")}
+                  text="Men"
+                />
+
+                <StateButton
+                  active={this.state.female_interest}
+                  onPress={() => this.setGenderPreference("female")}
+                  text="Women"
+                />
+              </View>
+            </View>
             <DatePicker
               errorHint={errors.birthdate}
               label="BIRTHDAY"
@@ -191,7 +215,16 @@ class Register2 extends React.Component<Props, State> {
   private validate = () => {
     const errors: StateErrors = {};
     const { navigation, onSave } = this.props;
-    const { gender, education, occupation, birthdate, zipcode } = this.state;
+    // get gender preferences
+    const {
+      gender,
+      education,
+      occupation,
+      birthdate,
+      zipcode,
+      male_interest,
+      female_interest
+    } = this.state;
 
     if (GenderPicker.Genders.indexOf(gender) < 0) {
       errors.gender = "Please select a gender";
@@ -227,8 +260,11 @@ class Register2 extends React.Component<Props, State> {
       zipcode,
       school: education,
       occupation,
-      birthdate: birthdate.toISOString().split("T")[0]
+      birthdate: birthdate.toISOString().split("T")[0],
+      male_interest,
+      female_interest
     });
+
     navigation.navigate("Register3");
   };
 }
@@ -248,5 +284,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#333333",
     marginBottom: 5
+  },
+  genderBtns: {
+    paddingBottom: 4,
+    borderBottomWidth: 2,
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
+  },
+  genderBtnsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around"
+  },
+  title: {
+    color: theme.colors.primary,
+    textAlign: "center",
+    fontWeight: "bold"
   }
 });
