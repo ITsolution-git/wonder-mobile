@@ -78,8 +78,8 @@ class Register2 extends React.Component<Props, State> {
     zipcode: "",
     geolocation: null,
     errors: {},
-    male_interest: true,
-    female_interest: false
+    male_interest: false,
+    female_interest: true
   };
 
   lookupZipcode = async () => {
@@ -125,15 +125,7 @@ class Register2 extends React.Component<Props, State> {
             style={{ flex: 1 }}
           >
             {/* <KeyboardDismissView style={{ flex: 1 }}> */}
-            <Title
-              style={{
-                color: theme.colors.primary,
-                textAlign: "center",
-                fontWeight: "bold"
-              }}
-            >
-              Hello, {registration.first_name}
-            </Title>
+            <Title style={styles.title}>Hello, {registration.first_name}</Title>
             <Text style={styles.welcome}>
               Tell us a little more about yourself
             </Text>
@@ -301,5 +293,10 @@ const styles = StyleSheet.create({
   genderBtnsContainer: {
     flexDirection: "row",
     justifyContent: "space-around"
+  },
+  title: {
+    color: theme.colors.primary,
+    textAlign: "center",
+    fontWeight: "bold"
   }
 });
