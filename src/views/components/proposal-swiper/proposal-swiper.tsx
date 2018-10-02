@@ -7,7 +7,9 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Dimensions,
-  Animated
+  Animated,
+  Modal,
+  TouchableHighlight
 } from "react-native";
 
 import moment from "moment-timezone";
@@ -21,6 +23,8 @@ import Proposal from "src/models/proposal";
 import ProfileImage from "src/models/profile-image";
 import Topic from "src/models/topic";
 import Candidate from "src/models/candidate";
+
+import VideoPlayer from "react-native-video-player";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -47,6 +51,8 @@ class CardDetailsOverlay extends React.Component<
   state = {
     contentHeight: 0,
     showDetails: false,
+    imageCount: 0,
+    showVideoPlayer: false,
     animation: new Animated.Value(0)
   };
 
@@ -68,41 +74,27 @@ class CardDetailsOverlay extends React.Component<
     const candidateTopics = candidate.topics;
     const userTopics = currentUser.topics;
 
-    function check(obj, arr) {
-      return arr.map(i => {
-        if (i.name === obj.name) {
-          return true;
-        }
-        return false;
-      });
-    }
-
     return (
       <View style={{ flexDirection: "row" }}>
-        {candidate.topics &&
-          candidate.topics.map((topic: Topic) => {
-            if (check(topic, userTopics)) {
-              return (
-                <Wonder
-                  key={topic.name}
-                  topic={topic}
-                  size={60}
-                  active={true}
-                />
-              );
-            } else {
-              return (
-                <Wonder
-                  key={topic.name}
-                  topic={topic}
-                  size={60}
-                  active={false}
-                />
-              );
-            }
-          })}
+        {candidateTopics.map(x => {
+          if (userTopics.find(i => i.name === x.name)) {
+            return <Wonder key={x.name} topic={x} size={60} active={true} />;
+          } else {
+            return <Wonder key={x.name} topic={x} size={60} active={false} />;
+          }
+        })}
       </View>
     );
+  };
+
+  getNextPhoto = () => {
+    const { candidate } = this.props;
+    const { imageCount } = this.state;
+    if (imageCount.count < candidate.images.length - 1) {
+      this.setState({ imageCount: this.state.imageCount + 1 });
+    } else {
+      this.setState({ imageCount: 0 });
+    }
   };
 
   render() {
@@ -122,13 +114,33 @@ class CardDetailsOverlay extends React.Component<
     return (
       <TouchableWithoutFeedback
         style={styles.cardOverlayContainer}
-        onPress={() => console.log("show next image!")}
+        onPress={() => this.getNextPhoto()}
       >
         <WonderImage
           background
-          uri={_.get(candidate, "images[0].url", Images.WELCOME)}
+          uri={_.get(
+            candidate,
+            `images[${this.state.imageCount}].url`,
+            Images.WELCOME
+          )}
           style={styles.container}
         >
+          <View style={{ alignSelf: "flex-end" }}>
+            <View>
+              {candidate.images.map(c => (
+                <Text>Image</Text>
+              ))}
+            </View>
+            <View>
+              <IconButton
+                size={44}
+                icon={showDetails ? "chevron-down" : "chevron-up"}
+                onPress={() => this.setState({ showVideoPlayer: true })}
+                primary="#333"
+                secondary="transparent"
+              />
+            </View>
+          </View>
           <LinearGradient
             style={styles.textContainer}
             colors={["transparent", "rgb(22,22,22)"]}
@@ -171,6 +183,41 @@ class CardDetailsOverlay extends React.Component<
               />
             </View>
           </LinearGradient>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.showVideoPlayer}
+            onRequestClose={() => console.log("yo")}
+          >
+            <IconButton
+              size={44}
+              icon={showDetails ? "chevron-down" : "chevron-up"}
+              onPress={() => this.setState({ showVideoPlayer: false })}
+              primary="#FFF"
+              secondary="transparent"
+            />
+            <View style={{ flex: 1 }}>
+              <View>
+                <VideoPlayer
+                  disableFullscreen={false}
+                  autoplay
+                  videoHeight={2}
+                  videoWidth={1}
+                  video={{
+                    uri:
+                      "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+                  }}
+                />
+                <Text>Hello World!</Text>
+
+                <TouchableHighlight
+                  onPress={() => this.setState({ showVideoPlayer: false })}
+                >
+                  <Text>Hide Modal</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
+          </Modal>
         </WonderImage>
       </TouchableWithoutFeedback>
     );
@@ -238,7 +285,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     backgroundColor: "#EEE",
-    justifyContent: "flex-end",
+    justifyContent: "space-between",
     height: Dimensions.get("window").height - 60
   },
   textContainer: {
@@ -272,3 +319,8 @@ const styles = StyleSheet.create({
     right: 0
   }
 });
+
+// {candidate.topics &&
+//   candidate.topics.map((topic: Topic) => (
+//     <Wonder key={topic.name} topic={topic} size={60} active={false} />
+//   ))}
