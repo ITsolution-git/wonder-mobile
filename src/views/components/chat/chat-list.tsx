@@ -31,8 +31,8 @@ class ChatList extends React.Component<ChatListProps> {
 
   renderEmpty = () => {
     return (
-      <View style={styles.emptyContainer}>
-        <Title>No Chats</Title>
+      <View >
+       
       </View>
     );
   }
