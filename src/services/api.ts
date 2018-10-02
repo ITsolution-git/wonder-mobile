@@ -1,17 +1,19 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { UserState } from '../store/reducers/user';
+import axios, { AxiosRequestConfig } from "axios";
+import { UserState } from "../store/reducers/user";
 
-export const DOMAIN = 'api.getwonderapp.com';
-export const BASE_URL = 'https://' + DOMAIN;
-export const API_PATH = '/v1';
-export const CABLE_PATH = '/cable';
+export const DOMAIN = "api.getwonderapp.com";
+export const BASE_URL = "https://" + DOMAIN;
+export const API_PATH = "/v1";
+export const CABLE_PATH = "/cable";
+
+export const HTTP_DOMAIN = "http://getwonderapp.com";
 
 const wonderApi = axios.create({
   baseURL: BASE_URL + API_PATH,
   // timeout: 1000,
   headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
+    Accept: "application/json",
+    "Content-Type": "application/json"
   }
 });
 
