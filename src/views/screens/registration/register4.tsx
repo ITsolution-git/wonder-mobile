@@ -20,6 +20,8 @@ import theme from "../../../assets/styles/theme";
 import Topic from "../../../models/topic";
 import WonderAppState from "../../../models/wonder-app-state";
 import WonderPickerItem from "src/views/components/theme/wonder-picker/wonder-picker-item";
+import WonderPickerSectionList from "src/views/components/theme/wonder-picker/wonder-picker-sectionlist";
+import PickedWonders from "src/views/components/theme/wonder-picker/picked-wonders";
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -44,6 +46,18 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onRegister: () => dispatch(registerUser())
 });
 
+const chosenItems = (arr: string[]) => {
+  const arr2 = ["", "", ""];
+  if (arr.length <= 3) {
+    for (let i = 0; i < arr2.length; i++) {
+      if (arr[i]) {
+        arr2[i] = arr[i];
+      }
+    }
+  }
+  return arr2;
+};
+
 class Register4 extends React.Component<Props, State> {
   static defaultProps = {
     topics: []
@@ -51,8 +65,7 @@ class Register4 extends React.Component<Props, State> {
 
   state = {
     search: "",
-    selected: [],
-    itemCount: 0
+    selected: []
   };
 
   componentWillMount() {
@@ -61,33 +74,22 @@ class Register4 extends React.Component<Props, State> {
 
   onSearchTextChange = (text: string) => {
     this.setState({ search: text.toLowerCase() });
-  };
+  }
 
-  // onChangeSelected = (selected: Topic[]) => {
-  //   this.setState({ selected });
-  // };
-
-  onChangeSelected = (topic: Topic[]) => {
+  onChangeSelected = (topic: Topic) => {
     const limit = 3;
     const { selected } = this.state;
     if (
       (!limit || selected.length < limit) &&
       !selected.filter((t: Topic) => t.name === topic.name).length
     ) {
-      this.setState(
-        { selected: [...selected, topic], itemCount: this.state.itemCount++ },
-        this.update
-      );
+      this.setState({ selected: [...selected, topic] });
     } else {
-      this.setState(
-        {
-          selected: selected.filter((t: Topic) => t.name !== topic.name),
-          itemCount: this.state.itemCount--
-        },
-        this.update
-      );
+      this.setState({
+        selected: selected.filter((t: Topic) => t.name !== topic.name)
+      });
     }
-  };
+  }
 
   filterTopics = () => {
     const { search } = this.state;
@@ -101,35 +103,14 @@ class Register4 extends React.Component<Props, State> {
       });
     }
     return topics;
-  };
+  }
 
-  // renderPicker = () => {
-  //   const filteredTopics = this.filterTopics();
-  //   if (filteredTopics.length) {
-  //     return (
-  //       <WonderPicker
-  //         contentContainerStyle={{ paddingBottom: 60 }}
-  //         topics={_.sortBy(filteredTopics, ["name"])}
-  //         limit={3}
-  //         onChangeSelected={this.onChangeSelected}
-  //       />
-  //     );
-  //   }
-  // return (
-  //   <View>
-  //     <Text style={{ textAlign: "center" }}>
-  //       Sorry! Looks like we do not have a wonder that matches what you are
-  //       looking for.
-  //     </Text>
-  //   </View>
-  // );
-  // };
   renderPicker = () => {
     const filteredTopics = this.filterTopics();
     const { selected } = this.state;
     const { topics } = this.props;
     const quickDates = topics.filter(
-      t => t.name === "Coffee" || t.name === "Lunch" || t.name === "Dinner"
+      (t) => t.name === "Coffee" || t.name === "Lunch" || t.name === "Dinner"
     );
 
     const groupedTopics = _.chunk(filteredTopics, 3);
@@ -137,29 +118,11 @@ class Register4 extends React.Component<Props, State> {
 
     if (filteredTopics.length) {
       return (
-        <SectionList
-          stickySectionHeadersEnabled={false}
-          renderItem={this.renderRow}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text style={{ textAlign: "center", margin: 4 }}>{title}</Text>
-          )}
-          sections={[
-            { title: "QUICK DATES", data: groupedQuickDates },
-            { title: "", data: groupedTopics }
-            // { title: "Title3", data: ["item5", "item6"] }
-          ]}
-          keyExtractor={(item, index) => item + index}
-          renderSectionFooter={() => (
-            <View
-              style={{
-                alignSelf: "center",
-                borderBottomColor: theme.colors.primaryLight,
-                borderBottomWidth: 2,
-                width: "80%",
-                padding: 10
-              }}
-            />
-          )}
+        <WonderPickerSectionList
+          selected={selected}
+          onChangeSelected={this.onChangeSelected}
+          groupedTopics={groupedTopics}
+          groupedQuickDates={groupedQuickDates}
         />
       );
     }
@@ -171,67 +134,19 @@ class Register4 extends React.Component<Props, State> {
         </Text>
       </View>
     );
-  };
+  }
 
-  getPicks = () => {
+  renderPicks = () => {
     const { selected } = this.state;
-
-    const chosenItems = function(arr) {
-      const arr2 = ["", "", ""];
-      if (arr.length <= 3) {
-        for (let i = 0; i < arr2.length; i++) {
-          if (arr[i]) {
-            arr2[i] = arr[i];
-          }
-        }
-      }
-      return arr2;
-    };
-
-    let choices = chosenItems(selected);
+    const choices = chosenItems(selected);
     return (
-      <View style={styles.row}>
-        {choices.map((topic, i) => {
-          if (topic) {
-            return (
-              <WonderPickerItem
-                key={i}
-                topic={topic}
-                selected={
-                  !!selected.filter((t: Topic) => t.name === topic.name).length
-                }
-                onPress={this.onChangeSelected}
-              />
-            );
-          } else {
-            return (
-              <View
-                key={i}
-                style={{
-                  height: 80,
-                  width: 80,
-                  borderRadius: 40,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  elevation: 3,
-                  shadowColor: "#000",
-                  shadowOpacity: 0.3,
-                  shadowOffset: {
-                    width: 0,
-                    height: 0
-                  },
-                  shadowRadius: 5,
-                  backgroundColor: "#FFF"
-                }}
-              >
-                <Text>+</Text>
-              </View>
-            );
-          }
-        })}
-      </View>
+      <PickedWonders
+        choices={choices}
+        onChangeSelected={this.onChangeSelected}
+        selected={selected}
+      />
     );
-  };
+  }
 
   validate = () => {
     const { onSave, onRegister } = this.props;
@@ -240,11 +155,11 @@ class Register4 extends React.Component<Props, State> {
       onSave({ topic_ids: selected.map((s: Topic) => s.id) });
       onRegister();
     }
-  };
+  }
 
   renderRow = ({ item }: { item: any }) => {
     return <View style={styles.row}>{item.map(this.renderWonder)}</View>;
-  };
+  }
 
   renderWonder = (topic: Topic) => {
     const { selected } = this.state;
@@ -256,17 +171,10 @@ class Register4 extends React.Component<Props, State> {
         onPress={this.onChangeSelected}
       />
     );
-  };
+  }
 
   render() {
     const { selected } = this.state;
-    const { topics } = this.props;
-    const quickDates = topics.filter(
-      t => t.name === "Coffee" || t.name === "Lunch" || t.name === "Dinner"
-    );
-
-    const groupedTopics = _.chunk(topics, 3);
-    const groupedQuickDates = _.chunk(quickDates, 3);
 
     return (
       <Screen horizontalPadding={10}>
@@ -277,9 +185,9 @@ class Register4 extends React.Component<Props, State> {
             us find people &amp; activities in your area.
           </Text>
         </View>
-        <View>{this.getPicks()}</View>
+        <View>{this.renderPicks()}</View>
         <View
-          style={{ paddingVertical: 15, width: "80%", alignSelf: "center" }}
+          style={styles.inputContainer}
         >
           <TextInput
             color={theme.colors.primaryLight}
@@ -294,12 +202,7 @@ class Register4 extends React.Component<Props, State> {
         <View flex={1}>
           {this.renderPicker()}
           <View
-            style={{
-              position: "absolute",
-              bottom: 10,
-              width: "100%",
-              zIndex: 10
-            }}
+            style={styles.fixedButton}
           >
             <PrimaryButton
               disabled={selected.length !== 3}
@@ -334,5 +237,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center"
+  },
+  inputContainer: {
+    paddingVertical: 15,
+    width: "80%",
+    alignSelf: "center"
+  },
+  fixedButton: {
+    position: "absolute",
+    bottom: 10,
+    width: "100%",
+    zIndex: 10
   }
 });
+
