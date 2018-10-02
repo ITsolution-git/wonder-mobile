@@ -25,11 +25,7 @@ const WonderPickerSectionList = (props: Props) => {
   };
 
   const renderRow = ({ item }: { item: any }) => {
-    return (
-      <View style={styles.row}>
-        {item.map(renderWonder)}
-      </View>
-    );
+    return <View style={styles.row}>{item.map(renderWonder)}</View>;
   };
   return (
     <SectionList
@@ -43,11 +39,8 @@ const WonderPickerSectionList = (props: Props) => {
         { title: "", data: props.groupedTopics }
       ]}
       keyExtractor={(item, index) => item + index}
-      renderSectionFooter={() => (
-        <View
-          style={styles.sectionFooter}
-        />
-      )}
+      renderSectionFooter={() => <View style={styles.sectionFooter} />}
+      ListFooterComponent={() => <View style={styles.footer} />}
     />
   );
 };
@@ -61,12 +54,17 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center"
   },
-  sectionHeader: { textAlign: "center", margin: 4, color: theme.colors.textColor },
+  sectionHeader: {
+    textAlign: "center",
+    margin: 4,
+    color: theme.colors.textColor
+  },
   sectionFooter: {
     alignSelf: "center",
     borderBottomColor: theme.colors.primaryLight,
     borderBottomWidth: 2,
     width: "80%",
     padding: 10
-  }
+  },
+  footer: { height: 80 }
 });
