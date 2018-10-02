@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _ from "lodash";
 import React from "react";
 import { DeckSwiper } from "native-base";
 import { Text, Title, WonderImage, SubTitle, IconButton } from "../theme";
@@ -13,7 +13,7 @@ import {
 import moment from "moment-timezone";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import Images from 'src/assets/images';
+import Images from "src/assets/images";
 
 import LinearGradient from "react-native-linear-gradient";
 import Wonder from "../theme/wonder/wonder";
@@ -61,7 +61,49 @@ class CardDetailsOverlay extends React.Component<
       duration: 100
     }).start();
     this.setState({ showDetails });
-  }
+  };
+
+  getTopics = () => {
+    const { candidate, currentUser } = this.props;
+    const candidateTopics = candidate.topics;
+    const userTopics = currentUser.topics;
+
+    function check(obj, arr) {
+      return arr.map(i => {
+        if (i.name === obj.name) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    return (
+      <View style={{ flexDirection: "row" }}>
+        {candidate.topics &&
+          candidate.topics.map((topic: Topic) => {
+            if (check(topic, userTopics)) {
+              return (
+                <Wonder
+                  key={topic.name}
+                  topic={topic}
+                  size={60}
+                  active={true}
+                />
+              );
+            } else {
+              return (
+                <Wonder
+                  key={topic.name}
+                  topic={topic}
+                  size={60}
+                  active={false}
+                />
+              );
+            }
+          })}
+      </View>
+    );
+  };
 
   render() {
     const { showDetails } = this.state;
@@ -76,14 +118,15 @@ class CardDetailsOverlay extends React.Component<
         {!!candidate.about && <Text color="#FFF">{candidate.about}</Text>}
       </React.Fragment>
     );
+
     return (
       <TouchableWithoutFeedback
         style={styles.cardOverlayContainer}
-        onPress={this.toggleDetails}
+        onPress={() => console.log("show next image!")}
       >
         <WonderImage
           background
-          uri={_.get(candidate, 'images[0].url', Images.WELCOME)}
+          uri={_.get(candidate, "images[0].url", Images.WELCOME)}
           style={styles.container}
         >
           <LinearGradient
@@ -103,12 +146,7 @@ class CardDetailsOverlay extends React.Component<
               <SubTitle style={{ fontSize: 16 }} color="#FFF">
                 {"Los Angelas, CA"}
               </SubTitle>
-              <View style={{ flexDirection: "row" }}>
-                {candidate.topics &&
-                  candidate.topics.map((topic: Topic) => (
-                    <Wonder key={topic.name} topic={topic} size={60} />
-                  ))}
-              </View>
+              <View>{this.getTopics()}</View>
               <Animated.View style={{ height: this.state.animation }}>
                 {details}
               </Animated.View>
@@ -158,11 +196,14 @@ class ProposalSwiper extends React.Component<Props> {
         </View>
       );
     }
-  }
+  };
 
   renderCard = (proposal: Proposal) => (
-    <CardDetailsOverlay candidate={proposal.candidate} />
-  )
+    <CardDetailsOverlay
+      candidate={proposal.candidate}
+      currentUser={this.props.currentUser}
+    />
+  );
 
   render() {
     const { proposal, onSwipeLeft, onSwipeRight } = this.props;
