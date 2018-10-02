@@ -1,9 +1,9 @@
-import React from 'react';
-import { StyleSheet, View, FlatList, StyleProp, ViewStyle } from 'react-native';
-import WonderPickerItem from './wonder-picker-item';
+import React from "react";
+import { StyleSheet, View, FlatList, StyleProp, ViewStyle } from "react-native";
+import WonderPickerItem from "./wonder-picker-item";
 
-import _ from 'lodash';
-import Topic from 'src/models/topic';
+import _ from "lodash";
+import Topic from "src/models/topic";
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -33,16 +33,25 @@ export default class WonderPicker extends React.Component<Props, State> {
   onChange = (topic: Topic) => {
     const { limit } = this.props;
     const { selected } = this.state;
-    if ((!limit || selected.length < limit) && !selected.filter((t: Topic) => t.name === topic.name).length) {
-      this.setState({
-        selected: [...selected, topic]
-      }, this.update);
+    if (
+      (!limit || selected.length < limit) &&
+      !selected.filter((t: Topic) => t.name === topic.name).length
+    ) {
+      this.setState(
+        {
+          selected: [...selected, topic]
+        },
+        this.update
+      );
     } else {
-      this.setState({
-        selected: selected.filter((t: Topic) => t.name !== topic.name)
-      }, this.update);
+      this.setState(
+        {
+          selected: selected.filter((t: Topic) => t.name !== topic.name)
+        },
+        this.update
+      );
     }
-  }
+  };
 
   update = () => {
     const { selected } = this.state;
@@ -50,15 +59,11 @@ export default class WonderPicker extends React.Component<Props, State> {
     if (onChangeSelected) {
       onChangeSelected(selected);
     }
-  }
+  };
 
   renderRow = ({ item }: { item: any }) => {
-    return (
-      <View style={styles.row}>
-        {item.map(this.renderWonder)}
-      </View>
-    );
-  }
+    return <View style={styles.row}>{item.map(this.renderWonder)}</View>;
+  };
 
   renderWonder = (topic: Topic) => {
     const { selected } = this.state;
@@ -70,7 +75,7 @@ export default class WonderPicker extends React.Component<Props, State> {
         onPress={this.onChange}
       />
     );
-  }
+  };
 
   keyExtractor = (item: any, index: any) => index.toString();
 
@@ -95,8 +100,8 @@ const styles = StyleSheet.create({
   },
   row: {
     padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   }
-})
+});
