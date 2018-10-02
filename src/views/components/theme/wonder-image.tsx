@@ -21,7 +21,7 @@ class WonderImage extends React.Component<Props> {
     const { uri, children, background, style, ...rest } = this.props;
     if (uri) {
       // Handle SVG images differently
-      if (uri.endsWith('.svg')) {
+      if (uri.toString().endsWith('.svg')) {
         return (
           <SvgUri
             height={_.get(style, 'height', 15)}
@@ -35,7 +35,10 @@ class WonderImage extends React.Component<Props> {
       if (background) {
         return (
           <ImageBackground
-            style={style} {...rest} source={{ uri: `${BASE_URL}/${uri}`, cache: "force-cache" }}>
+            style={style}
+            {...rest}
+            source={{ uri: `${BASE_URL}/${uri}`, cache: "force-cache" }}
+          >
             {children}
           </ImageBackground>
         );

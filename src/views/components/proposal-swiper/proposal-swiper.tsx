@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React from "react";
 import { DeckSwiper } from "native-base";
 import { Text, Title, WonderImage, SubTitle, IconButton } from "../theme";
@@ -12,12 +13,14 @@ import {
 import moment from "moment-timezone";
 import Icon from "react-native-vector-icons/FontAwesome";
 
+import Images from 'src/assets/images';
+
 import LinearGradient from "react-native-linear-gradient";
 import Wonder from "../theme/wonder/wonder";
 import Proposal from "src/models/proposal";
 import ProfileImage from "src/models/profile-image";
-import Topic from "../../../models/topic";
-import Candidate from "../../../models/candidate";
+import Topic from "src/models/topic";
+import Candidate from "src/models/candidate";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -70,7 +73,7 @@ class CardDetailsOverlay extends React.Component<
           {"\n"}
           {candidate.school}
         </Text>
-        {candidate.about && <Text color="#FFF">{candidate.about}</Text>}
+        {!!candidate.about && <Text color="#FFF">{candidate.about}</Text>}
       </React.Fragment>
     );
     return (
@@ -80,7 +83,7 @@ class CardDetailsOverlay extends React.Component<
       >
         <WonderImage
           background
-          uri={candidate.images[0].url}
+          uri={_.get(candidate, 'images[0].url', Images.WELCOME)}
           style={styles.container}
         >
           <LinearGradient
