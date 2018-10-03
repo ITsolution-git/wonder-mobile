@@ -65,6 +65,12 @@ class CardDetailsOverlay extends React.Component<
     this.lookupZipcode();
   }
 
+  componentDidUpdate(prevProps) {
+    if (this.props.candidate.id !== prevProps.candidate.id) {
+      this.setState({ imageCount: 0 });
+    }
+  }
+
   lookupZipcode = async () => {
     const { zipcode } = this.props.candidate;
     const geolocation: GoogleGeoLocation = await googleMaps.geocodeByZipCode(
@@ -143,7 +149,11 @@ class CardDetailsOverlay extends React.Component<
       >
         <WonderImage
           background
-          uri={_.get(candidate, "images[0].url", Images.WELCOME)}
+          uri={_.get(
+            candidate,
+            `images[${this.state.imageCount}].url`,
+            Images.WELCOME
+          )}
           style={styles.container}
         >
           <View style={{ alignSelf: "flex-end", padding: 10 }}>
