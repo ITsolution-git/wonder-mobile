@@ -7,9 +7,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Dimensions,
-  Animated,
-  Modal,
-  TouchableHighlight
+  Animated
 } from "react-native";
 
 import moment from "moment-timezone";
@@ -20,32 +18,35 @@ import Images from "src/assets/images";
 import LinearGradient from "react-native-linear-gradient";
 import Wonder from "../theme/wonder/wonder";
 import Proposal from "src/models/proposal";
+import User from "src/models/user";
 import ProfileImage from "src/models/profile-image";
-import Topic from "src/models/topic";
 import Candidate from "src/models/candidate";
 
-import VideoPlayer from "react-native-video-player";
-import theme from "src/assets/styles/theme";
-
-import validator from "validator";
 import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
+import MatchAvailableMedia from '../../components/proposal-swiper/match-available-media';
+import VibeVideoModal from "../modals/vibe-video-modal";
 
 const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
+
 interface Props {
   proposal: Proposal | null;
   onSwipeLeft: Function;
   onSwipeRight: Function;
+  currentUser: User;
 }
 
 interface CardDetailsOverlayProps {
   candidate: Candidate;
+  currentUser: User;
 }
 
 interface CardDetailsOverlayState {
   showDetails: boolean;
   animation: Animated.Value;
   contentHeight: number;
+  imageCount: number;
+  location: string;
+  showVideoPlayer: boolean;
 }
 
 class CardDetailsOverlay extends React.Component<
@@ -65,7 +66,7 @@ class CardDetailsOverlay extends React.Component<
     this.lookupZipcode();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: any) {
     if (this.props.candidate.id !== prevProps.candidate.id) {
       this.setState({ imageCount: 0 });
     }
@@ -73,11 +74,13 @@ class CardDetailsOverlay extends React.Component<
 
   lookupZipcode = async () => {
     const { zipcode } = this.props.candidate;
-    const geolocation: GoogleGeoLocation = await googleMaps.geocodeByZipCode(
-      zipcode
-    );
-    this.setState({ location: `${geolocation.city}, ${geolocation.state}` });
-  };
+    if (zipcode) {
+      const geolocation: GoogleGeoLocation = await googleMaps.geocodeByZipCode(
+        zipcode
+      );
+      this.setState({ location: `${geolocation.city}, ${geolocation.state}` });
+    }
+  }
 
   toggleDetails = () => {
     const showDetails = !this.state.showDetails;
@@ -90,7 +93,7 @@ class CardDetailsOverlay extends React.Component<
       duration: 100
     }).start();
     this.setState({ showDetails });
-  };
+  }
 
   getTopics = () => {
     const { candidate, currentUser } = this.props;
@@ -100,9 +103,9 @@ class CardDetailsOverlay extends React.Component<
     return (
       <View style={{ flexDirection: "row" }}>
         {candidate &&
-          candidateTopics.map(x => {
+          candidateTopics.map((x) => {
             if (userTopics) {
-              if (userTopics.find(i => i.name === x.name)) {
+              if (userTopics.find((i) => i.name === x.name)) {
                 return (
                   <Wonder key={x.name} topic={x} size={60} active={true} />
                 );
@@ -115,7 +118,7 @@ class CardDetailsOverlay extends React.Component<
           })}
       </View>
     );
-  };
+  }
 
   getNextPhoto = () => {
     const { candidate } = this.props;
@@ -126,11 +129,11 @@ class CardDetailsOverlay extends React.Component<
     } else {
       this.setState({ imageCount: 0 });
     }
-  };
+  }
 
   render() {
     const { showDetails } = this.state;
-    const { candidate, currentUser } = this.props;
+    const { candidate } = this.props;
     const details = (
       <React.Fragment>
         <Text color="#FFF">
@@ -156,44 +159,16 @@ class CardDetailsOverlay extends React.Component<
           )}
           style={styles.container}
         >
-          <View style={{ alignSelf: "flex-end", padding: 10 }}>
-            <View style={{ alignItems: "center" }}>
-              {candidate.images.map((c, i) => (
-                <View
-                  key={i}
-                  style={{
-                    opacity: i === this.state.imageCount ? 1 : 0.2,
-                    height: 9,
-                    width: 9,
-                    borderRadius: 4.5,
-                    backgroundColor:
-                      i === this.state.imageCount
-                        ? theme.colors.primary
-                        : theme.colors.textColorLight,
-                    margin: 3
-                  }}
-                />
-              ))}
-            </View>
-            {candidate.video && (
-              <TouchableHighlight
-                style={{ alignItems: "center", margin: 4 }}
-                onPress={() => this.setState({ showVideoPlayer: true })}
-              >
-                <Icon
-                  size={20}
-                  name={"video-camera"}
-                  color={theme.colors.textColor}
-                />
-              </TouchableHighlight>
-            )}
-          </View>
+        <MatchAvailableMedia
+            onPress={() => this.setState({ showVideoPlayer: true })}
+            candidate={candidate}
+            currentImageIndex={this.state.imageCount}
+        />
           <LinearGradient
             style={styles.textContainer}
             colors={["transparent", "rgb(0,0,0)"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
-            // locations={[0, 0.3]}
           >
             <View flex={1}>
               <Title style={{ fontSize: 24 }} color="#FFF">
@@ -230,46 +205,11 @@ class CardDetailsOverlay extends React.Component<
               />
             </View>
           </LinearGradient>
-          <Modal
-            animationType="slide"
-            transparent={false}
+          <VibeVideoModal
             visible={this.state.showVideoPlayer}
-            onRequestClose={() => console.log("yo")}
-          >
-            <View style={{ flex: 1 }}>
-              <View>
-                <VideoPlayer
-                  customStyles={{
-                    wrapper: {
-                      flex: 1
-                    }
-                  }}
-                  videoHeight={deviceHeight}
-                  videoWidth={deviceWidth}
-                  pauseOnPress
-                  disableFullscreen={true}
-                  autoplay
-                  video={{
-                    uri: `https://api.getwonderapp.com${candidate.video}`
-                  }}
-                />
-                <LinearGradient
-                  style={{ height: 80, alignItems: "flex-end", paddingTop: 20 }}
-                  colors={["black", "transparent"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 0, y: 1 }}
-                >
-                  <IconButton
-                    size={54}
-                    icon={"close"}
-                    onPress={() => this.setState({ showVideoPlayer: false })}
-                    primary={theme.colors.primaryLight}
-                    secondary="transparent"
-                  />
-                </LinearGradient>
-              </View>
-            </View>
-          </Modal>
+            onRequestClose={() => this.setState({ showVideoPlayer: false })}
+            videoUrl={candidate.video}
+          />
         </WonderImage>
       </TouchableWithoutFeedback>
     );
@@ -295,14 +235,14 @@ class ProposalSwiper extends React.Component<Props> {
         </View>
       );
     }
-  };
+  }
 
   renderCard = (proposal: Proposal) => (
     <CardDetailsOverlay
       candidate={proposal.candidate}
       currentUser={this.props.currentUser}
     />
-  );
+  )
 
   render() {
     const { proposal, onSwipeLeft, onSwipeRight } = this.props;
@@ -371,20 +311,3 @@ const styles = StyleSheet.create({
     right: 0
   }
 });
-
-// {candidate.topics &&
-//   candidate.topics.map((topic: Topic) => (
-//     <Wonder key={topic.name} topic={topic} size={60} active={false} />
-//   ))}
-
-{
-  /* <WonderImage</WonderImage></WonderImage>
-          background
-          uri={_.get(
-            candidate,
-            `images[${this.state.imageCount}].url`,
-            Images.WELCOME
-          )}
-          style={styles.container}
-        > */
-}

@@ -25,7 +25,7 @@ class WonderImage extends React.Component<Props> {
 
   render() {
     const { uri, children, background, style, ...rest } = this.props;
-    console.log("uri: ", uri);
+
     if (uri) {
       // Handle SVG images differently
       if (uri.toString().endsWith(".svg")) {
