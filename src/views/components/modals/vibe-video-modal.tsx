@@ -24,35 +24,35 @@ const VibeVideoModal = (props: Props) => {
       onRequestClose={props.onRequestClose}
     >
       <View style={styles.container}>
-        <View>
-          <VideoPlayer
-            customStyles={{
-              wrapper: styles.container
-            }}
-            videoHeight={deviceHeight}
-            videoWidth={deviceWidth}
-            pauseOnPress={true}
-            disableFullscreen={true}
-            autoplay={true}
-            video={{
-              uri: `${BASE_URL}/${props.videoUrl}`
-            }}
+        <VideoPlayer
+          customStyles={{
+            wrapper: {
+              flex: 1
+            }
+          }}
+          videoHeight={deviceHeight}
+          videoWidth={deviceWidth}
+          pauseOnPress={true}
+          disableFullscreen={true}
+          autoplay={true}
+          video={{
+            uri: `${BASE_URL}/${props.videoUrl}`
+          }}
+        />
+        <LinearGradient
+          style={styles.gradientStyles}
+          colors={["rgb(0,0,0)", "transparent"]}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 0, y: 1 }}
+        >
+          <IconButton
+            size={54}
+            icon={"close"}
+            onPress={props.onRequestClose}
+            primary={theme.colors.primaryLight}
+            secondary="transparent"
           />
-          <LinearGradient
-            style={styles.gradientStyles}
-            colors={["rgb(0,0,0)", "transparent"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-          >
-            <IconButton
-              size={54}
-              icon={"close"}
-              onPress={props.onRequestClose}
-              primary={theme.colors.primaryLight}
-              secondary="transparent"
-            />
-          </LinearGradient>
-        </View>
+        </LinearGradient>
       </View>
     </Modal>
   );
@@ -62,5 +62,11 @@ export default VibeVideoModal;
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  gradientStyles: { height: 80, alignItems: "flex-end", paddingTop: 20 }
+  gradientStyles: {
+    position: "absolute",
+    top: 0,
+    height: 80,
+    alignItems: "flex-end",
+    width: "100%"
+  }
 });
