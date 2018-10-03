@@ -6,7 +6,6 @@ import { Text } from "src/views/components/theme";
 import theme from "src/assets/styles/theme";
 import WonderImage from "../wonder-image";
 import Topic from "src/models/topic";
-import wonder from "../../../../store/reducers/wonder";
 
 interface WonderProps {
   topic: Topic;
@@ -56,6 +55,6 @@ const styles = StyleSheet.create({
     // shadowOpacity: 0.5,
   },
   label: {
-    fontSize: 7
+    fontSize: 6
   }
 });
