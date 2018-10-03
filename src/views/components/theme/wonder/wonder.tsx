@@ -50,9 +50,13 @@ const styles = StyleSheet.create({
   },
   selectedContainer: {
     borderWidth: 2,
-    borderColor: theme.colors.primaryLight
-    // shadowColor: theme.colors.primary,
-    // shadowOpacity: 0.5,
+    borderColor: theme.colors.primaryLight,
+    opacity: 0.8,
+    elevation: 4,
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: theme.colors.primaryLight,
+    shadowOpacity: 0.7,
+    shadowRadius: 3
   },
   label: {
     fontSize: 6

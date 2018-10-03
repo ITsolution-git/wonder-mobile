@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { UserState } from "../store/reducers/user";
-
 export const DOMAIN = "api.getwonderapp.com";
 export const BASE_URL = "https://" + DOMAIN;
 export const API_PATH = "/v1";

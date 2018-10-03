@@ -13,7 +13,6 @@ import {
 } from "react-native";
 
 import moment from "moment-timezone";
-// import Icon from "react-native-vector-icons/FontAwesome";
 import Icon from "react-native-vector-icons/Entypo";
 
 import Images from "src/assets/images";
@@ -28,8 +27,11 @@ import Candidate from "src/models/candidate";
 import VideoPlayer from "react-native-video-player";
 import theme from "src/assets/styles/theme";
 
-const deviceHeight = Dimensions.get("window").height;
+import validator from "validator";
+import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
 
+const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
 interface Props {
   proposal: Proposal | null;
   onSwipeLeft: Function;
@@ -55,7 +57,20 @@ class CardDetailsOverlay extends React.Component<
     showDetails: false,
     imageCount: 0,
     showVideoPlayer: false,
+    location: "",
     animation: new Animated.Value(0)
+  };
+
+  componentDidMount() {
+    this.lookupZipcode();
+  }
+
+  lookupZipcode = async () => {
+    const { zipcode } = this.props.candidate;
+    const geolocation: GoogleGeoLocation = await googleMaps.geocodeByZipCode(
+      zipcode
+    );
+    this.setState({ location: `${geolocation.city}, ${geolocation.state}` });
   };
 
   toggleDetails = () => {
@@ -99,7 +114,8 @@ class CardDetailsOverlay extends React.Component<
   getNextPhoto = () => {
     const { candidate } = this.props;
     const { imageCount } = this.state;
-    if (imageCount.count < candidate.images.length - 1) {
+
+    if (imageCount < candidate.images.length - 1) {
       this.setState({ imageCount: this.state.imageCount + 1 });
     } else {
       this.setState({ imageCount: 0 });
@@ -108,7 +124,7 @@ class CardDetailsOverlay extends React.Component<
 
   render() {
     const { showDetails } = this.state;
-    const { candidate } = this.props;
+    const { candidate, currentUser } = this.props;
     const details = (
       <React.Fragment>
         <Text color="#FFF">
@@ -119,14 +135,7 @@ class CardDetailsOverlay extends React.Component<
         {!!candidate.about && <Text color="#FFF">{candidate.about}</Text>}
       </React.Fragment>
     );
-    const person = {
-      images: [
-        {
-          url:
-            "https://pixabay.com/get/ef30b60e29f21c22d2524518b7444795ea76e5d004b014429df5c27dafebb4_340.jpg"
-        }
-      ]
-    };
+
     return (
       <TouchableWithoutFeedback
         style={styles.cardOverlayContainer}
@@ -134,53 +143,47 @@ class CardDetailsOverlay extends React.Component<
       >
         <WonderImage
           background
-          uri={_.get(
-            person,
-            `images[${this.state.imageCount}].url`,
-            Images.WELCOME
-          )}
+          uri={_.get(candidate, "images[0].url", Images.WELCOME)}
           style={styles.container}
         >
           <View style={{ alignSelf: "flex-end", padding: 10 }}>
             <View style={{ alignItems: "center" }}>
-              {/* {candidate.images.map(c => (
-                <Text>Image</Text>
-              ))} */}
-              <View
-                style={{
-                  height: 8,
-                  width: 8,
-                  borderRadius: 4,
-                  backgroundColor: theme.colors.textColor,
-                  margin: 4
-                }}
-              />
-              <View
-                style={{
-                  height: 8,
-                  width: 8,
-                  borderRadius: 4,
-                  backgroundColor: theme.colors.primary,
-                  margin: 4
-                }}
-              />
+              {candidate.images.map((c, i) => (
+                <View
+                  key={i}
+                  style={{
+                    opacity: i === this.state.imageCount ? 1 : 0.2,
+                    height: 9,
+                    width: 9,
+                    borderRadius: 4.5,
+                    backgroundColor:
+                      i === this.state.imageCount
+                        ? theme.colors.primary
+                        : theme.colors.textColorLight,
+                    margin: 3
+                  }}
+                />
+              ))}
             </View>
-            <View style={{ alignItems: "center" }}>
-              <IconButton
-                size={44}
-                icon={"video-camera"}
+            {candidate.video && (
+              <TouchableHighlight
+                style={{ alignItems: "center", margin: 4 }}
                 onPress={() => this.setState({ showVideoPlayer: true })}
-                primary={theme.colors.textColor}
-                secondary="transparent"
-              />
-            </View>
+              >
+                <Icon
+                  size={20}
+                  name={"video-camera"}
+                  color={theme.colors.textColor}
+                />
+              </TouchableHighlight>
+            )}
           </View>
           <LinearGradient
             style={styles.textContainer}
-            colors={["transparent", "rgb(22,22,22)"]}
+            colors={["transparent", "rgb(0,0,0)"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
-            locations={[0, 0.3]}
+            // locations={[0, 0.3]}
           >
             <View flex={1}>
               <Title style={{ fontSize: 24 }} color="#FFF">
@@ -190,7 +193,7 @@ class CardDetailsOverlay extends React.Component<
                 ].join(", ")}
               </Title>
               <SubTitle style={{ fontSize: 16 }} color="#FFF">
-                {"Los Angelas, CA"}
+                {this.state.location && this.state.location}
               </SubTitle>
               <View>{this.getTopics()}</View>
               <Animated.View style={{ height: this.state.animation }}>
@@ -223,32 +226,37 @@ class CardDetailsOverlay extends React.Component<
             visible={this.state.showVideoPlayer}
             onRequestClose={() => console.log("yo")}
           >
-            <IconButton
-              size={44}
-              icon={showDetails ? "chevron-down" : "chevron-up"}
-              onPress={() => this.setState({ showVideoPlayer: false })}
-              primary="#FFF"
-              secondary="transparent"
-            />
             <View style={{ flex: 1 }}>
               <View>
                 <VideoPlayer
-                  disableFullscreen={false}
+                  customStyles={{
+                    wrapper: {
+                      flex: 1
+                    }
+                  }}
+                  videoHeight={deviceHeight}
+                  videoWidth={deviceWidth}
+                  pauseOnPress
+                  disableFullscreen={true}
                   autoplay
-                  videoHeight={2}
-                  videoWidth={1}
                   video={{
-                    uri:
-                      "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
+                    uri: `https://api.getwonderapp.com${candidate.video}`
                   }}
                 />
-                <Text>Hello World!</Text>
-
-                <TouchableHighlight
-                  onPress={() => this.setState({ showVideoPlayer: false })}
+                <LinearGradient
+                  style={{ height: 80, alignItems: "flex-end", paddingTop: 20 }}
+                  colors={["black", "transparent"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 0, y: 1 }}
                 >
-                  <Text>Hide Modal</Text>
-                </TouchableHighlight>
+                  <IconButton
+                    size={54}
+                    icon={"close"}
+                    onPress={() => this.setState({ showVideoPlayer: false })}
+                    primary={theme.colors.primaryLight}
+                    secondary="transparent"
+                  />
+                </LinearGradient>
               </View>
             </View>
           </Modal>
