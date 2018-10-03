@@ -13,7 +13,8 @@ import {
 } from "react-native";
 
 import moment from "moment-timezone";
-import Icon from "react-native-vector-icons/FontAwesome";
+// import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Entypo";
 
 import Images from "src/assets/images";
 
@@ -25,6 +26,7 @@ import Topic from "src/models/topic";
 import Candidate from "src/models/candidate";
 
 import VideoPlayer from "react-native-video-player";
+import theme from "src/assets/styles/theme";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -76,13 +78,20 @@ class CardDetailsOverlay extends React.Component<
 
     return (
       <View style={{ flexDirection: "row" }}>
-        {candidateTopics.map(x => {
-          if (userTopics.find(i => i.name === x.name)) {
-            return <Wonder key={x.name} topic={x} size={60} active={true} />;
-          } else {
-            return <Wonder key={x.name} topic={x} size={60} active={false} />;
-          }
-        })}
+        {candidate &&
+          candidateTopics.map(x => {
+            if (userTopics) {
+              if (userTopics.find(i => i.name === x.name)) {
+                return (
+                  <Wonder key={x.name} topic={x} size={60} active={true} />
+                );
+              } else {
+                return (
+                  <Wonder key={x.name} topic={x} size={60} active={false} />
+                );
+              }
+            }
+          })}
       </View>
     );
   };
@@ -110,7 +119,14 @@ class CardDetailsOverlay extends React.Component<
         {!!candidate.about && <Text color="#FFF">{candidate.about}</Text>}
       </React.Fragment>
     );
-
+    const person = {
+      images: [
+        {
+          url:
+            "https://pixabay.com/get/ef30b60e29f21c22d2524518b7444795ea76e5d004b014429df5c27dafebb4_340.jpg"
+        }
+      ]
+    };
     return (
       <TouchableWithoutFeedback
         style={styles.cardOverlayContainer}
@@ -119,24 +135,42 @@ class CardDetailsOverlay extends React.Component<
         <WonderImage
           background
           uri={_.get(
-            candidate,
+            person,
             `images[${this.state.imageCount}].url`,
             Images.WELCOME
           )}
           style={styles.container}
         >
-          <View style={{ alignSelf: "flex-end" }}>
-            <View>
-              {candidate.images.map(c => (
+          <View style={{ alignSelf: "flex-end", padding: 10 }}>
+            <View style={{ alignItems: "center" }}>
+              {/* {candidate.images.map(c => (
                 <Text>Image</Text>
-              ))}
+              ))} */}
+              <View
+                style={{
+                  height: 8,
+                  width: 8,
+                  borderRadius: 4,
+                  backgroundColor: theme.colors.textColor,
+                  margin: 4
+                }}
+              />
+              <View
+                style={{
+                  height: 8,
+                  width: 8,
+                  borderRadius: 4,
+                  backgroundColor: theme.colors.primary,
+                  margin: 4
+                }}
+              />
             </View>
-            <View>
+            <View style={{ alignItems: "center" }}>
               <IconButton
                 size={44}
-                icon={showDetails ? "chevron-down" : "chevron-up"}
+                icon={"video-camera"}
                 onPress={() => this.setState({ showVideoPlayer: true })}
-                primary="#333"
+                primary={theme.colors.textColor}
                 secondary="transparent"
               />
             </View>
@@ -324,3 +358,15 @@ const styles = StyleSheet.create({
 //   candidate.topics.map((topic: Topic) => (
 //     <Wonder key={topic.name} topic={topic} size={60} active={false} />
 //   ))}
+
+{
+  /* <WonderImage</WonderImage></WonderImage>
+          background
+          uri={_.get(
+            candidate,
+            `images[${this.state.imageCount}].url`,
+            Images.WELCOME
+          )}
+          style={styles.container}
+        > */
+}
