@@ -34,6 +34,7 @@ const MatchAvailableMedia = (props: Props) => {
         <TouchableHighlight
           style={styles.iconContainer}
           onPress={props.onPress}
+          underlayColor="transparent"
         >
           <Icon
             size={20}
@@ -57,5 +58,5 @@ const styles = StyleSheet.create({
     borderRadius: 4.5,
     margin: 3
   },
-  iconContainer: { alignItems: "center", margin: 4 }
+  iconContainer: { alignItems: "center", margin: 4, padding: 10 }
 });
