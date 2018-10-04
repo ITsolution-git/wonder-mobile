@@ -60,6 +60,7 @@ export function* getConversationSaga(action: Action<any>) {
       method: 'GET',
       url: `/conversations/${id}/messages`
     }, state.user);
+    
     yield put(persistConversation(data));
     if (successRoute) {
       navigation.navigate(successRoute);
