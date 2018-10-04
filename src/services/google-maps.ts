@@ -62,7 +62,7 @@ function parseGoogleGeocodeResponse(google: any) {
       location.lat = geometry.location.lat;
       location.lng = geometry.location.lng;
     }
-    console.log(location);
+
     return location;
   }
 }
