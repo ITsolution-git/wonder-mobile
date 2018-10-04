@@ -1,6 +1,6 @@
 import React from "react";
 import Screen from "src/views/components/screen";
-import { ChatList,LatestMatches } from "src/views/components/chat";
+import { ChatList, LatestMatches } from "src/views/components/chat";
 import { Title } from "src/views/components/theme";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 
@@ -15,9 +15,9 @@ import { selectCurrentUser } from "src/store/selectors/user";
 import Conversation from "src/models/conversation";
 import WonderAppState from "src/models/wonder-app-state";
 import Chat from "src/models/chat";
-import { Button,View ,Text,StyleSheet} from "react-native";
+import { Button, View, Text, StyleSheet } from "react-native";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
-import SearchBar from 'react-native-searchbar';
+import SearchBar from "react-native-searchbar";
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -28,7 +28,7 @@ interface Props {
 
 interface ChatListScreenState {
   isSearchModalOpen: boolean;
-  results: any;
+  results?: Conversation[];
   handleChangeText: string;
 }
 
@@ -44,18 +44,18 @@ const mapDispatch = (dispatch: Dispatch) => ({
 });
 
 class ChatListScreen extends React.Component<Props> {
-
+  searchBar?: any;
   state: ChatListScreenState = {
     isSearchModalOpen: false,
     results: [],
-    handleChangeText:""
+    handleChangeText: ""
   };
 
   componentWillMount() {
     const { conversations, onRefreshConversations } = this.props;
     this.props.onRefreshConversations();
-    
-    this.setState({results:conversations});
+
+    this.setState({ results: conversations });
   }
 
   goToChat = (chat: Chat) => {
@@ -67,73 +67,64 @@ class ChatListScreen extends React.Component<Props> {
     this.setState({ isSearchModalOpen: !this.state.isSearchModalOpen });
   }
 
-
-  _handleResults=(results)=> {
+  handleResults = (results: Conversation[]) => {
     const { conversations, onRefreshConversations } = this.props;
-    if(results.length==0 && this.state.handleChangeText=="")
-    {
-      this.setState({ results: conversations});
-    }else{
+    if (!results.length && !this.state.handleChangeText) {
+      this.setState({ results: conversations });
+    } else {
       this.setState({ results });
     }
-    
+
   }
 
-  handleChangeText=(text)=>{
-    this.setState({ handleChangeText:text});
+  handleChangeText = (text: string) => {
+    this.setState({ handleChangeText: text });
   }
 
+  renderSearchbar = () => {
 
-
-  
-
-
-  renderSearchbar=()=>{
-    
     const { conversations, onRefreshConversations } = this.props;
-    if(this.state.isSearchModalOpen)
-    {
-      return (<SearchBar
-        ref={(ref) => this.searchBar = ref}
-        data={conversations}
-        onBack={this.openSearchModal}
-        handleResults={this._handleResults}
-        handleChangeText={this.handleChangeText}
-        showOnLoad
-      />)
+    if (this.state.isSearchModalOpen) {
+      return (
+        <SearchBar
+          ref={(ref: any) => this.searchBar = ref}
+          data={conversations}
+          onBack={this.openSearchModal}
+          handleResults={this.handleResults}
+          handleChangeText={this.handleChangeText}
+          showOnLoad
+        />
+      );
     }
   }
 
-  renderSearchButton(){
+  renderSearchButton() {
     const { conversations, onRefreshConversations } = this.props;
-    if(conversations.length>0)
-    {
+    if (conversations.length) {
       return (
         <View style={{ width: "50%" }} flexDirection={"row"}>
-            <ChatActionButton
-              title="Search"
-              onPress={this.openSearchModal}
-            />
-          </View>
-      )
+          <ChatActionButton
+            title="Search"
+            onPress={this.openSearchModal}
+          />
+        </View>
+      );
     }
-    
     return null;
-    
   }
 
   render() {
     const { conversations, onRefreshConversations } = this.props;
     return (
       <Screen horizontalPadding={20}>
-      {this.renderSearchbar()}
+        {this.renderSearchbar()}
         <Title>Latest Matches</Title>
         <View>
-        <LatestMatches
-          onRefresh={onRefreshConversations}
-          chats={conversations}
-          onPressChat={this.goToChat}
-        />
+          <LatestMatches
+            onRefresh={onRefreshConversations}
+            chats={conversations}
+            onPressChat={this.goToChat}
+          />
         </View>
         <ChatList
           onRefresh={onRefreshConversations}
@@ -142,14 +133,10 @@ class ChatListScreen extends React.Component<Props> {
         />
 
         <View
-          style={{
-            marginBottom: 10,
-            flexDirection: "row",
-            justifyContent: "center"
-          }}
+          style={styles.searchButtonContainer}
         >
-        {this.renderSearchButton()}
-      </View>
+          {this.renderSearchButton()}
+        </View>
 
       </Screen>
     );
@@ -160,7 +147,6 @@ export default connect(
   mapState,
   mapDispatch
 )(ChatListScreen);
-
 
 const styles = StyleSheet.create({
   footer: {
@@ -180,5 +166,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderWidth: 1,
     borderColor: "#fcbd77"
+  },
+  searchButtonContainer: {
+    marginBottom: 10,
+    flexDirection: "row",
+    justifyContent: "center"
   }
 });

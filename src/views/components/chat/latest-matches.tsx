@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, StyleSheet,ScrollView } from 'react-native';
+import { FlatList, View, StyleSheet, ScrollView } from 'react-native';
 import { Title } from '../theme';
 import { LatestMatchesItem } from '.';
 import Conversation from 'src/models/conversation';
@@ -39,18 +39,18 @@ class LatestMatches extends React.Component<LatestMatchesProps> {
 
   render() {
     const { chats, onRefresh } = this.props;
-    if (!chats || chats.length) {
+    if (chats && chats.length) {
       return (
-        <ScrollView style={{borderBottomWidth: 1,borderBottomColor: '#e6e6ec',}}>
-        <FlatList
-          refreshing={false}
-          onRefresh={onRefresh}
-          showsVerticalScrollIndicator={false}
-          data={chats || []}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-          horizontal={true}
-        />
+        <ScrollView style={{ borderBottomWidth: 1, borderBottomColor: '#e6e6ec' }}>
+          <FlatList
+            refreshing={false}
+            onRefresh={onRefresh}
+            showsVerticalScrollIndicator={false}
+            data={chats || []}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+            horizontal={true}
+          />
         </ScrollView>
       );
     }
