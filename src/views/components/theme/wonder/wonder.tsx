@@ -9,7 +9,7 @@ import Topic from "src/models/topic";
 
 interface WonderProps {
   topic: Topic;
-  active?: boolean;
+  active?: Topic | undefined;
   size?: number;
 }
 const Wonder: React.SFC<WonderProps> = ({ topic, active, size = 80 }) => {
@@ -20,8 +20,13 @@ const Wonder: React.SFC<WonderProps> = ({ topic, active, size = 80 }) => {
     borderRadius: size / 2
   };
 
+  const wonderStyles = [styles.container, containerStyles];
+  if (active) {
+    wonderStyles.push(styles.selectedContainer);
+  }
+
   return (
-    <View style={[styles.container, containerStyles]}>
+    <View style={wonderStyles}>
       <WonderImage
         style={{ height: imageSize, width: imageSize, marginBottom: 5 }}
         uri={topic.icon}
@@ -45,9 +50,13 @@ const styles = StyleSheet.create({
   },
   selectedContainer: {
     borderWidth: 2,
-    borderColor: theme.colors.primaryLight
-    // shadowColor: theme.colors.primary,
-    // shadowOpacity: 0.5,
+    borderColor: theme.colors.primaryLight,
+    opacity: 0.8,
+    elevation: 4,
+    shadowOffset: { width: 0, height: 1 },
+    shadowColor: theme.colors.primaryLight,
+    shadowOpacity: 0.7,
+    shadowRadius: 3
   },
   label: {
     fontSize: 6
