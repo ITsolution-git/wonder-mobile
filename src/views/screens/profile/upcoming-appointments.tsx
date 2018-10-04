@@ -13,6 +13,10 @@ import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import WonderAppState from "src/models/wonder-app-state";
 import { DecoratedAppointment } from "src/models/appointment";
 
+interface State {
+  search: string;
+}
+
 const mapState = (state: WonderAppState) => ({
   appointments: selectUpcomingAppointments(state)
 });
@@ -30,7 +34,7 @@ interface UpcomingAppointmentsProps {
 class UpcomingAppointmentsScreen extends React.Component<
   UpcomingAppointmentsProps
 > {
-  state = {
+  state: State = {
     search: ""
   };
   componentDidMount() {
