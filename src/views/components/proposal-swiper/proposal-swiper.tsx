@@ -23,7 +23,7 @@ import ProfileImage from "src/models/profile-image";
 import Candidate from "src/models/candidate";
 
 import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
-import MatchAvailableMedia from '../../components/proposal-swiper/match-available-media';
+import MatchAvailableMedia from "../../components/proposal-swiper/match-available-media";
 import VibeVideoModal from "../modals/vibe-video-modal";
 
 const deviceHeight = Dimensions.get("window").height;
@@ -80,7 +80,7 @@ class CardDetailsOverlay extends React.Component<
       );
       this.setState({ location: `${geolocation.city}, ${geolocation.state}` });
     }
-  }
+  };
 
   toggleDetails = () => {
     const showDetails = !this.state.showDetails;
@@ -93,7 +93,7 @@ class CardDetailsOverlay extends React.Component<
       duration: 100
     }).start();
     this.setState({ showDetails });
-  }
+  };
 
   getTopics = () => {
     const { candidate, currentUser } = this.props;
@@ -103,9 +103,9 @@ class CardDetailsOverlay extends React.Component<
     return (
       <View style={{ flexDirection: "row" }}>
         {candidate &&
-          candidateTopics.map((x) => {
+          candidateTopics.map(x => {
             if (userTopics) {
-              if (userTopics.find((i) => i.name === x.name)) {
+              if (userTopics.find(i => i.name === x.name)) {
                 return (
                   <Wonder key={x.name} topic={x} size={60} active={true} />
                 );
@@ -118,7 +118,7 @@ class CardDetailsOverlay extends React.Component<
           })}
       </View>
     );
-  }
+  };
 
   getNextPhoto = () => {
     const { candidate } = this.props;
@@ -129,7 +129,7 @@ class CardDetailsOverlay extends React.Component<
     } else {
       this.setState({ imageCount: 0 });
     }
-  }
+  };
 
   render() {
     const { showDetails } = this.state;
@@ -159,11 +159,11 @@ class CardDetailsOverlay extends React.Component<
           )}
           style={styles.container}
         >
-        <MatchAvailableMedia
+          <MatchAvailableMedia
             onPress={() => this.setState({ showVideoPlayer: true })}
             candidate={candidate}
             currentImageIndex={this.state.imageCount}
-        />
+          />
           <LinearGradient
             style={styles.textContainer}
             colors={["transparent", "rgb(0,0,0)"]}
@@ -235,14 +235,14 @@ class ProposalSwiper extends React.Component<Props> {
         </View>
       );
     }
-  }
+  };
 
   renderCard = (proposal: Proposal) => (
     <CardDetailsOverlay
       candidate={proposal.candidate}
       currentUser={this.props.currentUser}
     />
-  )
+  );
 
   render() {
     const { proposal, onSwipeLeft, onSwipeRight } = this.props;
