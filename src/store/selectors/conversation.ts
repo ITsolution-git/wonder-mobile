@@ -36,5 +36,6 @@ export const decorateMessagesForGiftedChat =
         })
       };
     }
+
     return undefined;
   };

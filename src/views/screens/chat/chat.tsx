@@ -2,13 +2,14 @@ import React from "react";
 import _ from 'lodash';
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import ActionCable from 'react-native-actioncable'
-import { GiftedChat, Bubble } from "react-native-gifted-chat";
 import Screen from "src/views/components/screen";
 import theme from "src/assets/styles/theme";
-import { View, StyleSheet, TouchableOpacity, Image, Alert } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Image, Alert, Text } from "react-native";
+import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   getConversation,
   sendMessage,
@@ -30,7 +31,19 @@ import {
   persistAppointmentData
 } from "src/store/reducers/appointment";
 import Assets from "src/assets/images";
-import { DOMAIN } from "../../../services/api";
+import { DOMAIN } from "src/services/api";
+
+import ImagePicker from 'react-native-image-picker';
+
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from 'react-native-popup-menu';
+
+import { Options, Response } from "../../../models/image-picker";
+import { ImageSource } from "react-native-vector-icons/Icon";
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -51,6 +64,7 @@ interface Props extends DispatchProps, StateProps {
 
 interface ChatViewState {
   isGhostingModalOpen: boolean;
+  selectedSendImage: ImageSource;
   conversationMessages: GiftedChatMessage[];
 }
 
@@ -77,16 +91,43 @@ class ChatScreen extends React.Component<Props> {
   }: {
       navigation: NavigationScreenProp<any, NavigationParams>;
     }) => ({
-      title: "Chat"
+      title: navigation.getParam('title', 'Chat'),
+      headerRight: (
+        <View style={{ marginRight: 10 }}>
+          <Menu>
+            <MenuTrigger>
+              <View style={{ justifyContent: 'center', alignItems: 'center', width: 40 }}>
+                <Icon name="ellipsis-v" size={20} color="#9292ad" />
+              </View>
+            </MenuTrigger>
+            <MenuOptions>
+              <MenuOption onSelect={() => Alert.alert('Profile')} >
+                <Text style={{ fontSize: 16 }}>View profile</Text>
+              </MenuOption>
+              <MenuOption onSelect={() => Alert.alert('Block and report')} >
+                <Text style={{ fontSize: 16, color: 'red' }}>Block and report</Text>
+              </MenuOption>
+
+              <MenuOption onSelect={() => Alert.alert('Unmatch')} >
+                <Text style={{ fontSize: 16, color: 'red' }}>Unmatch</Text>
+              </MenuOption>
+            </MenuOptions>
+          </Menu>
+        </View>
+      )
+
     })
 
   state: ChatViewState = {
     isGhostingModalOpen: false,
+    selectedSendImage: '',
     conversationMessages: this.props.conversation.giftedChatMessages
   };
 
   componentWillMount() {
-    const { conversation, token } = this.props;
+    const { conversation, token, navigation } = this.props;
+    navigation.setParams({ title: conversation.partner.first_name + ' ' + conversation.partner.last_name });
+    this.appChat = {};
     this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
     this.appChat = this.cable.subscriptions.create({
       channel: "ConversationChannel",
@@ -104,8 +145,10 @@ class ChatScreen extends React.Component<Props> {
               name: data.sender.first_name,
             }
           };
+          onGetMessage(conversation.partner.id);
           this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
-          onGetMessage(conversation.partner.id);  // What does this even do?
+
+          // onGetMessage(conversation.partner.id);  // What does this even do?
         },
         deliver: (message: string) => {
           this.appChat.perform('deliver', { body: message });
@@ -145,6 +188,8 @@ class ChatScreen extends React.Component<Props> {
     messages.forEach((message: ChatResponseMessage) => {
       this.appChat.deliver(message.text);
     });
+
+    this.setState({ selectedSendImage: '' });
   }
 
   renderBubble(props: any) {
@@ -157,7 +202,63 @@ class ChatScreen extends React.Component<Props> {
     );
   }
 
+  renderSend = (props: any) => {
+    return (
+      <Send
+        {...props}
+      >
+        <View style={{ marginRight: 12, marginBottom: 15 }}>
+          <Icon name="paper-plane" size={20} color="#9292ad" />
+        </View>
+      </Send>
+    );
+  }
+
+  renderActions = (props: any) => {
+    return (
+      <TouchableOpacity onPress={this.getImage}>
+        <View style={{ marginLeft: 12, marginBottom: 15 }}>
+          <Icon name="plus" size={20} color="#9292ad" />
+        </View>
+      </TouchableOpacity>
+    );
+  }
+
+  getImage = () => {
+    const options: Options = {
+      title: 'Upload a Photo',
+      mediaType: 'photo'
+    };
+
+    ImagePicker.showImagePicker(options, (res: Response) => {
+      if (res.didCancel) {
+        // console.log("User cancelled!");
+      } else if (res.error) {
+        // console.log("Error", res.error);
+      } else {
+        const source = { uri: res.uri.replace('file://', '') };
+        this.setState({ selectedSendImage: source });
+      }
+    });
+  }
+
   renderFooter = () => {
+    // if (!this.state.selectedSendImage) {
+    //   return (
+    //     <View
+    //       style={{
+    //         marginBottom: 10,
+    //         flexDirection: "row",
+    //         justifyContent: "center"
+    //       }}
+    //     >
+    //       <Image
+    //         style={{ width: 100, height: 100 }}
+    //         source={this.state.selectedSendImage}
+    //       />
+    //     </View>
+    //   );
+    // }
     return (
       <View
         style={{
@@ -191,10 +292,13 @@ class ChatScreen extends React.Component<Props> {
       <Screen>
         <GiftedChat
           user={{ _id: currentUser.id }}
+          renderSend={this.renderSend}
           renderBubble={this.renderBubble}
           messages={this.state.conversationMessages}
           renderFooter={this.renderFooter}
           onSend={this.onSend}
+          renderActions={this.renderActions}
+
         />
         <ChatGhostingModal
           visible={this.state.isGhostingModalOpen}
@@ -236,7 +340,7 @@ const bubbleWrapperStyle = StyleSheet.create({
       width: 3,
       height: 1
     },
-    backgroundColor: theme.colors.primaryLight,
+    backgroundColor: '#fcb26a',
     marginVertical: 5
   },
   left: {
