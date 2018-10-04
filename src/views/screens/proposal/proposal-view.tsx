@@ -77,28 +77,28 @@ class ProposalViewScreen extends React.Component<Props, State> {
     if (pushNotification.token && !currentUser.push_device_id) {
       updatePushToken({
         push_device_id: pushNotification.token.token,
-        push_device_type: (pushNotification.token.os === 'ios') ? 'apns' : 'fcm'
+        push_device_type: pushNotification.token.os === "ios" ? "apns" : "fcm"
       });
     }
   }
 
   setCandidate = (candidate?: Candidate | null) => {
     this.setState({ candidate });
-  }
+  };
 
   clearCandidate = () => {
     this.setState({ candidate: null });
-  }
+  };
 
   clearCurrentMatch = () => {
     this.props.onClearCurrentMatch();
-  }
+  };
 
   goToChat = () => {
     const { navigation } = this.props;
     this.props.onClearCurrentMatch();
     navigation.navigate("ChatList");
-  }
+  };
 
   render() {
     const {
@@ -112,6 +112,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
       <Screen>
         <View style={{ flex: 1 }}>
           <ProposalSwiper
+            currentUser={currentUser}
             proposal={proposal}
             onSwipeRight={onRightSwipe}
             onSwipeLeft={onLeftSwipe}

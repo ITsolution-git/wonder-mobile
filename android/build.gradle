@@ -40,7 +40,7 @@ ext {
     compileSdkVersion = 27
     targetSdkVersion = 27
     supportLibVersion = "27.1.0"
-    googlePlayServicesVersion = "15.0.1"
+    googlePlayServicesVersion = "16.0.0"
     firebaseVersion = "+"
 }
 
