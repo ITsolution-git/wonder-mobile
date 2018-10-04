@@ -11,7 +11,7 @@ import {
 } from "react-native";
 
 import moment from "moment-timezone";
-import Icon from "react-native-vector-icons/Entypo";
+import Icon from "react-native-vector-icons/FontAwesome";
 import Topic from "src/models/topic";
 import Images from "src/assets/images";
 
@@ -117,9 +117,10 @@ class CardDetailsOverlay extends React.Component<
 
   getNextPhoto = () => {
     const { candidate } = this.props;
+    const { images } = candidate || [];
     const { imageCount } = this.state;
 
-    if (imageCount < candidate.images.length - 1) {
+    if (imageCount < images.length - 1) {
       this.setState({ imageCount: this.state.imageCount + 1 });
     } else {
       this.setState({ imageCount: 0 });
@@ -127,7 +128,7 @@ class CardDetailsOverlay extends React.Component<
   }
 
   render() {
-    const { showDetails } = this.state;
+    const { showDetails, imageCount, location } = this.state;
     const { candidate } = this.props;
     const details = (
       <React.Fragment>
@@ -143,15 +144,11 @@ class CardDetailsOverlay extends React.Component<
     return (
       <TouchableWithoutFeedback
         style={styles.cardOverlayContainer}
-        onPress={() => this.getNextPhoto()}
+        onPress={this.getNextPhoto}
       >
         <WonderImage
           background
-          uri={_.get(
-            candidate,
-            `images[${this.state.imageCount}].url`,
-            Images.WELCOME
-          )}
+          uri={_.get(candidate, `images[${imageCount}].url`, Images.WELCOME)}
           style={styles.container}
         >
           <MatchAvailableMedia
@@ -173,7 +170,7 @@ class CardDetailsOverlay extends React.Component<
                 ].join(", ")}
               </Title>
               <SubTitle style={{ fontSize: 16 }} color="#FFF">
-                {this.state.location && this.state.location}
+                {!!location && location}
               </SubTitle>
               <View>{this.getTopics()}</View>
               <Animated.View style={{ height: this.state.animation }}>
