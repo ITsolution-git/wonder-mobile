@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { View, Linking, Button } from "react-native";
 import { TextInput } from "src/views/components/theme";
 import Screen from "src/views/components/screen";
 import { AppointmentList } from "src/views/components/appointment-list";
@@ -33,7 +33,7 @@ interface UpcomingAppointmentsProps {
 
 class UpcomingAppointmentsScreen extends React.Component<
   UpcomingAppointmentsProps
-> {
+  > {
   state: State = {
     search: ""
   };
@@ -78,6 +78,7 @@ class UpcomingAppointmentsScreen extends React.Component<
     if (filteredAppointments.length) {
       return (
         <AppointmentList
+          onPressCallNumber={this.callNumber}
           onRefresh={onRefreshAppointments}
           data={appointments}
           onPress={this.goToAppointment}
@@ -86,7 +87,19 @@ class UpcomingAppointmentsScreen extends React.Component<
     }
   }
 
+  callNumber = (url) => {
+    console.log('URL: ', url);
+    Linking.canOpenURL(url).then((supported) => {
+      if (!supported) {
+        console.log('Can\'t handle url: ' + url);
+      } else {
+        return Linking.openURL(url);
+      }
+    }).catch((err) => console.error('An error occurred', err));
+  }
+
   render() {
+
     return (
       <Screen>
         <View

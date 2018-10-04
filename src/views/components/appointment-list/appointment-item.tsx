@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Button } from "react-native";
 import {
   Text,
   Title,
@@ -8,7 +8,7 @@ import {
   SmallText,
   Strong,
   IconButton,
-  TextButton
+  TextButton,
 } from "../theme";
 
 import moment from "moment-timezone";
@@ -44,7 +44,7 @@ class AppointmentItem extends React.Component<Props> {
   }
 
   render() {
-    const { item, onPress } = this.props;
+    const { item, onPress, callNumber } = this.props;
     return (
       <TouchableOpacity
         style={styles.container}
@@ -72,6 +72,8 @@ class AppointmentItem extends React.Component<Props> {
             />
             <SmallText style={styles.locationText}>{item.location}</SmallText>
           </View>
+          <Button title="number" onPress={() => callNumber('tel:+13125229305')} />
+          <Text>CONFIRMED</Text>
         </View>
       </TouchableOpacity>
     );
