@@ -9,7 +9,7 @@ import Topic from "src/models/topic";
 
 interface WonderProps {
   topic: Topic;
-  active?: boolean;
+  active?: Topic | undefined;
   size?: number;
 }
 const Wonder: React.SFC<WonderProps> = ({ topic, active, size = 80 }) => {
@@ -20,7 +20,7 @@ const Wonder: React.SFC<WonderProps> = ({ topic, active, size = 80 }) => {
     borderRadius: size / 2
   };
 
-  let wonderStyles = [styles.container, containerStyles];
+  const wonderStyles = [styles.container, containerStyles];
   if (active) {
     wonderStyles.push(styles.selectedContainer);
   }

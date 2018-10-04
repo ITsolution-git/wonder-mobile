@@ -12,7 +12,7 @@ import {
 
 import moment from "moment-timezone";
 import Icon from "react-native-vector-icons/Entypo";
-
+import Topic from "src/models/topic";
 import Images from "src/assets/images";
 
 import LinearGradient from "react-native-linear-gradient";
@@ -25,7 +25,6 @@ import Candidate from "src/models/candidate";
 import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
 import MatchAvailableMedia from "../../components/proposal-swiper/match-available-media";
 import VibeVideoModal from "../modals/vibe-video-modal";
-import Topic from "../../../models/topic";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -81,7 +80,7 @@ class CardDetailsOverlay extends React.Component<
       );
       this.setState({ location: `${geolocation.city}, ${geolocation.state}` });
     }
-  };
+  }
 
   toggleDetails = () => {
     const showDetails = !this.state.showDetails;
@@ -94,7 +93,7 @@ class CardDetailsOverlay extends React.Component<
       duration: 100
     }).start();
     this.setState({ showDetails });
-  };
+  }
 
   getTopics = () => {
     const { candidate, currentUser } = this.props;
@@ -106,32 +105,26 @@ class CardDetailsOverlay extends React.Component<
         {candidate &&
           candidateTopics.map((x: Topic) => {
             if (userTopics) {
-              if (userTopics.find((i: Topic) => i.name === x.name)) {
-                return (
-                  <Wonder key={x.name} topic={x} size={60} active={true} />
-                );
-              } else {
-                return (
-                  <Wonder key={x.name} topic={x} size={60} active={false} />
-                );
-              }
+              const active = userTopics.find((i: Topic) => i.name === x.name);
+              return (
+                <Wonder key={x.name} topic={x} size={60} active={active} />
+              );
             }
           })}
       </View>
     );
-  };
+  }
 
   getNextPhoto = () => {
     const { candidate } = this.props;
     const { imageCount } = this.state;
 
-    const candidateImages = candidate.images || [];
-    if (imageCount < candidateImages.length - 1) {
+    if (imageCount < candidate.images.length - 1) {
       this.setState({ imageCount: this.state.imageCount + 1 });
     } else {
       this.setState({ imageCount: 0 });
     }
-  };
+  }
 
   render() {
     const { showDetails } = this.state;
@@ -237,14 +230,14 @@ class ProposalSwiper extends React.Component<Props> {
         </View>
       );
     }
-  };
+  }
 
   renderCard = (proposal: Proposal) => (
     <CardDetailsOverlay
       candidate={proposal.candidate}
       currentUser={this.props.currentUser}
     />
-  );
+  )
 
   render() {
     const { proposal, onSwipeLeft, onSwipeRight } = this.props;
