@@ -25,6 +25,7 @@ import Candidate from "src/models/candidate";
 import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
 import MatchAvailableMedia from "../../components/proposal-swiper/match-available-media";
 import VibeVideoModal from "../modals/vibe-video-modal";
+import Topic from "../../../models/topic";
 
 const deviceHeight = Dimensions.get("window").height;
 
@@ -97,15 +98,15 @@ class CardDetailsOverlay extends React.Component<
 
   getTopics = () => {
     const { candidate, currentUser } = this.props;
-    const candidateTopics = candidate.topics;
+    const candidateTopics = candidate.topics || [];
     const userTopics = currentUser.topics;
 
     return (
       <View style={{ flexDirection: "row" }}>
         {candidate &&
-          candidateTopics.map(x => {
+          candidateTopics.map((x: Topic) => {
             if (userTopics) {
-              if (userTopics.find(i => i.name === x.name)) {
+              if (userTopics.find((i: Topic) => i.name === x.name)) {
                 return (
                   <Wonder key={x.name} topic={x} size={60} active={true} />
                 );
@@ -124,7 +125,8 @@ class CardDetailsOverlay extends React.Component<
     const { candidate } = this.props;
     const { imageCount } = this.state;
 
-    if (imageCount < candidate.images.length - 1) {
+    const candidateImages = candidate.images || [];
+    if (imageCount < candidateImages.length - 1) {
       this.setState({ imageCount: this.state.imageCount + 1 });
     } else {
       this.setState({ imageCount: 0 });
