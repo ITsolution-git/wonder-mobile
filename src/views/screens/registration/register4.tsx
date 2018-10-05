@@ -74,7 +74,7 @@ class Register4 extends React.Component<Props, State> {
 
   onSearchTextChange = (text: string) => {
     this.setState({ search: text.toLowerCase() });
-  };
+  }
 
   onChangeSelected = (topic: Topic) => {
     const limit = 3;
@@ -89,7 +89,7 @@ class Register4 extends React.Component<Props, State> {
         selected: selected.filter((t: Topic) => t.name !== topic.name)
       });
     }
-  };
+  }
 
   filterTopics = () => {
     const { search } = this.state;
@@ -103,14 +103,14 @@ class Register4 extends React.Component<Props, State> {
       });
     }
     return topics;
-  };
+  }
 
   renderPicker = () => {
     const filteredTopics = this.filterTopics();
     const { selected } = this.state;
     const { topics } = this.props;
     const quickDates = topics.filter(
-      t => t.name === "Coffee" || t.name === "Lunch" || t.name === "Dinner"
+      (t) => t.name === "Coffee" || t.name === "Lunch" || t.name === "Dinner"
     );
 
     const groupedTopics = _.chunk(filteredTopics, 3);
@@ -134,7 +134,7 @@ class Register4 extends React.Component<Props, State> {
         </Text>
       </View>
     );
-  };
+  }
 
   renderPicks = () => {
     const { selected } = this.state;
@@ -146,7 +146,7 @@ class Register4 extends React.Component<Props, State> {
         selected={selected}
       />
     );
-  };
+  }
 
   validate = () => {
     const { onSave, onRegister } = this.props;
@@ -155,11 +155,11 @@ class Register4 extends React.Component<Props, State> {
       onSave({ topic_ids: selected.map((s: Topic) => s.id) });
       onRegister();
     }
-  };
+  }
 
   renderRow = ({ item }: { item: any }) => {
     return <View style={styles.row}>{item.map(this.renderWonder)}</View>;
-  };
+  }
 
   renderWonder = (topic: Topic) => {
     const { selected } = this.state;
@@ -171,7 +171,7 @@ class Register4 extends React.Component<Props, State> {
         onPress={this.onChangeSelected}
       />
     );
-  };
+  }
 
   render() {
     const { selected } = this.state;
