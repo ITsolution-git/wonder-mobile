@@ -65,40 +65,58 @@ class AppointmentItem extends React.Component<Props> {
           {this.renderTitle()}
           <SubTitle>{moment(item.event_at).format("Do, MMMM YYYY")}</SubTitle>
           <View style={styles.locationRow}>
-            <Icon
-              name="map-marker"
-              size={24}
-              color={theme.colors.textColorLight}
-            />
-            <SmallText style={styles.locationText}>{item.location}</SmallText>
+            <View>
+              <Icon
+                name="map-marker"
+                size={24}
+                color={theme.colors.textColorLight}
+              />
+            </View>
+            <View>
+              <SmallText style={styles.locationText}>{item.location}</SmallText>
+              <TextButton
+                text="3125229305"
+                style={{ fontSize: 10, color: 'lightblue', marginLeft: 10 }}
+                onPress={() => callNumber('tel:+13125229305')}
+              />
+            </View>
           </View>
-          <Button title="number" onPress={() => callNumber('tel:+13125229305')} />
-          <Text>CONFIRMED</Text>
+          <Text
+            style={{
+              fontSize: 10,
+              alignSelf: 'flex-end',
+              textTransform: 'uppercase',
+              color: item.state === 'confirmed' ? 'green' : 'red'
+            }}
+          >
+            {item.state === 'confirmed' ? 'CONFIRM' : 'UNCONFIRMED'}
+          </Text>
         </View>
       </TouchableOpacity>
     );
   }
 }
-
+// btnStyle, text, onPress, style, align, color, size
 export default AppointmentItem;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+
   },
   imageContainer: {
     paddingRight: 15,
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   contentContainer: {
     flex: 2,
     justifyContent: "center"
   },
-  locationRow: { flexDirection: "row", alignItems: "center" },
+  locationRow: { flexDirection: "row" },
   locationText: { marginLeft: 10 }
 });
