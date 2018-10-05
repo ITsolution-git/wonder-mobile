@@ -11,6 +11,7 @@ interface Props {
   isLoading?: boolean;
   onPress?: Function;
   onDelete?: (appointment: DecoratedAppointment) => void;
+  onPressCallNumber: Function;
 }
 
 class AppointmentList extends React.Component<Props> {
@@ -23,24 +24,19 @@ class AppointmentList extends React.Component<Props> {
   renderRow = ({ item }: { item: DecoratedAppointment }) => {
     const { onPress, onDelete, onPressCallNumber } = this.props;
     return (
-      <View style={{ margin: 5, borderColor: 'red', borderWidth: 2, }}>
-        <SwipeRow
-          style={{ borderBottomWidth: 0, borderRadius: 10 }}
-          rightOpenValue={-75}
-          right={(
-
-            <Button danger onPress={() => onDelete && onDelete(item)}>
-              <Icon name="trash" size={36} color="#FFF" />
-            </Button>
-
-          )}
-          body={<AppointmentItem
-            callNumber={onPressCallNumber}
-            item={item}
-            onPress={onPress}
-          />}
-        />
-      </View>
+      <SwipeRow
+        rightOpenValue={-75}
+        right={(
+          <Button danger onPress={() => onDelete && onDelete(item)}>
+            <Icon name="trash" size={36} color="#FFF" />
+          </Button>
+        )}
+        body={<AppointmentItem
+          callNumber={onPressCallNumber}
+          item={item}
+          onPress={onPress}
+        />}
+      />
     );
   }
 

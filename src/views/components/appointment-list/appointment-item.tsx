@@ -1,13 +1,12 @@
 import _ from "lodash";
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Button } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Button, Platform } from "react-native";
 import {
   Text,
   Title,
   SubTitle,
   SmallText,
   Strong,
-  IconButton,
   TextButton,
 } from "../theme";
 
@@ -20,6 +19,7 @@ import { DecoratedAppointment } from "src/models/appointment";
 interface Props {
   item: DecoratedAppointment;
   onPress?: Function;
+  callNumber: Function;
 }
 
 class AppointmentItem extends React.Component<Props> {
@@ -74,20 +74,17 @@ class AppointmentItem extends React.Component<Props> {
             </View>
             <View>
               <SmallText style={styles.locationText}>{item.location}</SmallText>
-              <TextButton
-                text="3125229305"
-                style={{ fontSize: 10, color: 'lightblue', marginLeft: 10 }}
-                onPress={() => callNumber('tel:+13125229305')}
-              />
+              {item.phone && <TextButton
+                text={item.phone}
+                style={styles.phoneText}
+                onPress={() => callNumber(`tel:+1${item.phone}`)}
+              />}
             </View>
           </View>
           <Text
-            style={{
-              fontSize: 10,
-              alignSelf: 'flex-end',
-              textTransform: 'uppercase',
+            style={[styles.status, {
               color: item.state === 'confirmed' ? 'green' : 'red'
-            }}
+            }]}
           >
             {item.state === 'confirmed' ? 'CONFIRM' : 'UNCONFIRMED'}
           </Text>
@@ -96,7 +93,7 @@ class AppointmentItem extends React.Component<Props> {
     );
   }
 }
-// btnStyle, text, onPress, style, align, color, size
+
 export default AppointmentItem;
 
 const styles = StyleSheet.create({
@@ -117,5 +114,14 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   locationRow: { flexDirection: "row" },
-  locationText: { marginLeft: 10 }
+  locationText: { marginLeft: 10 },
+  phoneText: {
+    fontSize: 10,
+    color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
+    marginLeft: 10
+  },
+  status: {
+    fontSize: 10,
+    alignSelf: 'flex-end',
+  }
 });

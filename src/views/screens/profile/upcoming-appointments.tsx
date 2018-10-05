@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Linking, Button } from "react-native";
+import { View, Linking, Alert } from "react-native";
 import { TextInput } from "src/views/components/theme";
 import Screen from "src/views/components/screen";
 import { AppointmentList } from "src/views/components/appointment-list";
@@ -87,11 +87,10 @@ class UpcomingAppointmentsScreen extends React.Component<
     }
   }
 
-  callNumber = (url) => {
-    console.log('URL: ', url);
+  callNumber = (url: string) => {
     Linking.canOpenURL(url).then((supported) => {
       if (!supported) {
-        console.log('Can\'t handle url: ' + url);
+        Alert.alert("Sorry! This number can't be opened from the app");
       } else {
         return Linking.openURL(url);
       }
