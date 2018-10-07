@@ -55,6 +55,16 @@ class ProfileViewScreen extends React.Component<Props> {
     }
     return null;
   }
+  deactivateAccount = () => {
+    const { currentUser } = this.props;
+    console.log('CU: ', currentUser);
+    const options = [
+      { text: 'Cancel', onPress: () => console.log('hey') },
+      { text: 'Yes', onPress: () => console.log('hey') || _.noop },
+    ];
+
+    Alert.alert('Confirm Deactivate Account', 'Are you sure you want to deactivate your account?', options);
+  }
 
   promptLogout = () => {
     const options = [
@@ -150,7 +160,7 @@ class ProfileViewScreen extends React.Component<Props> {
               <Button
                 rounded
                 title="Deactivate"
-                onPress={_.noop}
+                onPress={this.deactivateAccount}
               />
             </View>
           </View>
