@@ -10,7 +10,8 @@ import {
   watchUpdateImage,
   watchUpdateVideo,
   watchDeleteProfileImageSaga,
-  watchDeleteProfileVideoSaga
+  watchDeleteProfileVideoSaga,
+  watchDeactivateAccount
 } from "./user";
 import { watchGetNewProposal, watchRateProposal } from "./proposal";
 import { watchCreateAppointment, watchGetAppointments } from "./appointment";
@@ -42,6 +43,7 @@ export default function* rootSaga() {
     watchRegisterUser(),
     watchLogoutUser(),
     watchForgotPassword(),
+    watchDeactivateAccount(),
 
     // Proposals
     watchGetNewProposal(),
