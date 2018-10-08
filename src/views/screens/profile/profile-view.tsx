@@ -23,6 +23,7 @@ interface Props {
   currentUser: User;
   onLogout: () => void;
   onRefreshProfile: () => void;
+  deactivateUsersAccount: () => void;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -32,7 +33,7 @@ const mapState = (state: WonderAppState) => ({
 const mapDispatch = (dispatch: Dispatch) => ({
   onLogout: () => dispatch(logoutUser()),
   onRefreshProfile: () => dispatch(getUser()),
-  deactivateUsersAccount: (userId) => dispatch(deactivateAccount(userId))
+  deactivateUsersAccount: () => dispatch(deactivateAccount())
 });
 
 class ProfileViewScreen extends React.Component<Props> {
@@ -60,8 +61,8 @@ class ProfileViewScreen extends React.Component<Props> {
     const { currentUser } = this.props;
 
     const options = [
-      { text: 'Cancel', onPress: () => console.log('hey') },
-      { text: 'Yes', onPress: () => this.props.deactivateUsersAccount(currentUser.id) },
+      { text: 'Cancel' },
+      { text: 'Yes', onPress: this.props.deactivateUsersAccount },
     ];
 
     Alert.alert('Confirm Deactivate Account', 'Are you sure you want to deactivate your account?', options);

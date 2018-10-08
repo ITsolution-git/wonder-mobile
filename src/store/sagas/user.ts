@@ -20,6 +20,7 @@ export const deactivateAccount = createAction(DEACTIVATE_ACCOUNT);
 export function* deactivateAccountSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
+    const { auth } = state.user;
     // log user out
     yield put(persistAuth({}));
     yield put(persistUser({}));
@@ -28,8 +29,9 @@ export function* deactivateAccountSaga(action: Action<any>) {
     // delete users account
     const response = yield call(api, {
       method: "DELETE",
-      url: `/users/${action.payload}`,
+      url: `/users/${auth.uid}`,
     }, state.user);
+
   } catch (error) {
     if (error.response) {
       Alert.alert(
