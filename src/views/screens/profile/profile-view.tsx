@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 
-import { View, StyleSheet, Alert, AlertButton, AlertOptions } from 'react-native';
+import { View, StyleSheet, Alert, AlertButton, AlertOptions, Linking } from 'react-native';
 import Screen from 'src/views/components/screen';
 import ElevatedButton from 'src/views/components/theme/elevated-button';
 import { PrimaryButton, Text, SecondaryButton as Button, Title } from 'src/views/components/theme';
@@ -17,6 +17,7 @@ import { selectCurrentUser } from 'src/store/selectors/user';
 import User from 'src/models/user';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
 import WonderAppState from 'src/models/wonder-app-state';
+import { HTTP_DOMAIN } from "src/services/api";
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -54,6 +55,16 @@ class ProfileViewScreen extends React.Component<Props> {
       return currentUser.images[0].url;
     }
     return null;
+  }
+
+  showFaq = (url) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        Alert.alert("Sorry! This link cannot be opened on your device");
+      }
+    });
   }
 
   promptLogout = () => {
@@ -123,7 +134,7 @@ class ProfileViewScreen extends React.Component<Props> {
               <ElevatedButton
                 icon="question"
                 title="FAQ"
-                onPress={_.noop}
+                onPress={() => this.showFaq(`${HTTP_DOMAIN}/faq.html`)}
               />
             </View>
           </View>
