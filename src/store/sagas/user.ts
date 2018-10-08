@@ -15,6 +15,40 @@ import UserCredentials from "../../models/user-credentials";
 import ProfileImage from "../../models/profile-image";
 import PushNotificationService from "../../services/push-notification";
 
+export const DEACTIVATE_ACCOUNT = "DEACTIVATE_ACCOUNT";
+export const deactivateAccount = createAction(DEACTIVATE_ACCOUNT);
+export function* deactivateAccountSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+    const { auth } = state.user;
+    // log user out
+    yield put(persistAuth({}));
+    yield put(persistUser({}));
+
+    NavigatorService.reset("Onboarding", null);
+    // delete users account
+    const response = yield call(api, {
+      method: "DELETE",
+      url: `/users/${auth.uid}`,
+    }, state.user);
+
+  } catch (error) {
+    if (error.response) {
+      Alert.alert(
+        `HTTP ${error.response.status}`,
+        JSON.stringify(error.response.data)
+      );
+    } else {
+      console.warn(error);
+    }
+  } finally {
+  }
+}
+
+export function* watchDeactivateAccount() {
+  yield takeEvery(DEACTIVATE_ACCOUNT, deactivateAccountSaga);
+}
+
 export const REGISTER_USER = "REGISTER_USER";
 export const registerUser = createAction(REGISTER_USER);
 export function* registerUserSaga(action: Action<any>) {

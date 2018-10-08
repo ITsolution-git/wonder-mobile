@@ -10,7 +10,7 @@ import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 
-import { logoutUser, getUser } from 'src/store/sagas/user';
+import { logoutUser, getUser, deactivateAccount } from 'src/store/sagas/user';
 import Avatar, { AvatarSize } from 'src/views/components/theme/avatar';
 
 import { selectCurrentUser } from 'src/store/selectors/user';
@@ -23,6 +23,7 @@ interface Props {
   currentUser: User;
   onLogout: () => void;
   onRefreshProfile: () => void;
+  deactivateUsersAccount: () => void;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -31,7 +32,8 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onLogout: () => dispatch(logoutUser()),
-  onRefreshProfile: () => dispatch(getUser())
+  onRefreshProfile: () => dispatch(getUser()),
+  deactivateUsersAccount: () => dispatch(deactivateAccount())
 });
 
 class ProfileViewScreen extends React.Component<Props> {
@@ -54,6 +56,16 @@ class ProfileViewScreen extends React.Component<Props> {
       return currentUser.images[0].url;
     }
     return null;
+  }
+  deactivateAccount = () => {
+    const { currentUser } = this.props;
+
+    const options = [
+      { text: 'Cancel' },
+      { text: 'Yes', onPress: this.props.deactivateUsersAccount },
+    ];
+
+    Alert.alert('Confirm Deactivate Account', 'Are you sure you want to deactivate your account?', options);
   }
 
   promptLogout = () => {
@@ -150,7 +162,7 @@ class ProfileViewScreen extends React.Component<Props> {
               <Button
                 rounded
                 title="Deactivate"
-                onPress={_.noop}
+                onPress={this.deactivateAccount}
               />
             </View>
           </View>
