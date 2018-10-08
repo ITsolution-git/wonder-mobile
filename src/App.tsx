@@ -16,6 +16,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
 import AppRouter from './views/router';
+import { MenuProvider } from 'react-native-popup-menu';
 
 // Allow access to navigation in sagas
 export let navigatorRef: any;
@@ -49,15 +50,15 @@ export default class App extends Component {
 
   render() {
     return (
-
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <Root>
-            {this.renderContent()}
-          </Root>
-        </PersistGate>
-      </Provider>
-
+      <MenuProvider>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <Root>
+              {this.renderContent()}
+            </Root>
+          </PersistGate>
+        </Provider>
+      </MenuProvider>
     );
   }
 }

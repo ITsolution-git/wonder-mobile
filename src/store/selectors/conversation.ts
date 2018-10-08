@@ -10,8 +10,8 @@ import GiftedChatMessage from "src/models/chat-message";
 const selectConversation = (state: WonderAppState) => state.chat.conversation;
 
 export const getDecoratedConversation = createSelector([selectCurrentUser, selectConversation],
-  (currentUser, conversation): Conversation | null => {
-    return conversation;
+  (currentUser, conversation): DecoratedConversation => {
+    return conversation as DecoratedConversation;
   });
 
 export const decorateMessagesForGiftedChat =
@@ -36,5 +36,6 @@ export const decorateMessagesForGiftedChat =
         })
       };
     }
+
     return undefined;
   };

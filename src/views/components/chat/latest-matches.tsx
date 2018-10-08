@@ -1,16 +1,16 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, ScrollView } from 'react-native';
 import { Title } from '../theme';
-import { ChatListItem } from '.';
+import { LatestMatchesItem } from '.';
 import Conversation from 'src/models/conversation';
 
-interface ChatListProps {
+interface LatestMatchesProps {
   onRefresh?: () => void;
   chats?: Conversation[];
   onPressChat: Function;
 }
 
-class ChatList extends React.Component<ChatListProps> {
+class LatestMatches extends React.Component<LatestMatchesProps> {
   static defaultProps = {
     chats: []
   };
@@ -22,7 +22,7 @@ class ChatList extends React.Component<ChatListProps> {
   renderItem = ({ item: chat }: { item: Conversation }) => {
     const { onPressChat } = this.props;
     return (
-      <ChatListItem
+      <LatestMatchesItem
         chat={chat}
         onPress={() => onPressChat(chat)}
       />
@@ -31,31 +31,34 @@ class ChatList extends React.Component<ChatListProps> {
 
   renderEmpty = () => {
     return (
-      <View >
-       
+      <View style={styles.emptyContainer}>
+        <Title>No Matches</Title>
       </View>
     );
   }
 
   render() {
     const { chats, onRefresh } = this.props;
-    if (!chats || chats.length) {
+    if (chats && chats.length) {
       return (
-        <FlatList
-          refreshing={false}
-          onRefresh={onRefresh}
-          showsVerticalScrollIndicator={false}
-          data={chats || []}
-          keyExtractor={this.keyExtractor}
-          renderItem={this.renderItem}
-        />
+        <ScrollView style={{ borderBottomWidth: 1, borderBottomColor: '#e6e6ec' }}>
+          <FlatList
+            refreshing={false}
+            onRefresh={onRefresh}
+            showsVerticalScrollIndicator={false}
+            data={chats || []}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+            horizontal={true}
+          />
+        </ScrollView>
       );
     }
     return this.renderEmpty();
   }
 }
 
-export default ChatList;
+export default LatestMatches;
 
 const styles = StyleSheet.create({
   emptyContainer: {
