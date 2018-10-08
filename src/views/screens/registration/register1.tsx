@@ -82,17 +82,17 @@ class Register1 extends React.Component<Props, State> {
     if (this.inputs[key]) {
       this.inputs[key].focus();
     }
-  };
+  }
 
   showDocument = (url: string) => {
-    Linking.canOpenURL(url).then(supported => {
+    Linking.canOpenURL(url).then((supported) => {
       if (supported) {
         Linking.openURL(url);
       } else {
         Alert.alert("Sorry! This link cannot be opened on your device");
       }
     });
-  };
+  }
 
   render() {
     const { errors } = this.state;
@@ -277,7 +277,7 @@ class Register1 extends React.Component<Props, State> {
     }
     onSave({ first_name, last_name, email, phone, password });
     navigation.navigate("Register2");
-  };
+  }
 
   private onChangeText = (key: string) => {
     const { errors } = this.state;
@@ -291,7 +291,7 @@ class Register1 extends React.Component<Props, State> {
         }
       });
     };
-  };
+  }
 }
 
 export default connect(
