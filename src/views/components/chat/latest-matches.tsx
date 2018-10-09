@@ -16,7 +16,7 @@ class LatestMatches extends React.Component<LatestMatchesProps> {
   };
 
   keyExtractor = (item: Conversation, index: number) => {
-    return `${item.partner.id}`;
+    return `${item.id}`;
   }
 
   renderItem = ({ item: chat }: { item: Conversation }) => {
