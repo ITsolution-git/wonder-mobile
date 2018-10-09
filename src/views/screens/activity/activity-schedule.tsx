@@ -1,10 +1,10 @@
 import React from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, Animated, StyleSheet } from "react-native";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import _ from 'lodash';
 import RNCalendarEvents, { RNCalendarEvent } from 'react-native-calendar-events';
-import { Agenda } from "react-native-calendars";
+import { Agenda, DateObject } from "react-native-calendars";
 
 import Screen from "src/views/components/screen";
 import {
@@ -27,46 +27,67 @@ import { getDecoratedConversation } from "src/store/selectors/conversation";
 import Conversation, { DecoratedConversation } from "src/models/conversation";
 import User from "src/models/user";
 import { selectCurrentUser } from "src/store/selectors/user";
+import theme from "../../../assets/styles/theme";
 
-const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state),
-  conversation: getDecoratedConversation(state),
-  appointments: selectUpcomingAppointments(state)
-});
-
-const mapDispatch = (dispatch: Dispatch) => ({
-  // getAllDates:dispatch(getAllDatesSaga)  <------ not written yet but for future reference
-  onUpdateAppointment: (data: AppointmentState) =>
-    dispatch(persistAppointmentData(data))
-});
-
-interface Props {
-  navigation: NavigationScreenProp<any, NavigationParams>;
+interface StateProps {
   currentUser: User;
   conversation: Conversation | null;
   appointment: AppointmentState;
-  appointments: DecoratedAppointment[];
+  appointments: ReadonlyArray<DecoratedAppointment>;
+}
+interface DispatchProps {
   onUpdateAppointment: (data: AppointmentState) => any;
+}
+interface Props extends StateProps, DispatchProps {
+  navigation: NavigationScreenProp<any, NavigationParams>;
 }
 
 interface State {
   selected?: string;
-  selectedDate: string;
+  selectedDate?: string;
   selectedTime: {
     hour: string;
     minute: string;
   };
   agendaItems: any;
   markedDates: object;
+  headerHeight: Animated.Value;
 }
 
+export interface CalendarItem {
+  title?: string;
+  date?: Date;
+  location?: string;
+  start?: Date;
+  end?: Date;
+}
+
+export interface CalendarItemMap {
+  [key: string]: CalendarItem[];
+}
+
+const mapState = (state: WonderAppState): StateProps => ({
+  currentUser: selectCurrentUser(state),
+  conversation: getDecoratedConversation(state),
+  appointments: selectUpcomingAppointments(state)
+});
+
+const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
+  // getAllDates:dispatch(getAllDatesSaga)  <------ not written yet but for future reference
+  onUpdateAppointment: (data: AppointmentState) =>
+    dispatch(persistAppointmentData(data))
+});
 class ActivityScheduleScreen extends React.Component<Props, State> {
   state: State = {
     selected: undefined,
-    selectedDate: moment().format("YYYY-MM-DD"),
-    selectedTime: { hour: moment().format("H"), minute: moment().format("mm") },
+    selectedDate: undefined,
+    selectedTime: {
+      hour: moment().format("H"),
+      minute: moment().format("mm")
+    },
     agendaItems: {},
-    markedDates: {}
+    markedDates: {},
+    headerHeight: new Animated.Value(150)
   };
 
   componentWillMount() {
@@ -86,6 +107,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     //   return result;
     // }, {});
     this.mapWonderAppointmentsToAgenda(this.props.appointments);
+    this.mapNativeCalendarEventsToAgenda();
   }
 
   /**
@@ -117,6 +139,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
    */
   mapNativeCalendarEventsToAgenda = async () => {
     const RCE_TIME_FORMAT = "YYYY-MM-DDTHH:mm:ss.SSSSZ";
+
     //
     // Attaches native calendar events to wonder agenda
     try {
@@ -135,32 +158,30 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           nextMonth.utc().toDate()
         );
 
-        const agendaItems: any = events.reduce((result: any, event: RNCalendarEvent) => {
-          const { startDate, endDate, title } = event;
+        const agendaItems: any = events.reduce((result: CalendarItemMap, event: RNCalendarEvent) => {
+          const { startDate, endDate, title, location } = event;
 
-          // // //
-          // // // converts callback time to agenda format time
+          //
+          // converts callback time to agenda format time
           const eventStartDate = moment(
             startDate,
             RCE_TIME_FORMAT
           );
-
-          const eventEndDate = moment(
-            endDate,
-            RCE_TIME_FORMAT
-          ).format("hh:ssA");
 
           if (!result[eventStartDate.format("YYYY-MM-DD")]) {
             result[eventStartDate.format("YYYY-MM-DD")] = [];
           }
 
           result[eventStartDate.format("YYYY-MM-DD")].push({
-            date: eventStartDate.toDate(),
-            text: title
+            date: eventStartDate.utc().toDate(),
+            title,
+            location,
+            start: startDate,
+            end: endDate
           });
 
           return result;
-        }, {});
+        }, {} as CalendarItemMap);
 
         this.setState({
           agendaItems: { ...this.state.agendaItems, ...agendaItems }
@@ -171,9 +192,9 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     }
   }
 
-  mapWonderAppointmentsToAgenda = (appointments: DecoratedAppointment[]) => {
-    // //
-    // //Attaches calendar items to calendar dates
+  mapWonderAppointmentsToAgenda = (appointments: ReadonlyArray<DecoratedAppointment>) => {
+    //
+    // Attaches calendar items to calendar dates
     const { agendaItems } = this.state;
     const markedDates: any = {};
     let appointmentdate = "";
@@ -189,8 +210,6 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         "YYYY-MM-DDTHH:mm:ss.SSSSZ"
       ).format("HH:ssA");
       //
-      //
-      markedDates[appointmentdate] = { marked: true };
       agendaItems[appointmentdate] = [
         ...agendaItems[appointmentdate],
         {
@@ -205,7 +224,6 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     });
 
     this.setState({ agendaItems, markedDates });
-    this.mapNativeCalendarEventsToAgenda();
   }
 
   selectTime = (selectedTime: { hour: string, minute: string }) => {
@@ -220,11 +238,11 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     const { navigation, conversation } = this.props;
     const { first_name, last_name, images = [] } = _.get(conversation, 'partner', {} as User);
     return (
-      <View
+      <Animated.View
         style={{
           alignItems: "center",
           justifyContent: "space-around",
-          paddingBottom: 15
+          paddingBottom: 15,
         }}
       >
         <Avatar
@@ -234,7 +252,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         <Text>
           {[first_name, last_name].join(' ')}
         </Text>
-      </View>
+      </Animated.View>
     );
   }
 
@@ -245,20 +263,29 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
       <Screen>
         {this.renderHeader()}
         <Agenda
-          // markedDates={markedDates}
+          pastScrollRange={0}
+          futureScrollRange={1}
           items={agendaItems}
+          selected={selectedDate}
           // onCalendarToggled={(calendarOpened: boolean) => { }}
           onDayPress={this.selectDay}
-          // callback that gets called when day changes while scrolling agenda list
           onDayChange={this.selectDay}
-          selected={selectedDate}
-          minDate={today.format("YYYY-MM-DD")}
           maxDate={today.clone().add(1, "month").format("YYYY-MM-DD")}
-          // pastScrollRange={50}
-          // futureScrollRange={50}
-          renderEmptyData={() => <View />}
-          renderItem={(item: AgendaDayItemProps, firstItemInDay: boolean) => <AgendaDayItem {...item} />}
+          renderDay={(day?: DateObject, item?: CalendarItem) => {
+            if (day) {
+              const dayMoment = moment(day.dateString, 'YYYY-MM-DD');
+              return (
+                <View style={styles.agendaDayContainer}>
+                  <Text style={styles.agendaDayDate}>{dayMoment.format("ddd")}</Text>
+                  <Text style={styles.agendaDayDay}>{dayMoment.format("MMM D")}</Text>
+                </View>
+              );
+            }
+            return <View style={styles.agendaDayContainer} />;
+          }}
+          renderItem={(item: CalendarItem, firstItemInDay: boolean) => <AgendaDayItem item={item} />}
           renderEmptyDate={() => <View />}
+          renderEmptyData={() => (<View style={styles.emptyDataContainer}><Text>No Events</Text></View>)}
           // renderKnob={() => {
           //   return (
           //     <View>
@@ -267,17 +294,13 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           //   );
           // }}
           rowHasChanged={(r1: any, r2: any) => r1.text !== r2.text}
-          // scrollingEnabled
-          // onRefresh={() => null}
-          // refreshing={false}
-          // refreshControl={null}
           theme={{
-            todayTextColor: "#F68E56",
-            selectedDayBackgroundColor: "#F68E56",
-            agendaDayTextColor: "#8E8EAA",
-            agendaDayNumColor: "#8E8EAA",
-            agendaTodayColor: "#8E8EAA",
-            agendaKnobColor: "#F68E56"
+            todayTextColor: theme.colors.primary,
+            selectedDayBackgroundColor: theme.colors.primary,
+            agendaDayTextColor: theme.colors.textColor,
+            agendaDayNumColor: theme.colors.textColor,
+            agendaTodayColor: theme.colors.textColor,
+            agendaKnobColor: theme.colors.primary
           }}
         />
         <View style={{ paddingHorizontal: 20 }}>
@@ -317,3 +340,24 @@ export default connect(
   mapState,
   mapDispatch
 )(ActivityScheduleScreen);
+
+const styles = StyleSheet.create({
+  emptyDataContainer: {
+    paddingTop: 15,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  agendaDayContainer: {
+    marginVertical: 5,
+    width: 60,
+    height: 60,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  agendaDayDay: {
+    fontSize: 9
+  },
+  agendaDayDate: {
+    fontSize: 16
+  }
+});

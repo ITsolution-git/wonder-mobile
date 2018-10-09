@@ -1,12 +1,12 @@
+import _ from 'lodash';
 import React from 'react';
 import { Text, Title, SmallText } from '../theme';
-import { View, StyleSheet, TouchableOpacity,Alert } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 
 import Avatar from 'src/views/components/theme/avatar';
 import theme from 'src/assets/styles/theme';
 import Conversation from 'src/models/conversation';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -24,49 +24,43 @@ class ChatListItem extends React.Component<ChatListItemProps> {
 
   renderRecentMessage = () => {
     const { chat } = this.props;
-    var f = new Date();
-    var d = new Date(chat.last_message.sent_at);
-    //d.setHours(d.getHours() - f.getHours());
-    var hours = Math.abs(f - d) / 36e5;
+    const f = new Date();
+    const d = new Date(chat.last_message.sent_at);
+    // d.setHours(d.getHours() - f.getHours());
+    const hours: number = Math.abs(f - d) / 36e5;
 
     if (chat && chat.last_message) {
-      if(hours>72)
-      {
-        return <SmallText style={{color:'red'}}>{chat.last_message.body == null ? "" : chat.last_message.body} </SmallText>;
+      if (hours > 72) {
+        return <SmallText style={{ color: 'red' }}>{_.get(chat, 'last_message.body', '') || ''}</SmallText>;
       }
       return <SmallText>{chat.last_message.body == null ? "" : chat.last_message.body}</SmallText>;
     }
     return <SmallText>No Messages</SmallText>;
   }
-  
-  onSwipeLeft(gestureState) {
-    Alert.alert(
-      'Delete conversation',
-      'Are you sure you want to delete the conversation? (It will also remove the match)',
-      [
-        {text: 'Yes, delete', onPress: () => {
-          console.log('delete');
-        }},
-        {text: 'Cancel', onPress: () => console.log('cancel'), style: 'cancel'},
-        
-      ],
-      { cancelable: false }
-    )
-  }
 
-  renderGreenDot(){
+  renderGreenDot() {
     const { chat } = this.props;
     if (chat.partner.online) {
-      
-      return <View style={{marginLeft:10}}><SmallText> <Icon name="circle" size={10} color="#48dc0e" /></SmallText></View>;
+      return (
+        <View style={{ marginLeft: 10 }}>
+          <SmallText>
+            <Icon name="circle" size={10} color="#48dc0e" />
+          </SmallText>
+        </View>
+      );
     }
     return null;
   }
-  renderDistance(){
+  renderDistance() {
     const { chat } = this.props;
-    return <View style={{marginTop:5}}><SmallText>{chat.partner.distance.toFixed(0)} miles</SmallText></View>;
+    return (
+      <View style={{ marginTop: 5 }}>
+        <SmallText>
+          {_.get(chat, 'partner.distance', 0).toFixed(0)} miles
+        </SmallText>
+      </View>
+    );
   }
-  
 
   render() {
     const config = {
@@ -75,19 +69,11 @@ class ChatListItem extends React.Component<ChatListItemProps> {
     };
     const { chat, onPress } = this.props;
 
-    if(!chat.last_message)
-    {
+    if (!chat.last_message) {
       return null;
     }
     return (
-      <GestureRecognizer
-      onSwipeLeft={(state) => this.onSwipeLeft(state)}
-      config={config}
-      style={{
-        flex: 1,
-        backgroundColor: 'transparent'
-      }}
-      >
+
       <TouchableOpacity style={styles.container} onPress={onPress}>
         <View flex={5}>
           <Avatar
@@ -96,16 +82,15 @@ class ChatListItem extends React.Component<ChatListItemProps> {
           />
         </View>
         <View flex={10} style={styles.textContainer}>
-          <View style={{flex:1,flexDirection:'row',alignItems:'center'}}>
-          <Title style={{ color: '#000'}}>{chat.partner.first_name} </Title>
-          
-          {this.renderGreenDot()}
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <Title style={{ color: '#000' }}>{chat.partner.first_name} </Title>
+
+            {this.renderGreenDot()}
           </View>
           {this.renderRecentMessage()}
           {this.renderDistance()}
         </View>
       </TouchableOpacity>
-      </GestureRecognizer>
     );
   }
 }

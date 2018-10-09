@@ -2,8 +2,6 @@ import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { createAction, Action } from 'redux-actions';
 import api from 'src/services/api';
 
-import { Alert } from 'react-native';
-
 import { persistActivities, persistActivity } from 'src/store/reducers/chat';
 
 import _ from 'lodash';
@@ -12,6 +10,7 @@ import Partner from '../../models/partner';
 import Coordinate from '../../models/coordinate';
 import Activity from '../../models/activity';
 import ActivityDetails from '../../models/activity-details';
+import { handleAxiosError } from './utils';
 
 export const GET_PARTNERS = 'GET_PARTNERS';
 export const getPartners = createAction(GET_PARTNERS);
@@ -26,11 +25,7 @@ export function* getPartnersSaga(action: Action<any>) {
 
     // yield persistPar
   } catch (error) {
-    if (error.response) {
-      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
     // yield put(getUser());
   }
@@ -59,11 +54,7 @@ export function* getPartnerActivitiesSaga(action: Action<any>) {
     yield put(persistActivities(data));
     // yield put(persistUser(data));
   } catch (error) {
-    if (error.response) {
-      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
     // yield put(getUser());
   }
@@ -87,11 +78,7 @@ export function* getActivityDetailsSaga(action: Action<any>) {
     yield put(persistActivity(data));
     // yield put(persistUser(data));
   } catch (error) {
-    if (error.response) {
-      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
     // yield put(getUser());
   }

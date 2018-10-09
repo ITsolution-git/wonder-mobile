@@ -74,7 +74,6 @@ class ChatListScreen extends React.Component<Props> {
     } else {
       this.setState({ results });
     }
-
   }
 
   handleChangeText = (text: string) => {

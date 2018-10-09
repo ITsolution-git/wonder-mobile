@@ -1,6 +1,9 @@
 import React from "react";
+import _ from 'lodash';
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
+import ActionCable from 'react-native-actioncable'
 import Screen from "src/views/components/screen";
+import theme from "src/assets/styles/theme";
 import { View, StyleSheet, TouchableOpacity, Image, Alert, Text } from "react-native";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
@@ -38,19 +41,25 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-import ActionCable from 'react-native-actioncable'
 
 import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
-interface Props {
-  navigation: NavigationScreenProp<any, NavigationParams>;
-  currentUser: User;
-  token: string;
-  conversation: DecoratedConversation;
+
+interface DispatchProps {
   onGetMessage: (userId: number) => void;
   onSendMessage: (chatMessage: ConversationNewMessage) => void;
   onUpdateAppointment: (data: AppointmentState) => void;
   onGhostContact: (data: User) => void;
+}
+
+interface StateProps {
+  currentUser: User;
+  token: string | null;
+  conversation: DecoratedConversation;
+}
+
+interface Props extends DispatchProps, StateProps {
+  navigation: NavigationScreenProp<any, NavigationParams>;
 }
 
 interface ChatViewState {
@@ -59,13 +68,13 @@ interface ChatViewState {
   conversationMessages: GiftedChatMessage[];
 }
 
-const mapState = (state: WonderAppState) => ({
+const mapState = (state: WonderAppState): StateProps => ({
   token: state.user.auth.token,
   currentUser: selectCurrentUser(state),
   conversation: getDecoratedConversation(state)
 });
 
-const mapDispatch = (dispatch: Dispatch) => ({
+const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
   onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
@@ -234,22 +243,22 @@ class ChatScreen extends React.Component<Props> {
   }
 
   renderFooter = () => {
-    if (!this.state.selectedSendImage) {
-      return (
-        <View
-          style={{
-            marginBottom: 10,
-            flexDirection: "row",
-            justifyContent: "center"
-          }}
-        >
-          <Image
-            style={{ width: 100, height: 100 }}
-            source={this.state.selectedSendImage}
-          />
-        </View>
-      );
-    }
+    // if (!this.state.selectedSendImage) {
+    //   return (
+    //     <View
+    //       style={{
+    //         marginBottom: 10,
+    //         flexDirection: "row",
+    //         justifyContent: "center"
+    //       }}
+    //     >
+    //       <Image
+    //         style={{ width: 100, height: 100 }}
+    //         source={this.state.selectedSendImage}
+    //       />
+    //     </View>
+    //   );
+    // }
     return (
       <View
         style={{
@@ -280,9 +289,7 @@ class ChatScreen extends React.Component<Props> {
   render() {
     const { currentUser, conversation } = this.props;
     return (
-
       <Screen>
-
         <GiftedChat
           user={{ _id: currentUser.id }}
           renderSend={this.renderSend}
@@ -299,7 +306,6 @@ class ChatScreen extends React.Component<Props> {
           onCancel={this.closeGhostingModal}
         />
       </Screen>
-
     );
   }
 }

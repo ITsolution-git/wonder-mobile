@@ -11,6 +11,7 @@ import { Alert } from 'react-native';
 import { persistCurrentMatch } from '../reducers/wonder';
 import WonderAppState from '../../models/wonder-app-state';
 import Proposal from '../../models/proposal';
+import { handleAxiosError } from './utils';
 
 const GET_NEW_PROPOSAL = 'GET_NEW_PROPOSAL';
 export const getNewProposal = createAction(GET_NEW_PROPOSAL);
@@ -26,14 +27,12 @@ export function* getNewProposalSaga() {
     yield put(persistProposal(response.data));
   } catch (error) {
     const { response } = error;
-
     if (response && response.status === 404) {
       // 404 - No Proposals available for user;
       yield put(persistProposal(undefined));
     } else {
-      console.warn(error);
+      handleAxiosError(error);
     }
-
   } finally {
 
   }
@@ -77,7 +76,7 @@ export function* rateProposalSaga(action: Action<any>) {
     if (response && response.status === 422) {
       // 422 - Already rated
     } else {
-      console.warn(response.status);
+      handleAxiosError(error);
     }
   } finally {
     yield put(getNewProposal());

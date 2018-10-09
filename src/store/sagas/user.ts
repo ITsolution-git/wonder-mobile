@@ -14,6 +14,34 @@ import User from "../../models/user";
 import UserCredentials from "../../models/user-credentials";
 import ProfileImage from "../../models/profile-image";
 import PushNotificationService from "../../services/push-notification";
+import { handleAxiosError } from "./utils";
+
+export const DEACTIVATE_ACCOUNT = "DEACTIVATE_ACCOUNT";
+export const deactivateAccount = createAction(DEACTIVATE_ACCOUNT);
+export function* deactivateAccountSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+    const { auth } = state.user;
+    // log user out
+    yield put(persistAuth({}));
+    yield put(persistUser({}));
+
+    NavigatorService.reset("Onboarding", null);
+    // delete users account
+    const response = yield call(api, {
+      method: "DELETE",
+      url: `/users/${auth.uid}`,
+    }, state.user);
+
+  } catch (error) {
+    handleAxiosError(error);
+  } finally {
+  }
+}
+
+export function* watchDeactivateAccount() {
+  yield takeEvery(DEACTIVATE_ACCOUNT, deactivateAccountSaga);
+}
 
 export const REGISTER_USER = "REGISTER_USER";
 export const registerUser = createAction(REGISTER_USER);
@@ -32,14 +60,7 @@ export function* registerUserSaga(action: Action<any>) {
     const { email, password } = state.registration;
     yield put(loginUser({ email, password }));
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
     // yield put(getUser());
   }
@@ -67,14 +88,7 @@ export function* forgotPasswordSaga(action: Action<any>) {
       Toast.show({ text: `Email sent to ${forgotEmail}` });
     }
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
   }
 }
@@ -106,14 +120,7 @@ export function* loginUserSaga(action: Action<UserCredentials>) {
       NavigatorService.reset("Main", null);
     }
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
   }
 }
@@ -152,14 +159,7 @@ export function* getUserSaga(action: Action<any>) {
 
     yield put(persistUser(data));
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
   }
 }
@@ -191,14 +191,7 @@ export function* updateUserSaga(action: Action<any>) {
 
     yield put(persistUser(data));
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
   }
 }
@@ -232,14 +225,7 @@ export function* updateImageSaga(action: Action<any>) {
     );
     yield put(getUser());
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
   }
 }
@@ -269,14 +255,7 @@ export function* deleteProfileImageSaga(action: Action<any>) {
       yield put(getUser());
     }
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
   }
 }
@@ -303,14 +282,7 @@ export function* deleteProfileVideoSaga(action: Action<any>) {
 
     yield put(getUser());
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
   }
 }
@@ -344,14 +316,7 @@ export function* updateVideoSaga(action: Action<any>) {
     );
     yield put(getUser());
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
   }
 }
