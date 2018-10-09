@@ -13,6 +13,7 @@ import appointment, {
 } from "../reducers/appointment";
 import WonderAppState from "../../models/wonder-app-state";
 import Appointment from "../../models/appointment";
+import { handleAxiosError } from "./utils";
 
 export const GET_APPOINTMENTS = "GET_APPOINTMENTS";
 export const getAppointments = createAction(GET_APPOINTMENTS);
@@ -33,14 +34,7 @@ export function* getAppointmentsSaga(action: Action<any>) {
     // yield put(persistUser(data));
     // yield put(resetRegistration());
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
     // yield put(getUser());
   }
@@ -72,7 +66,6 @@ export function* createAppointmentSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
     const body = serializeAppointment(state.appointment);
-    console.log("state: ", state);
     const { data }: { data: Appointment[] } = yield call(
       api,
       {
@@ -87,14 +80,7 @@ export function* createAppointmentSaga(action: Action<any>) {
     yield put(getAppointments());
     NavigatorService.popToTop();
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error.message);
-    }
+    handleAxiosError(error);
   } finally {
     // yield put(getUser());
   }

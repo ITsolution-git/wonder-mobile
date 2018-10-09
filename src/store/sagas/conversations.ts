@@ -14,6 +14,7 @@ import WonderAppState from "../../models/wonder-app-state";
 import ChatResponseMessage from "../../models/chat-response-message";
 import navigation from "../../services/navigation";
 import { getUser } from "./user";
+import { handleAxiosError } from "./utils";
 
 // Get all conversations (Chats)
 export const GET_CONVERSATIONS = "GET_CONVERSATIONS";
@@ -33,14 +34,7 @@ export function* getConversationsSaga(action: Action<any>) {
 
     yield put(persistConversations(data));
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
     // yield put(getUser());
   }
@@ -60,17 +54,13 @@ export function* getConversationSaga(action: Action<any>) {
       method: 'GET',
       url: `/conversations/${id}/messages`
     }, state.user);
-    
+
     yield put(persistConversation(data));
     if (successRoute) {
       navigation.navigate(successRoute);
     }
   } catch (error) {
-    if (error.response) {
-      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
     yield put(getUser());
   }
@@ -98,14 +88,7 @@ export function* sendMessageSaga(action: Action<any>) {
     );
     yield put(persistNewMessage(data));
   } catch (error) {
-    if (error.response) {
-      Alert.alert(
-        `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data)
-      );
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
     // yield put(getUser());
   }
@@ -127,11 +110,7 @@ export function* ghostContactSaga(action: Action<any>) {
       url: `/conversations/${action.payload.id}/ghost`,
     }, state.user);
   } catch (error) {
-    if (error.response) {
-      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
-    } else {
-      console.warn(error);
-    }
+    handleAxiosError(error);
   } finally {
     // yield put(getUser());
   }
