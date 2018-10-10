@@ -2,6 +2,9 @@
 platform :ios, '9.0'
 
 target 'WonderApp' do
+  pod 'AppCenter/Push', '~> 1.9.0'
+  pod 'AppCenterReactNativeShared', '~> 1.8.1'
+  pod 'AppCenter/Analytics', '~> 1.9.0'
   rn_path = '../node_modules/react-native'
   rn_maps_path = '../node_modules/react-native-maps'
 

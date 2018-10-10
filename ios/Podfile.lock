@@ -1,4 +1,11 @@
 PODS:
+  - AppCenter/Analytics (1.9.0):
+    - AppCenter/Core
+  - AppCenter/Core (1.9.0)
+  - AppCenter/Push (1.9.0):
+    - AppCenter/Core
+  - AppCenterReactNativeShared (1.8.1):
+    - AppCenter/Core (= 1.9.0)
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
     - Bolts/Tasks (= 1.9.0)
@@ -181,6 +188,9 @@ PODS:
   - yoga (0.56.0.React)
 
 DEPENDENCIES:
+  - AppCenter/Analytics (~> 1.9.0)
+  - AppCenter/Push (~> 1.9.0)
+  - AppCenterReactNativeShared (~> 1.8.1)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
   - FBSDKCoreKit
   - FBSDKLoginKit
@@ -216,6 +226,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - AppCenter
+    - AppCenterReactNativeShared
     - Bolts
     - boost-for-react-native
     - FBSDKCoreKit
@@ -262,6 +274,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/yoga/yoga.podspec"
 
 SPEC CHECKSUMS:
+  AppCenter: 3cf7b9387549e9703dab068793e404013e8c0cc1
+  AppCenterReactNativeShared: 3d804f256b964e040d902d1a215d7866fedae55d
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   DoubleConversion: a9706f16e388b53ff12cca34473428ee29746a26
@@ -292,6 +306,6 @@ SPEC CHECKSUMS:
   RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: e685ac764f96522031ed80de8be26b974dfaa376
+PODFILE CHECKSUM: e58cbf090ebac5ac228c4f3553d827b62f4d209c
 
 COCOAPODS: 1.5.3
