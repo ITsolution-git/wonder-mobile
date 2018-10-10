@@ -3,12 +3,13 @@ import moment, { Moment } from 'moment';
 import { View, StyleSheet } from "react-native";
 import { Text } from "src/views/components/theme";
 import { CalendarItem } from "../../screens/activity/activity-schedule";
+import Wonder from "../theme/wonder/wonder";
 
 export interface AgendaDayItemProps {
   item: CalendarItem;
 }
 const AgendaDayItem: React.SFC<AgendaDayItemProps> = ({ item }) => {
-  const { title, start, end } = item;
+  const { title, start, end, topic } = item;
   const startDate: Moment | undefined = start ? moment(start) : undefined;
   const endDate: Moment | undefined = end ? moment(end) : undefined;
 
@@ -24,8 +25,11 @@ const AgendaDayItem: React.SFC<AgendaDayItemProps> = ({ item }) => {
     <View
       style={styles.agendaItemContainer}
     >
-      <Text style={styles.titleText}>{title || 'Event'}</Text>
-      <Text style={styles.timeText}>{times.join(' - ')}</Text>
+      {topic && <Wonder topic={topic} active={false} size={60} />}
+      <View style={styles.agendaItemTextContainer}>
+        <Text style={styles.titleText}>{title || 'Event'}</Text>
+        <Text style={styles.timeText}>{times.join(' - ')}</Text>
+      </View>
     </View>
   );
 };
@@ -34,6 +38,7 @@ export default AgendaDayItem;
 
 const styles = StyleSheet.create({
   agendaItemContainer: {
+    flexDirection: 'row',
     marginVertical: 5,
     width: "100%",
     backgroundColor: "white",
@@ -48,6 +53,9 @@ const styles = StyleSheet.create({
     },
     shadowColor: '#000',
     shadowOpacity: 0.1
+  },
+  agendaItemTextContainer: {
+    justifyContent: 'center'
   },
   titleText: {
     fontWeight: 'bold'

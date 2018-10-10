@@ -3,13 +3,14 @@ import Topic from "../../models/topic";
 import Proposal from "../../models/proposal";
 import Partner from "../../models/partner";
 import Appointment from "../../models/appointment";
-import { MockAppointments } from "../mockdata/appointments";
+import Attendance from "src/models/attendance";
 export interface WonderState {
-  topics: Topic[];
-  proposal: Proposal | null;
-  partners: Partner[];
-  currentMatch: Proposal | {};
-  appointments: Appointment[];
+  readonly topics: Topic[];
+  readonly proposal: Proposal | null;
+  readonly partners: Partner[];
+  readonly currentMatch: Proposal | {};
+  readonly appointments: Appointment[];
+  readonly attendances: Attendance[];
 }
 
 const defaultState: WonderState = {
@@ -17,15 +18,15 @@ const defaultState: WonderState = {
   proposal: null,
   partners: [],
   currentMatch: {},
-  appointments: []
-  // MockAppointments <--- fake appointments for testing purposes
+  appointments: [],
+  attendances: []
 };
 
 export const persistTopics = createAction("PERSIST_TOPICS");
 export const persistPartners = createAction("PERSIST_PARTNERS");
 export const persistCurrentMatch = createAction("PERSIST_CURRENT_MATCH");
 export const persistAppointments = createAction("PERSIST_APPOINTMENTS");
-// export const persist
+export const persistAttendances = createAction("PERSIST_ATTENDANCES");
 
 export default handleActions(
   {
@@ -48,6 +49,10 @@ export default handleActions(
     PERSIST_APPOINTMENTS: (state: WonderState, action: Action<any>) => ({
       ...state,
       appointments: action.payload || defaultState.appointments
+    }),
+    PERSIST_ATTENDANCES: (state: WonderState, action: Action<any>) => ({
+      ...state,
+      attendances: action.payload
     })
   },
   defaultState

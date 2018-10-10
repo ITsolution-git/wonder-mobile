@@ -18,12 +18,14 @@ import Chat from "src/models/chat";
 import { Button, View, Text, StyleSheet } from "react-native";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import SearchBar from "react-native-searchbar";
+import { getAttendances } from "src/store/sagas/attendance";
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   conversations: Conversation[];
   onRefreshConversations: () => void;
   onGetConversation: (partnerId: number) => void;
+  onGetAttendances: () => void;
 }
 
 interface ChatListScreenState {
@@ -40,7 +42,8 @@ const mapState = (state: WonderAppState) => ({
 const mapDispatch = (dispatch: Dispatch) => ({
   onRefreshConversations: () => dispatch(getConversations()),
   onGetConversation: (partnerId: number) =>
-    dispatch(getConversation({ id: partnerId, successRoute: "Chat" }))
+    dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
+  onGetAttendances: () => dispatch(getAttendances())
 });
 
 class ChatListScreen extends React.Component<Props> {
@@ -54,6 +57,7 @@ class ChatListScreen extends React.Component<Props> {
   componentWillMount() {
     const { conversations, onRefreshConversations } = this.props;
     this.props.onRefreshConversations();
+    this.props.onGetAttendances();
 
     this.setState({ results: conversations });
   }

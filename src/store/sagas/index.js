@@ -27,6 +27,7 @@ import {
   watchGhostContact
 } from "./conversations";
 import { watchSubmitFeedback } from "./feedback";
+import { watchGetAttendances } from "./attendance";
 
 export default function* rootSaga() {
   yield all([
@@ -52,6 +53,9 @@ export default function* rootSaga() {
     // Appointments
     watchGetAppointments(),
     watchCreateAppointment(),
+
+    // Attendances
+    watchGetAttendances(),
 
     // Partners
     watchGetPartners(),

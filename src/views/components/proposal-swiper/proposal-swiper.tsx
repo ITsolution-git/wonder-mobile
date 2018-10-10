@@ -105,7 +105,7 @@ class CardDetailsOverlay extends React.Component<
         {candidate &&
           candidateTopics.map((x: Topic) => {
             if (userTopics) {
-              const active = userTopics.find((i: Topic) => i.name === x.name);
+              const active: boolean = !!userTopics.find((i: Topic) => i.name === x.name);
               return (
                 <Wonder key={x.name} topic={x} size={60} active={active} />
               );
@@ -117,7 +117,7 @@ class CardDetailsOverlay extends React.Component<
 
   getNextPhoto = () => {
     const { candidate } = this.props;
-    const { images } = candidate || [];
+    const { images = [] } = candidate;
     const { imageCount } = this.state;
 
     if (imageCount < images.length - 1) {

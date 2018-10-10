@@ -9,7 +9,7 @@ import Topic from "src/models/topic";
 
 interface WonderProps {
   topic: Topic;
-  active?: Topic | undefined;
+  active?: boolean;
   size?: number;
 }
 const Wonder: React.SFC<WonderProps> = ({ topic, active, size = 80 }) => {

@@ -16,7 +16,7 @@ import moment from "moment";
 import TimePicker from 'src/views/components/theme/pickers/time-picker';
 import { selectUpcomingAppointments } from "src/store/selectors/appointment";
 import WonderAppState from "src/models/wonder-app-state";
-import {
+import appointment, {
   AppointmentState,
   persistAppointmentData
 } from "src/store/reducers/appointment";
@@ -28,12 +28,15 @@ import Conversation, { DecoratedConversation } from "src/models/conversation";
 import User from "src/models/user";
 import { selectCurrentUser } from "src/store/selectors/user";
 import theme from "../../../assets/styles/theme";
+import Attendance from "src/models/attendance";
+import Topic from "src/models/topic";
 
 interface StateProps {
   currentUser: User;
   conversation: Conversation | null;
   appointment: AppointmentState;
-  appointments: ReadonlyArray<DecoratedAppointment>;
+  // appointments: ReadonlyArray<DecoratedAppointment>;
+  attendances: ReadonlyArray<Attendance>;
 }
 interface DispatchProps {
   onUpdateAppointment: (data: AppointmentState) => any;
@@ -60,6 +63,9 @@ export interface CalendarItem {
   location?: string;
   start?: Date;
   end?: Date;
+  id?: string;
+  calendarId?: string;
+  topic?: Topic | null;
 }
 
 export interface CalendarItemMap {
@@ -67,9 +73,11 @@ export interface CalendarItemMap {
 }
 
 const mapState = (state: WonderAppState): StateProps => ({
+  appointment: state.appointment,
   currentUser: selectCurrentUser(state),
   conversation: getDecoratedConversation(state),
-  appointments: selectUpcomingAppointments(state)
+  attendances: state.wonder.attendances,
+  // appointments: selectUpcomingAppointments(state)
 });
 
 const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
@@ -145,6 +153,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     try {
       const granted: string = await RNCalendarEvents.authorizeEventStore();
       if (granted === 'authorized') {
+        const { attendances } = this.props;
         //
         // gets todays utc and from a month from now
         const today = moment();
@@ -159,7 +168,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         );
 
         const agendaItems: any = events.reduce((result: CalendarItemMap, event: RNCalendarEvent) => {
-          const { startDate, endDate, title, location } = event;
+          const { startDate, endDate, title, location, id, calendarId } = event;
 
           //
           // converts callback time to agenda format time
@@ -172,12 +181,23 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
             result[eventStartDate.format("YYYY-MM-DD")] = [];
           }
 
+          let topic;
+          if (id) {
+            const found = attendances.find((a: Attendance) => id === a.device_calendar_event_id);
+            if (found) {
+              topic = found.appointment.topic;
+            }
+          }
+
           result[eventStartDate.format("YYYY-MM-DD")].push({
             date: eventStartDate.utc().toDate(),
             title,
             location,
             start: startDate,
-            end: endDate
+            end: endDate,
+            id,
+            calendarId,
+            topic
           });
 
           return result;
@@ -199,14 +219,14 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     const markedDates: any = {};
     let appointmentdate = "";
 
-    appointments.map((appointment: DecoratedAppointment) => {
+    appointments.map((decoratedAppointment: DecoratedAppointment) => {
       appointmentdate = moment(
-        appointment.event_at,
+        decoratedAppointment.event_at,
         "YYYY-MM-DDTHH:mm:ss.SSSSZ"
       ).format("YYYY-MM-DD");
 
       const displaytime = moment(
-        appointment.event_at,
+        decoratedAppointment.event_at,
         "YYYY-MM-DDTHH:mm:ss.SSSSZ"
       ).format("HH:ssA");
       //
@@ -216,9 +236,9 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           date_at: displaytime,
           text:
             "Date with " +
-            appointment.match.first_name +
+            decoratedAppointment.match.first_name +
             " " +
-            appointment.match.last_name
+            decoratedAppointment.match.last_name
         }
       ];
     });
