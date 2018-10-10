@@ -92,7 +92,7 @@ export default class Welcome extends React.Component<Props> {
               <Text
                 onPress={() =>
                   this.showDocument(
-                    `${HTTP_DOMAIN}/legal/Wonder%20Terms%20and%20Conditions.pdf`
+                    `${HTTP_DOMAIN}/terms.html`
                   )
                 }
                 style={styles.legalTextBtn}
@@ -102,7 +102,7 @@ export default class Welcome extends React.Component<Props> {
               {" "}and <Text
                 onPress={() =>
                   this.showDocument(
-                    `${HTTP_DOMAIN}/legal/Wonder%20Privacy%20Policy%201.pdf`
+                    `${HTTP_DOMAIN}/privacy.html`
                   )
                 }
                 style={styles.legalTextBtn}
