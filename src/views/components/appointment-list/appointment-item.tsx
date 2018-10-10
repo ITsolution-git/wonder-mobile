@@ -1,14 +1,13 @@
 import _ from "lodash";
 import React from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Button, Platform } from "react-native";
 import {
   Text,
   Title,
   SubTitle,
   SmallText,
   Strong,
-  IconButton,
-  TextButton
+  TextButton,
 } from "../theme";
 
 import moment from "moment-timezone";
@@ -20,6 +19,7 @@ import { DecoratedAppointment } from "src/models/appointment";
 interface Props {
   item: DecoratedAppointment;
   onPress?: Function;
+  callNumber: Function;
 }
 
 class AppointmentItem extends React.Component<Props> {
@@ -44,7 +44,7 @@ class AppointmentItem extends React.Component<Props> {
   }
 
   render() {
-    const { item, onPress } = this.props;
+    const { item, onPress, callNumber } = this.props;
     return (
       <TouchableOpacity
         style={styles.container}
@@ -65,13 +65,29 @@ class AppointmentItem extends React.Component<Props> {
           {this.renderTitle()}
           <SubTitle>{moment(item.event_at).format("Do, MMMM YYYY")}</SubTitle>
           <View style={styles.locationRow}>
-            <Icon
-              name="map-marker"
-              size={24}
-              color={theme.colors.textColorLight}
-            />
-            <SmallText style={styles.locationText}>{item.location}</SmallText>
+            <View>
+              <Icon
+                name="map-marker"
+                size={24}
+                color={theme.colors.textColorLight}
+              />
+            </View>
+            <View>
+              <SmallText style={styles.locationText}>{item.location}</SmallText>
+              {item.phone && <TextButton
+                text={item.phone}
+                style={styles.phoneText}
+                onPress={() => callNumber(`tel:+1${item.phone}`)}
+              />}
+            </View>
           </View>
+          <Text
+            style={[styles.status, {
+              color: item.state === 'confirmed' ? 'green' : 'red'
+            }]}
+          >
+            {item.state === 'confirmed' ? 'CONFIRM' : 'UNCONFIRMED'}
+          </Text>
         </View>
       </TouchableOpacity>
     );
@@ -82,21 +98,30 @@ export default AppointmentItem;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   imageContainer: {
     paddingRight: 15,
     flex: 1,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   contentContainer: {
     flex: 2,
     justifyContent: "center"
   },
-  locationRow: { flexDirection: "row", alignItems: "center" },
-  locationText: { marginLeft: 10 }
+  locationRow: { flexDirection: "row" },
+  locationText: { marginLeft: 10 },
+  phoneText: {
+    fontSize: 10,
+    color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
+    marginLeft: 10
+  },
+  status: {
+    fontSize: 10,
+    alignSelf: 'flex-end',
+  }
 });

@@ -11,6 +11,7 @@ interface Props {
   isLoading?: boolean;
   onPress?: Function;
   onDelete?: (appointment: DecoratedAppointment) => void;
+  onPressCallNumber: Function;
 }
 
 class AppointmentList extends React.Component<Props> {
@@ -21,7 +22,7 @@ class AppointmentList extends React.Component<Props> {
   keyExtractor = (item: any, index: number) => item.id.toString();
 
   renderRow = ({ item }: { item: DecoratedAppointment }) => {
-    const { onPress, onDelete } = this.props;
+    const { onPress, onDelete, onPressCallNumber } = this.props;
     return (
       <SwipeRow
         rightOpenValue={-75}
@@ -31,6 +32,7 @@ class AppointmentList extends React.Component<Props> {
           </Button>
         )}
         body={<AppointmentItem
+          callNumber={onPressCallNumber}
           item={item}
           onPress={onPress}
         />}
