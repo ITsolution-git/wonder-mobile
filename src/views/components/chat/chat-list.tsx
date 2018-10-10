@@ -16,7 +16,7 @@ class ChatList extends React.Component<ChatListProps> {
   };
 
   keyExtractor = (item: Conversation, index: number) => {
-    return `${item.partner.id}`;
+    return `${item.id}`;
   }
 
   renderItem = ({ item: chat }: { item: Conversation }) => {
@@ -31,9 +31,7 @@ class ChatList extends React.Component<ChatListProps> {
 
   renderEmpty = () => {
     return (
-      <View >
-       
-      </View>
+      <View />
     );
   }
 

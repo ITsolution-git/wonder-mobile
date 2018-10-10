@@ -23,16 +23,15 @@ const decorateAppointment = (appointment: Appointment, me: User): DecoratedAppoi
   return undefined;
 };
 
-export const selectUpcomingAppointments:
-  OutputSelector<WonderAppState, Array<DecoratedAppointment | undefined>, Function> = createSelector(
-    [selectCurrentUser, allAppointments],
-    (currentUser, appointments) => {
-      return _.sortBy(appointments, 'event_at')
-        .map((a: Appointment) => decorateAppointment(a, currentUser))
-        .filter(isAppointmentAfterToday);
+export const selectUpcomingAppointments = createSelector(
+  [selectCurrentUser, allAppointments],
+  (currentUser, appointments) => {
+    return _.sortBy(appointments, 'event_at')
+      .map((a: Appointment) => decorateAppointment(a, currentUser))
+      .filter(isAppointmentAfterToday);
 
-    }
-  );
+  }
+);
 
 export const selectPastAppointments = createSelector(
   [selectCurrentUser, allAppointments],

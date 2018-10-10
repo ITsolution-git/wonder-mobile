@@ -4,6 +4,7 @@ import { Action } from 'redux';
 import axios from 'axios';
 import { persistTopics } from '../reducers/wonder';
 import api from '../../services/api';
+import { handleAxiosError } from './utils';
 
 export const GET_TOPICS = 'GET_TOPICS';
 export const getTopics = createAction(GET_TOPICS);
@@ -14,7 +15,7 @@ export function* getTopicsSaga(action: Action) {
     });
     yield put(persistTopics(response.data));
   } catch (error) {
-    console.warn(error);
+    handleAxiosError(error);
   }
 }
 
@@ -29,7 +30,7 @@ export function* suggestTopicSaga(action: Action) {
     yield select();
     // yield put();
   } catch (error) {
-
+    handleAxiosError(error);
   }
 }
 
