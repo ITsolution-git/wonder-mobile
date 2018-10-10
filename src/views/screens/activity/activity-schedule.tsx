@@ -106,7 +106,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     //   result[date] = [];
     //   return result;
     // }, {});
-    this.mapWonderAppointmentsToAgenda(this.props.appointments);
+    // this.mapWonderAppointmentsToAgenda(this.props.appointments);
     this.mapNativeCalendarEventsToAgenda();
   }
 
