@@ -15,7 +15,7 @@ import { selectCurrentUser } from "src/store/selectors/user";
 import Conversation from "src/models/conversation";
 import WonderAppState from "src/models/wonder-app-state";
 import Chat from "src/models/chat";
-import { Button, View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import SearchBar from "react-native-searchbar";
 import { getAttendances } from "src/store/sagas/attendance";

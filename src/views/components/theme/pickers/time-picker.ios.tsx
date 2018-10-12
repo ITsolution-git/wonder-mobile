@@ -22,7 +22,7 @@ interface Props {
 
 interface State {
   open: boolean;
-  value: Date;
+  value?: Date;
 }
 
 export default class TimePicker extends React.Component<Props, State> {
@@ -34,9 +34,23 @@ export default class TimePicker extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      value: props.initialDate || new Date(),
+      value: props.initialDate,
       open: false
     };
+  }
+
+  private onClose = () => {
+    const { onChange } = this.props;
+    const { value } = this.state;
+    const dateAsMoment = moment(value);
+    if (onChange) {
+      onChange({ hour: dateAsMoment.hour(), minute: dateAsMoment.minutes() });
+    }
+    this.setState({ open: false });
+  }
+
+  private onChange = (date: Date) => {
+    this.setState({ value: date });
   }
 
   public render() {
@@ -46,12 +60,12 @@ export default class TimePicker extends React.Component<Props, State> {
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.container}>
-          <Text>{moment(value).format(displayFormat)}</Text>
+          <Text>{value ? moment(value).format(displayFormat) : 'Select Time'}</Text>
           <TouchableOpacity
             style={styles.iconBtn}
             onPress={() => this.setState({ open: true })}
           >
-            <Icon name="calendar" color={theme.colors.white} />
+            <Icon name="clock-o" color={theme.colors.white} />
           </TouchableOpacity>
         </View>
         {<ErrorHint>{errorHint}</ErrorHint>}
@@ -60,11 +74,11 @@ export default class TimePicker extends React.Component<Props, State> {
           animationType="slide"
           transparent
           visible={open}
-          onClose={() => this.setState({ open: false })}
+          onClose={this.onClose}
         >
           <DatePickerIOS
             mode="time"
-            date={this.state.value}
+            date={this.state.value || new Date()}
             onDateChange={this.onChange}
             minimumDate={minDate}
             maximumDate={maxDate}
@@ -75,14 +89,6 @@ export default class TimePicker extends React.Component<Props, State> {
     );
   }
 
-  private onChange = (date: Date) => {
-    const { onChange } = this.props;
-    this.setState({ value: date });
-    const dateAsMoment = moment(date);
-    if (onChange) {
-      onChange(dateAsMoment.toDate());
-    }
-  }
 }
 
 const styles = StyleSheet.create({

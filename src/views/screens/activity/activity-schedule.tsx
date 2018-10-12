@@ -1,35 +1,33 @@
 import React from "react";
-import { View, Alert, Animated, StyleSheet } from "react-native";
+import Analytics from 'appcenter-analytics';
+import { View, Alert, StyleSheet } from "react-native";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import _ from 'lodash';
 import RNCalendarEvents, { RNCalendarEvent } from 'react-native-calendar-events';
-import { Agenda, DateObject } from "react-native-calendars";
-
 import Screen from "src/views/components/screen";
 import {
   Text,
   PrimaryButton,
+  IconButton,
+  TextButton,
 } from "src/views/components/theme";
-import AgendaDayItem, { AgendaDayItemProps } from "src/views/components/calendar/agenda-day-item";
 import moment from "moment";
 import TimePicker from 'src/views/components/theme/pickers/time-picker';
-import { selectUpcomingAppointments } from "src/store/selectors/appointment";
 import WonderAppState from "src/models/wonder-app-state";
-import appointment, {
+import {
   AppointmentState,
   persistAppointmentData
 } from "src/store/reducers/appointment";
 import { NavigationParams, NavigationScreenProp } from "react-navigation";
 import Avatar from "src/views/components/theme/avatar";
-import { DecoratedAppointment } from "src/models/appointment";
 import { getDecoratedConversation } from "src/store/selectors/conversation";
-import Conversation, { DecoratedConversation } from "src/models/conversation";
+import Conversation from "src/models/conversation";
 import User from "src/models/user";
 import { selectCurrentUser } from "src/store/selectors/user";
-import theme from "../../../assets/styles/theme";
 import Attendance from "src/models/attendance";
-import Topic from "src/models/topic";
+import UserCalendarModal, { CalendarItemMap } from "src/views/components/modals/user-calendar.modal";
+import theme from "src/assets/styles/theme";
 
 interface StateProps {
   currentUser: User;
@@ -46,30 +44,13 @@ interface Props extends StateProps, DispatchProps {
 }
 
 interface State {
-  selected?: string;
+  isCalendarOpen: boolean;
   selectedDate?: string;
-  selectedTime: {
-    hour: string;
-    minute: string;
+  selectedTime?: {
+    hour: number;
+    minute: number;
   };
   agendaItems: any;
-  markedDates: object;
-  headerHeight: Animated.Value;
-}
-
-export interface CalendarItem {
-  title?: string;
-  date?: Date;
-  location?: string;
-  start?: Date;
-  end?: Date;
-  id?: string;
-  calendarId?: string;
-  topic?: Topic | null;
-}
-
-export interface CalendarItemMap {
-  [key: string]: CalendarItem[];
 }
 
 const mapState = (state: WonderAppState): StateProps => ({
@@ -87,36 +68,24 @@ const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
 });
 class ActivityScheduleScreen extends React.Component<Props, State> {
   state: State = {
-    selected: undefined,
+    isCalendarOpen: true,
     selectedDate: undefined,
-    selectedTime: {
-      hour: moment().format("H"),
-      minute: moment().format("mm")
-    },
+    selectedTime: undefined,
     agendaItems: {},
-    markedDates: {},
-    headerHeight: new Animated.Value(150)
   };
 
   componentWillMount() {
-    // not written yet but for future reference
-    // (gets all appointmentss from the database or from asyncstorage)
-    // this.props.getAllDates()
-    this.mapDaysToAgendaObjectFormat();
-  }
+    if (this.props.appointment.match) {
+      Analytics.trackEvent('ActivityScheduleScreen', {
+        match: this.props.appointment.match.id || ''
+      });
+    }
 
-  mapDaysToAgendaObjectFormat = () => {
-    // const datesArray = this.mapOutDays(); // <--returns a date of arrays
-
-    // //
-    // // Makes each date into a key of an object to conform to agenda item format
-    // const agendaItems = datesArray.reduce((result: any, date: any) => {
-    //   result[date] = [];
-    //   return result;
-    // }, {});
-    // this.mapWonderAppointmentsToAgenda(this.props.appointments);
     this.mapNativeCalendarEventsToAgenda();
   }
+
+  openCalendarModal = () => this.setState({ isCalendarOpen: true });
+  closeCalendarModal = () => this.setState({ isCalendarOpen: false });
 
   /**
    * Create an array of Dates as strings to be mapped as keys
@@ -134,12 +103,16 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
   }
 
   schedule = () => {
+    const { onUpdateAppointment, navigation } = this.props;
     const { selectedDate, selectedTime } = this.state;
-    const time = moment(`${selectedDate}T${selectedTime.hour}:${selectedTime.minute}`,
-      "YYYY-MM-DD[T]HH:mm")
-      .toDate();
-    this.props.onUpdateAppointment({ eventAt: time });
-    this.props.navigation.navigate("AppointmentConfirm");
+    if (selectedDate && selectedTime && selectedTime.hour >= 0 && selectedTime.minute >= 0) {
+      const dateMoment = moment(selectedDate, 'YYYY-MM-DD');
+      dateMoment.hours(selectedTime.hour);
+      dateMoment.minutes(selectedTime.minute);
+
+      onUpdateAppointment({ eventAt: dateMoment.toDate() });
+      navigation.navigate("AppointmentConfirm");
+    }
   }
 
   /**
@@ -212,53 +185,28 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     }
   }
 
-  mapWonderAppointmentsToAgenda = (appointments: ReadonlyArray<DecoratedAppointment>) => {
-    //
-    // Attaches calendar items to calendar dates
-    const { agendaItems } = this.state;
-    const markedDates: any = {};
-    let appointmentdate = "";
-
-    appointments.map((decoratedAppointment: DecoratedAppointment) => {
-      appointmentdate = moment(
-        decoratedAppointment.event_at,
-        "YYYY-MM-DDTHH:mm:ss.SSSSZ"
-      ).format("YYYY-MM-DD");
-
-      const displaytime = moment(
-        decoratedAppointment.event_at,
-        "YYYY-MM-DDTHH:mm:ss.SSSSZ"
-      ).format("HH:ssA");
-      //
-      agendaItems[appointmentdate] = [
-        ...agendaItems[appointmentdate],
-        {
-          date_at: displaytime,
-          text:
-            "Date with " +
-            decoratedAppointment.match.first_name +
-            " " +
-            decoratedAppointment.match.last_name
-        }
-      ];
-    });
-
-    this.setState({ agendaItems, markedDates });
-  }
-
-  selectTime = (selectedTime: { hour: string, minute: string }) => {
-    this.setState({ selectedTime });
-  }
-
-  selectDay = ({ dateString }: { dateString: string }) => {
+  onDateChange = (dateString: string) => {
     this.setState({ selectedDate: dateString });
+  }
+
+  selectTime = (selectedTime: { hour: number, minute: number }) => {
+    this.setState({ selectedTime });
   }
 
   renderHeader = () => {
     const { navigation, conversation } = this.props;
+    const { selectedDate, selectedTime } = this.state;
     const { first_name, last_name, images = [] } = _.get(conversation, 'partner', {} as User);
+
+    const dateTime = moment(selectedDate, 'YYYY-MM-DD');
+
+    if (selectedTime) {
+      dateTime.hours(selectedTime.hour);
+      dateTime.minutes(selectedTime.minute);
+    }
+
     return (
-      <Animated.View
+      <View
         style={{
           alignItems: "center",
           justifyContent: "space-around",
@@ -269,69 +217,37 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           circle
           uri={_.get(images[0], 'url', null)}
         />
-        <Text>
+        <Text style={{ marginTop: 15 }}>
           {[first_name, last_name].join(' ')}
         </Text>
-      </Animated.View>
+
+        {
+          selectedDate &&
+          (
+            <View style={styles.dateTimeContainer}>
+              <Text style={styles.dateTimeLabel}>You are proposing:</Text>
+              <TextButton
+                style={styles.calendarButtonText}
+                text={dateTime.format('MMMM Do, YYYY[\n][at] h:mma')}
+                onPress={this.openCalendarModal}
+              />
+            </View>
+          )
+        }
+      </View>
     );
   }
 
   render() {
-    const { selected, selectedDate, agendaItems, markedDates } = this.state;
-    const today = moment();
+    const { selectedDate, selectedTime, agendaItems, isCalendarOpen } = this.state;
+    const disabled = !!selectedDate && !selectedTime;
+    const missingDate = !selectedDate;
     return (
       <Screen>
         {this.renderHeader()}
-        <Agenda
-          pastScrollRange={0}
-          futureScrollRange={1}
-          items={agendaItems}
-          selected={selectedDate}
-          // onCalendarToggled={(calendarOpened: boolean) => { }}
-          onDayPress={this.selectDay}
-          onDayChange={this.selectDay}
-          maxDate={today.clone().add(1, "month").format("YYYY-MM-DD")}
-          renderDay={(day?: DateObject, item?: CalendarItem) => {
-            if (day) {
-              const dayMoment = moment(day.dateString, 'YYYY-MM-DD');
-              return (
-                <View style={styles.agendaDayContainer}>
-                  <Text style={styles.agendaDayDate}>{dayMoment.format("ddd")}</Text>
-                  <Text style={styles.agendaDayDay}>{dayMoment.format("MMM D")}</Text>
-                </View>
-              );
-            }
-            return <View style={styles.agendaDayContainer} />;
-          }}
-          renderItem={(item: CalendarItem, firstItemInDay: boolean) => <AgendaDayItem item={item} />}
-          renderEmptyDate={() => <View />}
-          renderEmptyData={() => (<View style={styles.emptyDataContainer}><Text>No Events</Text></View>)}
-          // renderKnob={() => {
-          //   return (
-          //     <View>
-          //       <Text>Show Calendar</Text>
-          //     </View>
-          //   );
-          // }}
-          rowHasChanged={(r1: any, r2: any) => r1.text !== r2.text}
-          theme={{
-            todayTextColor: theme.colors.primary,
-            selectedDayBackgroundColor: theme.colors.primary,
-            agendaDayTextColor: theme.colors.textColor,
-            agendaDayNumColor: theme.colors.textColor,
-            agendaTodayColor: theme.colors.textColor,
-            agendaKnobColor: theme.colors.primary
-          }}
-        />
-        <View style={{ paddingHorizontal: 20 }}>
+        <View style={{ paddingHorizontal: 20, paddingVertical: 15, flex: 1, justifyContent: 'flex-end' }}>
           <TimePicker
             label="Select a time"
-            minDate={moment()
-              .add(15, "minutes")
-              .toDate()}
-            initialDate={moment()
-              .add(15, "minutes")
-              .toDate()}
             onChange={this.selectTime}
           />
           <View
@@ -347,10 +263,20 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
                 width: "50%"
               }}
             >
-              <PrimaryButton title="Confirm" onPress={this.schedule} />
+              <PrimaryButton
+                title={missingDate ? "Select Date" : "Confirm"}
+                onPress={missingDate ? this.openCalendarModal : this.schedule}
+                disabled={disabled}
+              />
             </View>
           </View>
         </View>
+        <UserCalendarModal
+          onDateChange={this.onDateChange}
+          visible={isCalendarOpen}
+          agendaItems={agendaItems}
+          onRequestClose={this.closeCalendarModal}
+        />
       </Screen>
     );
   }
@@ -362,22 +288,17 @@ export default connect(
 )(ActivityScheduleScreen);
 
 const styles = StyleSheet.create({
-  emptyDataContainer: {
-    paddingTop: 15,
-    justifyContent: 'center',
-    alignItems: 'center'
+  dateTimeContainer: {
+    marginTop: 50,
   },
-  agendaDayContainer: {
-    marginVertical: 5,
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center'
+  dateTimeLabel: {
+    textAlign: 'center',
   },
-  agendaDayDay: {
-    fontSize: 9
-  },
-  agendaDayDate: {
-    fontSize: 16
+  calendarButtonText: {
+    textAlign: 'center',
+    fontSize: 24,
+    color: theme.colors.primary,
+    fontWeight: 'bold'
   }
 });
+

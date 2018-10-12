@@ -6,7 +6,7 @@ interface Props extends ModalProps {
   visible: boolean;
   closeText: string;
   children: React.ReactNode;
-  onClose: Function;
+  onClose: (data?: any) => void;
 }
 
 class FooterModal extends React.Component<Props> {
@@ -18,6 +18,7 @@ class FooterModal extends React.Component<Props> {
         animationType={animationType}
         transparent={transparent}
         visible={visible}
+        onRequestClose={onClose}
       >
         <View style={{ justifyContent: 'flex-end', flex: 1 }}>
           <View style={{ backgroundColor: '#FFF' }}>

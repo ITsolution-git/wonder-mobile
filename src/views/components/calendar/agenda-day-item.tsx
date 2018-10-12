@@ -2,7 +2,7 @@ import React from "react";
 import moment, { Moment } from 'moment';
 import { View, StyleSheet } from "react-native";
 import { Text } from "src/views/components/theme";
-import { CalendarItem } from "../../screens/activity/activity-schedule";
+import { CalendarItem } from "../modals/user-calendar.modal";
 import Wonder from "../theme/wonder/wonder";
 
 export interface AgendaDayItemProps {

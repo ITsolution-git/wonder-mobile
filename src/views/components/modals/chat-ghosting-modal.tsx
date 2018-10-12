@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { Modal, View, ModalProps, StyleSheet, Platform } from 'react-native';
 import { IconButton, TextArea, Title, SecondaryButton, Text } from '../theme';
 
@@ -11,15 +12,17 @@ interface Props extends ModalProps {
     onSuccess?: Function;
 }
 
-
-
 class ChatGhostingModal extends React.Component<Props> {
+    static defaultProps = {
+        onRequestClose: _.noop
+    };
+
     state = {
         ghostMessage: 'It’s been fun chatting but I’m not interested at the moment.'
     };
 
     onSendGhost = () => {
-        if(this.props.onSuccess) {
+        if (this.props.onSuccess) {
             this.props.onSuccess(this.state.ghostMessage);
         }
     }
@@ -40,9 +43,9 @@ class ChatGhostingModal extends React.Component<Props> {
                         {'Time to disappear!'}
                     </Title>
                     <View>
-                        <Text style={{color: '#333'}}>Curb-kickin' time?</Text>
+                        <Text style={{ color: '#333' }}>Curb-kickin' time?</Text>
                         <TextArea
-                            onChangeText={(ghostMessage) => this.setState({ghostMessage})}
+                            onChangeText={(ghostMessage) => this.setState({ ghostMessage })}
                             value={this.state.ghostMessage}
                             style={{ backgroundColor: 'white', minHeight: 100 }}
                         />
@@ -65,7 +68,7 @@ class ChatGhostingModal extends React.Component<Props> {
                 transparent
                 {...rest}
             >
-                <View flex={1} style={{maxHeight: 300}}>
+                <View flex={1} style={{ maxHeight: 300 }}>
                     {this.renderContent()}
                 </View>
             </Modal>

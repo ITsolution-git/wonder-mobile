@@ -21,8 +21,8 @@ interface Props {
 
 interface State {
   open: boolean;
-  hour: number;
-  minute: number;
+  hour?: number;
+  minute?: number;
 }
 
 export default class DatePicker extends React.Component<Props, State> {
@@ -35,8 +35,8 @@ export default class DatePicker extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      hour: 12,
-      minute: 0,
+      hour: undefined,
+      minute: undefined,
       open: false
     };
   }
@@ -44,16 +44,17 @@ export default class DatePicker extends React.Component<Props, State> {
   public render() {
     const { label, displayFormat, errorHint, minDate, maxDate, onChange } = this.props;
     const { open, hour, minute } = this.state;
+
     return (
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.container}>
-          <Text>{moment(`${hour}:${minute}`, 'HH:mm').format(displayFormat)}</Text>
+          <Text>{hour && minute ? moment(`${hour}:${minute}`, 'HH:mm').format(displayFormat) : 'Select Time'}</Text>
           <TouchableOpacity
             style={styles.iconBtn}
             onPress={this.openModal}
           >
-            <Icon name="calendar" color={theme.colors.white} />
+            <Icon name="clock-o" color={theme.colors.white} />
           </TouchableOpacity>
         </View>
         {<ErrorHint>{errorHint}</ErrorHint>}
@@ -82,7 +83,7 @@ export default class DatePicker extends React.Component<Props, State> {
     }
   }
 
-  onChange = ({ hour, minute }) => {
+  onChange = ({ hour, minute }: { hour: number, minute: number }) => {
     const { onChange } = this.props;
     this.setState({ hour, minute });
     if (onChange) {
