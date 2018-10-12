@@ -2,6 +2,8 @@ PODS:
   - AppCenter/Analytics (1.9.0):
     - AppCenter/Core
   - AppCenter/Core (1.9.0)
+  - AppCenter/Crashes (1.9.0):
+    - AppCenter/Core
   - AppCenter/Push (1.9.0):
     - AppCenter/Core
   - AppCenterReactNativeShared (1.8.1):
@@ -189,6 +191,7 @@ PODS:
 
 DEPENDENCIES:
   - AppCenter/Analytics (~> 1.9.0)
+  - AppCenter/Crashes (~> 1.9.0)
   - AppCenter/Push (~> 1.9.0)
   - AppCenterReactNativeShared (~> 1.8.1)
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
@@ -306,6 +309,6 @@ SPEC CHECKSUMS:
   RNSVG: 6252323c0312735f0af5f58b5adf2965b6a9ffbf
   yoga: b1ce48b6cf950b98deae82838f5173ea7cf89e85
 
-PODFILE CHECKSUM: e58cbf090ebac5ac228c4f3553d827b62f4d209c
+PODFILE CHECKSUM: 8a9cf42bdcbb7fe8ace014694df8bd9ed328baa1
 
 COCOAPODS: 1.5.3

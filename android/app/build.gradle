@@ -155,6 +155,7 @@ android {
 }
 
 dependencies {
+    compile project(':appcenter-crashes')
     compile project(':appcenter-push')
     compile project(':appcenter-analytics')
     compile project(':react-native-version-number')

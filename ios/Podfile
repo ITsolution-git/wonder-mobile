@@ -2,6 +2,7 @@
 platform :ios, '9.0'
 
 target 'WonderApp' do
+  pod 'AppCenter/Crashes', '~> 1.9.0'
   pod 'AppCenter/Push', '~> 1.9.0'
   pod 'AppCenterReactNativeShared', '~> 1.8.1'
   pod 'AppCenter/Analytics', '~> 1.9.0'
