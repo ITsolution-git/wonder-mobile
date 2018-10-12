@@ -2,11 +2,9 @@ import NavigatorService from "../../services/navigation";
 import { select, call, put, takeEvery } from "redux-saga/effects";
 import { createAction, Action } from "redux-actions";
 import api from "../../services/api";
-
 import { Alert } from "react-native";
-
 import { persistAppointments } from "../reducers/wonder";
-import appointment, {
+import {
   AppointmentState,
   persistAppointmentData,
   resetAppointment
@@ -14,6 +12,9 @@ import appointment, {
 import WonderAppState from "../../models/wonder-app-state";
 import Appointment from "../../models/appointment";
 import { handleAxiosError } from "./utils";
+import RNCalendarEvents, { RNCalendarEvent, RNCalendarCalendar } from "react-native-calendar-events";
+import moment from 'moment';
+import { getAttendances } from "./attendance";
 
 export const GET_APPOINTMENTS = "GET_APPOINTMENTS";
 export const getAppointments = createAction(GET_APPOINTMENTS);
@@ -44,7 +45,7 @@ export function* watchGetAppointments() {
   yield takeEvery(GET_APPOINTMENTS, getAppointmentsSaga);
 }
 
-const serializeAppointment = (appt: AppointmentState) => {
+const serializeAppointment = (appt: AppointmentState): any => {
   if (appt && appt.activity && appt.topic && appt.match) {
     return {
       invited_user_id: appt.match.id,
@@ -65,16 +66,47 @@ export const createAppointment = createAction(CREATE_APPOINTMENT);
 export function* createAppointmentSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
-    const body = serializeAppointment(state.appointment);
-    const { data }: { data: Appointment[] } = yield call(
-      api,
-      {
-        method: "POST",
-        url: "/appointments",
-        data: body
-      },
-      state.user
-    );
+    const { appointment: appointmentState } = state;
+
+    const { eventAt, match, topic, activity } = appointmentState;
+    if (eventAt && match && topic && activity) {
+      const body = serializeAppointment(appointmentState);
+
+      // Save the calendar Event to the users calendar
+      const calendars = yield call([RNCalendarEvents, 'findCalendars']);
+      if (calendars.length) {
+        const primaryCalendar: RNCalendarCalendar | undefined =
+          calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
+        if (primaryCalendar) {
+          const title = `${topic.name} with ${match.first_name}`;
+          const details: Partial<RNCalendarEvent> = {
+            calendarId: primaryCalendar.id,
+            location: activity.location.join(','),
+            startDate: eventAt,
+            endDate: moment(eventAt).add(1, 'hour').toDate()
+          };
+
+          const eventId = yield call([RNCalendarEvents, 'saveEvent'], title, details, undefined);
+          if (eventId) {
+            body.attendance = {
+              device_calendar_event_id: eventId,
+              device_calendar_name: primaryCalendar.id
+            };
+          }
+        }
+      }
+
+      // api call to make the appointment, optionally with calendar data
+      yield call(
+        api,
+        {
+          method: "POST",
+          url: "/appointments",
+          data: body
+        },
+        state.user
+      );
+    }
 
     yield put(resetAppointment());
     yield put(getAppointments());
@@ -82,6 +114,8 @@ export function* createAppointmentSaga(action: Action<any>) {
   } catch (error) {
     handleAxiosError(error);
   } finally {
+    yield put(getAttendances());
+    yield put(getAppointments());
     // yield put(getUser());
   }
 }
