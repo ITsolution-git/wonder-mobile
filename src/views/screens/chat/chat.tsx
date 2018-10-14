@@ -15,7 +15,7 @@ import {
   sendMessage,
   ghostContact
 } from "src/store/sagas/conversations";
-import { getDecoratedConversation } from "src/store/selectors/conversation";
+import { getDecoratedConversation, decorateMessagesForGiftedChat } from "src/store/selectors/conversation";
 import { selectCurrentUser } from "src/store/selectors/user";
 import User from "src/models/user";
 import {
@@ -44,6 +44,7 @@ import {
 
 import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
+import { BASE_URL } from "src/services/api";
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -135,7 +136,6 @@ class ChatScreen extends React.Component<Props> {
     },
       {
         received: (data: any) => {
-          console.log('got it: ', data);
           const { onGetMessage } = this.props;
           const receivedMessage: GiftedChatMessage = {
             _id: data.id,
@@ -144,6 +144,7 @@ class ChatScreen extends React.Component<Props> {
             user: {
               _id: data.sender.id,
               name: data.sender.first_name,
+              avatar: BASE_URL + data.sender.images[0].url
             }
           };
           onGetMessage(conversation.partner.id);
@@ -151,16 +152,15 @@ class ChatScreen extends React.Component<Props> {
           // onGetMessage(conversation.partner.id);  // What does this even do?
         },
         deliver: (message: string) => {
-          console.log('send');
           this.appChat.perform('deliver', { body: message, recipient_id: conversation.partner.id });
         }
       });
   }
 
   componentDidMount() {
-
-    // const stuff = getDecoratedConversation(this.props.conversation);
-    // this.setState({ conversationMessages: stuff });
+    const { currentUser, conversation } = this.props;
+    const chats = decorateMessagesForGiftedChat(currentUser, conversation);
+    this.setState({ conversationMessages: chats.giftedChatMessages });
   }
 
   componentWillUnmount() {
@@ -298,6 +298,7 @@ class ChatScreen extends React.Component<Props> {
     return (
       <Screen>
         <GiftedChat
+
           user={{ _id: currentUser.id }}
           renderSend={this.renderSend}
           renderBubble={this.renderBubble}
