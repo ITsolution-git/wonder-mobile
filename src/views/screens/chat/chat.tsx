@@ -71,7 +71,7 @@ interface ChatViewState {
 const mapState = (state: WonderAppState): StateProps => ({
   token: state.user.auth.token,
   currentUser: selectCurrentUser(state),
-  conversation: getDecoratedConversation(state)
+  conversation: getDecoratedConversation(state),
 });
 
 const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
