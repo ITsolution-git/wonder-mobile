@@ -52,7 +52,7 @@ interface CardDetailsOverlayState {
 class CardDetailsOverlay extends React.Component<
   CardDetailsOverlayProps,
   CardDetailsOverlayState
-> {
+  > {
   state = {
     contentHeight: 0,
     showDetails: false,

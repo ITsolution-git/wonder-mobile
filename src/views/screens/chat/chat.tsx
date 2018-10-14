@@ -1,7 +1,7 @@
 import React from "react";
 import _ from 'lodash';
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import ActionCable from 'react-native-actioncable'
+import ActionCable from 'react-native-actioncable';
 import Screen from "src/views/components/screen";
 import theme from "src/assets/styles/theme";
 import { View, StyleSheet, TouchableOpacity, Image, Alert, Text } from "react-native";
@@ -121,7 +121,7 @@ class ChatScreen extends React.Component<Props> {
   state: ChatViewState = {
     isGhostingModalOpen: false,
     selectedSendImage: '',
-    conversationMessages: this.props.conversation.giftedChatMessages
+    conversationMessages: []
   };
 
   componentWillMount() {
@@ -135,6 +135,7 @@ class ChatScreen extends React.Component<Props> {
     },
       {
         received: (data: any) => {
+          console.log('got it: ', data);
           const { onGetMessage } = this.props;
           const receivedMessage: GiftedChatMessage = {
             _id: data.id,
@@ -147,13 +148,17 @@ class ChatScreen extends React.Component<Props> {
           };
           onGetMessage(conversation.partner.id);
           this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
-
           // onGetMessage(conversation.partner.id);  // What does this even do?
         },
         deliver: (message: string) => {
-          this.appChat.perform('deliver', { body: message });
+          console.log('send');
+          this.appChat.perform('deliver', { body: message, recipient_id: conversation.partner.id });
         }
       });
+  }
+
+  componentDidMount() {
+    this.setState({ r });
   }
 
   componentWillUnmount() {
