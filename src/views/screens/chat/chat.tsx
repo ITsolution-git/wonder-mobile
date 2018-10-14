@@ -158,7 +158,8 @@ class ChatScreen extends React.Component<Props> {
   }
 
   componentDidMount() {
-    this.setState({ r });
+    console.log(this.props);
+    // this.setState({ r });
   }
 
   componentWillUnmount() {
