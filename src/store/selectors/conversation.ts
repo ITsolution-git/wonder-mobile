@@ -23,7 +23,7 @@ export const decorateMessagesForGiftedChat =
         ...conversation,
         giftedChatMessages: messages.map((message: ChatResponseMessage) => {
           const owner: User = message.sender_id === currentUser.id ? currentUser : conversation.partner;
-
+          console.log('o: ', owner);
           const o: GiftedChatMessage = {
             _id: message.id,
             text: message.body,
