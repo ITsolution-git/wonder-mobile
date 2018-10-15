@@ -216,7 +216,6 @@ export function* updateImageSaga(action: Action<any>) {
       name: Date.now() + ".jpg"
     };
     body.append("image", photo);
-<<<<<<< HEAD
 
     // const { email, password } = state.registration;
     // yield put(loginUser({ email, password }));
@@ -240,19 +239,6 @@ export function* updateImageSaga(action: Action<any>) {
     }
 
     // yield put(getUser());
-=======
-    const { data }: { data: any } = yield call(
-      api,
-      {
-        method: "POST",
-        url: `/users/${auth.uid}/images`,
-        data: body
-      },
-      state.user
-    );
-
-    yield put(getUser());
->>>>>>> 86fef5125d57bbf9abb78283ecce663cace7961a
   } catch (error) {
     handleAxiosError(error);
   } finally {
