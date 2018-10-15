@@ -45,6 +45,7 @@ import {
 import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
 import { BASE_URL } from "src/services/api";
+const avatarExtension = '?w=100&h=100&auto=enhance,format&fit=crop&crop=entropy&q=60';
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -144,7 +145,7 @@ class ChatScreen extends React.Component<Props> {
             user: {
               _id: data.sender.id,
               name: data.sender.first_name,
-              avatar: BASE_URL + data.sender.images[0].url
+              avatar: `${data.sender.images[0].url}${avatarExtension}`
             }
           };
           onGetMessage(conversation.partner.id);
@@ -298,7 +299,6 @@ class ChatScreen extends React.Component<Props> {
     return (
       <Screen>
         <GiftedChat
-
           user={{ _id: currentUser.id }}
           renderSend={this.renderSend}
           renderBubble={this.renderBubble}
