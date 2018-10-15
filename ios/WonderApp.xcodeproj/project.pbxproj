@@ -586,21 +586,21 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-		ACE60F9F21752D94006C8AAD /* PBXContainerItemProxy */ = {
+		AC3ED91C2173D5D900E00E7C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DC4473FF9CFF44FF987A06C5 /* AppCenterReactNativeAnalytics.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 548694001D8384E600E6685A;
 			remoteInfo = AppCenterReactNativeAnalytics;
 		};
-		ACE60FEC21752D95006C8AAD /* PBXContainerItemProxy */ = {
+		AC3ED91F2173D5D900E00E7C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 377F1CC7E2D34A918EDE9175 /* AppCenterReactNativeCrashes.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 5419C2701D824AA700DDF3A1;
 			remoteInfo = AppCenterReactNativeCrashes;
 		};
-		ACE60FEF21752D95006C8AAD /* PBXContainerItemProxy */ = {
+		AC3ED9222173D5D900E00E7C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 47EB1C8B34BA475282EAB9DD /* AppCenterReactNativePush.xcodeproj */;
 			proxyType = 2;
@@ -1137,26 +1137,26 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		ACE60F9C21752D94006C8AAD /* Products */ = {
+		AC3ED9152173D5D900E00E7C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ACE60FA021752D94006C8AAD /* libAppCenterReactNativeAnalytics.a */,
+				AC3ED91D2173D5D900E00E7C /* libAppCenterReactNativeAnalytics.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		ACE60FE721752D94006C8AAD /* Products */ = {
+		AC3ED9172173D5D900E00E7C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ACE60FED21752D95006C8AAD /* libAppCenterReactNativeCrashes.a */,
+				AC3ED9232173D5D900E00E7C /* libAppCenterReactNativePush.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		ACE60FE921752D94006C8AAD /* Products */ = {
+		AC3ED9192173D5D900E00E7C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ACE60FF021752D95006C8AAD /* libAppCenterReactNativePush.a */,
+				AC3ED9202173D5D900E00E7C /* libAppCenterReactNativeCrashes.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1305,15 +1305,15 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = ACE60F9C21752D94006C8AAD /* Products */;
+					ProductGroup = AC3ED9152173D5D900E00E7C /* Products */;
 					ProjectRef = DC4473FF9CFF44FF987A06C5 /* AppCenterReactNativeAnalytics.xcodeproj */;
 				},
 				{
-					ProductGroup = ACE60FE721752D94006C8AAD /* Products */;
+					ProductGroup = AC3ED9192173D5D900E00E7C /* Products */;
 					ProjectRef = 377F1CC7E2D34A918EDE9175 /* AppCenterReactNativeCrashes.xcodeproj */;
 				},
 				{
-					ProductGroup = ACE60FE921752D94006C8AAD /* Products */;
+					ProductGroup = AC3ED9172173D5D900E00E7C /* Products */;
 					ProjectRef = 47EB1C8B34BA475282EAB9DD /* AppCenterReactNativePush.xcodeproj */;
 				},
 				{
@@ -1887,25 +1887,25 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		ACE60FA021752D94006C8AAD /* libAppCenterReactNativeAnalytics.a */ = {
+		AC3ED91D2173D5D900E00E7C /* libAppCenterReactNativeAnalytics.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libAppCenterReactNativeAnalytics.a;
-			remoteRef = ACE60F9F21752D94006C8AAD /* PBXContainerItemProxy */;
+			remoteRef = AC3ED91C2173D5D900E00E7C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		ACE60FED21752D95006C8AAD /* libAppCenterReactNativeCrashes.a */ = {
+		AC3ED9202173D5D900E00E7C /* libAppCenterReactNativeCrashes.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libAppCenterReactNativeCrashes.a;
-			remoteRef = ACE60FEC21752D95006C8AAD /* PBXContainerItemProxy */;
+			remoteRef = AC3ED91F2173D5D900E00E7C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		ACE60FF021752D95006C8AAD /* libAppCenterReactNativePush.a */ = {
+		AC3ED9232173D5D900E00E7C /* libAppCenterReactNativePush.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libAppCenterReactNativePush.a;
-			remoteRef = ACE60FEF21752D95006C8AAD /* PBXContainerItemProxy */;
+			remoteRef = AC3ED9222173D5D900E00E7C /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */ = {

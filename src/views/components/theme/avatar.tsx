@@ -64,7 +64,7 @@ class Avatar extends React.Component<AvatarProps> {
             height: this.getDimensions(),
 
           }, style]}
-          uri={uri}
+          uri={`${uri}`}
         />
       );
     }

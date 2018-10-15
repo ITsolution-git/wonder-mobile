@@ -52,7 +52,7 @@ interface CardDetailsOverlayState {
 class CardDetailsOverlay extends React.Component<
   CardDetailsOverlayProps,
   CardDetailsOverlayState
-> {
+  > {
   state = {
     contentHeight: 0,
     showDetails: false,
@@ -140,7 +140,6 @@ class CardDetailsOverlay extends React.Component<
         {!!candidate.about && <Text color="#FFF">{candidate.about}</Text>}
       </React.Fragment>
     );
-
     return (
       <TouchableWithoutFeedback
         style={styles.cardOverlayContainer}
