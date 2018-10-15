@@ -1,5 +1,6 @@
 import React from 'react';
 import Screen from 'src/views/components/screen';
+import ImageResizer from 'react-native-image-resizer';
 import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { Text, PrimaryButton, TextButton } from 'src/views/components/theme';
 import theme from 'src/assets/styles/theme';
@@ -38,7 +39,7 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
   onSave = () => {
     const { onUpdateImage, navigation } = this.props;
     const { data } = this.state;
-
+    console.log('on update: ', data);
     onUpdateImage(data);
     navigation.goBack();
   }
@@ -55,9 +56,25 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
       } else if (res.error) {
         // console.log("Error", res.error);
       } else {
-        this.setState({ data: res });
+        console.log('res: ', res.uri);
+        this.resize(res.uri);
+        // this.setState({ data: res });
       }
     });
+  }
+
+  resize = (path) => {
+    console.log('path: ', path);
+    ImageResizer.createResizedImage(path, 8, 6, 'JPEG', 80)
+      .then(({ uri }) => {
+        console.log('resized: ', uri);
+        // this.setState({
+        //   resizedImageUri: uri,
+        // });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   onRotate = () => {
