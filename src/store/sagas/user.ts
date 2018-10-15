@@ -223,6 +223,7 @@ export function* updateImageSaga(action: Action<any>) {
       },
       state.user
     );
+
     yield put(getUser());
   } catch (error) {
     handleAxiosError(error);

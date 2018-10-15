@@ -1,7 +1,7 @@
 import React from "react";
 import _ from 'lodash';
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import ActionCable from 'react-native-actioncable'
+import ActionCable from 'react-native-actioncable';
 import Screen from "src/views/components/screen";
 import theme from "src/assets/styles/theme";
 import { View, StyleSheet, TouchableOpacity, Image, Alert, Text } from "react-native";
@@ -15,7 +15,7 @@ import {
   sendMessage,
   ghostContact
 } from "src/store/sagas/conversations";
-import { getDecoratedConversation } from "src/store/selectors/conversation";
+import { getDecoratedConversation, decorateMessagesForGiftedChat } from "src/store/selectors/conversation";
 import { selectCurrentUser } from "src/store/selectors/user";
 import User from "src/models/user";
 import {
@@ -44,6 +44,8 @@ import {
 
 import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
+import { BASE_URL } from "src/services/api";
+const avatarExtension = '?w=100&h=100&auto=enhance,format&fit=crop&crop=entropy&q=60';
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -71,7 +73,7 @@ interface ChatViewState {
 const mapState = (state: WonderAppState): StateProps => ({
   token: state.user.auth.token,
   currentUser: selectCurrentUser(state),
-  conversation: getDecoratedConversation(state)
+  conversation: getDecoratedConversation(state),
 });
 
 const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
@@ -121,7 +123,7 @@ class ChatScreen extends React.Component<Props> {
   state: ChatViewState = {
     isGhostingModalOpen: false,
     selectedSendImage: '',
-    conversationMessages: this.props.conversation.giftedChatMessages
+    conversationMessages: []
   };
 
   componentWillMount() {
@@ -143,17 +145,23 @@ class ChatScreen extends React.Component<Props> {
             user: {
               _id: data.sender.id,
               name: data.sender.first_name,
+              avatar: `${data.sender.images[0].url}${avatarExtension}`
             }
           };
           onGetMessage(conversation.partner.id);
           this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
-
           // onGetMessage(conversation.partner.id);  // What does this even do?
         },
         deliver: (message: string) => {
-          this.appChat.perform('deliver', { body: message });
+          this.appChat.perform('deliver', { body: message, recipient_id: conversation.partner.id });
         }
       });
+  }
+
+  componentDidMount() {
+    const { currentUser, conversation } = this.props;
+    const chats = decorateMessagesForGiftedChat(currentUser, conversation);
+    this.setState({ conversationMessages: chats.giftedChatMessages });
   }
 
   componentWillUnmount() {

@@ -5,11 +5,15 @@ import {
   Image,
   ImageBackground,
   ImageStyle,
-  StyleProp
+  StyleProp,
+  Dimensions
 } from "react-native";
 import SvgUri from "react-native-svg-uri";
 import api, { BASE_URL } from "src/services/api";
 import Omit from "src/models/omit";
+
+const backgroundImageExtension = '?w=600&h=1200&auto=enhance,format&fit=crop&crop=entropy&q=60';
+const avatarImageExtension = '?w=200&h=200&auto=enhance,format&fit=crop&crop=entropy&q=60';
 
 interface Props extends Omit<ImageProps, "source"> {
   uri: string;
@@ -18,14 +22,13 @@ interface Props extends Omit<ImageProps, "source"> {
   style?: StyleProp<ImageStyle>;
 }
 
-class WonderImage extends React.Component<Props> {
+class WonderImage extends React.PureComponent<Props> {
   static defaultProps = {
     background: false
   };
 
   render() {
     const { uri, children, background, style, ...rest } = this.props;
-
     if (uri) {
       // Handle SVG images differently
       if (uri.toString().endsWith(".svg")) {
@@ -44,14 +47,18 @@ class WonderImage extends React.Component<Props> {
           <ImageBackground
             style={style}
             {...rest}
-            source={{ uri: `${BASE_URL}/${uri}` }}
+            source={{ uri: `${uri}${backgroundImageExtension}` }}
           >
             {children}
           </ImageBackground>
         );
       }
       return (
-        <Image style={style} source={{ uri: `${BASE_URL}/${uri}` }} {...rest} />
+        <Image
+          style={style}
+          source={{ uri: `${uri}${avatarImageExtension}` }}
+          {...rest}
+        />
       );
     }
     return null;

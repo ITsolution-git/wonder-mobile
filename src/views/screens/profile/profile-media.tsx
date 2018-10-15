@@ -53,6 +53,7 @@ class ProfileMediaScreen extends React.Component<Props> {
   render() {
     const { navigation } = this.props;
     const { about } = this.state;
+
     return (
       <Screen horizontalPadding={20}>
         <KeyboardAvoidingView
