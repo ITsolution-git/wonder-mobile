@@ -140,7 +140,6 @@ class CardDetailsOverlay extends React.Component<
         {!!candidate.about && <Text color="#FFF">{candidate.about}</Text>}
       </React.Fragment>
     );
-    // console.log('c: ', candidate.images[0].url + '?w=600&h=600&auto=enhance,format&fit=crop&crop=entropy&q=60');
     return (
       <TouchableWithoutFeedback
         style={styles.cardOverlayContainer}

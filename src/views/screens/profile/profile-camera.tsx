@@ -12,6 +12,7 @@ import ImageRotate from 'react-native-image-rotate';
 import { Options, Response } from 'src/models/image-picker';
 import ImageToolbar from 'src/views/components/camera/image-toolbar';
 import ProfileImage from 'src/models/profile-image';
+const backgrounImageExtension = '?w=600&h=1200&auto=enhance,format&fit=crop&crop=entropy&q=60';
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateImage: (data: Response) => dispatch(updateImage(data)),
@@ -37,6 +38,7 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
   onSave = () => {
     const { onUpdateImage, navigation } = this.props;
     const { data } = this.state;
+
     onUpdateImage(data);
     navigation.goBack();
   }
@@ -97,9 +99,10 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
 
     let image = null;
     if (currentImage) {
+
       image = (
         <Image
-          source={currentImage}
+          source={{ uri: currentImage.url + backgrounImageExtension }}
           style={{ flex: 1, width: null, height: null, resizeMode: 'cover' }}
         />
       );

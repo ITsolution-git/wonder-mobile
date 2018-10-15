@@ -56,7 +56,6 @@ class Avatar extends React.Component<AvatarProps> {
   renderImage = () => {
     const { uri, style } = this.props;
     if (uri) {
-      console.log('URI: ', `${uri}?w=100&h=100&auto=enhance,format&fit=crop&crop=entropy&q=60`);
       return (
         <WonderImage
           style={[{
