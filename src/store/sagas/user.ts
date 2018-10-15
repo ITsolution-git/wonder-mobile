@@ -57,8 +57,10 @@ export function* registerUserSaga(action: Action<any>) {
       }
     });
 
+    console.log('DATA: ', data);
+
     const { email, password } = state.registration;
-    yield put(loginUser({ email, password }));
+    // yield put(loginUser({ email, password }));
   } catch (error) {
     handleAxiosError(error);
   } finally {
@@ -214,16 +216,29 @@ export function* updateImageSaga(action: Action<any>) {
       name: Date.now() + ".jpg"
     };
     body.append("image", photo);
-    const { data }: { data: any } = yield call(
-      api,
-      {
-        method: "POST",
-        url: `/users/${auth.uid}/images`,
-        data: body
-      },
-      state.user
-    );
-    yield put(getUser());
+
+    // const { email, password } = state.registration;
+    // yield put(loginUser({ email, password }));
+
+    console.log('HERE: ', state.user, state.registration);
+    if (!state.user.auth.token) {
+      // const { data }: { data: any } = yield call(
+      //   api,
+      //   {
+      //     method: "POST",
+      //     url: `/users/${auth.uid}/images`,
+      //     data: body
+      //   },
+      //   state.user
+      // );
+
+      // figure out for headers
+      console.log('not logged in add image');
+    } else {
+      console.log('user is loogged it');
+    }
+
+    // yield put(getUser());
   } catch (error) {
     handleAxiosError(error);
   } finally {

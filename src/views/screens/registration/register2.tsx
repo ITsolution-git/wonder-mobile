@@ -92,7 +92,7 @@ class Register2 extends React.Component<Props, State> {
     } else {
       this.setState({ geolocation: null });
     }
-  };
+  }
 
   formattedGeo = () => {
     const { geolocation } = this.state;
@@ -100,7 +100,7 @@ class Register2 extends React.Component<Props, State> {
       return ` (${geolocation.city}, ${geolocation.state})`;
     }
     return "";
-  };
+  }
 
   setGenderPreference = (gender: string) => {
     if (gender === "male") {
@@ -108,7 +108,7 @@ class Register2 extends React.Component<Props, State> {
     } else if (gender === "female") {
       this.setState({ female_interest: !this.state.female_interest });
     }
-  };
+  }
 
   public render() {
     const { errors, birthdate } = this.state;
@@ -197,7 +197,7 @@ class Register2 extends React.Component<Props, State> {
 
   private onDateChange = (date: Date) => {
     this.setState({ birthdate: date });
-  };
+  }
 
   private onChangeText = (key: string) => {
     const { errors } = this.state;
@@ -210,7 +210,7 @@ class Register2 extends React.Component<Props, State> {
         }
       });
     };
-  };
+  }
 
   private validate = () => {
     const errors: StateErrors = {};
@@ -265,8 +265,8 @@ class Register2 extends React.Component<Props, State> {
       female_interest
     });
 
-    navigation.navigate("Register3");
-  };
+    navigation.navigate("Register4");
+  }
 }
 
 export default connect(

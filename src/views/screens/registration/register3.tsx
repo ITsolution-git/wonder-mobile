@@ -78,8 +78,10 @@ class Register3 extends React.Component<Props, State> {
         >
           <KeyboardDismissView>
             <MediaGrid
-              width={Device.WIDTH - 40}
+              width={Device.WIDTH - 80}
               gutter={2}
+              onNewPicture={() => navigation.navigate('ProfileCamera')}
+              onNewVideo={() => navigation.navigate('ProfileVideo')}
             />
             <TextArea
               label="About Me"
