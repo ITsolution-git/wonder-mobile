@@ -155,7 +155,6 @@ android {
 }
 
 dependencies {
-    compile project(':react-native-image-resizer')
     compile project(':appcenter-crashes')
     compile project(':appcenter-push')
     compile project(':appcenter-analytics')
