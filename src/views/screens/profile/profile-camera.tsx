@@ -1,6 +1,5 @@
 import React from 'react';
 import Screen from 'src/views/components/screen';
-import ImageResizer from 'react-native-image-resizer';
 import { StyleSheet, View, Image, Dimensions } from 'react-native';
 import { Text, PrimaryButton, TextButton } from 'src/views/components/theme';
 import theme from 'src/assets/styles/theme';
