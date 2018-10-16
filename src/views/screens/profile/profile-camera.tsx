@@ -39,7 +39,7 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
   onSave = () => {
     const { onUpdateImage, navigation } = this.props;
     const { data } = this.state;
-    console.log('on update: ', data);
+
     onUpdateImage(data);
     navigation.goBack();
   }
@@ -56,25 +56,9 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
       } else if (res.error) {
         // console.log("Error", res.error);
       } else {
-        console.log('res: ', res.uri);
-        this.resize(res.uri);
-        // this.setState({ data: res });
+        this.setState({ data: res });
       }
     });
-  }
-
-  resize = (path) => {
-    console.log('path: ', path);
-    ImageResizer.createResizedImage(path, 8, 6, 'JPEG', 80)
-      .then(({ uri }) => {
-        console.log('resized: ', uri);
-        // this.setState({
-        //   resizedImageUri: uri,
-        // });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 
   onRotate = () => {

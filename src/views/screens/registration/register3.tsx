@@ -12,6 +12,7 @@ import WonderAppState from "../../../models/wonder-app-state";
 import { persistRegistrationInfo } from "../../../store/reducers/registration";
 import { Device } from 'src/assets/styles/theme';
 import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view';
+import { loginUser } from 'src/store/sagas/user';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -31,9 +32,12 @@ interface StateErrors {
   about?: string;
 }
 
-const mapState = (state: WonderAppState) => ({});
+const mapState = (state: WonderAppState) => ({
+  registration: state.registration
+});
 const mapDispatch = (dispatch: Dispatch) => ({
-  onSave: (data: State) => dispatch(persistRegistrationInfo(data))
+  onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
+  onLogin: (data) => dispatch(loginUser(data))
 });
 
 class Register3 extends React.Component<Props, State> {
@@ -63,12 +67,13 @@ class Register3 extends React.Component<Props, State> {
     const { about } = this.state;
 
     onSave({ about });
-
-    navigation.navigate('Register4');
+    this.props.onLogin({ email: this.props.registration.email, password: this.props.registration.password });
+    // navigation.navigate('Register4');
   }
 
   render() {
     const { navigation } = this.props;
+
     return (
       <Screen horizontalPadding={20}>
         <KeyboardAvoidingView
@@ -77,12 +82,14 @@ class Register3 extends React.Component<Props, State> {
           contentContainerStyle={{ flex: 1 }}
         >
           <KeyboardDismissView>
-            <MediaGrid
-              width={Device.WIDTH - 80}
-              gutter={2}
-              onNewPicture={() => navigation.navigate('ProfileCamera')}
-              onNewVideo={() => navigation.navigate('ProfileVideo')}
-            />
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <MediaGrid
+                width={Device.WIDTH - 80}
+                gutter={2}
+                onNewPicture={() => navigation.navigate('ProfileCamera')}
+                onNewVideo={() => navigation.navigate('ProfileVideo')}
+              />
+            </View>
             <TextArea
               label="About Me"
               onChangeText={this.onAboutChangeText('about')}
@@ -93,7 +100,7 @@ class Register3 extends React.Component<Props, State> {
           </KeyboardDismissView>
         </KeyboardAvoidingView>
         <View style={{ marginVertical: 10 }}>
-          <PrimaryButton title="Next" onPress={this.validate} />
+          <PrimaryButton title="Finish" onPress={this.validate} />
         </View>
       </Screen>
     );

@@ -203,7 +203,7 @@ class Register4 extends React.Component<Props, State> {
           <View style={styles.fixedButton}>
             <PrimaryButton
               disabled={selected.length !== 3}
-              title="Finish"
+              title="Next"
               onPress={this.validate}
             />
           </View>

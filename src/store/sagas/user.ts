@@ -8,7 +8,7 @@ import { NavigationActions } from "react-navigation";
 import { Alert } from "react-native";
 
 import { Toast } from "native-base";
-import { resetRegistration } from "../reducers/registration";
+import { resetRegistration, persistRegistrationInfo } from "../reducers/registration";
 import WonderAppState from "../../models/wonder-app-state";
 import User from "../../models/user";
 import UserCredentials from "../../models/user-credentials";
@@ -57,7 +57,7 @@ export function* registerUserSaga(action: Action<any>) {
       }
     });
 
-    console.log('DATA: ', data);
+    yield put(persistRegistrationInfo(data));
 
     const { email, password } = state.registration;
     // yield put(loginUser({ email, password }));
@@ -149,17 +149,38 @@ export function* getUserSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
+    const { auth_token, id } = state.registration;
 
-    const { data }: { data: User } = yield call(
-      api,
-      {
-        method: "GET",
-        url: `/users/${auth.uid}`
-      },
-      state.user
-    );
+    // if updating photo on registration
+    if (!state.user.auth.token) {
+      const uid = id;
+      const authHeader = {
+        auth: {
+          token: auth_token.token
+        }
+      };
 
-    yield put(persistUser(data));
+      const { data }: { data: User } = yield call(
+        api,
+        {
+          method: "GET",
+          url: `/users/${uid}`
+        },
+        authHeader
+      );
+      yield put(persistUser(data));
+    } else {
+      const { data }: { data: User } = yield call(
+        api,
+        {
+          method: "GET",
+          url: `/users/${auth.uid}`
+        },
+        state.user
+      );
+      yield put(persistUser(data));
+    }
+
   } catch (error) {
     handleAxiosError(error);
   } finally {
@@ -208,6 +229,7 @@ export function* updateImageSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
+    const { auth_token, id } = state.registration;
     const body = new FormData();
     const profile: Partial<any> = action.payload;
     const photo = {
@@ -217,28 +239,35 @@ export function* updateImageSaga(action: Action<any>) {
     };
     body.append("image", photo);
 
-    // const { email, password } = state.registration;
-    // yield put(loginUser({ email, password }));
-
-    console.log('HERE: ', state.user, state.registration);
+    // if updating photo on regostration
     if (!state.user.auth.token) {
-      // const { data }: { data: any } = yield call(
-      //   api,
-      //   {
-      //     method: "POST",
-      //     url: `/users/${auth.uid}/images`,
-      //     data: body
-      //   },
-      //   state.user
-      // );
-
-      // figure out for headers
-      console.log('not logged in add image');
+      const authHeader = {
+        auth: {
+          token: auth_token.token
+        }
+      };
+      const { data }: { data: any } = yield call(
+        api,
+        {
+          method: "POST",
+          url: `/users/${id}/images`,
+          data: body
+        },
+        authHeader
+      );
     } else {
-      console.log('user is loogged it');
+      const { data }: { data: any } = yield call(
+        api,
+        {
+          method: "POST",
+          url: `/users/${auth.uid}/images`,
+          data: body
+        },
+        state.user
+      );
     }
 
-    // yield put(getUser());
+    yield put(getUser());
   } catch (error) {
     handleAxiosError(error);
   } finally {
