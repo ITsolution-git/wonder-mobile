@@ -6,7 +6,9 @@ import {
   Register1,
   Register2,
   Register3,
-  Register4
+  Register4,
+  ProfileCamera,
+  ProfileVideo,
 } from '../screens';
 
 const RegistrationNavigator = createStackNavigator({
@@ -50,7 +52,21 @@ const RegistrationNavigator = createStackNavigator({
       title: 'YOUR WONDERS',
       ...theme.NavBar.transparent
     }
-  }
+  },
+  ProfileCamera: {
+    screen: ProfileCamera,
+    navigationOptions: {
+      title: 'Profile Selfie',
+      ...theme.NavBar.transparent
+    }
+  },
+  ProfileVideo: {
+    screen: ProfileVideo,
+    navigationOptions: {
+      title: 'Vibe Video',
+      ...theme.NavBar.transparent
+    }
+  },
 }, {
     initialRouteName: 'Welcome'
   });

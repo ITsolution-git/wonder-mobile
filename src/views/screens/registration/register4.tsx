@@ -154,6 +154,7 @@ class Register4 extends React.Component<Props, State> {
     if (selected.length === 3) {
       onSave({ topic_ids: selected.map((s: Topic) => s.id) });
       onRegister();
+      this.props.navigation.navigate('Register3');
     }
   }
 
@@ -202,7 +203,7 @@ class Register4 extends React.Component<Props, State> {
           <View style={styles.fixedButton}>
             <PrimaryButton
               disabled={selected.length !== 3}
-              title="Finish"
+              title="Next"
               onPress={this.validate}
             />
           </View>

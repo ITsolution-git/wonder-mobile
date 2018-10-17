@@ -7,6 +7,7 @@
 
 @import GoogleMaps;
 #import "AppDelegate.h"
+#import <AppCenterReactNative/AppCenterReactNative.h>
 #import <AppCenterReactNativeCrashes/AppCenterReactNativeCrashes.h>
 #import <AppCenterReactNativePush/AppCenterReactNativePush.h>
 #import <AppCenterReactNativeAnalytics/AppCenterReactNativeAnalytics.h>
@@ -23,6 +24,8 @@
   [[UNUserNotificationCenter currentNotificationCenter] setDelegate:self];
   [GMSServices provideAPIKey:@"AIzaSyDaOXn2lSkZaJyXZSz0xglhT74yc_F2p4U"];
   NSURL *jsCodeLocation;
+
+  [AppCenterReactNative register];  // Initialize AppCenter 
 
   [AppCenterReactNativeCrashes registerWithAutomaticProcessing];  // Initialize AppCenter crashes
 

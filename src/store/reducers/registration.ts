@@ -1,6 +1,5 @@
 import { handleActions, createAction, Action } from 'redux-actions';
 
-
 export interface RegistrationState {
   readonly first_name: string | null;
   readonly last_name: string | null;
@@ -11,7 +10,8 @@ export interface RegistrationState {
   readonly birthdate: string | null;
   readonly occupation: string | null;
   readonly school: string | null;
-
+  readonly auth_token: object | {};
+  readonly id: number | null;
   readonly about: string | null;
 
   // readonly images: any[];
