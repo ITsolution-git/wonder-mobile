@@ -72,7 +72,7 @@ class ChatListScreen extends React.Component<Props> {
           console.log('received: ', data);
         },
         deliver: (message: string) => {
-          // console.log('deliver: ', message);
+          console.log('deliver: ');
           this.appChat.perform('deliver', { body: 'SOCKET TEST', recipient_id: 848 });
         }
       });
@@ -81,7 +81,7 @@ class ChatListScreen extends React.Component<Props> {
   componentDidMount() {
     setTimeout(() => {
       this.appChat.deliver();
-    }, 3000);
+    }, 8000);
 
     // johanns id id: 848
     // current user id: 743
