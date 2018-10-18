@@ -129,37 +129,12 @@ class ChatScreen extends React.Component<Props> {
   componentWillMount() {
     const { conversation, token, navigation } = this.props;
     navigation.setParams({ title: conversation.partner.first_name + ' ' + conversation.partner.last_name });
-    this.appChat = {};
-    this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
-    this.appChat = this.cable.subscriptions.create({
-      channel: "ConversationChannel",
-      recipient_id: conversation.partner.id
-    },
-      {
-        received: (data: any) => {
-          const { onGetMessage } = this.props;
-          const receivedMessage: GiftedChatMessage = {
-            _id: data.id,
-            text: data.body,
-            createdAt: data.sent_at,
-            user: {
-              _id: data.sender.id,
-              name: data.sender.first_name,
-              avatar: `${data.sender.images[0].url}${avatarExtension}`
-            }
-          };
-          onGetMessage(conversation.partner.id);
-          this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
-          // onGetMessage(conversation.partner.id);  // What does this even do?
-        },
-        deliver: (message: string) => {
-          this.appChat.perform('deliver', { body: message, recipient_id: conversation.partner.id });
-        }
-      });
+
   }
 
   componentDidMount() {
     const { currentUser, conversation } = this.props;
+
     const chats = decorateMessagesForGiftedChat(currentUser, conversation);
     this.setState({ conversationMessages: chats.giftedChatMessages });
   }
@@ -251,22 +226,6 @@ class ChatScreen extends React.Component<Props> {
   }
 
   renderFooter = () => {
-    // if (!this.state.selectedSendImage) {
-    //   return (
-    //     <View
-    //       style={{
-    //         marginBottom: 10,
-    //         flexDirection: "row",
-    //         justifyContent: "center"
-    //       }}
-    //     >
-    //       <Image
-    //         style={{ width: 100, height: 100 }}
-    //         source={this.state.selectedSendImage}
-    //       />
-    //     </View>
-    //   );
-    // }
     return (
       <View
         style={{
@@ -389,3 +348,30 @@ const styles = StyleSheet.create({
     borderColor: "#fcbd77"
   }
 });
+// this.appChat = {};
+// this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
+// this.appChat = this.cable.subscriptions.create({
+//   channel: "ConversationChannel",
+//   recipient_id: conversation.partner.id
+// },
+//   {
+//     received: (data: any) => {
+//       const { onGetMessage } = this.props;
+//       const receivedMessage: GiftedChatMessage = {
+//         _id: data.id,
+//         text: data.body,
+//         createdAt: data.sent_at,
+//         user: {
+//           _id: data.sender.id,
+//           name: data.sender.first_name,
+//           avatar: `${data.sender.images[0].url}${avatarExtension}`
+//         }
+//       };
+//       onGetMessage(conversation.partner.id);
+//       this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
+//       // onGetMessage(conversation.partner.id);  // What does this even do?
+//     },
+//     deliver: (message: string) => {
+//       this.appChat.perform('deliver', { body: message, recipient_id: conversation.partner.id });
+//     }
+//   });

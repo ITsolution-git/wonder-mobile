@@ -19,6 +19,8 @@ import { View, StyleSheet } from "react-native";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import SearchBar from "react-native-searchbar";
 import { getAttendances } from "src/store/sagas/attendance";
+import ActionCable from 'react-native-actioncable';
+import { DOMAIN } from "src/services/api";
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -55,10 +57,35 @@ class ChatListScreen extends React.Component<Props> {
   };
 
   componentWillMount() {
-    const { conversations, onRefreshConversations } = this.props;
+    const { conversations, onRefreshConversations, token } = this.props;
     this.props.onRefreshConversations();
     this.props.onGetAttendances();
-    this.setState({ results: conversations });
+    // this should be from redux directly
+    // this.setState({ results: conversations });
+    this.appChat = {};
+    this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
+    this.appChat = this.cable.subscriptions.create({
+      channel: "ConversationChannel",
+    },
+      {
+
+        received: (data: any) => {
+          console.log('received: ', data);
+        },
+        deliver: (message: string) => {
+          console.log('deliver: ', message);
+          this.appChat.perform('deliver', { body: 'TEST 1', recipient_id: 848 });
+        }
+      });
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.appChat.deliver();
+    }, 3000);
+
+    // johanns id id: 848
+    // current user id: 743
   }
 
   goToChat = (chat: Chat) => {
@@ -130,7 +157,7 @@ class ChatListScreen extends React.Component<Props> {
         </View>
         <ChatList
           onRefresh={onRefreshConversations}
-          chats={this.state.results}
+          chats={this.props.conversations}
           onPressChat={this.goToChat}
         />
 
@@ -175,3 +202,33 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+// this.appChat = {};
+// this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
+// this.appChat = this.cable.subscriptions.create({
+//   channel: "ConversationChannel",
+// },
+//   {
+
+//     received: (data: any) => {
+//       const { onGetMessage } = this.props;
+//       const receivedMessage: GiftedChatMessage = {
+//         _id: data.id,
+//         text: data.body,
+//         createdAt: data.sent_at,
+//         user: {
+//           _id: data.sender.id,
+//           name: data.sender.first_name,
+//           avatar: `${data.sender.images[0].url}${avatarExtension}`
+//         }
+//       };
+//       onGetMessage(conversation.partner.id);
+//       this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
+//       // onGetMessage(conversation.partner.id);  // What does this even do?
+//     },
+//     deliver: (message: string) => {
+//       this.appChat.perform('deliver', { body: message, recipient_id: conversation.partner.id });
+//     }
+//   });
+
+// this.appChat.perform('deliver', { body: message, recipient_id: conversation.partner.id });
