@@ -10,6 +10,8 @@ import {
   getConversation
 } from "src/store/sagas/conversations";
 
+import { persistNewReceivedMessage } from 'src/store/reducers/chat';
+
 import { connect } from "react-redux";
 import { selectCurrentUser } from "src/store/selectors/user";
 import Conversation from "src/models/conversation";
@@ -37,15 +39,18 @@ interface ChatListScreenState {
 }
 
 const mapState = (state: WonderAppState) => ({
+  token: state.user.auth.token,
   currentUser: selectCurrentUser(state),
-  conversations: state.chat.conversations
+  conversations: state.chat.conversations,
+  chat: state.chat
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onRefreshConversations: () => dispatch(getConversations()),
   onGetConversation: (partnerId: number) =>
     dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
-  onGetAttendances: () => dispatch(getAttendances())
+  onGetAttendances: () => dispatch(getAttendances()),
+  onReceiveMessage: (data) => dispatch(persistNewReceivedMessage(data))
 });
 
 class ChatListScreen extends React.Component<Props> {
@@ -60,8 +65,7 @@ class ChatListScreen extends React.Component<Props> {
     const { conversations, onRefreshConversations, token } = this.props;
     this.props.onRefreshConversations();
     this.props.onGetAttendances();
-    // this should be from redux directly
-    // this.setState({ results: conversations });
+
     this.appChat = {};
     this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
     this.appChat = this.cable.subscriptions.create({
@@ -69,22 +73,34 @@ class ChatListScreen extends React.Component<Props> {
     },
       {
         received: (data: any) => {
-          console.log('received: ', data);
+          console.log('RECEIVED: ', data);
+          this.props.onReceiveMessage(data);
         },
-        deliver: (message: string) => {
-          console.log('deliver: ');
-          this.appChat.perform('deliver', { body: 'SOCKET TEST', recipient_id: 848 });
+        deliver: ({ message, recipient_id }) => {
+          this.appChat.perform('deliver', { body: message, recipient_id });
         }
       });
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.appChat.deliver();
-    }, 8000);
 
     // johanns id id: 848
     // current user id: 743
+  }
+
+  componentDidUpdate(prevProps) {
+    const { chat } = this.props;
+    console.log('chat: ', this.props.chat);
+    if (chat.newOutgoingMessage) {
+      if (
+        chat.newOutgoingMessage.message.text !== prevProps.chat.newOutgoingMessage.message.text) {
+        this.appChat.deliver(
+          {
+            message: chat.newOutgoingMessage.message.text,
+            recipient_id: chat.newOutgoingMessage.recipient_id
+          });
+      }
+    }
   }
 
   goToChat = (chat: Chat) => {
@@ -143,6 +159,7 @@ class ChatListScreen extends React.Component<Props> {
 
   render() {
     const { conversations, onRefreshConversations } = this.props;
+
     return (
       <Screen horizontalPadding={20}>
         {this.renderSearchbar()}

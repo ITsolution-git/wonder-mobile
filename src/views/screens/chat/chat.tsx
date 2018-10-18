@@ -30,6 +30,7 @@ import {
   AppointmentState,
   persistAppointmentData
 } from "src/store/reducers/appointment";
+import { persistNewChatMessage } from "src/store/reducers/chat";
 import Assets from "src/assets/images";
 import { DOMAIN } from "src/services/api";
 
@@ -81,7 +82,8 @@ const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
-  onGhostContact: (data: User) => dispatch(ghostContact(data))
+  onGhostContact: (data: User) => dispatch(ghostContact(data)),
+  onSendMessage: (message) => dispatch(persistNewChatMessage(message))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -139,6 +141,16 @@ class ChatScreen extends React.Component<Props> {
     this.setState({ conversationMessages: chats.giftedChatMessages });
   }
 
+  // TRY GET THIS FROM PROPS INSTEAD OF CHANGING STATE
+  componentDidUpdate(prevProps) {
+    const { currentUser, conversation } = this.props;
+    if (conversation.messages &&
+      conversation.messages.length !== prevProps.conversation.messages.length) {
+      const chats = decorateMessagesForGiftedChat(currentUser, conversation);
+      this.setState({ conversationMessages: chats.giftedChatMessages });
+    }
+  }
+
   componentWillUnmount() {
     if (this.appChat) {
       this.cable.subscriptions.remove(this.appChat);
@@ -169,7 +181,15 @@ class ChatScreen extends React.Component<Props> {
 
   onSend = (messages: ChatResponseMessage[] = []) => {
     messages.forEach((message: ChatResponseMessage) => {
-      this.appChat.deliver(message.text);
+      this.props.onSendMessage(
+        {
+          message,
+          recipient_id: this.props.conversation.partner.id,
+          recipient: this.props.conversation.partner,
+          sender: this.props.currentUser,
+          conversation_id: this.props.conversation.id
+        });
+      // this.appChat.deliver(message.text);
     });
 
     this.setState({ selectedSendImage: '' });
@@ -255,6 +275,7 @@ class ChatScreen extends React.Component<Props> {
 
   render() {
     const { currentUser, conversation } = this.props;
+
     return (
       <Screen>
         <GiftedChat
