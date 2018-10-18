@@ -73,8 +73,8 @@ class ChatListScreen extends React.Component<Props> {
           console.log('received: ', data);
         },
         deliver: (message: string) => {
-          console.log('deliver: ', message);
-          this.appChat.perform('deliver', { body: 'TEST 1', recipient_id: 848 });
+          // console.log('deliver: ', message);
+          this.appChat.perform('deliver', { body: 'SOCKET TEST', recipient_id: 848 });
         }
       });
   }
