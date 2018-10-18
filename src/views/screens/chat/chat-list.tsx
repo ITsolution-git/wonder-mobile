@@ -68,7 +68,6 @@ class ChatListScreen extends React.Component<Props> {
       channel: "ConversationChannel",
     },
       {
-
         received: (data: any) => {
           console.log('received: ', data);
         },
