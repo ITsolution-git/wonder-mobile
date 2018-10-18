@@ -58,7 +58,6 @@ class ChatListScreen extends React.Component<Props> {
     const { conversations, onRefreshConversations } = this.props;
     this.props.onRefreshConversations();
     this.props.onGetAttendances();
-
     this.setState({ results: conversations });
   }
 

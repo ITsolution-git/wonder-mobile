@@ -56,7 +56,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
     return (
       <View style={{ marginTop: 5 }}>
         <SmallText>
-          {_.get(chat, 'partner.distance', 0).toFixed(0)} miles
+          {chat.partner.distance && _.get(chat, 'partner.distance', 0).toFixed(0)} miles
         </SmallText>
       </View>
     );
