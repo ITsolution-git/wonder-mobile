@@ -160,7 +160,7 @@ class ChatListScreen extends React.Component<Props> {
 
   render() {
     const { conversations, onRefreshConversations } = this.props;
-
+    console.log('#: ', this.props.conversations);
     return (
       <Screen horizontalPadding={20}>
         {this.renderSearchbar()}

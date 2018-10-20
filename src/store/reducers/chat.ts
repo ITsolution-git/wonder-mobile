@@ -27,11 +27,34 @@ export const persistActivity = createAction("PERSIST_ACTIVITY");
 
 export const persistNewChatMessage = createAction("PERSIST_NEW_CHAT_MESSAGE");
 export const persistNewReceivedMessage = createAction("PERSIST_NEW_RECEIVED_MESSAGE");
+export const persistMessageAsRead = createAction("PERSIST_MESSAGE_AS_READ");
+
 export default handleActions(
   {
+    PERSIST_MESSAGE_AS_READ: (state = initialState, action: Action<any>) => {
+      const { user, conversation_id } = action.payload;
+      if (state.conversationsLib.indexOf(conversation_id !== -1)) {
+        const updateConvos = state.conversations.map((c) => {
+          if (c.last_message && c.last_message.sender_id !== user) {
+            const obj = {
+              ...c.last_message,
+              aasm_state: "read",
+              read_at: new Date().toISOString(),
+            };
+            c.last_message = obj;
+          }
+          return c;
+        });
+        return {
+          ...state,
+          conversations: updateConvos
+        };
+      } else {
+        console.log('DOESNT EXIST');
+      }
+    },
     PERSIST_NEW_RECEIVED_MESSAGE: (state = initialState, action: Action<any>) => {
       const { conversation_id } = action.payload;
-
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
         const newConvos = state.conversations.map((c) => {
           if (c.partner) {
@@ -42,13 +65,26 @@ export default handleActions(
           return c;
         });
         if (state.conversation && state.conversation.id === conversation_id) {
+          const x = state.conversations.map((c) => {
+            if (c.partner) {
+              if (c.partner.id && c.partner.id === action.payload.sender.id) {
+                const obj = {
+                  ...c.last_message,
+                  aasm_state: "read",
+                  read_at: new Date().toISOString(),
+                };
+                c.last_message = obj;
+              }
+            }
+            return c;
+          });
           return {
             ...state,
             conversation: {
               ...state.conversation,
               messages: [action.payload, ...state.conversation.messages]
             },
-            conversations: newConvos
+            conversations: x
           };
         } else {
           return {
@@ -61,7 +97,6 @@ export default handleActions(
       }
     },
     PERSIST_NEW_CHAT_MESSAGE: (state = initialState, action: Action<any>) => {
-
       const message = {
         id: Math.floor(1000 + Math.random() * 9000),
         body: action.payload.message.text,

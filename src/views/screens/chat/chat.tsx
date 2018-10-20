@@ -30,7 +30,7 @@ import {
   AppointmentState,
   persistAppointmentData
 } from "src/store/reducers/appointment";
-import { persistNewChatMessage } from "src/store/reducers/chat";
+import { persistNewChatMessage, persistMessageAsRead } from "src/store/reducers/chat";
 import Assets from "src/assets/images";
 import { DOMAIN } from "src/services/api";
 
@@ -83,7 +83,8 @@ const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
   onGhostContact: (data: User) => dispatch(ghostContact(data)),
-  onSendMessage: (message) => dispatch(persistNewChatMessage(message))
+  onSendMessage: (message) => dispatch(persistNewChatMessage(message)),
+  onReadMessages: (data) => dispatch(persistMessageAsRead(data))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -139,6 +140,7 @@ class ChatScreen extends React.Component<Props> {
 
     const chats = decorateMessagesForGiftedChat(currentUser, conversation);
     this.setState({ conversationMessages: chats.giftedChatMessages });
+    this.props.onReadMessages({ user: currentUser.id, conversation_id: conversation.id });
   }
 
   // TRY GET THIS FROM PROPS INSTEAD OF CHANGING STATE
@@ -180,6 +182,7 @@ class ChatScreen extends React.Component<Props> {
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
+    console.log(this.props.conversation);
     messages.forEach((message: ChatResponseMessage) => {
       this.props.onSendMessage(
         {
