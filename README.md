@@ -28,21 +28,24 @@
 - Make sure you have TSLint installed and configured in your editor
 
 ## Project Structure
-|-- `src`
-  |-- `assets` - Images, Audio, Global styles, etc.
-  |-- `services` - Third party integration pieces (Google Maps ex)
-  |-- `store`
-    |-- `reducers` - Redux reducers
-    |-- `actions`
-    |-- `sagas` - Redux sagas split by "feature" or model
-  |-- `types` - TypeScript types that map to backend models and other app structures
-  |-- `utils` - Generic reuseable utilities
-  |-- `views`
-    |-- `router` - React navigation implementation and navigators
-    |-- `components` - Dumb components
-      |-- `theme` - created components specific to this app's theme
-    |-- `containers` - Specific redux-connected components that are needed in a mid-level
-    |-- `screens` - The Top level redux-connected components
+
+```
+|-- src
+  |-- assets - Images, Audio, Global styles, etc.
+  |-- services - Third party integration pieces (Google Maps ex)
+  |-- store
+    |-- reducers - Redux reducers
+    |-- actions
+    |-- sagas - Redux sagas split by "feature" or model
+  |-- types - TypeScript types that map to backend models and other app structures
+  |-- utils - Generic reuseable utilities
+  |-- views
+    |-- router - React navigation implementation and navigators
+    |-- components - Dumb components
+      |-- theme - created components specific to this app's theme
+    |-- containers - Specific redux-connected components that are needed in a mid-level
+    |-- screens - The Top level redux-connected components
+```
 
 ## Contributing
 
