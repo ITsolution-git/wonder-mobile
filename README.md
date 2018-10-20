@@ -2,7 +2,7 @@
 
 ## Mobile Tech Stack
 - Node 10.4.1
-- React Native 0.56
+- React Native 0.56.0
 - TypeScript
 - Redux
 - Cocoapods (iOS)
