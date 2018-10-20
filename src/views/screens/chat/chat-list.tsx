@@ -73,7 +73,7 @@ class ChatListScreen extends React.Component<Props> {
     },
       {
         received: (data: any) => {
-          console.log('RECEIVED: ', data);
+          console.log('RECEIVE: ', data);
           this.props.onReceiveMessage(data);
         },
         deliver: ({ message, recipient_id }) => {
@@ -90,10 +90,11 @@ class ChatListScreen extends React.Component<Props> {
 
   componentDidUpdate(prevProps) {
     const { chat } = this.props;
-    console.log('chat: ', this.props.chat);
-    if (chat.newOutgoingMessage) {
+
+    if (chat.newOutgoingMessage.hasOwnProperty('message')) {
+
       if (
-        chat.newOutgoingMessage.message.text !== prevProps.chat.newOutgoingMessage.message.text) {
+        chat.newOutgoingMessage.message !== prevProps.chat.newOutgoingMessage.message) {
         this.appChat.deliver(
           {
             message: chat.newOutgoingMessage.message.text,

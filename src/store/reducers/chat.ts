@@ -15,7 +15,8 @@ export const initialState: ChatState = {
   conversation: [],
   activities: [],
   activity: null,
-  newOutgoingMessage: {}
+  newOutgoingMessage: {},
+  conversationsLib: []
 };
 
 export const persistConversations = createAction("PERSIST_CONVERSATIONS");
@@ -29,34 +30,38 @@ export const persistNewReceivedMessage = createAction("PERSIST_NEW_RECEIVED_MESS
 export default handleActions(
   {
     PERSIST_NEW_RECEIVED_MESSAGE: (state = initialState, action: Action<any>) => {
+      const { conversation_id } = action.payload;
 
-      const newConvos = state.conversations.map((c) => {
-        if (c.partner) {
-          if (c.partner.id && c.partner.id === action.payload.sender.id) {
-            c.last_message = action.payload;
+      if (state.conversationsLib.indexOf(conversation_id !== -1)) {
+        const newConvos = state.conversations.map((c) => {
+          if (c.partner) {
+            if (c.partner.id && c.partner.id === action.payload.sender.id) {
+              c.last_message = action.payload;
+            }
           }
+          return c;
+        });
+        if (state.conversation && state.conversation.id === conversation_id) {
+          return {
+            ...state,
+            conversation: {
+              ...state.conversation,
+              messages: [action.payload, ...state.conversation.messages]
+            },
+            conversations: newConvos
+          };
+        } else {
+          return {
+            ...state,
+            conversations: newConvos
+          };
         }
-
-        return c;
-      });
-      // check if conversation exists
-      if (state.conversation) {
-        return {
-          ...state,
-          conversation: {
-            ...state.conversation,
-            messages: [action.payload, ...state.conversation.messages]
-          },
-          conversations: newConvos
-        };
       } else {
-        // check if conversation exists by conv id
-        // if it does just update convos
-        // if not create one
-
+        console.log('conversation not present');
       }
     },
     PERSIST_NEW_CHAT_MESSAGE: (state = initialState, action: Action<any>) => {
+
       const message = {
         id: Math.floor(1000 + Math.random() * 9000),
         body: action.payload.message.text,
@@ -86,9 +91,12 @@ export default handleActions(
       };
     },
     PERSIST_CONVERSATIONS: (state = initialState, action: Action<any>) => {
+      const conversationLib = action.payload.map((c) => c.id);
+
       return {
         ...state,
-        conversations: action.payload
+        conversations: action.payload,
+        conversationsLib: conversationLib
       };
     },
     PERSIST_CONVERSATION: (state: ChatState, action: Action<any>) => {
@@ -115,15 +123,28 @@ export default handleActions(
   initialState
 );
 
-// getting from new message
+// const newConvos = state.conversations.map((c) => {
+//   if (c.partner) {
+//     if (c.partner.id && c.partner.id === action.payload.sender.id) {
+//       c.last_message = action.payload;
+//     }
+//   }
 
-// payload:
-// createdAt: Thu Oct 18 2018 11:10:32 GMT-0700 (Pacific Daylight Time) {}
-// text: "Something"
-// user: {_id: 743}
-// _id: "e676138e-6418-4d74-8f56-f839a8c40696"
-// __proto__: Object
-// type: "PERSIST_NEW_CHAT_MESSAGE"
-// __proto__: Object
+//   return c;
+// });
+// // check if conversation exists
+// if (state.conversation) {
+  // return {
+  //   ...state,
+  //   conversation: {
+  //     ...state.conversation,
+  //     messages: [action.payload, ...state.conversation.messages]
+  //   },
+  //   conversations: newConvos
+  // };
+// } else {
+//   // check if conversation exists by conv id
+//   // if it does just update convos
+//   // if not create one
 
-// getting from saga
+// }
