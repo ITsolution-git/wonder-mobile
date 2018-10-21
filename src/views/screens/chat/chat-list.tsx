@@ -92,7 +92,6 @@ class ChatListScreen extends React.Component<Props> {
     const { chat } = this.props;
 
     if (chat.newOutgoingMessage.hasOwnProperty('message')) {
-
       if (
         chat.newOutgoingMessage.message !== prevProps.chat.newOutgoingMessage.message) {
         this.appChat.deliver(
@@ -101,6 +100,10 @@ class ChatListScreen extends React.Component<Props> {
             recipient_id: chat.newOutgoingMessage.recipient_id
           });
       }
+    }
+    if (chat.lastReadMessage && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
+      console.log('LAST MESSAGE UPDATED: ', chat.lastReadMessage);
+      this.appChat.perform('read', { message_id: chat.lastReadMessage });
     }
   }
 
@@ -160,7 +163,7 @@ class ChatListScreen extends React.Component<Props> {
 
   render() {
     const { conversations, onRefreshConversations } = this.props;
-    console.log('#: ', this.props.conversations);
+    console.log('#: ', this.props);
     return (
       <Screen horizontalPadding={20}>
         {this.renderSearchbar()}

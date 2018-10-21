@@ -140,7 +140,6 @@ class ChatScreen extends React.Component<Props> {
 
     const chats = decorateMessagesForGiftedChat(currentUser, conversation);
     this.setState({ conversationMessages: chats.giftedChatMessages });
-    this.props.onReadMessages({ user: currentUser.id, conversation_id: conversation.id });
   }
 
   // TRY GET THIS FROM PROPS INSTEAD OF CHANGING STATE
@@ -154,9 +153,11 @@ class ChatScreen extends React.Component<Props> {
   }
 
   componentWillUnmount() {
+    const { currentUser, conversation } = this.props;
     if (this.appChat) {
       this.cable.subscriptions.remove(this.appChat);
     }
+    this.props.onReadMessages({ user: currentUser.id, conversation_id: conversation.id });
   }
 
   scheduleWonder = () => {
@@ -182,7 +183,7 @@ class ChatScreen extends React.Component<Props> {
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
-    console.log(this.props.conversation);
+
     messages.forEach((message: ChatResponseMessage) => {
       this.props.onSendMessage(
         {

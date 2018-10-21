@@ -16,7 +16,8 @@ export const initialState: ChatState = {
   activities: [],
   activity: null,
   newOutgoingMessage: {},
-  conversationsLib: []
+  conversationsLib: [],
+  lastReadMessage: undefined
 };
 
 export const persistConversations = createAction("PERSIST_CONVERSATIONS");
@@ -33,21 +34,26 @@ export default handleActions(
   {
     PERSIST_MESSAGE_AS_READ: (state = initialState, action: Action<any>) => {
       const { user, conversation_id } = action.payload;
+      console.log(';THIS RAN');
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
+        let lastRead;
         const updateConvos = state.conversations.map((c) => {
-          if (c.last_message && c.last_message.sender_id !== user) {
+          if (c.last_message && c.id === conversation_id && c.last_message.sender_id !== user) {
             const obj = {
               ...c.last_message,
               aasm_state: "read",
               read_at: new Date().toISOString(),
             };
             c.last_message = obj;
+            lastRead = c.last_message.id;
           }
           return c;
         });
+
         return {
           ...state,
-          conversations: updateConvos
+          conversations: updateConvos,
+          lastReadMessage: lastRead
         };
       } else {
         console.log('DOESNT EXIST');
@@ -65,26 +71,13 @@ export default handleActions(
           return c;
         });
         if (state.conversation && state.conversation.id === conversation_id) {
-          const x = state.conversations.map((c) => {
-            if (c.partner) {
-              if (c.partner.id && c.partner.id === action.payload.sender.id) {
-                const obj = {
-                  ...c.last_message,
-                  aasm_state: "read",
-                  read_at: new Date().toISOString(),
-                };
-                c.last_message = obj;
-              }
-            }
-            return c;
-          });
           return {
             ...state,
             conversation: {
               ...state.conversation,
               messages: [action.payload, ...state.conversation.messages]
             },
-            conversations: x
+            conversations: newConvos
           };
         } else {
           return {
@@ -131,7 +124,8 @@ export default handleActions(
       return {
         ...state,
         conversations: action.payload,
-        conversationsLib: conversationLib
+        conversationsLib: conversationLib,
+        lastReadMessage: null
       };
     },
     PERSIST_CONVERSATION: (state: ChatState, action: Action<any>) => {
@@ -183,3 +177,12 @@ export default handleActions(
 //   // if not create one
 
 // }
+
+// const x = state.conversations.map((c) => {
+//   if (c.partner) {
+//     if (c.partner.id && c.partner.id === action.payload.sender.id) {
+//       c.last_message = action.payload;
+//     }
+//   }
+//   return c;
+// });
