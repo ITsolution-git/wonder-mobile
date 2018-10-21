@@ -82,12 +82,6 @@ class ChatListScreen extends React.Component<Props> {
       });
   }
 
-  componentDidMount() {
-
-    // johanns id id: 848
-    // current user id: 743
-  }
-
   componentDidUpdate(prevProps) {
     const { chat } = this.props;
 
@@ -102,8 +96,9 @@ class ChatListScreen extends React.Component<Props> {
       }
     }
     if (chat.lastReadMessage && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
-      console.log('LAST MESSAGE UPDATED: ', chat.lastReadMessage);
-      this.appChat.perform('read', { message_id: chat.lastReadMessage });
+      if (!chat.lastReadMessage.last_message.read_at) {
+        this.appChat.perform('read', { message_id: chat.lastReadMessage });
+      }
     }
   }
 
@@ -162,8 +157,8 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   render() {
-    const { conversations, onRefreshConversations } = this.props;
-    console.log('#: ', this.props);
+    const { conversations, onRefreshConversations, currentUser } = this.props;
+
     return (
       <Screen horizontalPadding={20}>
         {this.renderSearchbar()}
@@ -176,6 +171,7 @@ class ChatListScreen extends React.Component<Props> {
           />
         </View>
         <ChatList
+          currentUser={currentUser}
           onRefresh={onRefreshConversations}
           chats={this.props.conversations}
           onPressChat={this.goToChat}
@@ -222,33 +218,3 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
-
-// this.appChat = {};
-// this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
-// this.appChat = this.cable.subscriptions.create({
-//   channel: "ConversationChannel",
-// },
-//   {
-
-//     received: (data: any) => {
-//       const { onGetMessage } = this.props;
-//       const receivedMessage: GiftedChatMessage = {
-//         _id: data.id,
-//         text: data.body,
-//         createdAt: data.sent_at,
-//         user: {
-//           _id: data.sender.id,
-//           name: data.sender.first_name,
-//           avatar: `${data.sender.images[0].url}${avatarExtension}`
-//         }
-//       };
-//       onGetMessage(conversation.partner.id);
-//       this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
-//       // onGetMessage(conversation.partner.id);  // What does this even do?
-//     },
-//     deliver: (message: string) => {
-//       this.appChat.perform('deliver', { body: message, recipient_id: conversation.partner.id });
-//     }
-//   });
-
-// this.appChat.perform('deliver', { body: message, recipient_id: conversation.partner.id });

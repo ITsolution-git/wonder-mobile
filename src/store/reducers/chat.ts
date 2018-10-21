@@ -34,7 +34,6 @@ export default handleActions(
   {
     PERSIST_MESSAGE_AS_READ: (state = initialState, action: Action<any>) => {
       const { user, conversation_id } = action.payload;
-      console.log(';THIS RAN');
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
         let lastRead;
         const updateConvos = state.conversations.map((c) => {
@@ -45,7 +44,7 @@ export default handleActions(
               read_at: new Date().toISOString(),
             };
             c.last_message = obj;
-            lastRead = c.last_message.id;
+            lastRead = c;
           }
           return c;
         });

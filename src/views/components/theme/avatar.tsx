@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, StyleProp, ImageStyle, ViewStyle } from 'react-native';
 import { WonderImage } from '../theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import theme from '../../../assets/styles/theme';
 
 export enum AvatarSize {
   sm = 'sm',
@@ -11,6 +12,7 @@ export enum AvatarSize {
 }
 
 interface AvatarProps {
+  unreadMessage?: boolean;
   bordered?: boolean;
   rounded?: boolean;
   circle?: boolean;
@@ -54,28 +56,49 @@ class Avatar extends React.Component<AvatarProps> {
   }
 
   renderImage = () => {
-    const { uri, style } = this.props;
+    const { uri, style, chat, currentUser, circle } = this.props;
+
     if (uri) {
-      return (
-        <WonderImage
-          style={[{
-            ...this.getContainerStyles(),
-            width: this.getDimensions(),
-            height: this.getDimensions(),
+      if (circle && chat) {
+        return (
+          <View
+            style={chat.last_message.sender_id !== currentUser.id && !chat.last_message.read_at ? {
+              borderColor: theme.colors.primaryLight,
+              borderWidth: 4,
+              borderRadius: this.getDimensions() + 4 / 2
+            } : null}
+          >
+            {uri ? <WonderImage
+              style={[{
+                ...this.getContainerStyles(),
+                width: this.getDimensions(),
+                height: this.getDimensions(),
 
-          }, style]}
-          uri={`${uri}`}
-        />
-      );
+              }, style, { margin: 2 }]}
+              uri={uri}
+            /> :
+              <Icon
+                color="#BBB"
+                name="user"
+                size={this.getDimensions() * 0.4}
+              />
+            }
+          </View>
+        );
+      } else {
+        return (
+          <WonderImage
+            style={[{
+              ...this.getContainerStyles(),
+              width: this.getDimensions(),
+              height: this.getDimensions(),
+
+            }, style, { margin: 2 }]}
+            uri={uri}
+          />
+        );
+      }
     }
-
-    return (
-      <Icon
-        color="#BBB"
-        name="user"
-        size={this.getDimensions() * 0.4}
-      />
-    );
   }
 
   render() {

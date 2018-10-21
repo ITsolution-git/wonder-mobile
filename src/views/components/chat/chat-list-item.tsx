@@ -67,16 +67,18 @@ class ChatListItem extends React.Component<ChatListItemProps> {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80
     };
-    const { chat, onPress } = this.props;
+    const { chat, onPress, currentUser } = this.props;
 
     if (!chat.last_message) {
       return null;
     }
-    return (
 
+    return (
       <TouchableOpacity style={styles.container} onPress={onPress}>
         <View flex={5}>
           <Avatar
+            chat={chat}
+            currentUser={currentUser}
             circle
             uri={(chat.partner.images && chat.partner.images.length) ? chat.partner.images[0].url : null}
           />
