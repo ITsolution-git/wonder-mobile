@@ -30,7 +30,7 @@ import {
   AppointmentState,
   persistAppointmentData
 } from "src/store/reducers/appointment";
-import { persistNewChatMessage, persistMessageAsRead } from "src/store/reducers/chat";
+import { persistNewChatMessage, persistMessageAsRead, persistGhostMessage } from "src/store/reducers/chat";
 import Assets from "src/assets/images";
 import { DOMAIN } from "src/services/api";
 
@@ -84,7 +84,8 @@ const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
     dispatch(persistAppointmentData(data)),
   onGhostContact: (data: User) => dispatch(ghostContact(data)),
   onSendMessage: (message) => dispatch(persistNewChatMessage(message)),
-  onReadMessages: (data) => dispatch(persistMessageAsRead(data))
+  onReadMessages: (data) => dispatch(persistMessageAsRead(data)),
+  onSendGhostMessage: (data) => dispatch(persistGhostMessage(data))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -169,7 +170,7 @@ class ChatScreen extends React.Component<Props> {
   ghostPartner = (ghostMessage: string) => {
     const { navigation, onGhostContact, conversation } = this.props;
 
-    this.appChat.deliver(ghostMessage); //  Send the message
+    this.props.onSendGhostMessage({ ghostMessage, conversation_id: conversation.id, partner: conversation.partner });
     onGhostContact(conversation.partner);
     this.closeGhostingModal();
     navigation.navigate("ChatList");

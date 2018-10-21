@@ -73,7 +73,6 @@ class ChatListScreen extends React.Component<Props> {
     },
       {
         received: (data: any) => {
-          console.log('RECEIVE: ', data);
           this.props.onReceiveMessage(data);
         },
         deliver: ({ message, recipient_id }) => {
@@ -96,9 +95,16 @@ class ChatListScreen extends React.Component<Props> {
       }
     }
     if (chat.lastReadMessage && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
-      if (!chat.lastReadMessage.last_message.read_at) {
-        this.appChat.perform('read', { message_id: chat.lastReadMessage });
+      if (chat.lastReadMessage.last_message.aasm_state !== "read") {
+        this.appChat.perform('read', { message_id: chat.lastReadMessage.last_message.id });
       }
+    }
+    if (chat.ghostMessage.conversation_id && chat.ghostMessage.conversation_id !== prevProps.chat.ghostMessage.conversation_id) {
+      this.appChat.deliver(
+        {
+          message: chat.ghostMessage.ghostMessage,
+          recipient_id: chat.ghostMessage.partner.id
+        });
     }
   }
 

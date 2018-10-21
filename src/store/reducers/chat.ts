@@ -17,7 +17,8 @@ export const initialState: ChatState = {
   activity: null,
   newOutgoingMessage: {},
   conversationsLib: [],
-  lastReadMessage: undefined
+  lastReadMessage: {},
+  ghostMessage: undefined
 };
 
 export const persistConversations = createAction("PERSIST_CONVERSATIONS");
@@ -29,10 +30,20 @@ export const persistActivity = createAction("PERSIST_ACTIVITY");
 export const persistNewChatMessage = createAction("PERSIST_NEW_CHAT_MESSAGE");
 export const persistNewReceivedMessage = createAction("PERSIST_NEW_RECEIVED_MESSAGE");
 export const persistMessageAsRead = createAction("PERSIST_MESSAGE_AS_READ");
+export const persistGhostMessage = createAction("PERSIST_GHOST_MESSAGE");
 
 export default handleActions(
   {
+    PERSIST_GHOST_MESSAGE: (state: ChatState, action: Action<any>) => {
+      const removedConversation = state.conversations.filter((c) => c.id !== action.payload.conversation_id);
+      return {
+        ...state,
+        ghostMessage: action.payload,
+        conversations: removedConversation
+      };
+    },
     PERSIST_MESSAGE_AS_READ: (state = initialState, action: Action<any>) => {
+
       const { user, conversation_id } = action.payload;
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
         let lastRead;
@@ -40,7 +51,7 @@ export default handleActions(
           if (c.last_message && c.id === conversation_id && c.last_message.sender_id !== user) {
             const obj = {
               ...c.last_message,
-              aasm_state: "read",
+              aasm_state: "delivered",
               read_at: new Date().toISOString(),
             };
             c.last_message = obj;
