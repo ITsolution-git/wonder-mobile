@@ -56,10 +56,12 @@ class Avatar extends React.Component<AvatarProps> {
   }
 
   renderImage = () => {
-    const { uri, style, chat, currentUser, circle } = this.props;
+    const { uri, style, chat, currentUser, circle, sender } = this.props;
 
     if (uri) {
       if (circle && chat) {
+        console.log('CHAT: ', chat);
+        // console.log('X: ', chat.last_message.sender.id, currentUser.id);
         return (
           <View
             style={chat.last_message.sender_id !== currentUser.id && !chat.last_message.read_at ? {

@@ -17,7 +17,7 @@ import { selectCurrentUser } from "src/store/selectors/user";
 import Conversation from "src/models/conversation";
 import WonderAppState from "src/models/wonder-app-state";
 import Chat from "src/models/chat";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Alert } from "react-native";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import SearchBar from "react-native-searchbar";
 import { getAttendances } from "src/store/sagas/attendance";
@@ -73,7 +73,19 @@ class ChatListScreen extends React.Component<Props> {
     },
       {
         received: (data: any) => {
-          this.props.onReceiveMessage(data);
+          if (data === `{"error":{"message":"Validation failed: Recipient must have already matched"}}`) {
+            Alert.alert(
+              'Sorry!',
+              'This person has removed you from their conversations',
+              [
+                { text: 'OK' },
+              ],
+              { cancelable: false }
+            );
+          } else {
+            this.props.onReceiveMessage(data);
+          }
+
         },
         deliver: ({ message, recipient_id }) => {
           this.appChat.perform('deliver', { body: message, recipient_id });
@@ -81,12 +93,12 @@ class ChatListScreen extends React.Component<Props> {
       });
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps: any) {
     const { chat } = this.props;
-
     if (chat.newOutgoingMessage.hasOwnProperty('message')) {
       if (
         chat.newOutgoingMessage.message !== prevProps.chat.newOutgoingMessage.message) {
+
         this.appChat.deliver(
           {
             message: chat.newOutgoingMessage.message.text,
@@ -95,11 +107,11 @@ class ChatListScreen extends React.Component<Props> {
       }
     }
     if (chat.lastReadMessage && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
-      if (chat.lastReadMessage.last_message.aasm_state !== "read") {
+      if (chat.lastReadMessage.last_message && chat.lastReadMessage.last_message.aasm_state !== "read") {
         this.appChat.perform('read', { message_id: chat.lastReadMessage.last_message.id });
       }
     }
-    if (chat.ghostMessage.conversation_id && chat.ghostMessage.conversation_id !== prevProps.chat.ghostMessage.conversation_id) {
+    if (chat.ghostMessage && chat.ghostMessage !== prevProps.chat.ghostMessage) {
       this.appChat.deliver(
         {
           message: chat.ghostMessage.ghostMessage,

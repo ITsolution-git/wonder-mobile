@@ -48,6 +48,7 @@ export default handleActions(
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
         let lastRead;
         const updateConvos = state.conversations.map((c) => {
+
           if (c.last_message && c.id === conversation_id && c.last_message.sender_id !== user) {
             const obj = {
               ...c.last_message,
@@ -71,6 +72,7 @@ export default handleActions(
     },
     PERSIST_NEW_RECEIVED_MESSAGE: (state = initialState, action: Action<any>) => {
       const { conversation_id } = action.payload;
+
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
         const newConvos = state.conversations.map((c) => {
           if (c.partner) {
@@ -106,6 +108,7 @@ export default handleActions(
         state: "delivered",
         recipient: action.payload.recipient,
         sender: action.payload.sender,
+        sender_id: action.payload.sender.id,
         delivered_at: new Date().toISOString(),
         sent_at: new Date(action.payload.message.createdAt).toISOString(),
         read_at: null,

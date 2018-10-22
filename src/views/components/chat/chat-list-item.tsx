@@ -78,6 +78,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
         <View flex={5}>
           <Avatar
             chat={chat}
+            sender={chat.last_message.sender_id}
             currentUser={currentUser}
             circle
             uri={(chat.partner.images && chat.partner.images.length) ? chat.partner.images[0].url : null}
