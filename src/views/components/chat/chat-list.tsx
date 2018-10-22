@@ -8,6 +8,7 @@ interface ChatListProps {
   onRefresh?: () => void;
   chats?: Conversation[];
   onPressChat: Function;
+  currentUser: number;
 }
 
 class ChatList extends React.Component<ChatListProps> {

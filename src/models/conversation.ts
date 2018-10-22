@@ -1,6 +1,7 @@
 import ChatResponseMessage from "./chat-response-message";
 import User from "./user";
 import GiftedChatMessage from "./chat-message";
+import { number } from "prop-types";
 
 interface Conversation {
   id: number;
@@ -15,6 +16,9 @@ interface DecoratedConversation extends Conversation {
 
 interface ConversationNewMessage {
   conversation_id: number;
+  recipient_id: number;
+  recipient: object;
+  sender: User;
   message: {
     body: string;
   };

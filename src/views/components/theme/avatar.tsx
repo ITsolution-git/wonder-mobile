@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StyleProp, ImageStyle, ViewStyle } from 'react-native';
+import { View, StyleSheet, StyleProp, ImageStyle, ViewStyle, Platform } from 'react-native';
 import { WonderImage } from '../theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import theme from '../../../assets/styles/theme';
@@ -20,6 +20,9 @@ interface AvatarProps {
   size?: AvatarSize | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   containerStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ImageStyle>;
+  chat?: any;
+  currentUser?: number;
+  sender: number;
 }
 
 class Avatar extends React.Component<AvatarProps> {
@@ -56,12 +59,10 @@ class Avatar extends React.Component<AvatarProps> {
   }
 
   renderImage = () => {
-    const { uri, style, chat, currentUser, circle, sender } = this.props;
+    const { uri, style, chat, currentUser, circle } = this.props;
 
     if (uri) {
-      if (circle && chat) {
-        console.log('CHAT: ', chat);
-        // console.log('X: ', chat.last_message.sender.id, currentUser.id);
+      if (circle && chat && Platform.OS === 'ios') {
         return (
           <View
             style={chat.last_message.sender_id !== currentUser.id && !chat.last_message.read_at ? {
@@ -104,7 +105,7 @@ class Avatar extends React.Component<AvatarProps> {
   }
 
   render() {
-    const { uri, containerStyle } = this.props;
+    const { containerStyle } = this.props;
     return (
       <View style={[styles.avatarContainer, this.getContainerStyles(), containerStyle]}>
         {this.renderImage()}

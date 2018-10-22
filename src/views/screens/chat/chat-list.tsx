@@ -30,6 +30,10 @@ interface Props {
   onRefreshConversations: () => void;
   onGetConversation: (partnerId: number) => void;
   onGetAttendances: () => void;
+  token: string;
+  onReceiveMessage: (data: object) => void;
+  currentUser: any;
+  chat: Chat;
 }
 
 interface ChatListScreenState {
@@ -50,11 +54,14 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
     dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
   onGetAttendances: () => dispatch(getAttendances()),
-  onReceiveMessage: (data) => dispatch(persistNewReceivedMessage(data))
+  onReceiveMessage: (data: object) => dispatch(persistNewReceivedMessage(data))
 });
 
 class ChatListScreen extends React.Component<Props> {
   searchBar?: any;
+  cable: any;
+  appChat: any;
+
   state: ChatListScreenState = {
     isSearchModalOpen: false,
     results: [],
@@ -62,7 +69,7 @@ class ChatListScreen extends React.Component<Props> {
   };
 
   componentWillMount() {
-    const { conversations, onRefreshConversations, token } = this.props;
+    const { token } = this.props;
     this.props.onRefreshConversations();
     this.props.onGetAttendances();
 
@@ -73,15 +80,8 @@ class ChatListScreen extends React.Component<Props> {
     },
       {
         received: (data: any) => {
-          if (data === `{"error":{"message":"Validation failed: Recipient must have already matched"}}`) {
-            Alert.alert(
-              'Sorry!',
-              'This person has removed you from their conversations',
-              [
-                { text: 'OK' },
-              ],
-              { cancelable: false }
-            );
+          if (!data.hasOwnProperty('body')) {
+            this.showGhostedAlert();
           } else {
             this.props.onReceiveMessage(data);
           }
@@ -121,7 +121,7 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   goToChat = (chat: Chat) => {
-    const { navigation, onGetConversation } = this.props;
+    const { onGetConversation } = this.props;
     onGetConversation(chat.partner.id);
   }
 
@@ -130,7 +130,7 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   handleResults = (results: Conversation[]) => {
-    const { conversations, onRefreshConversations } = this.props;
+    const { conversations } = this.props;
     if (!results.length && !this.state.handleChangeText) {
       this.setState({ results: conversations });
     } else {
@@ -142,9 +142,20 @@ class ChatListScreen extends React.Component<Props> {
     this.setState({ handleChangeText: text });
   }
 
+  showGhostedAlert = () => {
+    Alert.alert(
+      'Sorry!',
+      'This person has removed you from their conversations',
+      [
+        { text: 'OK' },
+      ],
+      { cancelable: false }
+    );
+  }
+
   renderSearchbar = () => {
 
-    const { conversations, onRefreshConversations } = this.props;
+    const { conversations } = this.props;
     if (this.state.isSearchModalOpen) {
       return (
         <SearchBar
@@ -160,7 +171,7 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   renderSearchButton() {
-    const { conversations, onRefreshConversations } = this.props;
+    const { conversations } = this.props;
     if (conversations.length) {
       return (
         <View style={{ width: "50%" }} flexDirection={"row"}>
@@ -194,7 +205,6 @@ class ChatListScreen extends React.Component<Props> {
           chats={this.props.conversations}
           onPressChat={this.goToChat}
         />
-
         <View
           style={styles.searchButtonContainer}
         >

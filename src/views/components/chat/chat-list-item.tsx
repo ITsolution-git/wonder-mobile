@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 interface ChatListItemProps {
   chat: Conversation;
   onPress: TouchableOpacityOnPress;
+  currentUser: number;
 }
 
 class ChatListItem extends React.Component<ChatListItemProps> {
@@ -23,7 +24,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
   };
 
   renderRecentMessage = () => {
-    const { chat } = this.props;
+    const { chat, currentUser } = this.props;
     const f = new Date();
     const d = new Date(chat.last_message.sent_at);
     // d.setHours(d.getHours() - f.getHours());
@@ -33,7 +34,14 @@ class ChatListItem extends React.Component<ChatListItemProps> {
       if (hours > 72) {
         return <SmallText style={{ color: 'red' }}>{_.get(chat, 'last_message.body', '') || ''}</SmallText>;
       }
-      return <SmallText>{chat.last_message.body == null ? "" : chat.last_message.body}</SmallText>;
+      return (
+        <SmallText
+          style={!chat.last_message.read_at && chat.last_message.sender_id !== currentUser.id ?
+            { color: 'black' } : null}
+        >
+          {chat.last_message.body == null ? "" : chat.last_message.body}
+        </SmallText>
+      );
     }
     return <SmallText>No Messages</SmallText>;
   }
@@ -105,7 +113,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e6e6ec',
     padding: 15,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   textContainer: {
     justifyContent: 'center'

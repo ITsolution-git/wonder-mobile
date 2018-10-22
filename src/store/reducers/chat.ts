@@ -47,7 +47,7 @@ export default handleActions(
       const { user, conversation_id } = action.payload;
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
         let lastRead;
-        const updateConvos = state.conversations.map((c) => {
+        const updateConvos = state.conversations.map((c: Conversation) => {
 
           if (c.last_message && c.id === conversation_id && c.last_message.sender_id !== user) {
             const obj = {
@@ -67,14 +67,14 @@ export default handleActions(
           lastReadMessage: lastRead
         };
       } else {
-        console.log('DOESNT EXIST');
+        console.log('conversation not present');
       }
     },
     PERSIST_NEW_RECEIVED_MESSAGE: (state = initialState, action: Action<any>) => {
       const { conversation_id } = action.payload;
 
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
-        const newConvos = state.conversations.map((c) => {
+        const newConvos = state.conversations.map((c: Conversation) => {
           if (c.partner) {
             if (c.partner.id && c.partner.id === action.payload.sender.id) {
               c.last_message = action.payload;
@@ -132,8 +132,7 @@ export default handleActions(
       };
     },
     PERSIST_CONVERSATIONS: (state = initialState, action: Action<any>) => {
-      const conversationLib = action.payload.map((c) => c.id);
-
+      const conversationLib = action.payload.map((c: Conversation) => c.id);
       return {
         ...state,
         conversations: action.payload,
@@ -141,61 +140,19 @@ export default handleActions(
         lastReadMessage: null
       };
     },
-    PERSIST_CONVERSATION: (state: ChatState, action: Action<any>) => {
-
-      return {
-        ...state,
-        conversation: action.payload
-      };
-    },
-    PERSIST_ACTIVITY: (state: ChatState, action: Action<any>) => {
-      return {
-        ...state,
-        activity: action.payload
-      };
-    },
-    PERSIST_ACTIVITIES: (state: ChatState, action: Action<any>) => {
-      return {
-        ...state,
-        activities: action.payload
-      };
-    },
+    PERSIST_CONVERSATION: (state: ChatState, action: Action<any>) => ({
+      ...state,
+      conversation: action.payload
+    }),
+    PERSIST_ACTIVITY: (state: ChatState, action: Action<any>) => ({
+      ...state,
+      activity: action.payload
+    }),
+    PERSIST_ACTIVITIES: (state: ChatState, action: Action<any>) => ({
+      ...state,
+      activities: action.payload
+    }),
     LOGOUT_USER: () => initialState
   },
   initialState
 );
-
-// const newConvos = state.conversations.map((c) => {
-//   if (c.partner) {
-//     if (c.partner.id && c.partner.id === action.payload.sender.id) {
-//       c.last_message = action.payload;
-//     }
-//   }
-
-//   return c;
-// });
-// // check if conversation exists
-// if (state.conversation) {
-  // return {
-  //   ...state,
-  //   conversation: {
-  //     ...state.conversation,
-  //     messages: [action.payload, ...state.conversation.messages]
-  //   },
-  //   conversations: newConvos
-  // };
-// } else {
-//   // check if conversation exists by conv id
-//   // if it does just update convos
-//   // if not create one
-
-// }
-
-// const x = state.conversations.map((c) => {
-//   if (c.partner) {
-//     if (c.partner.id && c.partner.id === action.payload.sender.id) {
-//       c.last_message = action.payload;
-//     }
-//   }
-//   return c;
-// });
