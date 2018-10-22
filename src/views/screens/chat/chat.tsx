@@ -30,8 +30,8 @@ import {
   AppointmentState,
   persistAppointmentData
 } from "src/store/reducers/appointment";
+import { persistNewChatMessage, persistMessageAsRead, persistGhostMessage } from "src/store/reducers/chat";
 import Assets from "src/assets/images";
-import { DOMAIN } from "src/services/api";
 
 import ImagePicker from 'react-native-image-picker';
 
@@ -44,14 +44,14 @@ import {
 
 import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
-import { BASE_URL } from "src/services/api";
-const avatarExtension = '?w=100&h=100&auto=enhance,format&fit=crop&crop=entropy&q=60';
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
   onSendMessage: (chatMessage: ConversationNewMessage) => void;
   onUpdateAppointment: (data: AppointmentState) => void;
   onGhostContact: (data: User) => void;
+  onReadMessages: (data: any) => void;
+  onSendGhostMessage: (data: any) => void;
 }
 
 interface StateProps {
@@ -78,10 +78,13 @@ const mapState = (state: WonderAppState): StateProps => ({
 
 const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
-  onSendMessage: (data: any) => dispatch(sendMessage(data)),
+  // onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
-  onGhostContact: (data: User) => dispatch(ghostContact(data))
+  onGhostContact: (data: User) => dispatch(ghostContact(data)),
+  onSendMessage: (message: any) => dispatch(persistNewChatMessage(message)),
+  onReadMessages: (data) => dispatch(persistMessageAsRead(data)),
+  onSendGhostMessage: (data) => dispatch(persistGhostMessage(data))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -129,33 +132,7 @@ class ChatScreen extends React.Component<Props> {
   componentWillMount() {
     const { conversation, token, navigation } = this.props;
     navigation.setParams({ title: conversation.partner.first_name + ' ' + conversation.partner.last_name });
-    this.appChat = {};
-    this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
-    this.appChat = this.cable.subscriptions.create({
-      channel: "ConversationChannel",
-      recipient_id: conversation.partner.id
-    },
-      {
-        received: (data: any) => {
-          const { onGetMessage } = this.props;
-          const receivedMessage: GiftedChatMessage = {
-            _id: data.id,
-            text: data.body,
-            createdAt: data.sent_at,
-            user: {
-              _id: data.sender.id,
-              name: data.sender.first_name,
-              avatar: `${data.sender.images[0].url}${avatarExtension}`
-            }
-          };
-          onGetMessage(conversation.partner.id);
-          this.setState({ conversationMessages: [receivedMessage, ...this.state.conversationMessages] });
-          // onGetMessage(conversation.partner.id);  // What does this even do?
-        },
-        deliver: (message: string) => {
-          this.appChat.perform('deliver', { body: message, recipient_id: conversation.partner.id });
-        }
-      });
+
   }
 
   componentDidMount() {
@@ -164,10 +141,21 @@ class ChatScreen extends React.Component<Props> {
     this.setState({ conversationMessages: chats.giftedChatMessages });
   }
 
+  componentDidUpdate(prevProps: any) {
+    const { currentUser, conversation } = this.props;
+    if (conversation.messages &&
+      conversation.messages.length !== prevProps.conversation.messages.length) {
+      const chats = decorateMessagesForGiftedChat(currentUser, conversation);
+      this.setState({ conversationMessages: chats.giftedChatMessages });
+    }
+  }
+
   componentWillUnmount() {
+    const { currentUser, conversation } = this.props;
     if (this.appChat) {
       this.cable.subscriptions.remove(this.appChat);
     }
+    this.props.onReadMessages({ user: currentUser.id, conversation_id: conversation.id });
   }
 
   scheduleWonder = () => {
@@ -179,7 +167,7 @@ class ChatScreen extends React.Component<Props> {
   ghostPartner = (ghostMessage: string) => {
     const { navigation, onGhostContact, conversation } = this.props;
 
-    this.appChat.deliver(ghostMessage); //  Send the message
+    this.props.onSendGhostMessage({ ghostMessage, conversation_id: conversation.id, partner: conversation.partner });
     onGhostContact(conversation.partner);
     this.closeGhostingModal();
     navigation.navigate("ChatList");
@@ -193,8 +181,16 @@ class ChatScreen extends React.Component<Props> {
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
+    const { conversation } = this.props;
     messages.forEach((message: ChatResponseMessage) => {
-      this.appChat.deliver(message.text);
+      this.props.onSendMessage(
+        {
+          message,
+          recipient_id: conversation.partner.id,
+          recipient: conversation.partner,
+          sender: this.props.currentUser,
+          conversation_id: this.props.conversation.id
+        });
     });
 
     this.setState({ selectedSendImage: '' });
@@ -251,22 +247,6 @@ class ChatScreen extends React.Component<Props> {
   }
 
   renderFooter = () => {
-    // if (!this.state.selectedSendImage) {
-    //   return (
-    //     <View
-    //       style={{
-    //         marginBottom: 10,
-    //         flexDirection: "row",
-    //         justifyContent: "center"
-    //       }}
-    //     >
-    //       <Image
-    //         style={{ width: 100, height: 100 }}
-    //         source={this.state.selectedSendImage}
-    //       />
-    //     </View>
-    //   );
-    // }
     return (
       <View
         style={{
@@ -295,7 +275,8 @@ class ChatScreen extends React.Component<Props> {
   }
 
   render() {
-    const { currentUser, conversation } = this.props;
+    const { currentUser } = this.props;
+
     return (
       <Screen>
         <GiftedChat
