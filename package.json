@@ -12,10 +12,10 @@
     "run:android": "react-native run-android"
   },
   "dependencies": {
-    "appcenter": "^1.8.1",
-    "appcenter-analytics": "^1.8.1",
-    "appcenter-crashes": "^1.8.1",
-    "appcenter-push": "^1.8.1",
+    "appcenter": "~1.8.1",
+    "appcenter-analytics": "~1.8.1",
+    "appcenter-crashes": "~1.8.1",
+    "appcenter-push": "~1.8.1",
     "axios": "^0.18.0",
     "color": "^3.0.0",
     "lodash": "^4.17.10",
