@@ -13,6 +13,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 interface ChatListItemProps {
   chat: Conversation;
   onPress: TouchableOpacityOnPress;
+  currentUser: number;
 }
 
 class ChatListItem extends React.Component<ChatListItemProps> {
@@ -23,7 +24,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
   };
 
   renderRecentMessage = () => {
-    const { chat } = this.props;
+    const { chat, currentUser } = this.props;
     const f = new Date();
     const d = new Date(chat.last_message.sent_at);
     // d.setHours(d.getHours() - f.getHours());
@@ -33,7 +34,14 @@ class ChatListItem extends React.Component<ChatListItemProps> {
       if (hours > 72) {
         return <SmallText style={{ color: 'red' }}>{_.get(chat, 'last_message.body', '') || ''}</SmallText>;
       }
-      return <SmallText>{chat.last_message.body == null ? "" : chat.last_message.body}</SmallText>;
+      return (
+        <SmallText
+          style={!chat.last_message.read_at && chat.last_message.sender_id !== currentUser.id ?
+            { color: 'black' } : null}
+        >
+          {chat.last_message.body == null ? "" : chat.last_message.body}
+        </SmallText>
+      );
     }
     return <SmallText>No Messages</SmallText>;
   }
@@ -56,7 +64,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
     return (
       <View style={{ marginTop: 5 }}>
         <SmallText>
-          {_.get(chat, 'partner.distance', 0).toFixed(0)} miles
+          {chat.partner.distance && _.get(chat, 'partner.distance', 0).toFixed(0)} miles
         </SmallText>
       </View>
     );
@@ -67,16 +75,19 @@ class ChatListItem extends React.Component<ChatListItemProps> {
       velocityThreshold: 0.3,
       directionalOffsetThreshold: 80
     };
-    const { chat, onPress } = this.props;
+    const { chat, onPress, currentUser } = this.props;
 
     if (!chat.last_message) {
       return null;
     }
-    return (
 
+    return (
       <TouchableOpacity style={styles.container} onPress={onPress}>
         <View flex={5}>
           <Avatar
+            chat={chat}
+            sender={chat.last_message.sender_id}
+            currentUser={currentUser}
             circle
             uri={(chat.partner.images && chat.partner.images.length) ? chat.partner.images[0].url : null}
           />
@@ -102,7 +113,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#e6e6ec',
     padding: 15,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   textContainer: {
     justifyContent: 'center'

@@ -5,6 +5,25 @@ export interface ChatUser extends User {
 
 interface Chat {
   partner: ChatUser;
+  newOutgoingMessage: {
+    message: {
+      text: string;
+    }
+    recipient_id: number;
+  };
+  conversationsLib: string[];
+  lastReadMessage: {
+    last_message: {
+      aasm_state: string;
+      id: number
+    }
+  };
+  ghostMessage: {
+    ghostMessage: string;
+    partner: {
+      id: number;
+    }
+  };
 }
 
 export default Chat;

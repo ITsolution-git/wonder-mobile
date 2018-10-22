@@ -105,10 +105,11 @@ export function* ghostContactSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
 
-    yield call(api, {
+    const response = yield call(api, {
       method: 'DELETE',
       url: `/conversations/${action.payload.id}/ghost`,
     }, state.user);
+
   } catch (error) {
     handleAxiosError(error);
   } finally {
