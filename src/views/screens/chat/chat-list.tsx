@@ -81,8 +81,10 @@ class ChatListScreen extends React.Component<Props> {
       {
         received: (data: any) => {
           if (!data.hasOwnProperty('body')) {
+            console.log('D: ', data);
             this.showGhostedAlert();
           } else {
+            console.log('INCOMING MESSAGE: ', data);
             this.props.onReceiveMessage(data);
           }
 
@@ -98,7 +100,6 @@ class ChatListScreen extends React.Component<Props> {
     if (chat.newOutgoingMessage.hasOwnProperty('message')) {
       if (
         chat.newOutgoingMessage.message !== prevProps.chat.newOutgoingMessage.message) {
-
         this.appChat.deliver(
           {
             message: chat.newOutgoingMessage.message.text,
@@ -107,17 +108,18 @@ class ChatListScreen extends React.Component<Props> {
       }
     }
     if (chat.lastReadMessage && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
-      if (chat.lastReadMessage.last_message && chat.lastReadMessage.last_message.aasm_state !== "read") {
+      if (chat.lastReadMessage.last_message && !chat.lastReadMessage.last_message.read_at) {
+        console.log('THIS RAN', chat.lastReadMessage.last_message);
         this.appChat.perform('read', { message_id: chat.lastReadMessage.last_message.id });
       }
     }
-    if (chat.ghostMessage && chat.ghostMessage !== prevProps.chat.ghostMessage) {
-      this.appChat.deliver(
-        {
-          message: chat.ghostMessage.ghostMessage,
-          recipient_id: chat.ghostMessage.partner.id
-        });
-    }
+    // if (chat.ghostMessage && chat.ghostMessage !== prevProps.chat.ghostMessage) {
+    //   this.appChat.deliver(
+    //     {
+    //       message: chat.ghostMessage.ghostMessage,
+    //       recipient_id: chat.ghostMessage.partner.id
+    //     });
+    // }
   }
 
   goToChat = (chat: Chat) => {
@@ -191,7 +193,7 @@ class ChatListScreen extends React.Component<Props> {
     return (
       <Screen horizontalPadding={20}>
         {this.renderSearchbar()}
-        <Title>Latest Matches</Title>
+        <Title style={styles.latestText}>Latest Matches</Title>
         <View>
           <LatestMatches
             onRefresh={onRefreshConversations}
@@ -244,5 +246,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: "row",
     justifyContent: "center"
-  }
+  },
+  latestText: { marginTop: 12 }
 });

@@ -32,7 +32,7 @@ export const decorateMessagesForGiftedChat =
             user: {
               _id: message.sender.id,
               name: message.sender.first_name,
-              avatar: `${owner.images[0].url}${avatarExtension}`
+              avatar: owner.images.length ? `${owner.images[0].url}${avatarExtension}` : null
             }
           };
 

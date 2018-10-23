@@ -72,7 +72,6 @@ export default handleActions(
     },
     PERSIST_NEW_RECEIVED_MESSAGE: (state = initialState, action: Action<any>) => {
       const { conversation_id } = action.payload;
-
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
         const newConvos = state.conversations.map((c: Conversation) => {
           if (c.partner) {
@@ -82,7 +81,9 @@ export default handleActions(
           }
           return c;
         });
+
         if (state.conversation && state.conversation.id === conversation_id) {
+          // action.payload.id !== state.conversation.messages[0].id)
           return {
             ...state,
             conversation: {
@@ -102,6 +103,7 @@ export default handleActions(
       }
     },
     PERSIST_NEW_CHAT_MESSAGE: (state = initialState, action: Action<any>) => {
+
       const message = {
         id: Math.floor(1000 + Math.random() * 9000),
         body: action.payload.message.text,
@@ -135,7 +137,7 @@ export default handleActions(
       const conversationLib = action.payload.map((c: Conversation) => c.id);
       return {
         ...state,
-        conversations: action.payload,
+        conversations: action.payload.filter((c) => c.partner !== null),
         conversationsLib: conversationLib,
         lastReadMessage: null
       };

@@ -104,10 +104,10 @@ export const ghostContact = createAction(GHOST_CONTACT);
 export function* ghostContactSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
-
+    const formattedMessage = action.payload.message.split(' ').join('+');
     const response = yield call(api, {
       method: 'DELETE',
-      url: `/conversations/${action.payload.id}/ghost`,
+      url: `/conversations/${action.payload.partner.id}/ghost?message=${formattedMessage}`,
     }, state.user);
 
   } catch (error) {
@@ -119,4 +119,30 @@ export function* ghostContactSaga(action: Action<any>) {
 
 export function* watchGhostContact() {
   yield takeEvery(GHOST_CONTACT, ghostContactSaga);
+}
+
+// delete conversation
+export const DELETE_CONVERSATION = "DELETE_CONVERSATION";
+export const deleteConversation = createAction(DELETE_CONVERSATION);
+export function* deleteConversationSaga(action: Action<any>) {
+  try {
+
+    const state: WonderAppState = yield select();
+    const { data }: { data: Conversation[] } = yield call(api, {
+      method: 'DELETE',
+      url: `/conversations/${action.payload.partner.id}/messages/${action.payload.id}`
+
+    }, state.user);
+    console.log('DONE: ', data);
+    // yield put(persistConversation(data));
+
+  } catch (error) {
+    handleAxiosError(error);
+  } finally {
+    yield put(getUser());
+  }
+}
+
+export function* watchGetConversation() {
+  yield takeEvery(DELETE_CONVERSATION, deleteConversationSaga);
 }

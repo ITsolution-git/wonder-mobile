@@ -16,6 +16,9 @@ import Proposal from "src/models/proposal";
 import User from "src/models/user";
 import pushNotification from "../../../services/push-notification";
 import { updateUser } from "../../../store/sagas/user";
+import {
+  getConversations,
+} from "src/store/sagas/conversations";
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),
@@ -33,7 +36,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
     dispatch(rateProposal({ proposal, liked: false })),
   onRightSwipe: (proposal: Proposal) =>
     dispatch(rateProposal({ proposal, liked: true })),
-  onClearCurrentMatch: () => dispatch(persistCurrentMatch({}))
+  onClearCurrentMatch: () => dispatch(persistCurrentMatch({})),
+  onRefreshConversations: () => dispatch(getConversations()),
 });
 
 type Candidate = Partial<User>;
@@ -84,21 +88,22 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   setCandidate = (candidate?: Candidate | null) => {
     this.setState({ candidate });
-  };
+  }
 
   clearCandidate = () => {
     this.setState({ candidate: null });
-  };
+  }
 
   clearCurrentMatch = () => {
     this.props.onClearCurrentMatch();
-  };
+  }
 
   goToChat = () => {
     const { navigation } = this.props;
     this.props.onClearCurrentMatch();
+    this.props.onRefreshConversations();
     navigation.navigate("ChatList");
-  };
+  }
 
   render() {
     const {
@@ -116,7 +121,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
             proposal={proposal}
             onSwipeRight={onRightSwipe}
             onSwipeLeft={onLeftSwipe}
-            // onTap={this.setCandidate}
+          // onTap={this.setCandidate}
           />
         </View>
         <FoundMatchModal
