@@ -15,6 +15,9 @@ import {
   sendMessage,
   ghostContact
 } from "src/store/sagas/conversations";
+import {
+  blockUser
+} from "src/store/sagas/partner";
 import { getDecoratedConversation, decorateMessagesForGiftedChat } from "src/store/selectors/conversation";
 import { selectCurrentUser } from "src/store/selectors/user";
 import User from "src/models/user";
@@ -84,7 +87,8 @@ const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   onGhostContact: (data: User) => dispatch(ghostContact(data)),
   onSendMessage: (message: any) => dispatch(persistNewChatMessage(message)),
   onReadMessages: (data) => dispatch(persistMessageAsRead(data)),
-  onSendGhostMessage: (data) => dispatch(persistGhostMessage(data))
+  onSendGhostMessage: (data) => dispatch(persistGhostMessage(data)),
+  onReportUser: (data) => dispatch(blockUser(data))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -112,7 +116,7 @@ class ChatScreen extends React.Component<Props> {
               <MenuOption onSelect={() => Alert.alert('Profile')} >
                 <Text style={{ fontSize: 16 }}>View profile</Text>
               </MenuOption>
-              <MenuOption onSelect={() => Alert.alert('Block and report')} >
+              <MenuOption onSelect={() => navigation.state.params.onBlockConversation()} >
                 <Text style={{ fontSize: 16, color: 'black' }}>Block and report</Text>
               </MenuOption>
 
@@ -133,21 +137,9 @@ class ChatScreen extends React.Component<Props> {
     conversationMessages: []
   };
 
-  showAlert = () => {
-    Alert.alert(
-      'Confirm',
-      'Are you sure you want to remove this conversation?',
-      [
-        { text: 'Cancel' },
-        { text: 'YES', onPress: this.ghostPartner },
-      ],
-      { cancelable: false }
-    );
-  }
-
   componentWillMount() {
     const { conversation, token, navigation } = this.props;
-    navigation.setParams({ title: conversation.partner.first_name + ' ' + conversation.partner.last_name, onGhostPartner: this.showAlert });
+    navigation.setParams({ title: conversation.partner.first_name, onGhostPartner: this.showAlert, onBlockConversation: this.showBlockAlert });
 
   }
 
@@ -194,6 +186,30 @@ class ChatScreen extends React.Component<Props> {
 
   closeGhostingModal = () => {
     this.setState({ isGhostingModalOpen: false });
+  }
+
+  showBlockAlert = () => {
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to remove this conversation?',
+      [
+        { text: 'Cancel' },
+        { text: 'YES', onPress: this.blockPartner },
+      ],
+      { cancelable: false }
+    );
+  }
+
+  showAlert = () => {
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to remove this conversation?',
+      [
+        { text: 'Cancel' },
+        { text: 'YES', onPress: this.ghostPartner },
+      ],
+      { cancelable: false }
+    );
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
@@ -261,6 +277,14 @@ class ChatScreen extends React.Component<Props> {
         this.setState({ selectedSendImage: source });
       }
     });
+  }
+
+  blockPartner = () => {
+    const { conversation, navigation, onGhostContact } = this.props;
+
+    this.props.onReportUser({ id: conversation.partner.id });
+    this.props.onSendGhostMessage({ ghostMessage: '', conversation_id: conversation.id, partner: conversation.partner });
+    navigation.navigate("ChatList");
   }
 
   renderFooter = () => {

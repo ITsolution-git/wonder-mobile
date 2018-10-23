@@ -28,8 +28,8 @@ class ChatGhostingModal extends React.Component<Props> {
     }
 
     renderContent = () => {
-        const { onCancel, onSuccess, conversation } = this.props;
-        console.log('conv: ', conversation);
+        const { onCancel } = this.props;
+
         return (
             <LinearGradient
                 colors={['#FFF', '#feec5a', '#f48e5c']}

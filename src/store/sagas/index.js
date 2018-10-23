@@ -18,7 +18,8 @@ import { watchCreateAppointment, watchGetAppointments } from "./appointment";
 import {
   watchGetPartners,
   watchGetPartnerActivities,
-  watchGetActivityDetails
+  watchGetActivityDetails,
+  watchBlockUser
 } from "./partner";
 import {
   watchGetConversation,
@@ -61,6 +62,7 @@ export default function* rootSaga() {
     watchGetPartners(),
     watchGetPartnerActivities(),
     watchGetActivityDetails(),
+    watchBlockUser(),
 
     // Conversation
     watchGetConversation(),
