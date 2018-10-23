@@ -7,22 +7,26 @@ import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import { Dispatch } from "redux";
 import {
   getConversations,
-  getConversation
+  getConversation,
+  ghostContact
 } from "src/store/sagas/conversations";
 
-import { persistNewReceivedMessage } from 'src/store/reducers/chat';
+import { persistNewReceivedMessage, persistChatSearch } from 'src/store/reducers/chat';
 
 import { connect } from "react-redux";
 import { selectCurrentUser } from "src/store/selectors/user";
 import Conversation from "src/models/conversation";
 import WonderAppState from "src/models/wonder-app-state";
 import Chat from "src/models/chat";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, Dimensions } from "react-native";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import SearchBar from "react-native-searchbar";
 import { getAttendances } from "src/store/sagas/attendance";
 import ActionCable from 'react-native-actioncable';
 import { DOMAIN } from "src/services/api";
+import { TextButton, PrimaryButton, Text } from 'src/views/components/theme';
+
+const { width } = Dimensions.get('window');
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -54,7 +58,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
     dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
   onGetAttendances: () => dispatch(getAttendances()),
-  onReceiveMessage: (data: object) => dispatch(persistNewReceivedMessage(data))
+  onReceiveMessage: (data: object) => dispatch(persistNewReceivedMessage(data)),
+  onSearchChange: (data) => dispatch(persistChatSearch(data)),
 });
 
 class ChatListScreen extends React.Component<Props> {
@@ -108,8 +113,7 @@ class ChatListScreen extends React.Component<Props> {
       }
     }
     if (chat.lastReadMessage && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
-      if (chat.lastReadMessage.last_message && !chat.lastReadMessage.last_message.read_at) {
-        console.log('THIS RAN', chat.lastReadMessage.last_message);
+      if (chat.lastReadMessage.last_message && chat.lastReadMessage.last_message.read_at === null) {
         this.appChat.perform('read', { message_id: chat.lastReadMessage.last_message.id });
       }
     }
@@ -124,6 +128,7 @@ class ChatListScreen extends React.Component<Props> {
 
   goToChat = (chat: Chat) => {
     const { onGetConversation } = this.props;
+
     onGetConversation(chat.partner.id);
   }
 
@@ -141,7 +146,8 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   handleChangeText = (text: string) => {
-    this.setState({ handleChangeText: text });
+    // this.setState({ handleChangeText: text });
+    this.props.onSearchChange(text);
   }
 
   showGhostedAlert = () => {
@@ -176,8 +182,9 @@ class ChatListScreen extends React.Component<Props> {
     const { conversations } = this.props;
     if (conversations.length) {
       return (
-        <View style={{ width: "50%" }} flexDirection={"row"}>
-          <ChatActionButton
+        <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0 }} >
+          <PrimaryButton
+            rounded={false}
             title="Search"
             onPress={this.openSearchModal}
           />
@@ -188,8 +195,9 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   render() {
-    const { conversations, onRefreshConversations, currentUser } = this.props;
-
+    const { conversations, onRefreshConversations, currentUser, chat } = this.props;
+    const { recentMatches } = chat;
+    const filteredConvos = conversations.filter((c) => c.partner !== null && !c.last_message);
     return (
       <Screen horizontalPadding={20}>
         {this.renderSearchbar()}
@@ -197,7 +205,7 @@ class ChatListScreen extends React.Component<Props> {
         <View>
           <LatestMatches
             onRefresh={onRefreshConversations}
-            chats={conversations}
+            chats={filteredConvos}
             onPressChat={this.goToChat}
           />
         </View>
@@ -207,11 +215,8 @@ class ChatListScreen extends React.Component<Props> {
           chats={this.props.conversations}
           onPressChat={this.goToChat}
         />
-        <View
-          style={styles.searchButtonContainer}
-        >
-          {this.renderSearchButton()}
-        </View>
+
+        {this.renderSearchButton()}
 
       </Screen>
     );
@@ -243,9 +248,8 @@ const styles = StyleSheet.create({
     borderColor: "#fcbd77"
   },
   searchButtonContainer: {
-    marginBottom: 10,
-    flexDirection: "row",
-    justifyContent: "center"
+    alignItems: 'stretch',
+    width: '100%'
   },
   latestText: { marginTop: 12 }
 });

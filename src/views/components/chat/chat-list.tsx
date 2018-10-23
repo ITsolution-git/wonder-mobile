@@ -3,9 +3,6 @@ import { FlatList, View, StyleSheet } from 'react-native';
 import { Title } from '../theme';
 import { ChatListItem } from '.';
 import Conversation from 'src/models/conversation';
-import { deleteConversation } from 'src/store/sagas/conversations';
-import { SwipeRow, Button } from 'native-base';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface ChatListProps {
   onRefresh?: () => void;
@@ -25,13 +22,11 @@ class ChatList extends React.Component<ChatListProps> {
 
   renderItem = ({ item: chat }: { item: Conversation }) => {
     const { onPressChat, currentUser } = this.props;
-
     return (
       <ChatListItem
         currentUser={currentUser}
         chat={chat}
         onPress={() => onPressChat(chat)}
-
       />
     );
   }
@@ -67,23 +62,3 @@ const styles = StyleSheet.create({
     flex: 1
   }
 });
-
-// <SwipeRow
-// style={{
-//   borderBottomWidth: 1,
-//   height: 90,
-//   borderBottomColor: '#e6e6ec',
-// }}
-// rightOpenValue={-75}
-// right={(
-//   <Button danger onPress={() => console.log('delete')}>
-//     <Icon name="trash" size={36} color="#FFF" />
-//   </Button>
-// )}
-// body={<ChatListItem
-//   currentUser={currentUser}
-//   chat={chat}
-//   onPress={() => onPressChat(chat)}
-// />}
-// />
-// );

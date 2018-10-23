@@ -95,7 +95,10 @@ class ChatScreen extends React.Component<Props> {
     navigation
   }: {
       navigation: NavigationScreenProp<any, NavigationParams>;
-    }) => ({
+    }) => {
+
+    // onGhostPartner; : navigation.getParam('onGhostPartner'),  ;
+    return {
       title: navigation.getParam('title', 'Chat'),
       headerRight: (
         <View style={{ marginRight: 10 }}>
@@ -110,18 +113,19 @@ class ChatScreen extends React.Component<Props> {
                 <Text style={{ fontSize: 16 }}>View profile</Text>
               </MenuOption>
               <MenuOption onSelect={() => Alert.alert('Block and report')} >
-                <Text style={{ fontSize: 16, color: 'red' }}>Block and report</Text>
+                <Text style={{ fontSize: 16, color: 'black' }}>Block and report</Text>
               </MenuOption>
 
-              <MenuOption onSelect={() => Alert.alert('Unmatch')} >
-                <Text style={{ fontSize: 16, color: 'red' }}>Unmatch</Text>
+              <MenuOption onSelect={() => navigation.state.params.onGhostPartner()} >
+                <Text style={{ fontSize: 16, color: 'black' }}>Unmatch</Text>
               </MenuOption>
             </MenuOptions>
           </Menu>
         </View>
       )
 
-    })
+    };
+  }
 
   state: ChatViewState = {
     isGhostingModalOpen: false,
@@ -129,9 +133,21 @@ class ChatScreen extends React.Component<Props> {
     conversationMessages: []
   };
 
+  showAlert = () => {
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to remove this conversation?',
+      [
+        { text: 'Cancel' },
+        { text: 'YES', onPress: this.ghostPartner },
+      ],
+      { cancelable: false }
+    );
+  }
+
   componentWillMount() {
     const { conversation, token, navigation } = this.props;
-    navigation.setParams({ title: conversation.partner.first_name + ' ' + conversation.partner.last_name });
+    navigation.setParams({ title: conversation.partner.first_name + ' ' + conversation.partner.last_name, onGhostPartner: this.showAlert });
 
   }
 
@@ -197,6 +213,7 @@ class ChatScreen extends React.Component<Props> {
   }
 
   renderBubble(props: any) {
+
     return (
       <Bubble
         {...props}
@@ -275,11 +292,12 @@ class ChatScreen extends React.Component<Props> {
   }
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, conversation } = this.props;
 
     return (
       <Screen>
         <GiftedChat
+          renderAvatarOnTop
           user={{ _id: currentUser.id }}
           renderSend={this.renderSend}
           renderBubble={this.renderBubble}
@@ -287,12 +305,14 @@ class ChatScreen extends React.Component<Props> {
           renderFooter={this.renderFooter}
           onSend={this.onSend}
           renderActions={this.renderActions}
-
+          dateFormat={'LLL'}
+          renderTime={() => null}
         />
         <ChatGhostingModal
           visible={this.state.isGhostingModalOpen}
           onSuccess={this.ghostPartner}
           onCancel={this.closeGhostingModal}
+          conversation={conversation}
         />
       </Screen>
     );
@@ -320,6 +340,7 @@ const bubbleWrapperStyle = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 10,
+    paddingBottom: 10,
     borderRadius: 5,
     elevation: 3,
     shadowColor: "blue",
@@ -336,6 +357,7 @@ const bubbleWrapperStyle = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 10,
+    paddingBottom: 10,
     borderRadius: 5,
     elevation: 3,
     shadowColor: "#000",

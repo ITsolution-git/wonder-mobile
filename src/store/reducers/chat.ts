@@ -13,12 +13,14 @@ export interface ChatState {
 export const initialState: ChatState = {
   conversations: [],
   conversation: [],
+  conversationsCopy: [],
   activities: [],
   activity: null,
   newOutgoingMessage: {},
   conversationsLib: [],
   lastReadMessage: {},
-  ghostMessage: undefined
+  ghostMessage: undefined,
+
 };
 
 export const persistConversations = createAction("PERSIST_CONVERSATIONS");
@@ -32,8 +34,25 @@ export const persistNewReceivedMessage = createAction("PERSIST_NEW_RECEIVED_MESS
 export const persistMessageAsRead = createAction("PERSIST_MESSAGE_AS_READ");
 export const persistGhostMessage = createAction("PERSIST_GHOST_MESSAGE");
 
+export const persistChatSearch = createAction("PERSIST_CHAT_SEARCH");
+
 export default handleActions(
   {
+    PERSIST_CHAT_SEARCH: (state: ChatState, action: Action<any>) => {
+      const original = state.conversations;
+      const results = state.conversations.filter((c) => c.partner.first_name.includes(action.payload));
+      if (action.payload) {
+        return {
+          ...state,
+          conversations: results
+        };
+      } else {
+        return {
+          ...state,
+          conversations: state.conversationsCopy
+        };
+      }
+    },
     PERSIST_GHOST_MESSAGE: (state: ChatState, action: Action<any>) => {
       const removedConversation = state.conversations.filter((c) => c.id !== action.payload.conversation_id);
       return {
@@ -43,7 +62,6 @@ export default handleActions(
       };
     },
     PERSIST_MESSAGE_AS_READ: (state = initialState, action: Action<any>) => {
-
       const { user, conversation_id } = action.payload;
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
         let lastRead;
@@ -135,11 +153,13 @@ export default handleActions(
     },
     PERSIST_CONVERSATIONS: (state = initialState, action: Action<any>) => {
       const conversationLib = action.payload.map((c: Conversation) => c.id);
+
       return {
         ...state,
         conversations: action.payload.filter((c) => c.partner !== null),
+        conversationsCopy: action.payload.filter((c) => c.partner !== null),
         conversationsLib: conversationLib,
-        lastReadMessage: null
+        lastReadMessage: null,
       };
     },
     PERSIST_CONVERSATION: (state: ChatState, action: Action<any>) => ({

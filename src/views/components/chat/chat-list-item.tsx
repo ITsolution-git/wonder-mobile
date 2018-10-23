@@ -8,11 +8,17 @@ import theme from 'src/assets/styles/theme';
 import Conversation from 'src/models/conversation';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
 
+import {
+  ghostContact
+} from "src/store/sagas/conversations";
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { SwipeRow, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { deleteConversation } from 'src/store/sagas/conversations';
+
+import { persistGhostMessage } from "src/store/reducers/chat";
 
 interface ChatListItemProps {
   chat: Conversation;
@@ -21,7 +27,9 @@ interface ChatListItemProps {
 }
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onDeleteConversation: (data) => dispatch(deleteConversation(data))
+  onDeleteConversation: (data) => dispatch(deleteConversation(data)),
+  onGhostContact: (data) => dispatch(ghostContact(data)),
+  onSendGhostMessage: (data) => dispatch(persistGhostMessage(data))
 });
 
 class ChatListItem extends React.Component<ChatListItemProps> {
@@ -80,8 +88,21 @@ class ChatListItem extends React.Component<ChatListItemProps> {
 
   deleteConversation = () => {
     const { chat } = this.props;
+    this.props.onGhostContact({ partner: chat.partner });
+    this.props.onSendGhostMessage({ ghostMessage: '', conversation_id: chat.id, partner: chat.partner });
+    // this.props.onDeleteConversation(chat);
+  }
 
-    this.props.onDeleteConversation(chat);
+  showAlert = () => {
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to remove this conversation?',
+      [
+        { text: 'Cancel' },
+        { text: 'YES', onPress: this.deleteConversation },
+      ],
+      { cancelable: false }
+    );
   }
 
   render() {
@@ -104,11 +125,11 @@ class ChatListItem extends React.Component<ChatListItemProps> {
         }}
         rightOpenValue={-75}
         right={(
-          <Button danger onPress={this.deleteConversation}>
-            <Icon name="trash" size={36} color="#FFF" />
+          <Button danger onPress={this.showAlert}>
+            <Icon name="trash" size={30} color="#FFF" />
           </Button>
         )}
-        body={<TouchableOpacity style={styles.container} onPress={onPress}>
+        body={<TouchableOpacity activeOpacity={0.8} style={styles.container} onPress={onPress}>
           <View flex={5} style={{ padding: 7 }}>
             <Avatar
               chat={chat}

@@ -104,7 +104,14 @@ export const ghostContact = createAction(GHOST_CONTACT);
 export function* ghostContactSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
-    const formattedMessage = action.payload.message.split(' ').join('+');
+    let formattedMessage;
+
+    if (action.payload.message) {
+      formattedMessage = action.payload.message.split(' ').join('+');
+    } else {
+      formattedMessage = '';
+    }
+
     const response = yield call(api, {
       method: 'DELETE',
       url: `/conversations/${action.payload.partner.id}/ghost?message=${formattedMessage}`,
@@ -133,7 +140,7 @@ export function* deleteConversationSaga(action: Action<any>) {
       url: `/conversations/${action.payload.partner.id}/messages/${action.payload.id}`
 
     }, state.user);
-    console.log('DONE: ', data);
+
     // yield put(persistConversation(data));
 
   } catch (error) {
@@ -143,6 +150,6 @@ export function* deleteConversationSaga(action: Action<any>) {
   }
 }
 
-export function* watchGetConversation() {
+export function* watchDeleteConversationSaga() {
   yield takeEvery(DELETE_CONVERSATION, deleteConversationSaga);
 }
