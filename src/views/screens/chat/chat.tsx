@@ -3,8 +3,21 @@ import _ from 'lodash';
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import ActionCable from 'react-native-actioncable';
 import Screen from "src/views/components/screen";
+import LinearGradient from 'react-native-linear-gradient';
 import theme from "src/assets/styles/theme";
-import { View, StyleSheet, TouchableOpacity, Image, Alert, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert,
+  Text,
+  Modal,
+  TouchableHighlight,
+  Dimensions,
+  ScrollView,
+  ImageBackground
+} from "react-native";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import { connect } from "react-redux";
@@ -47,6 +60,10 @@ import {
 
 import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
+import Wonder from "src/views/components/theme/wonder/wonder";
+import { IconButton } from "src/views/components/theme";
+
+const { height, width } = Dimensions.get('window');
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -113,7 +130,7 @@ class ChatScreen extends React.Component<Props> {
               </View>
             </MenuTrigger>
             <MenuOptions>
-              <MenuOption onSelect={() => Alert.alert('Profile')} >
+              <MenuOption onSelect={() => navigation.state.params.openProfileModal()} >
                 <Text style={{ fontSize: 16 }}>View profile</Text>
               </MenuOption>
               <MenuOption onSelect={() => navigation.state.params.onBlockConversation()} >
@@ -134,12 +151,13 @@ class ChatScreen extends React.Component<Props> {
   state: ChatViewState = {
     isGhostingModalOpen: false,
     selectedSendImage: '',
-    conversationMessages: []
+    conversationMessages: [],
+    profileModalOpen: false,
   };
 
   componentWillMount() {
     const { conversation, token, navigation } = this.props;
-    navigation.setParams({ title: conversation.partner.first_name, onGhostPartner: this.showAlert, onBlockConversation: this.showBlockAlert });
+    navigation.setParams({ title: conversation.partner.first_name, onGhostPartner: this.showAlert, onBlockConversation: this.showBlockAlert, openProfileModal: this.openProfileModal });
 
   }
 
@@ -186,6 +204,10 @@ class ChatScreen extends React.Component<Props> {
 
   closeGhostingModal = () => {
     this.setState({ isGhostingModalOpen: false });
+  }
+
+  openProfileModal = () => {
+    this.setState({ profileModalOpen: !this.state.profileModalOpen });
   }
 
   showBlockAlert = () => {
@@ -283,7 +305,9 @@ class ChatScreen extends React.Component<Props> {
     const { conversation, navigation, onGhostContact } = this.props;
 
     this.props.onReportUser({ id: conversation.partner.id });
-    this.props.onSendGhostMessage({ ghostMessage: '', conversation_id: conversation.id, partner: conversation.partner });
+    this.props.onSendGhostMessage(
+      { ghostMessage: '', conversation_id: conversation.id, partner: conversation.partner }
+    );
     navigation.navigate("ChatList");
   }
 
@@ -317,7 +341,8 @@ class ChatScreen extends React.Component<Props> {
 
   render() {
     const { currentUser, conversation } = this.props;
-
+    const { partner } = conversation;
+    console.log('partner: ', partner);
     return (
       <Screen>
         <GiftedChat
@@ -331,6 +356,7 @@ class ChatScreen extends React.Component<Props> {
           renderActions={this.renderActions}
           dateFormat={'LLL'}
           renderTime={() => null}
+          onPressAvatar={this.openProfileModal}
         />
         <ChatGhostingModal
           visible={this.state.isGhostingModalOpen}
@@ -338,6 +364,93 @@ class ChatScreen extends React.Component<Props> {
           onCancel={this.closeGhostingModal}
           conversation={conversation}
         />
+        <Modal
+          transparent={true}
+          animationType='slide'
+          visible={this.state.profileModalOpen}
+          onRequestClose={() => console.log('CLOSED')}>
+          <View style={{ flex: 1, marginLeft: 15, marginRight: 15, justifyContent: 'flex-end', marginBottom: 15 }}>
+            <View
+              style={{
+                position: 'relative', height: height / 3 * 2 + 50,
+                borderRadius: 10, backgroundColor: '#f1f1f1'
+              }}
+            >
+              <LinearGradient
+                colors={['black', 'transparent']}
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  height: 40,
+                  padding: 5,
+                  zIndex: 999,
+                  borderTopRightRadius: 10,
+                  borderTopLeftRadius: 10
+                }}
+              >
+                <View style={{ alignSelf: 'flex-end' }}>
+                  <IconButton
+                    size={35}
+                    icon={"close"}
+                    onPress={this.openProfileModal}
+                    primary={'#fff'}
+                    secondary="transparent"
+                  />
+                </View>
+
+              </LinearGradient>
+              <ScrollView style={{ borderRadius: 14 }}>
+                {partner.images.map((i, index) => {
+                  if (index === 0) {
+                    return (
+                      <ImageBackground
+                        key={i.url}
+                        style={{ height: height / 3 * 2 + 50, zIndex: 1 }}
+                        source={{ uri: i.url }}
+                      >
+                        <LinearGradient
+                          colors={['transparent', 'black']}
+                          style={{
+                            position: 'absolute',
+                            // top: 0,
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            height: 80,
+                            zIndex: 999,
+
+                          }}
+                        >
+                          <Text style={{ fontSize: 24, color: '#fff', marginLeft: 10 }}>{partner.first_name}</Text>
+                          <View style={{ flexDirection: 'row' }}>
+                            {partner.topics.map((t) => {
+                              return (
+
+                                <Wonder key={t.name} topic={t} size={60} active={false} />
+
+                              );
+                            })}
+                          </View>
+                        </LinearGradient>
+                      </ImageBackground>
+                    );
+                  } else {
+                    return (
+                      <ImageBackground
+                        key={i.url}
+                        style={{ height: height / 3 * 2 + 50, zIndex: 1 }}
+                        source={{ uri: i.url }}
+                      />
+                    );
+                  }
+                })}
+              </ScrollView>
+
+            </View>
+          </View>
+        </Modal>
       </Screen>
     );
   }
@@ -416,3 +529,36 @@ const styles = StyleSheet.create({
     borderColor: "#fcbd77"
   }
 });
+
+{/* <TouchableHighlight
+onPress={this.openProfileModal}>
+<Text>Hide Modal</Text>
+</TouchableHighlight> */}
+
+// <Wonder key={x.name} topic={x} size={60} active={active} />
+
+{/* <LinearGradient
+colors={['transparent', 'black']}
+style={{
+  position: 'absolute',
+  // top: 0,
+  bottom: 0,
+  left: 0,
+  right: 0,
+  height: 80,
+  padding: 5,
+  zIndex: 999,
+  borderBottomRightRadius: 10,
+  borderBottomLeftRadius: 10
+}}
+>
+<View style={{ flexDirection: 'row' }}>
+  {partner.topics.map((t) => {
+    return (
+
+      <Wonder key={t.name} topic={t} size={60} active={false} />
+
+    );
+  })}
+</View>
+</LinearGradient> */}

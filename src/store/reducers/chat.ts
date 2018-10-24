@@ -68,9 +68,12 @@ export default handleActions(
         const updateConvos = state.conversations.map((c: Conversation) => {
 
           if (c.last_message && c.id === conversation_id && c.last_message.sender_id !== user) {
+
             const obj = {
               ...c.last_message,
-              aasm_state: "delivered",
+              // aasm_state: "delivered",
+              status: c.last_message.aasm_state,
+              state: 'delivered',
               read_at: new Date().toISOString(),
             };
             c.last_message = obj;
@@ -94,7 +97,7 @@ export default handleActions(
         const newConvos = state.conversations.map((c: Conversation) => {
           if (c.partner) {
             if (c.partner.id && c.partner.id === action.payload.sender.id) {
-              c.last_message = action.payload;
+              c.last_message = { ...action.payload, aasm_state: "delivered" };
             }
           }
           return c;

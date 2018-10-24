@@ -18,7 +18,7 @@ import { selectCurrentUser } from "src/store/selectors/user";
 import Conversation from "src/models/conversation";
 import WonderAppState from "src/models/wonder-app-state";
 import Chat from "src/models/chat";
-import { View, StyleSheet, Alert, Dimensions } from "react-native";
+import { View, StyleSheet, Alert, Dimensions, Modal } from "react-native";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import SearchBar from "react-native-searchbar";
 import { getAttendances } from "src/store/sagas/attendance";
@@ -70,7 +70,8 @@ class ChatListScreen extends React.Component<Props> {
   state: ChatListScreenState = {
     isSearchModalOpen: false,
     results: [],
-    handleChangeText: ""
+    handleChangeText: "",
+
   };
 
   componentWillMount() {
@@ -85,11 +86,11 @@ class ChatListScreen extends React.Component<Props> {
     },
       {
         received: (data: any) => {
-          if (!data.hasOwnProperty('body')) {
-            console.log('D: ', data);
+          if (data === `{"error":{"message":"Event 'read' cannot transition from 'read'. "}}`) {
+            return;
+          } else if (data === '{"error":{"message":"Validation failed: Recipient must have already matched"}}') {
             this.showGhostedAlert();
           } else {
-            console.log('INCOMING MESSAGE: ', data);
             this.props.onReceiveMessage(data);
           }
 
@@ -113,17 +114,8 @@ class ChatListScreen extends React.Component<Props> {
       }
     }
     if (chat.lastReadMessage && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
-      if (chat.lastReadMessage.last_message && chat.lastReadMessage.last_message.read_at === null) {
-        this.appChat.perform('read', { message_id: chat.lastReadMessage.last_message.id });
-      }
+      this.appChat.perform('read', { message_id: chat.lastReadMessage.last_message.id });
     }
-    // if (chat.ghostMessage && chat.ghostMessage !== prevProps.chat.ghostMessage) {
-    //   this.appChat.deliver(
-    //     {
-    //       message: chat.ghostMessage.ghostMessage,
-    //       recipient_id: chat.ghostMessage.partner.id
-    //     });
-    // }
   }
 
   goToChat = (chat: Chat) => {
@@ -196,8 +188,8 @@ class ChatListScreen extends React.Component<Props> {
 
   render() {
     const { conversations, onRefreshConversations, currentUser, chat } = this.props;
-    const { recentMatches } = chat;
     const filteredConvos = conversations.filter((c) => c.partner !== null && !c.last_message);
+    console.log('conversations: ', conversations);
     return (
       <Screen horizontalPadding={20}>
         {this.renderSearchbar()}
@@ -253,3 +245,11 @@ const styles = StyleSheet.create({
   },
   latestText: { marginTop: 12 }
 });
+
+   // if (chat.ghostMessage && chat.ghostMessage !== prevProps.chat.ghostMessage) {
+    //   this.appChat.deliver(
+    //     {
+    //       message: chat.ghostMessage.ghostMessage,
+    //       recipient_id: chat.ghostMessage.partner.id
+    //     });
+    // }
