@@ -27,6 +27,7 @@ interface UserPushNotificationOptions {
 
 class AppLoadingScreen extends React.Component<Props> {
   componentDidMount() {
+    console.log('TOKEN: ', this.props.token);
     if (this.props.token) {
       this.props.navigation.navigate("Main");
       return;

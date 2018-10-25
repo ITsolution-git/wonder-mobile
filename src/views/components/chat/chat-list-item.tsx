@@ -17,7 +17,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { SwipeRow, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { deleteConversation } from 'src/store/sagas/conversations';
-
 import { persistGhostMessage } from "src/store/reducers/chat";
 
 interface ChatListItemProps {
@@ -130,16 +129,36 @@ class ChatListItem extends React.Component<ChatListItemProps> {
           </Button>
         )}
         body={<TouchableOpacity activeOpacity={0.8} style={styles.container} onPress={onPress}>
-          <View flex={5} style={{ padding: 7 }}>
-            <Avatar
-              chat={chat}
-              sender={chat.last_message.sender_id}
-              currentUser={currentUser}
-              circle
-              uri={(chat.partner.images && chat.partner.images.length) ? chat.partner.images[0].url : null}
-            />
+          <View
+            style={{
+              height: 80,
+              width: 80,
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          >
+            <View
+              style={
+                chat.last_message.sender_id !== currentUser.id && !chat.last_message.read_at ?
+                  {
+                    height: 74,
+                    width: 74, borderColor: theme.colors.primaryLight,
+                    borderWidth: 4,
+                    borderRadius: 37,
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  } : null}
+            >
+              <Avatar
+                chat={chat}
+                sender={chat.last_message.sender_id}
+                currentUser={currentUser}
+                circle
+                uri={(chat.partner.images && chat.partner.images.length) ? chat.partner.images[0].url : null}
+              />
+            </View>
           </View>
-          <View flex={10} style={styles.textContainer}>
+          <View flex={2} style={styles.textContainer}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Title style={{ color: '#000' }}>{chat.partner.first_name} </Title>
               {this.renderGreenDot()}
@@ -148,7 +167,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
             {this.renderRecentMessage()}
 
           </View>
-        </TouchableOpacity>}
+        </ TouchableOpacity>}
       />
     );
 
@@ -168,6 +187,10 @@ const styles = StyleSheet.create({
 
   },
   textContainer: {
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingLeft: 20,
   }
 });
+
+// chat.last_message.sender_id !== currentUser.id && !chat.last_message.read_at
+//  borderColor: theme.colors.primaryLight,

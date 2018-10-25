@@ -16,7 +16,8 @@ import {
   TouchableHighlight,
   Dimensions,
   ScrollView,
-  ImageBackground
+  ImageBackground,
+  Platform
 } from "react-native";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
@@ -48,7 +49,7 @@ import {
 } from "src/store/reducers/appointment";
 import { persistNewChatMessage, persistMessageAsRead, persistGhostMessage } from "src/store/reducers/chat";
 import Assets from "src/assets/images";
-
+import Topic from "src/models/topic";
 import ImagePicker from 'react-native-image-picker';
 
 import {
@@ -134,7 +135,7 @@ class ChatScreen extends React.Component<Props> {
             </MenuTrigger>
             <MenuOptions>
               <MenuOption onSelect={() => navigation.state.params.openProfileModal()} >
-                <Text style={{ fontSize: 16 }}>View profile</Text>
+                <Text style={{ fontSize: 16, color: 'black' }}>View profile</Text>
               </MenuOption>
               <MenuOption onSelect={() => navigation.state.params.onBlockConversation()} >
                 <Text style={{ fontSize: 16, color: 'black' }}>Block and report</Text>
@@ -156,6 +157,7 @@ class ChatScreen extends React.Component<Props> {
     selectedSendImage: '',
     conversationMessages: [],
     profileModalOpen: false,
+    showVideo: false
   };
 
   componentWillMount() {
@@ -314,6 +316,27 @@ class ChatScreen extends React.Component<Props> {
     navigation.navigate("ChatList");
   }
 
+  getTopics = () => {
+    const { currentUser, conversation } = this.props;
+    const candidate = conversation.partner;
+    const candidateTopics = candidate.topics || [];
+    const userTopics = currentUser.topics;
+
+    return (
+      <View style={{ flexDirection: "row" }}>
+        {candidate &&
+          candidateTopics.map((x: Topic) => {
+            if (userTopics) {
+              const active: boolean = !!userTopics.find((i: Topic) => i.name === x.name);
+              return (
+                <Wonder key={x.name} topic={x} size={60} active={active} />
+              );
+            }
+          })}
+      </View>
+    );
+  }
+
   renderFooter = () => {
     return (
       <View
@@ -345,9 +368,7 @@ class ChatScreen extends React.Component<Props> {
   render() {
     const { currentUser, conversation } = this.props;
     const { partner } = conversation;
-    console.log('partner: ', `${BASE_URL}/${partner.video}`);
-    console.log(partner);
-    //  https://api.getwonderapp.com/yoqMAsNHrw6n4C1gMPMW1P3L
+    console.log('height: ', height / 3 * 2);
     return (
       <Screen>
         <GiftedChat
@@ -377,12 +398,12 @@ class ChatScreen extends React.Component<Props> {
           <View style={{ flex: 1, marginLeft: 15, marginRight: 15, justifyContent: 'flex-end', marginBottom: 15 }}>
             <View
               style={{
-                position: 'relative', height: height / 3 * 2 + 50,
+                position: 'relative', height: height / 3 * 2,
                 borderRadius: 10, backgroundColor: '#f1f1f1'
               }}
             >
               <LinearGradient
-                colors={['black', 'transparent']}
+                colors={['rgba(0,0,0,0.5)', 'transparent']}
                 style={{
                   position: 'absolute',
                   top: 0,
@@ -395,7 +416,30 @@ class ChatScreen extends React.Component<Props> {
                   borderTopLeftRadius: 10
                 }}
               >
-                <View style={{ alignSelf: 'flex-end' }}>
+                <View
+                  style={
+                    {
+                      alignSelf: 'stretch',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between'
+                    }}
+                >
+                  {partner.video ? <View>
+                    {this.state.showVideo ? <IconButton
+                      size={35}
+                      icon={"camera"}
+                      onPress={() => this.setState({ showVideo: false })}
+                      primary={'#fff'}
+                      secondary="transparent"
+                    /> : <IconButton
+                        size={35}
+                        icon={"video-camera"}
+                        onPress={() => this.setState({ showVideo: true })}
+                        primary={'#fff'}
+                        secondary="transparent"
+                      />
+                    }
+                  </View> : <View />}
                   <IconButton
                     size={35}
                     icon={"close"}
@@ -406,53 +450,73 @@ class ChatScreen extends React.Component<Props> {
                 </View>
 
               </LinearGradient>
-              <ScrollView style={{ borderRadius: 14 }}>
-                {partner.images.map((i, index) => {
-                  if (index === 0) {
-                    return (
-                      <ImageBackground
-                        key={i.url}
-                        style={{ height: height / 3 * 2 + 50, zIndex: 1 }}
-                        source={{ uri: i.url }}
-                      >
-                        <LinearGradient
-                          colors={['transparent', 'black']}
-                          style={{
-                            position: 'absolute',
-                            // top: 0,
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            height: 80,
-                            zIndex: 999,
-
-                          }}
-                        >
-                          <Text style={{ fontSize: 24, color: '#fff', marginLeft: 10 }}>{partner.first_name}</Text>
-                          <View style={{ flexDirection: 'row' }}>
-                            {partner.topics.map((t) => {
-                              return (
-
-                                <Wonder key={t.name} topic={t} size={60} active={false} />
-
-                              );
-                            })}
-                          </View>
-                        </LinearGradient>
-                      </ImageBackground>
-                    );
-                  } else {
-                    return (
-                      <ImageBackground
-                        key={i.url}
-                        style={{ height: height / 3 * 2 + 50, zIndex: 1 }}
-                        source={{ uri: i.url }}
-                      />
-                    );
-                  }
-                })}
-              </ScrollView>
-
+              <View style={{ borderRadius: 14, overflow: 'hidden' }}>
+                <ScrollView >
+                  {partner.video && this.state.showVideo ? <View style={{ height: height / 3 * 2, zIndex: 1 }}>
+                    <VideoPlayer
+                      customStyles={{ videoWrapper: { backgroundColor: 'black', borderRadius: 14 } }}
+                      videoHeight={Platform.OS === 'ios' ? height / 3 * 2 * 4.5 : 1790}
+                      // videoWidth={2500}
+                      pauseOnPress={true}
+                      disableFullscreen={true}
+                      autoplay={true}
+                      video={{
+                        uri: `${partner.video}`
+                      }}
+                    />
+                  </View> :
+                    <View style={{ borderRadius: 14, overflow: 'hidden' }}>
+                      {partner.images.map((i, index) => {
+                        if (index === 0) {
+                          return (
+                            <ImageBackground
+                              key={i.url}
+                              style={{ height: height / 3 * 2, zIndex: 1 }}
+                              source={{ uri: i.url }}
+                            >
+                              <LinearGradient
+                                colors={['transparent', 'black']}
+                                style={{
+                                  position: 'absolute',
+                                  // top: 0,
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  height: 110,
+                                  padding: 10,
+                                  zIndex: 999,
+                                }}
+                              >
+                                <Text
+                                  style={
+                                    {
+                                      fontSize: 24,
+                                      color: '#fff',
+                                      marginLeft: 10,
+                                      marginBottom: 5
+                                    }}
+                                >
+                                  {partner.first_name}
+                                </Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                  {this.getTopics()}
+                                </View>
+                              </LinearGradient>
+                            </ImageBackground>
+                          );
+                        } else {
+                          return (
+                            <ImageBackground
+                              key={i.url}
+                              style={{ height: height / 3 * 2 + 50, zIndex: 1 }}
+                              source={{ uri: i.url }}
+                            />
+                          );
+                        }
+                      })}
+                    </View>}
+                </ScrollView>
+              </View>
             </View>
           </View>
         </Modal>
@@ -534,102 +598,3 @@ const styles = StyleSheet.create({
     borderColor: "#fcbd77"
   }
 });
-
-{/* <TouchableHighlight
-onPress={this.openProfileModal}>
-<Text>Hide Modal</Text>
-</TouchableHighlight> */}
-
-// <Wonder key={x.name} topic={x} size={60} active={active} />
-
-{/* <LinearGradient
-colors={['transparent', 'black']}
-style={{
-  position: 'absolute',
-  // top: 0,
-  bottom: 0,
-  left: 0,
-  right: 0,
-  height: 80,
-  padding: 5,
-  zIndex: 999,
-  borderBottomRightRadius: 10,
-  borderBottomLeftRadius: 10
-}}
->
-<View style={{ flexDirection: 'row' }}>
-  {partner.topics.map((t) => {
-    return (
-
-      <Wonder key={t.name} topic={t} size={60} active={false} />
-
-    );
-  })}
-</View>
-</LinearGradient> */}
-
-///////////////////////////////
-
-// {partner.images.map((i, index) => {
-//   if (index === 0) {
-//     return (
-//       <ImageBackground
-//         key={i.url}
-//         style={{ height: height / 3 * 2 + 50, zIndex: 1 }}
-//         source={{ uri: i.url }}
-//       >
-//         <LinearGradient
-//           colors={['transparent', 'black']}
-//           style={{
-//             position: 'absolute',
-//             // top: 0,
-//             bottom: 0,
-//             left: 0,
-//             right: 0,
-//             height: 80,
-//             zIndex: 999,
-
-//           }}
-//         >
-//           <Text style={{ fontSize: 24, color: '#fff', marginLeft: 10 }}>{partner.first_name}</Text>
-//           <View style={{ flexDirection: 'row' }}>
-//             {partner.topics.map((t) => {
-//               return (
-
-//                 <Wonder key={t.name} topic={t} size={60} active={false} />
-
-//               );
-//             })}
-//           </View>
-//         </LinearGradient>
-//       </ImageBackground>
-//     );
-//   } else {
-//     return (
-//       <ImageBackground
-//         key={i.url}
-//         style={{ height: height / 3 * 2 + 50, zIndex: 1 }}
-//         source={{ uri: i.url }}
-//       />
-//     );
-//   }
-// })}
-
-// <View style={{ height: height / 3 * 2 + 50, zIndex: 1 }}>
-
-// <VideoPlayer
-// customStyles={{
-//   wrapper: {
-//     flex: 1
-//   }
-// }}
-// videoHeight={height}
-// videoWidth={width}
-// pauseOnPress={true}
-// disableFullscreen={true}
-// autoplay={true}
-// video={{
-//   uri: `${partner.video}`
-// }}
-
-// </View>

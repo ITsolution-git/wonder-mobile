@@ -189,7 +189,7 @@ class ChatListScreen extends React.Component<Props> {
   render() {
     const { conversations, onRefreshConversations, currentUser, chat } = this.props;
     const filteredConvos = conversations.filter((c) => c.partner !== null && !c.last_message);
-    console.log('conversations: ', conversations);
+
     return (
       <Screen horizontalPadding={20}>
         {this.renderSearchbar()}

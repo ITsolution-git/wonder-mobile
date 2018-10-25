@@ -149,37 +149,39 @@ export function* getUserSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
-    const { auth_token, id } = state.registration;
+    // const { auth_token, id } = state.registration;
 
     // if updating photo on registration
-    if (!state.user.auth.token) {
-      const uid = id;
-      const authHeader = {
-        auth: {
-          token: auth_token.token
-        }
-      };
+    // if (!state.user.auth.token) {
+    //   const uid = id;
+    //   const authHeader = {
+    //     auth: {
+    //       token: auth_token.token
+    //     }
+    //   };
 
-      const { data }: { data: User } = yield call(
-        api,
-        {
-          method: "GET",
-          url: `/users/${uid}`
-        },
-        authHeader
-      );
-      yield put(persistUser(data));
-    } else {
-      const { data }: { data: User } = yield call(
-        api,
-        {
-          method: "GET",
-          url: `/users/${auth.uid}`
-        },
-        state.user
-      );
-      yield put(persistUser(data));
-    }
+    //   const { data }: { data: User } = yield call(
+    //     api,
+    //     {
+    //       method: "GET",
+    //       url: `/users/${uid}`
+    //     },
+    //     authHeader
+    //   );
+    //   yield put(persistUser(data));
+    // } else {
+    console.log('GET USER: ', auth);
+    const { data }: { data: User } = yield call(
+      api,
+      {
+        method: "GET",
+        url: `/users/${auth.uid}`
+      },
+      state.user
+    );
+    console.log('GET USER: ', data);
+    yield put(persistUser(data));
+    // }
 
   } catch (error) {
     handleAxiosError(error);
