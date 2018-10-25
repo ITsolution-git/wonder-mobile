@@ -63,6 +63,9 @@ import { ImageSource } from "react-native-vector-icons/Icon";
 import Wonder from "src/views/components/theme/wonder/wonder";
 import { IconButton } from "src/views/components/theme";
 
+import VideoPlayer from "react-native-video-player";
+import { BASE_URL } from "src/services/api";
+
 const { height, width } = Dimensions.get('window');
 
 interface DispatchProps {
@@ -342,7 +345,9 @@ class ChatScreen extends React.Component<Props> {
   render() {
     const { currentUser, conversation } = this.props;
     const { partner } = conversation;
-    console.log('partner: ', partner);
+    console.log('partner: ', `${BASE_URL}/${partner.video}`);
+    console.log(partner);
+    //  https://api.getwonderapp.com/yoqMAsNHrw6n4C1gMPMW1P3L
     return (
       <Screen>
         <GiftedChat
@@ -562,3 +567,69 @@ style={{
   })}
 </View>
 </LinearGradient> */}
+
+///////////////////////////////
+
+// {partner.images.map((i, index) => {
+//   if (index === 0) {
+//     return (
+//       <ImageBackground
+//         key={i.url}
+//         style={{ height: height / 3 * 2 + 50, zIndex: 1 }}
+//         source={{ uri: i.url }}
+//       >
+//         <LinearGradient
+//           colors={['transparent', 'black']}
+//           style={{
+//             position: 'absolute',
+//             // top: 0,
+//             bottom: 0,
+//             left: 0,
+//             right: 0,
+//             height: 80,
+//             zIndex: 999,
+
+//           }}
+//         >
+//           <Text style={{ fontSize: 24, color: '#fff', marginLeft: 10 }}>{partner.first_name}</Text>
+//           <View style={{ flexDirection: 'row' }}>
+//             {partner.topics.map((t) => {
+//               return (
+
+//                 <Wonder key={t.name} topic={t} size={60} active={false} />
+
+//               );
+//             })}
+//           </View>
+//         </LinearGradient>
+//       </ImageBackground>
+//     );
+//   } else {
+//     return (
+//       <ImageBackground
+//         key={i.url}
+//         style={{ height: height / 3 * 2 + 50, zIndex: 1 }}
+//         source={{ uri: i.url }}
+//       />
+//     );
+//   }
+// })}
+
+// <View style={{ height: height / 3 * 2 + 50, zIndex: 1 }}>
+
+// <VideoPlayer
+// customStyles={{
+//   wrapper: {
+//     flex: 1
+//   }
+// }}
+// videoHeight={height}
+// videoWidth={width}
+// pauseOnPress={true}
+// disableFullscreen={true}
+// autoplay={true}
+// video={{
+//   uri: `${partner.video}`
+// }}
+
+// </View>
