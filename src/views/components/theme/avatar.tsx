@@ -21,7 +21,7 @@ interface AvatarProps {
   containerStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ImageStyle>;
   chat?: any;
-  currentUser?: number;
+  currentUser?: { id: number };
   sender: number;
 }
 
@@ -62,22 +62,16 @@ class Avatar extends React.Component<AvatarProps> {
     const { uri, style, chat, currentUser, circle } = this.props;
 
     if (uri) {
-      if (circle && chat && Platform.OS === 'ios') {
+      if (circle && chat) {
         return (
-          <View
-            style={chat.last_message.sender_id !== currentUser.id && !chat.last_message.read_at ? {
-              borderColor: theme.colors.primaryLight,
-              borderWidth: 4,
-              borderRadius: this.getDimensions() + 4 / 2
-            } : null}
-          >
+          <View>
             {uri ? <WonderImage
               style={[{
                 ...this.getContainerStyles(),
                 width: this.getDimensions(),
                 height: this.getDimensions(),
 
-              }, style, { margin: 2 }]}
+              }, style]}
               uri={uri}
             /> :
               <Icon

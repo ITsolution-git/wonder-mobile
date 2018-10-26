@@ -1,4 +1,5 @@
 import React from "react";
+import _ from 'lodash';
 import Screen from "src/views/components/screen";
 import { ChatList, LatestMatches } from "src/views/components/chat";
 import { Title } from "src/views/components/theme";
@@ -7,22 +8,26 @@ import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import { Dispatch } from "redux";
 import {
   getConversations,
-  getConversation
+  getConversation,
+  ghostContact
 } from "src/store/sagas/conversations";
 
-import { persistNewReceivedMessage } from 'src/store/reducers/chat';
+import { persistNewReceivedMessage, persistChatSearch } from 'src/store/reducers/chat';
 
 import { connect } from "react-redux";
 import { selectCurrentUser } from "src/store/selectors/user";
 import Conversation from "src/models/conversation";
 import WonderAppState from "src/models/wonder-app-state";
 import Chat from "src/models/chat";
-import { View, StyleSheet, Alert } from "react-native";
+import { View, StyleSheet, Alert, Dimensions, Modal } from "react-native";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import SearchBar from "react-native-searchbar";
 import { getAttendances } from "src/store/sagas/attendance";
 import ActionCable from 'react-native-actioncable';
 import { DOMAIN } from "src/services/api";
+import { TextButton, PrimaryButton, Text } from 'src/views/components/theme';
+
+const { width } = Dimensions.get('window');
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -34,6 +39,7 @@ interface Props {
   onReceiveMessage: (data: object) => void;
   currentUser: any;
   chat: Chat;
+  onSearchChange: (data: string) => void;
 }
 
 interface ChatListScreenState {
@@ -54,7 +60,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
     dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
   onGetAttendances: () => dispatch(getAttendances()),
-  onReceiveMessage: (data: object) => dispatch(persistNewReceivedMessage(data))
+  onReceiveMessage: (data: object) => dispatch(persistNewReceivedMessage(data)),
+  onSearchChange: (data: object) => dispatch(persistChatSearch(data)),
 });
 
 class ChatListScreen extends React.Component<Props> {
@@ -65,7 +72,8 @@ class ChatListScreen extends React.Component<Props> {
   state: ChatListScreenState = {
     isSearchModalOpen: false,
     results: [],
-    handleChangeText: ""
+    handleChangeText: "",
+
   };
 
   componentWillMount() {
@@ -80,7 +88,9 @@ class ChatListScreen extends React.Component<Props> {
     },
       {
         received: (data: any) => {
-          if (!data.hasOwnProperty('body')) {
+          if (data === `{"error":{"message":"Event 'read' cannot transition from 'read'. "}}`) {
+            return;
+          } else if (data === '{"error":{"message":"Validation failed: Recipient must have already matched"}}') {
             this.showGhostedAlert();
           } else {
             this.props.onReceiveMessage(data);
@@ -98,7 +108,6 @@ class ChatListScreen extends React.Component<Props> {
     if (chat.newOutgoingMessage.hasOwnProperty('message')) {
       if (
         chat.newOutgoingMessage.message !== prevProps.chat.newOutgoingMessage.message) {
-
         this.appChat.deliver(
           {
             message: chat.newOutgoingMessage.message.text,
@@ -106,17 +115,8 @@ class ChatListScreen extends React.Component<Props> {
           });
       }
     }
-    if (chat.lastReadMessage && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
-      if (chat.lastReadMessage.last_message && chat.lastReadMessage.last_message.aasm_state !== "read") {
-        this.appChat.perform('read', { message_id: chat.lastReadMessage.last_message.id });
-      }
-    }
-    if (chat.ghostMessage && chat.ghostMessage !== prevProps.chat.ghostMessage) {
-      this.appChat.deliver(
-        {
-          message: chat.ghostMessage.ghostMessage,
-          recipient_id: chat.ghostMessage.partner.id
-        });
+    if (!_.isEmpty(chat.lastReadMessage) && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
+      this.appChat.perform('read', { message_id: chat.lastReadMessage.last_message.id });
     }
   }
 
@@ -139,7 +139,13 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   handleChangeText = (text: string) => {
-    this.setState({ handleChangeText: text });
+    this.props.onSearchChange(text);
+  }
+
+  componentWillUnmount() {
+    if (this.appChat) {
+      this.cable.subscriptions.remove(this.appChat);
+    }
   }
 
   showGhostedAlert = () => {
@@ -174,8 +180,9 @@ class ChatListScreen extends React.Component<Props> {
     const { conversations } = this.props;
     if (conversations.length) {
       return (
-        <View style={{ width: "50%" }} flexDirection={"row"}>
-          <ChatActionButton
+        <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0 }} >
+          <PrimaryButton
+            rounded={false}
             title="Search"
             onPress={this.openSearchModal}
           />
@@ -186,16 +193,17 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   render() {
-    const { conversations, onRefreshConversations, currentUser } = this.props;
+    const { conversations, onRefreshConversations, currentUser, chat } = this.props;
+    const filteredConvos = conversations.filter((c) => c.partner !== null && !c.last_message);
 
     return (
       <Screen horizontalPadding={20}>
         {this.renderSearchbar()}
-        <Title>Latest Matches</Title>
+        <Title style={styles.latestText}>Latest Matches</Title>
         <View>
           <LatestMatches
             onRefresh={onRefreshConversations}
-            chats={conversations}
+            chats={filteredConvos}
             onPressChat={this.goToChat}
           />
         </View>
@@ -205,11 +213,8 @@ class ChatListScreen extends React.Component<Props> {
           chats={this.props.conversations}
           onPressChat={this.goToChat}
         />
-        <View
-          style={styles.searchButtonContainer}
-        >
-          {this.renderSearchButton()}
-        </View>
+
+        {this.renderSearchButton()}
 
       </Screen>
     );
@@ -241,8 +246,8 @@ const styles = StyleSheet.create({
     borderColor: "#fcbd77"
   },
   searchButtonContainer: {
-    marginBottom: 10,
-    flexDirection: "row",
-    justifyContent: "center"
-  }
+    alignItems: 'stretch',
+    width: '100%'
+  },
+  latestText: { marginTop: 12 }
 });

@@ -341,6 +341,8 @@ export function* updateVideoSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
+    const { auth_token, id } = state.registration;
+
     const body = new FormData();
     const profile: Partial<any> = action.payload;
     const video = {
@@ -349,15 +351,33 @@ export function* updateVideoSaga(action: Action<any>) {
       name: Date.now() + ".mp4"
     };
     body.append("video", video);
-    const { data }: { data: any } = yield call(
-      api,
-      {
-        method: "POST",
-        url: `/users/${auth.uid}/video`,
-        data: body
-      },
-      state.user
-    );
+
+    if (!state.user.auth.token) {
+      const authHeader = {
+        auth: {
+          token: auth_token.token
+        }
+      };
+      const { data }: { data: any } = yield call(
+        api,
+        {
+          method: "POST",
+          url: `/users/${id}/video`,
+          data: body
+        },
+        authHeader
+      );
+    } else {
+      const { data }: { data: any } = yield call(
+        api,
+        {
+          method: "POST",
+          url: `/users/${auth.uid}/video`,
+          data: body
+        },
+        state.user
+      );
+    }
     yield put(getUser());
   } catch (error) {
     handleAxiosError(error);

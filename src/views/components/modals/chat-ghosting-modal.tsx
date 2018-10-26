@@ -1,15 +1,16 @@
 import React from 'react';
 import _ from 'lodash';
-import { Modal, View, ModalProps, StyleSheet, Platform } from 'react-native';
-import { IconButton, TextArea, Title, SecondaryButton, Text } from '../theme';
-
+import { Modal, View, ModalProps, StyleSheet, Platform, Dimensions } from 'react-native';
+import { IconButton, TextArea, Title, SecondaryButton } from '../theme';
+import { Text, PrimaryButton, OutlineButton } from 'src/views/components/theme';
 import TouchableOpacityOnPress from '../../../models/touchable-on-press';
 import LinearGradient from 'react-native-linear-gradient';
 import theme from 'src/assets/styles/theme';
-
+const { width } = Dimensions.get('window');
 interface Props extends ModalProps {
     onCancel?: TouchableOpacityOnPress;
     onSuccess?: Function;
+    conversation?: object;
 }
 
 class ChatGhostingModal extends React.Component<Props> {
@@ -18,7 +19,7 @@ class ChatGhostingModal extends React.Component<Props> {
     };
 
     state = {
-        ghostMessage: 'It’s been fun chatting but I’m not interested at the moment.'
+        ghostMessage: `Hi ${this.props.conversation.partner.first_name}, Unfortunately I'm no longer interested but I hope you find someone wonder'ful! Good luck:)`
     };
 
     onSendGhost = () => {
@@ -28,7 +29,7 @@ class ChatGhostingModal extends React.Component<Props> {
     }
 
     renderContent = () => {
-        const { onCancel, onSuccess } = this.props;
+        const { onCancel } = this.props;
 
         return (
             <LinearGradient
@@ -36,23 +37,39 @@ class ChatGhostingModal extends React.Component<Props> {
                 style={styles.modal}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 0, y: 1 }}
-                locations={[0.5, 0.8, 1]}
+                locations={[0, 0.5, 1]}
             >
                 <View flexDirection={"column"} flex={1}>
-                    <Title style={{ fontSize: 24 }} color="#333">
-                        {'Time to disappear!'}
+                    <Title style={styles.title} color="#333">
+                        {'Thanks for not ghosting!'}
                     </Title>
-                    <View>
-                        <Text style={{ color: '#333' }}>Curb-kickin' time?</Text>
+                    <View style={styles.margin}>
+                        <Text style={styles.textColor}>
+                            Send a goodbye message, we will send it to them and remove them from your matches.
+                        </Text>
                         <TextArea
                             onChangeText={(ghostMessage) => this.setState({ ghostMessage })}
                             value={this.state.ghostMessage}
-                            style={{ backgroundColor: 'white', minHeight: 100 }}
+                            style={styles.textArea}
                         />
                     </View>
-                    <View flex={1} style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 12 }}>
-                        <SecondaryButton title="Submit" onPress={this.onSendGhost} />
-                        <SecondaryButton title="Cancel" onPress={onCancel} />
+                    <View
+                        flex={1}
+                        style={styles.btnContainer}
+                    >
+                        <SecondaryButton
+                            innerStyle={styles.secondInner}
+                            title="Cancel"
+                            onPress={onCancel}
+                            style={styles.secondOuter}
+                        />
+                        <PrimaryButton
+                            innerStyle={{ minWidth: 130 }}
+                            style={{ shadowOpacity: 0, minWidth: 100, marginLeft: 5 }}
+                            title="Submit"
+                            onPress={this.onSendGhost}
+
+                        />
                     </View>
                 </View>
             </LinearGradient>
@@ -68,7 +85,7 @@ class ChatGhostingModal extends React.Component<Props> {
                 transparent
                 {...rest}
             >
-                <View flex={1} style={{ maxHeight: 300 }}>
+                <View flex={1} style={{ maxHeight: 320 }}>
                     {this.renderContent()}
                 </View>
             </Modal>
@@ -116,5 +133,17 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
+    title: { fontSize: 22, marginTop: 7 },
+    margin: { marginTop: 5 },
+    textColor: { color: '#333' },
+    textArea: { backgroundColor: 'white', minHeight: 100, marginTop: 10 },
+    btnContainer: {
+        flexDirection: 'row',
+        marginTop: 12,
+        alignSelf: 'center',
+
+    },
+    secondInner: { minWidth: 130, backgroundColor: '#f1f1f1' },
+    secondOuter: { marginRight: 5, height: 44, justifyContent: 'center' }
 });

@@ -50,6 +50,7 @@ class LatestMatches extends React.Component<LatestMatchesProps> {
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
             horizontal={true}
+
           />
         </ScrollView>
       );

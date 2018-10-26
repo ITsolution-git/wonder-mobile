@@ -11,6 +11,7 @@ import Coordinate from '../../models/coordinate';
 import Activity from '../../models/activity';
 import ActivityDetails from '../../models/activity-details';
 import { handleAxiosError } from './utils';
+import { createElement } from 'react';
 
 export const GET_PARTNERS = 'GET_PARTNERS';
 export const getPartners = createAction(GET_PARTNERS);
@@ -86,4 +87,30 @@ export function* getActivityDetailsSaga(action: Action<any>) {
 
 export function* watchGetActivityDetails() {
   yield takeEvery(GET_ACTIVITY_DETAILS, getActivityDetailsSaga);
+}
+
+export const BLOCK_USER = 'BLOCK_USER';
+export const blockUser = createAction(BLOCK_USER);
+
+export function* blockUserSaga(action: Action<any>) {
+
+  try {
+    const state: WonderAppState = yield select();
+
+    const { data }: { data: ActivityDetails } = yield call(api, {
+      method: 'POST',
+      url: `/partners/${action.payload.id}/blocks?message=cow+goes-moo`
+    }, state.user);
+
+    // yield put(persistActivity(data));
+    // yield put(persistUser(data));
+  } catch (error) {
+    handleAxiosError(error);
+  } finally {
+    // yield put(getUser());
+  }
+}
+
+export function* watchBlockUser() {
+  yield takeEvery(BLOCK_USER, blockUserSaga);
 }

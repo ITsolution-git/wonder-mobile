@@ -1,10 +1,20 @@
 import React from "react";
 import _ from 'lodash';
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import ActionCable from 'react-native-actioncable';
 import Screen from "src/views/components/screen";
-import theme from "src/assets/styles/theme";
-import { View, StyleSheet, TouchableOpacity, Image, Alert, Text } from "react-native";
+import LinearGradient from 'react-native-linear-gradient';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert,
+  Text,
+  Modal,
+  Dimensions,
+  ScrollView,
+  ImageBackground,
+} from "react-native";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
 import { connect } from "react-redux";
@@ -12,9 +22,11 @@ import { Dispatch } from "redux";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   getConversation,
-  sendMessage,
   ghostContact
 } from "src/store/sagas/conversations";
+import {
+  blockUser
+} from "src/store/sagas/partner";
 import { getDecoratedConversation, decorateMessagesForGiftedChat } from "src/store/selectors/conversation";
 import { selectCurrentUser } from "src/store/selectors/user";
 import User from "src/models/user";
@@ -32,7 +44,7 @@ import {
 } from "src/store/reducers/appointment";
 import { persistNewChatMessage, persistMessageAsRead, persistGhostMessage } from "src/store/reducers/chat";
 import Assets from "src/assets/images";
-
+import Topic from "src/models/topic";
 import ImagePicker from 'react-native-image-picker';
 
 import {
@@ -44,6 +56,10 @@ import {
 
 import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
+import Wonder from "src/views/components/theme/wonder/wonder";
+import { IconButton } from "src/views/components/theme";
+import VideoPlayer from "react-native-video-player";
+const { height } = Dimensions.get('window');
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -52,6 +68,7 @@ interface DispatchProps {
   onGhostContact: (data: User) => void;
   onReadMessages: (data: any) => void;
   onSendGhostMessage: (data: any) => void;
+  onReportUser: (data: object) => void;
 }
 
 interface StateProps {
@@ -68,6 +85,8 @@ interface ChatViewState {
   isGhostingModalOpen: boolean;
   selectedSendImage: ImageSource;
   conversationMessages: GiftedChatMessage[];
+  profileModalOpen: boolean;
+  showVideo: boolean;
 }
 
 const mapState = (state: WonderAppState): StateProps => ({
@@ -78,13 +97,13 @@ const mapState = (state: WonderAppState): StateProps => ({
 
 const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
-  // onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
   onGhostContact: (data: User) => dispatch(ghostContact(data)),
   onSendMessage: (message: any) => dispatch(persistNewChatMessage(message)),
-  onReadMessages: (data) => dispatch(persistMessageAsRead(data)),
-  onSendGhostMessage: (data) => dispatch(persistGhostMessage(data))
+  onReadMessages: (data: object) => dispatch(persistMessageAsRead(data)),
+  onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data)),
+  onReportUser: (data: object) => dispatch(blockUser(data))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -95,7 +114,8 @@ class ChatScreen extends React.Component<Props> {
     navigation
   }: {
       navigation: NavigationScreenProp<any, NavigationParams>;
-    }) => ({
+    }) => {
+    return {
       title: navigation.getParam('title', 'Chat'),
       headerRight: (
         <View style={{ marginRight: 10 }}>
@@ -106,32 +126,41 @@ class ChatScreen extends React.Component<Props> {
               </View>
             </MenuTrigger>
             <MenuOptions>
-              <MenuOption onSelect={() => Alert.alert('Profile')} >
-                <Text style={{ fontSize: 16 }}>View profile</Text>
+              <MenuOption onSelect={() => navigation.state.params.openProfileModal()} >
+                <Text style={{ fontSize: 16, color: 'black' }}>View profile</Text>
               </MenuOption>
-              <MenuOption onSelect={() => Alert.alert('Block and report')} >
-                <Text style={{ fontSize: 16, color: 'red' }}>Block and report</Text>
+              <MenuOption onSelect={() => navigation.state.params.onBlockConversation()} >
+                <Text style={{ fontSize: 16, color: 'black' }}>Block and report</Text>
               </MenuOption>
 
-              <MenuOption onSelect={() => Alert.alert('Unmatch')} >
-                <Text style={{ fontSize: 16, color: 'red' }}>Unmatch</Text>
+              <MenuOption onSelect={() => navigation.state.params.onGhostPartner()} >
+                <Text style={{ fontSize: 16, color: 'black' }}>Unmatch</Text>
               </MenuOption>
             </MenuOptions>
           </Menu>
         </View>
       )
 
-    })
+    };
+  }
 
   state: ChatViewState = {
     isGhostingModalOpen: false,
     selectedSendImage: '',
-    conversationMessages: []
+    conversationMessages: [],
+    profileModalOpen: false,
+    showVideo: false
   };
 
   componentWillMount() {
-    const { conversation, token, navigation } = this.props;
-    navigation.setParams({ title: conversation.partner.first_name + ' ' + conversation.partner.last_name });
+    const { conversation, navigation } = this.props;
+    navigation.setParams(
+      {
+        title: conversation.partner.first_name,
+        onGhostPartner: this.showAlert,
+        onBlockConversation: this.showBlockAlert,
+        openProfileModal: this.openProfileModal
+      });
 
   }
 
@@ -164,20 +193,41 @@ class ChatScreen extends React.Component<Props> {
     navigation.navigate("WonderMap", { id: conversation.partner.id });
   }
 
-  ghostPartner = (ghostMessage: string) => {
-    const { navigation, onGhostContact, conversation } = this.props;
-
-    this.props.onSendGhostMessage({ ghostMessage, conversation_id: conversation.id, partner: conversation.partner });
-    onGhostContact(conversation.partner);
-    this.closeGhostingModal();
-    navigation.navigate("ChatList");
-  }
   openGhostingModal = () => {
     this.setState({ isGhostingModalOpen: true });
   }
 
   closeGhostingModal = () => {
     this.setState({ isGhostingModalOpen: false });
+  }
+
+  openProfileModal = () => {
+    this.setState({ profileModalOpen: !this.state.profileModalOpen });
+  }
+
+  showBlockAlert = () => {
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to remove this conversation?',
+      [
+        { text: 'Cancel' },
+        { text: 'YES', onPress: this.blockPartner },
+      ],
+      { cancelable: false }
+    );
+  }
+
+  // could refactor these two alerts
+  showAlert = () => {
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to remove this conversation?',
+      [
+        { text: 'Cancel' },
+        { text: 'YES', onPress: this.ghostPartner },
+      ],
+      { cancelable: false }
+    );
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
@@ -197,6 +247,7 @@ class ChatScreen extends React.Component<Props> {
   }
 
   renderBubble(props: any) {
+
     return (
       <Bubble
         {...props}
@@ -246,6 +297,46 @@ class ChatScreen extends React.Component<Props> {
     });
   }
 
+  blockPartner = () => {
+    const { conversation, navigation, onGhostContact } = this.props;
+
+    this.props.onReportUser({ id: conversation.partner.id });
+    this.props.onSendGhostMessage(
+      { ghostMessage: '', conversation_id: conversation.id, partner: conversation.partner }
+    );
+    navigation.navigate("ChatList");
+  }
+
+  ghostPartner = (ghostMessage: string) => {
+    const { navigation, onGhostContact, conversation } = this.props;
+
+    this.props.onSendGhostMessage({ ghostMessage, conversation_id: conversation.id, partner: conversation.partner });
+    onGhostContact({ partner: conversation.partner, message: ghostMessage });
+    this.closeGhostingModal();
+    navigation.navigate("ChatList");
+  }
+
+  getTopics = () => {
+    const { currentUser, conversation } = this.props;
+    const candidate = conversation.partner;
+    const candidateTopics = candidate.topics || [];
+    const userTopics = currentUser.topics;
+
+    return (
+      <View style={{ flexDirection: "row" }}>
+        {candidate &&
+          candidateTopics.map((x: Topic) => {
+            if (userTopics) {
+              const active: boolean = !!userTopics.find((i: Topic) => i.name === x.name);
+              return (
+                <Wonder key={x.name} topic={x} size={60} active={active} />
+              );
+            }
+          })}
+      </View>
+    );
+  }
+
   renderFooter = () => {
     return (
       <View
@@ -275,11 +366,13 @@ class ChatScreen extends React.Component<Props> {
   }
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, conversation } = this.props;
+    const { partner } = conversation;
 
     return (
       <Screen>
         <GiftedChat
+          renderAvatarOnTop
           user={{ _id: currentUser.id }}
           renderSend={this.renderSend}
           renderBubble={this.renderBubble}
@@ -287,13 +380,109 @@ class ChatScreen extends React.Component<Props> {
           renderFooter={this.renderFooter}
           onSend={this.onSend}
           renderActions={this.renderActions}
-
+          dateFormat={'LLL'}
+          renderTime={() => null}
+          onPressAvatar={this.openProfileModal}
         />
         <ChatGhostingModal
           visible={this.state.isGhostingModalOpen}
           onSuccess={this.ghostPartner}
           onCancel={this.closeGhostingModal}
+          conversation={conversation}
         />
+        <Modal
+          transparent={true}
+          animationType='slide'
+          visible={this.state.profileModalOpen}
+          onRequestClose={this.openProfileModal}
+        >
+          <View style={styles.modalContainer}>
+            <View
+              style={styles.modalInnerContainer}
+            >
+              <LinearGradient
+                colors={['rgba(0,0,0,0.5)', 'transparent']}
+                style={styles.topGradient}
+              >
+                <View style={styles.iconContainer} >
+                  {partner.video ? <View>
+                    {this.state.showVideo ? <IconButton
+                      size={35}
+                      icon={"camera"}
+                      onPress={() => this.setState({ showVideo: false })}
+                      primary={'#fff'}
+                      secondary="transparent"
+                    /> : <IconButton
+                        size={35}
+                        icon={"video-camera"}
+                        onPress={() => this.setState({ showVideo: true })}
+                        primary={'#fff'}
+                        secondary="transparent"
+                      />
+                    }
+                  </View> : <View />}
+                  <IconButton
+                    size={35}
+                    icon={"close"}
+                    onPress={this.openProfileModal}
+                    primary={'#fff'}
+                    secondary="transparent"
+                  />
+                </View>
+
+              </LinearGradient>
+              <View style={styles.scrollContainer}>
+                <ScrollView >
+                  {partner.video && this.state.showVideo ? <View style={styles.containerHeight}>
+                    <VideoPlayer
+                      customStyles={{ videoWrapper: styles.videoStyles }}
+                      videoHeight={height / 3 * 2 * 4.5}
+                      pauseOnPress={true}
+                      disableFullscreen={true}
+                      autoplay={true}
+                      video={{
+                        uri: `${partner.video}`
+                      }}
+                    />
+                  </View> :
+                    <View style={styles.imageContainer}>
+                      {partner.images.map((i, index) => {
+                        if (index === 0) {
+                          return (
+                            <ImageBackground
+                              key={i.url}
+                              style={styles.containerHeight}
+                              source={{ uri: i.url }}
+                            >
+                              <LinearGradient
+                                colors={['transparent', 'black']}
+                                style={styles.imageTopGradient}
+                              >
+                                <Text style={styles.firstNameText}>
+                                  {partner.first_name}, {partner.age}
+                                </Text>
+                                <View style={{ flexDirection: 'row' }}>
+                                  {this.getTopics()}
+                                </View>
+                              </LinearGradient>
+                            </ImageBackground>
+                          );
+                        } else {
+                          return (
+                            <ImageBackground
+                              key={i.url}
+                              style={styles.regularImageStyles}
+                              source={{ uri: i.url }}
+                            />
+                          );
+                        }
+                      })}
+                    </View>}
+                </ScrollView>
+              </View>
+            </View>
+          </View>
+        </Modal>
       </Screen>
     );
   }
@@ -320,6 +509,7 @@ const bubbleWrapperStyle = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 10,
+    paddingBottom: 10,
     borderRadius: 5,
     elevation: 3,
     shadowColor: "blue",
@@ -336,6 +526,7 @@ const bubbleWrapperStyle = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingTop: 10,
+    paddingBottom: 10,
     borderRadius: 5,
     elevation: 3,
     shadowColor: "#000",
@@ -368,5 +559,54 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderWidth: 1,
     borderColor: "#fcbd77"
-  }
+  },
+  // BELOW THIS LINE = PROFILE MODAL STYLES
+  modalContainer: {
+    flex: 1,
+    marginLeft: 15,
+    marginRight: 15,
+    justifyContent: 'flex-end',
+    marginBottom: 15
+  },
+  modalInnerContainer: {
+    position: 'relative', height: height / 3 * 2,
+    borderRadius: 10, backgroundColor: '#f1f1f1'
+  },
+  topGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 40,
+    padding: 5,
+    zIndex: 999,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10
+  },
+  iconContainer: {
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  scrollContainer: { borderRadius: 14, overflow: 'hidden' },
+  containerHeight: { height: height / 3 * 2, zIndex: 1 },
+  imageContainer: { borderRadius: 14, overflow: 'hidden' },
+  videoStyles: { backgroundColor: 'black', borderRadius: 14 },
+  imageTopGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 110,
+    padding: 10,
+    zIndex: 999,
+  },
+  firstNameText: {
+    fontSize: 24,
+    color: '#fff',
+    marginLeft: 10,
+    marginBottom: 5
+  },
+  regularImageStyles: { height: height / 3 * 2, zIndex: 1 }
 });
+//  videoHeight={Platform.OS === 'ios' ? height / 3 * 2 * 4.5 : 1790}

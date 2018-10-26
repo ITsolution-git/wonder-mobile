@@ -61,7 +61,7 @@ const AuthenticatedNavigator = createMaterialTopTabNavigator({
         paddingTop: Platform.select({ ios: 20, android: 0 }),
         backgroundColor: theme.colors.white,
         borderBottomWidth: 1,
-        borderBottomColor: theme.colors.secondary
+        borderBottomColor: theme.colors.primaryLight
       },
       indicatorStyle: {
         backgroundColor: theme.colors.white
