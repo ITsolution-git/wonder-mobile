@@ -21,7 +21,7 @@ interface AvatarProps {
   containerStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ImageStyle>;
   chat?: any;
-  currentUser?: number;
+  currentUser?: { id: number };
   sender: number;
 }
 
@@ -126,9 +126,3 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3
   }
 });
-
-// style={chat.last_message.sender_id !== currentUser.id && !chat.last_message.read_at ? {
-//   borderColor: theme.colors.primaryLight,
-//   borderWidth: 4,
-//   borderRadius: this.getDimensions() + 4 / 2
-// } : null}

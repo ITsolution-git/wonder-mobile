@@ -7,13 +7,9 @@ import Avatar from 'src/views/components/theme/avatar';
 import theme from 'src/assets/styles/theme';
 import Conversation from 'src/models/conversation';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
-
 import {
   ghostContact
 } from "src/store/sagas/conversations";
-
-import Icon from 'react-native-vector-icons/FontAwesome';
-
 import { SwipeRow, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { deleteConversation } from 'src/store/sagas/conversations';
@@ -22,13 +18,15 @@ import { persistGhostMessage } from "src/store/reducers/chat";
 interface ChatListItemProps {
   chat: Conversation;
   onPress: TouchableOpacityOnPress;
-  currentUser: number;
+  currentUser: { id: number };
+  onGhostContact: (data: object) => void;
+  onSendGhostMessage: (data: object) => void;
 }
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onDeleteConversation: (data) => dispatch(deleteConversation(data)),
-  onGhostContact: (data) => dispatch(ghostContact(data)),
-  onSendGhostMessage: (data) => dispatch(persistGhostMessage(data))
+  onDeleteConversation: (data: object) => dispatch(deleteConversation(data)),
+  onGhostContact: (data: object) => dispatch(ghostContact(data)),
+  onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data))
 });
 
 class ChatListItem extends React.Component<ChatListItemProps> {
@@ -89,7 +87,6 @@ class ChatListItem extends React.Component<ChatListItemProps> {
     const { chat } = this.props;
     this.props.onGhostContact({ partner: chat.partner });
     this.props.onSendGhostMessage({ ghostMessage: '', conversation_id: chat.id, partner: chat.partner });
-    // this.props.onDeleteConversation(chat);
   }
 
   showAlert = () => {
@@ -117,11 +114,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
 
     return (
       <SwipeRow
-        style={{
-          borderBottomWidth: 1,
-          height: 90,
-          borderBottomColor: '#e6e6ec',
-        }}
+        style={styles.swipeContainer}
         rightOpenValue={-75}
         right={(
           <Button danger onPress={this.showAlert}>
@@ -130,24 +123,12 @@ class ChatListItem extends React.Component<ChatListItemProps> {
         )}
         body={<TouchableOpacity activeOpacity={0.8} style={styles.container} onPress={onPress}>
           <View
-            style={{
-              height: 80,
-              width: 80,
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
+            style={styles.avatarOuterContainer}
           >
             <View
               style={
                 chat.last_message.sender_id !== currentUser.id && !chat.last_message.read_at ?
-                  {
-                    height: 74,
-                    width: 74, borderColor: theme.colors.primaryLight,
-                    borderWidth: 4,
-                    borderRadius: 37,
-                    justifyContent: 'center',
-                    alignItems: 'center'
-                  } : null}
+                  styles.unreadMessage : null}
             >
               <Avatar
                 chat={chat}
@@ -163,9 +144,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
               <Title style={{ color: '#000' }}>{chat.partner.first_name} </Title>
               {this.renderGreenDot()}
             </View>
-
             {this.renderRecentMessage()}
-
           </View>
         </ TouchableOpacity>}
       />
@@ -178,10 +157,6 @@ export default connect(null, mapDispatch)(ChatListItem);
 
 const styles = StyleSheet.create({
   container: {
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#e6e6ec',
-    // padding: 15,
-    // backgroundColor: 'orange',
     flexDirection: 'row',
     alignItems: 'center',
 
@@ -189,8 +164,24 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: 'center',
     paddingLeft: 20,
+  },
+  swipeContainer: {
+    borderBottomWidth: 1,
+    height: 90,
+    borderBottomColor: '#e6e6ec',
+  },
+  avatarOuterContainer: {
+    height: 80,
+    width: 80,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  unreadMessage: {
+    height: 74,
+    width: 74, borderColor: theme.colors.primaryLight,
+    borderWidth: 4,
+    borderRadius: 37,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
-
-// chat.last_message.sender_id !== currentUser.id && !chat.last_message.read_at
-//  borderColor: theme.colors.primaryLight,

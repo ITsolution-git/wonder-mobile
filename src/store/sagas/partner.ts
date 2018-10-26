@@ -89,8 +89,6 @@ export function* watchGetActivityDetails() {
   yield takeEvery(GET_ACTIVITY_DETAILS, getActivityDetailsSaga);
 }
 
-// /partners/836/blocks
-
 export const BLOCK_USER = 'BLOCK_USER';
 export const blockUser = createAction(BLOCK_USER);
 

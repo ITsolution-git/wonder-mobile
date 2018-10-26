@@ -1,4 +1,5 @@
 import React from "react";
+import _ from 'lodash';
 import Screen from "src/views/components/screen";
 import { ChatList, LatestMatches } from "src/views/components/chat";
 import { Title } from "src/views/components/theme";
@@ -38,6 +39,7 @@ interface Props {
   onReceiveMessage: (data: object) => void;
   currentUser: any;
   chat: Chat;
+  onSearchChange: (data: string) => void;
 }
 
 interface ChatListScreenState {
@@ -59,7 +61,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
     dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
   onGetAttendances: () => dispatch(getAttendances()),
   onReceiveMessage: (data: object) => dispatch(persistNewReceivedMessage(data)),
-  onSearchChange: (data) => dispatch(persistChatSearch(data)),
+  onSearchChange: (data: object) => dispatch(persistChatSearch(data)),
 });
 
 class ChatListScreen extends React.Component<Props> {
@@ -113,14 +115,13 @@ class ChatListScreen extends React.Component<Props> {
           });
       }
     }
-    if (chat.lastReadMessage && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
+    if (!_.isEmpty(chat.lastReadMessage) && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
       this.appChat.perform('read', { message_id: chat.lastReadMessage.last_message.id });
     }
   }
 
   goToChat = (chat: Chat) => {
     const { onGetConversation } = this.props;
-
     onGetConversation(chat.partner.id);
   }
 
@@ -138,8 +139,13 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   handleChangeText = (text: string) => {
-    // this.setState({ handleChangeText: text });
     this.props.onSearchChange(text);
+  }
+
+  componentWillUnmount() {
+    if (this.appChat) {
+      this.cable.subscriptions.remove(this.appChat);
+    }
   }
 
   showGhostedAlert = () => {
@@ -245,11 +251,3 @@ const styles = StyleSheet.create({
   },
   latestText: { marginTop: 12 }
 });
-
-   // if (chat.ghostMessage && chat.ghostMessage !== prevProps.chat.ghostMessage) {
-    //   this.appChat.deliver(
-    //     {
-    //       message: chat.ghostMessage.ghostMessage,
-    //       recipient_id: chat.ghostMessage.partner.id
-    //     });
-    // }

@@ -1,10 +1,8 @@
 import React from "react";
 import _ from 'lodash';
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import ActionCable from 'react-native-actioncable';
 import Screen from "src/views/components/screen";
 import LinearGradient from 'react-native-linear-gradient';
-import theme from "src/assets/styles/theme";
 import {
   View,
   StyleSheet,
@@ -13,11 +11,9 @@ import {
   Alert,
   Text,
   Modal,
-  TouchableHighlight,
   Dimensions,
   ScrollView,
   ImageBackground,
-  Platform
 } from "react-native";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
@@ -26,7 +22,6 @@ import { Dispatch } from "redux";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   getConversation,
-  sendMessage,
   ghostContact
 } from "src/store/sagas/conversations";
 import {
@@ -63,11 +58,8 @@ import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
 import Wonder from "src/views/components/theme/wonder/wonder";
 import { IconButton } from "src/views/components/theme";
-
 import VideoPlayer from "react-native-video-player";
-import { BASE_URL } from "src/services/api";
-
-const { height, width } = Dimensions.get('window');
+const { height } = Dimensions.get('window');
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -76,6 +68,7 @@ interface DispatchProps {
   onGhostContact: (data: User) => void;
   onReadMessages: (data: any) => void;
   onSendGhostMessage: (data: any) => void;
+  onReportUser: (data: object) => void;
 }
 
 interface StateProps {
@@ -92,6 +85,8 @@ interface ChatViewState {
   isGhostingModalOpen: boolean;
   selectedSendImage: ImageSource;
   conversationMessages: GiftedChatMessage[];
+  profileModalOpen: boolean;
+  showVideo: boolean;
 }
 
 const mapState = (state: WonderAppState): StateProps => ({
@@ -102,14 +97,13 @@ const mapState = (state: WonderAppState): StateProps => ({
 
 const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
-  // onSendMessage: (data: any) => dispatch(sendMessage(data)),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
   onGhostContact: (data: User) => dispatch(ghostContact(data)),
   onSendMessage: (message: any) => dispatch(persistNewChatMessage(message)),
-  onReadMessages: (data) => dispatch(persistMessageAsRead(data)),
-  onSendGhostMessage: (data) => dispatch(persistGhostMessage(data)),
-  onReportUser: (data) => dispatch(blockUser(data))
+  onReadMessages: (data: object) => dispatch(persistMessageAsRead(data)),
+  onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data)),
+  onReportUser: (data: object) => dispatch(blockUser(data))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -121,8 +115,6 @@ class ChatScreen extends React.Component<Props> {
   }: {
       navigation: NavigationScreenProp<any, NavigationParams>;
     }) => {
-
-    // onGhostPartner; : navigation.getParam('onGhostPartner'),  ;
     return {
       title: navigation.getParam('title', 'Chat'),
       headerRight: (
@@ -161,8 +153,14 @@ class ChatScreen extends React.Component<Props> {
   };
 
   componentWillMount() {
-    const { conversation, token, navigation } = this.props;
-    navigation.setParams({ title: conversation.partner.first_name, onGhostPartner: this.showAlert, onBlockConversation: this.showBlockAlert, openProfileModal: this.openProfileModal });
+    const { conversation, navigation } = this.props;
+    navigation.setParams(
+      {
+        title: conversation.partner.first_name,
+        onGhostPartner: this.showAlert,
+        onBlockConversation: this.showBlockAlert,
+        openProfileModal: this.openProfileModal
+      });
 
   }
 
@@ -195,14 +193,6 @@ class ChatScreen extends React.Component<Props> {
     navigation.navigate("WonderMap", { id: conversation.partner.id });
   }
 
-  ghostPartner = (ghostMessage: string) => {
-    const { navigation, onGhostContact, conversation } = this.props;
-
-    this.props.onSendGhostMessage({ ghostMessage, conversation_id: conversation.id, partner: conversation.partner });
-    onGhostContact({ partner: conversation.partner, message: ghostMessage });
-    this.closeGhostingModal();
-    navigation.navigate("ChatList");
-  }
   openGhostingModal = () => {
     this.setState({ isGhostingModalOpen: true });
   }
@@ -227,6 +217,7 @@ class ChatScreen extends React.Component<Props> {
     );
   }
 
+  // could refactor these two alerts
   showAlert = () => {
     Alert.alert(
       'Confirm',
@@ -316,6 +307,15 @@ class ChatScreen extends React.Component<Props> {
     navigation.navigate("ChatList");
   }
 
+  ghostPartner = (ghostMessage: string) => {
+    const { navigation, onGhostContact, conversation } = this.props;
+
+    this.props.onSendGhostMessage({ ghostMessage, conversation_id: conversation.id, partner: conversation.partner });
+    onGhostContact({ partner: conversation.partner, message: ghostMessage });
+    this.closeGhostingModal();
+    navigation.navigate("ChatList");
+  }
+
   getTopics = () => {
     const { currentUser, conversation } = this.props;
     const candidate = conversation.partner;
@@ -368,7 +368,7 @@ class ChatScreen extends React.Component<Props> {
   render() {
     const { currentUser, conversation } = this.props;
     const { partner } = conversation;
-    console.log('height: ', height / 3 * 2);
+    console.log('P: ', partner);
     return (
       <Screen>
         <GiftedChat
@@ -394,36 +394,17 @@ class ChatScreen extends React.Component<Props> {
           transparent={true}
           animationType='slide'
           visible={this.state.profileModalOpen}
-          onRequestClose={() => console.log('CLOSED')}>
-          <View style={{ flex: 1, marginLeft: 15, marginRight: 15, justifyContent: 'flex-end', marginBottom: 15 }}>
+          onRequestClose={this.openProfileModal}
+        >
+          <View style={styles.modalContainer}>
             <View
-              style={{
-                position: 'relative', height: height / 3 * 2,
-                borderRadius: 10, backgroundColor: '#f1f1f1'
-              }}
+              style={styles.modalInnerContainer}
             >
               <LinearGradient
                 colors={['rgba(0,0,0,0.5)', 'transparent']}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: 40,
-                  padding: 5,
-                  zIndex: 999,
-                  borderTopRightRadius: 10,
-                  borderTopLeftRadius: 10
-                }}
+                style={styles.topGradient}
               >
-                <View
-                  style={
-                    {
-                      alignSelf: 'stretch',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between'
-                    }}
-                >
+                <View style={styles.iconContainer} >
                   {partner.video ? <View>
                     {this.state.showVideo ? <IconButton
                       size={35}
@@ -450,13 +431,12 @@ class ChatScreen extends React.Component<Props> {
                 </View>
 
               </LinearGradient>
-              <View style={{ borderRadius: 14, overflow: 'hidden' }}>
+              <View style={styles.scrollContainer}>
                 <ScrollView >
-                  {partner.video && this.state.showVideo ? <View style={{ height: height / 3 * 2, zIndex: 1 }}>
+                  {partner.video && this.state.showVideo ? <View style={styles.containerHeight}>
                     <VideoPlayer
-                      customStyles={{ videoWrapper: { backgroundColor: 'black', borderRadius: 14 } }}
-                      videoHeight={Platform.OS === 'ios' ? height / 3 * 2 * 4.5 : 1790}
-                      // videoWidth={2500}
+                      customStyles={{ videoWrapper: styles.videoStyles }}
+                      videoHeight={height / 3 * 2 * 4.5}
                       pauseOnPress={true}
                       disableFullscreen={true}
                       autoplay={true}
@@ -465,38 +445,21 @@ class ChatScreen extends React.Component<Props> {
                       }}
                     />
                   </View> :
-                    <View style={{ borderRadius: 14, overflow: 'hidden' }}>
+                    <View style={styles.imageContainer}>
                       {partner.images.map((i, index) => {
                         if (index === 0) {
                           return (
                             <ImageBackground
                               key={i.url}
-                              style={{ height: height / 3 * 2, zIndex: 1 }}
+                              style={styles.containerHeight}
                               source={{ uri: i.url }}
                             >
                               <LinearGradient
                                 colors={['transparent', 'black']}
-                                style={{
-                                  position: 'absolute',
-                                  // top: 0,
-                                  bottom: 0,
-                                  left: 0,
-                                  right: 0,
-                                  height: 110,
-                                  padding: 10,
-                                  zIndex: 999,
-                                }}
+                                style={styles.imageTopGradient}
                               >
-                                <Text
-                                  style={
-                                    {
-                                      fontSize: 24,
-                                      color: '#fff',
-                                      marginLeft: 10,
-                                      marginBottom: 5
-                                    }}
-                                >
-                                  {partner.first_name}
+                                <Text style={styles.firstNameText}>
+                                  {partner.first_name}, {partner.age}
                                 </Text>
                                 <View style={{ flexDirection: 'row' }}>
                                   {this.getTopics()}
@@ -508,7 +471,7 @@ class ChatScreen extends React.Component<Props> {
                           return (
                             <ImageBackground
                               key={i.url}
-                              style={{ height: height / 3 * 2 + 50, zIndex: 1 }}
+                              style={styles.regularImageStyles}
                               source={{ uri: i.url }}
                             />
                           );
@@ -596,5 +559,54 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderWidth: 1,
     borderColor: "#fcbd77"
-  }
+  },
+  // BELOW THIS LINE = PROFILE MODAL STYLES
+  modalContainer: {
+    flex: 1,
+    marginLeft: 15,
+    marginRight: 15,
+    justifyContent: 'flex-end',
+    marginBottom: 15
+  },
+  modalInnerContainer: {
+    position: 'relative', height: height / 3 * 2,
+    borderRadius: 10, backgroundColor: '#f1f1f1'
+  },
+  topGradient: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 40,
+    padding: 5,
+    zIndex: 999,
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10
+  },
+  iconContainer: {
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  scrollContainer: { borderRadius: 14, overflow: 'hidden' },
+  containerHeight: { height: height / 3 * 2, zIndex: 1 },
+  imageContainer: { borderRadius: 14, overflow: 'hidden' },
+  videoStyles: { backgroundColor: 'black', borderRadius: 14 },
+  imageTopGradient: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 110,
+    padding: 10,
+    zIndex: 999,
+  },
+  firstNameText: {
+    fontSize: 24,
+    color: '#fff',
+    marginLeft: 10,
+    marginBottom: 5
+  },
+  regularImageStyles: { height: height / 3 * 2, zIndex: 1 }
 });
+//  videoHeight={Platform.OS === 'ios' ? height / 3 * 2 * 4.5 : 1790}

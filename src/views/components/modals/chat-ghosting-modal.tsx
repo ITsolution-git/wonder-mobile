@@ -1,7 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { Modal, View, ModalProps, StyleSheet, Platform, Dimensions } from 'react-native';
-import { IconButton, TextArea, Title, SecondaryButton, Text } from '../theme';
+import { IconButton, TextArea, Title, SecondaryButton } from '../theme';
 import { Text, PrimaryButton, OutlineButton } from 'src/views/components/theme';
 import TouchableOpacityOnPress from '../../../models/touchable-on-press';
 import LinearGradient from 'react-native-linear-gradient';
@@ -10,6 +10,7 @@ const { width } = Dimensions.get('window');
 interface Props extends ModalProps {
     onCancel?: TouchableOpacityOnPress;
     onSuccess?: Function;
+    conversation?: object;
 }
 
 class ChatGhostingModal extends React.Component<Props> {
@@ -39,35 +40,28 @@ class ChatGhostingModal extends React.Component<Props> {
                 locations={[0, 0.5, 1]}
             >
                 <View flexDirection={"column"} flex={1}>
-                    <Title style={{ fontSize: 22, marginTop: 7 }} color="#333">
+                    <Title style={styles.title} color="#333">
                         {'Thanks for not ghosting!'}
                     </Title>
-                    <View style={{ marginTop: 5 }}>
-                        <Text
-                            style={{ color: '#333' }}
-                        >
+                    <View style={styles.margin}>
+                        <Text style={styles.textColor}>
                             Send a goodbye message, we will send it to them and remove them from your matches.
                         </Text>
                         <TextArea
                             onChangeText={(ghostMessage) => this.setState({ ghostMessage })}
                             value={this.state.ghostMessage}
-                            style={{ backgroundColor: 'white', minHeight: 100, marginTop: 10 }}
+                            style={styles.textArea}
                         />
                     </View>
                     <View
                         flex={1}
-                        style={{
-                            flexDirection: 'row',
-                            marginTop: 12,
-                            alignSelf: 'center',
-
-                        }}
+                        style={styles.btnContainer}
                     >
                         <SecondaryButton
-                            innerStyle={{ minWidth: 130, backgroundColor: '#f1f1f1' }}
+                            innerStyle={styles.secondInner}
                             title="Cancel"
                             onPress={onCancel}
-                            style={{ marginRight: 5, height: 44, justifyContent: 'center' }}
+                            style={styles.secondOuter}
                         />
                         <PrimaryButton
                             innerStyle={{ minWidth: 130 }}
@@ -139,5 +133,17 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
+    title: { fontSize: 22, marginTop: 7 },
+    margin: { marginTop: 5 },
+    textColor: { color: '#333' },
+    textArea: { backgroundColor: 'white', minHeight: 100, marginTop: 10 },
+    btnContainer: {
+        flexDirection: 'row',
+        marginTop: 12,
+        alignSelf: 'center',
+
+    },
+    secondInner: { minWidth: 130, backgroundColor: '#f1f1f1' },
+    secondOuter: { marginRight: 5, height: 44, justifyContent: 'center' }
 });

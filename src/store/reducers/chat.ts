@@ -8,6 +8,7 @@ export interface ChatState {
   readonly conversation: Conversation | null;
   readonly activities: Activity[];
   readonly activity: ActivityDetails | null;
+  readonly conversationsCopy: Conversation[];
 }
 
 export const initialState: ChatState = {
@@ -39,7 +40,6 @@ export const persistChatSearch = createAction("PERSIST_CHAT_SEARCH");
 export default handleActions(
   {
     PERSIST_CHAT_SEARCH: (state: ChatState, action: Action<any>) => {
-      const original = state.conversations;
       const results = state.conversations.filter((c) => c.partner.first_name.includes(action.payload));
       if (action.payload) {
         return {
@@ -54,6 +54,7 @@ export default handleActions(
       }
     },
     PERSIST_GHOST_MESSAGE: (state: ChatState, action: Action<any>) => {
+
       const removedConversation = state.conversations.filter((c) => c.id !== action.payload.conversation_id);
       return {
         ...state,
@@ -71,9 +72,6 @@ export default handleActions(
 
             const obj = {
               ...c.last_message,
-              // aasm_state: "delivered",
-              status: c.last_message.aasm_state,
-              state: 'delivered',
               read_at: new Date().toISOString(),
             };
             c.last_message = obj;
@@ -92,6 +90,7 @@ export default handleActions(
       }
     },
     PERSIST_NEW_RECEIVED_MESSAGE: (state = initialState, action: Action<any>) => {
+
       const { conversation_id } = action.payload;
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
         const newConvos = state.conversations.map((c: Conversation) => {
@@ -104,7 +103,6 @@ export default handleActions(
         });
 
         if (state.conversation && state.conversation.id === conversation_id) {
-          // action.payload.id !== state.conversation.messages[0].id)
           return {
             ...state,
             conversation: {
