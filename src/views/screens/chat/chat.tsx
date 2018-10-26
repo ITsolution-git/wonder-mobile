@@ -368,7 +368,7 @@ class ChatScreen extends React.Component<Props> {
   render() {
     const { currentUser, conversation } = this.props;
     const { partner } = conversation;
-    console.log('P: ', partner);
+
     return (
       <Screen>
         <GiftedChat
