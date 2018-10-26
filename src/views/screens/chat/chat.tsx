@@ -53,13 +53,20 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-
+import Color from 'color';
 import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
 import Wonder from "src/views/components/theme/wonder/wonder";
 import { IconButton } from "src/views/components/theme";
 import VideoPlayer from "react-native-video-player";
+import theme from 'src/assets/styles/theme';
 const { height } = Dimensions.get('window');
+
+const gradient = [lighten(theme.colors.primaryLight, 0.5), lighten(theme.colors.primary, 0.5)];
+
+function lighten(color: string, value: number) {
+  return Color(color).fade(value).toString();
+}
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -392,11 +399,14 @@ class ChatScreen extends React.Component<Props> {
         />
         <Modal
           transparent={true}
-          animationType='slide'
+          animationType='fade'
           visible={this.state.profileModalOpen}
           onRequestClose={this.openProfileModal}
         >
-          <View style={styles.modalContainer}>
+          <LinearGradient
+            colors={gradient}
+            style={styles.modalContainer}
+          >
             <View
               style={styles.modalInnerContainer}
             >
@@ -458,7 +468,7 @@ class ChatScreen extends React.Component<Props> {
                                 colors={['transparent', 'black']}
                                 style={styles.imageTopGradient}
                               >
-                                <Text style={styles.firstNameText}>
+                                <Text allowFontScaling={false} style={styles.firstNameText}>
                                   {partner.first_name}, {partner.age}
                                 </Text>
                                 <View style={{ flexDirection: 'row' }}>
@@ -481,7 +491,7 @@ class ChatScreen extends React.Component<Props> {
                 </ScrollView>
               </View>
             </View>
-          </View>
+          </LinearGradient>
         </Modal>
       </Screen>
     );
@@ -563,14 +573,18 @@ const styles = StyleSheet.create({
   // BELOW THIS LINE = PROFILE MODAL STYLES
   modalContainer: {
     flex: 1,
-    marginLeft: 15,
-    marginRight: 15,
+    // marginLeft: 15,
+    // marginRight: 15,
     justifyContent: 'flex-end',
-    marginBottom: 15
+    // marginBottom: 15,
+
   },
   modalInnerContainer: {
     position: 'relative', height: height / 3 * 2,
-    borderRadius: 10, backgroundColor: '#f1f1f1'
+    borderRadius: 10, backgroundColor: '#f1f1f1',
+    marginRight: 15,
+    marginLeft: 15,
+    marginBottom: 15
   },
   topGradient: {
     position: 'absolute',
@@ -588,21 +602,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
-  scrollContainer: { borderRadius: 14, overflow: 'hidden' },
+  scrollContainer: { borderRadius: 10, overflow: 'hidden' },
   containerHeight: { height: height / 3 * 2, zIndex: 1 },
-  imageContainer: { borderRadius: 14, overflow: 'hidden' },
-  videoStyles: { backgroundColor: 'black', borderRadius: 14 },
+  imageContainer: { borderRadius: 10, overflow: 'hidden' },
+  videoStyles: { backgroundColor: 'black', borderRadius: 10 },
   imageTopGradient: {
     position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
-    height: 110,
+    height: 120,
     padding: 10,
     zIndex: 999,
   },
   firstNameText: {
-    fontSize: 24,
+    fontSize: 26,
     color: '#fff',
     marginLeft: 10,
     marginBottom: 5

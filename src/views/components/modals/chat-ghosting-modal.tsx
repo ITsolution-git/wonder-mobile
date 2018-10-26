@@ -30,7 +30,7 @@ class ChatGhostingModal extends React.Component<Props> {
 
     renderContent = () => {
         const { onCancel } = this.props;
-
+        // style={styles.margin}
         return (
             <LinearGradient
                 colors={['#FFF', '#feec5a', '#f48e5c']}
@@ -39,11 +39,11 @@ class ChatGhostingModal extends React.Component<Props> {
                 end={{ x: 0, y: 1 }}
                 locations={[0, 0.5, 1]}
             >
-                <View flexDirection={"column"} flex={1}>
+                <View flexDirection={"column"} flex={1} style={{ justifyContent: 'space-around' }}>
                     <Title style={styles.title} color="#333">
                         {'Thanks for not ghosting!'}
                     </Title>
-                    <View style={styles.margin}>
+                    <View flex={1} >
                         <Text style={styles.textColor}>
                             Send a goodbye message, we will send it to them and remove them from your matches.
                         </Text>
@@ -58,14 +58,14 @@ class ChatGhostingModal extends React.Component<Props> {
                         style={styles.btnContainer}
                     >
                         <SecondaryButton
-                            innerStyle={styles.secondInner}
+                            // innerStyle={styles.secondInner}
                             title="Cancel"
                             onPress={onCancel}
-                            style={styles.secondOuter}
+                            style={{ minWidth: 100 }}
                         />
                         <PrimaryButton
                             innerStyle={{ minWidth: 130 }}
-                            style={{ shadowOpacity: 0, minWidth: 100, marginLeft: 5 }}
+                            style={{ shadowOpacity: 0, minWidth: 100 }}
                             title="Submit"
                             onPress={this.onSendGhost}
 
@@ -85,7 +85,7 @@ class ChatGhostingModal extends React.Component<Props> {
                 transparent
                 {...rest}
             >
-                <View flex={1} style={{ maxHeight: 320 }}>
+                <View style={{ flex: 1, maxHeight: 355 }}>
                     {this.renderContent()}
                 </View>
             </Modal>
@@ -98,7 +98,7 @@ export default ChatGhostingModal;
 const styles = StyleSheet.create({
     modal: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         padding: 20
     },
     modalButton: {
@@ -142,7 +142,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         marginTop: 12,
         alignSelf: 'center',
-
+        alignItems: 'center',
+        width: '100%',
+        justifyContent: 'space-around'
     },
     secondInner: { minWidth: 130, backgroundColor: '#f1f1f1' },
     secondOuter: { marginRight: 5, height: 44, justifyContent: 'center' }
