@@ -323,6 +323,15 @@ class ChatScreen extends React.Component<Props> {
     navigation.navigate("ChatList");
   }
 
+  renderDistance() {
+    const { conversation } = this.props;
+    return (
+      <Text style={{ color: '#fff' }}>
+        {conversation.partner.distance && _.get(conversation.partner, 'partner.distance', 0).toFixed(0)} miles
+        </Text>
+    );
+  }
+
   getTopics = () => {
     const { currentUser, conversation } = this.props;
     const candidate = conversation.partner;
@@ -468,14 +477,22 @@ class ChatScreen extends React.Component<Props> {
                                 colors={['transparent', 'black']}
                                 style={styles.imageTopGradient}
                               >
-                                <Text allowFontScaling={false} style={styles.firstNameText}>
-                                  {partner.first_name}, {partner.age}
-                                </Text>
-                                <View style={{ flexDirection: 'row' }}>
+                                <View style={styles.nameContainer}>
+                                  <Text allowFontScaling={false} style={styles.firstNameText}>
+                                    {partner.first_name}, {partner.age}
+                                  </Text>
+                                  {this.renderDistance()}
+                                </View>
+                                <View style={styles.topicsContainer}>
                                   {this.getTopics()}
+                                  <View>
+                                    <Text style={styles.occupationText}>{partner.occupation}</Text>
+                                    <Text style={styles.schoolText}>{partner.school}</Text>
+                                  </View>
                                 </View>
                               </LinearGradient>
                             </ImageBackground>
+
                           );
                         } else {
                           return (
@@ -621,6 +638,10 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 5
   },
-  regularImageStyles: { height: height / 3 * 2, zIndex: 1 }
+  regularImageStyles: { height: height / 3 * 2, zIndex: 1 },
+  nameContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  occupationText: { color: '#fff', marginLeft: 10, lineHeight: 24 },
+  topicsContainer: { flexDirection: 'row', justifyContent: 'space-between' },
+  schoolText: { color: '#fff', marginLeft: 10 }
 });
 //  videoHeight={Platform.OS === 'ios' ? height / 3 * 2 * 4.5 : 1790}

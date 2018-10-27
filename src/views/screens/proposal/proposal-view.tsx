@@ -96,6 +96,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   clearCurrentMatch = () => {
     this.props.onClearCurrentMatch();
+    this.props.onRefreshConversations();
   }
 
   goToChat = () => {
