@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle, Image } from 'react-native';
 import { Text } from '..';
 import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -113,13 +113,14 @@ const styles = StyleSheet.create({
   btnContainer: {
     minWidth: 150,
     minHeight: 44,
-    // padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: 14,
+    paddingBottom: 14
   },
   container: {
-    flex: 0
+    flex: 0,
   },
   txtContainer: {
     flex: 7,

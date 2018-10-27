@@ -31,26 +31,33 @@ class Onboarding extends React.Component<Props> {
             backgroundImage={Assets.ONBOARDING_1}
           >
             <View flex={1} />
-            <View style={styles.halfCircleFooter}>
-              <Text style={styles.body}>
-                Welcome to <Image source={Assets.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} />{'\n'}
-                We make it easy to connect you with people that enjoy the activities that you do.</Text>
+            <View style={styles.halfCircleFooterContainer}>
+              <View style={styles.halfCircleFooter}>
+                <Text style={styles.body}>
+                  Welcome to<Image source={Assets.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} />
+                  {'\n'}
+                  We make it easy to connect you{'\n'} with people that enjoy the activities{'\n'} that you do.</Text>
+              </View>
             </View>
           </SwipeView.Slide>
           <SwipeView.Slide
             backgroundImage={Assets.ONBOARDING_2}
           >
             <View flex={1} />
-            <View style={styles.halfCircleFooter}>
-              <Text style={styles.body}>{'Browse, match, and chat\nwith people nearby.'}</Text>
+            <View style={styles.halfCircleFooterContainer}>
+              <View style={styles.halfCircleFooter}>
+                <Text style={styles.body}>{'Browse, match, and chat\nwith people nearby.'}</Text>
+              </View>
             </View>
           </SwipeView.Slide>
           <SwipeView.Slide
             backgroundImage={Assets.ONBOARDING_3}
           >
             <View flex={1} />
-            <View style={styles.halfCircleFooter}>
-              <Text style={styles.body}>View and schedule activities{'\n'}with your <Image source={Assets.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} /> matches!</Text>
+            <View style={styles.halfCircleFooterContainer}>
+              <View style={styles.halfCircleFooter}>
+                <Text style={styles.body}>View and schedule activities{'\n'}with your <Image source={Assets.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} /> matches!</Text>
+              </View>
             </View>
           </SwipeView.Slide>
         </SwipeView>
@@ -76,15 +83,33 @@ const styles = StyleSheet.create({
   body: {
     textAlign: 'center',
     color: '#000',
-    lineHeight: 24
+    lineHeight: 24,
+    fontSize: 13,
+    marginLeft: 10,
+    marginRight: 10,
+    textAlignVertical: 'center'
   },
   halfCircleFooter: {
-    width: '100%',
+    width: DEVICE_WIDTH,
+    borderTopLeftRadius: DEVICE_WIDTH / 1.5,
+    borderTopRightRadius: DEVICE_WIDTH / 1.5,
+    overflow: 'hidden',
+    transform: [{scaleX: 1.3}],
     // borderTopLeftRadius: DEVICE_HEIGHT * 0.4,
     // borderTopRightRadius: DEVICE_HEIGHT * 0.4,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    height: DEVICE_HEIGHT * 0.4,
-    paddingTop: 55,
-    paddingHorizontal: 25
+    height: DEVICE_HEIGHT * 0.45,
+    minHeight: 260,
+    paddingTop: 35,
+    paddingHorizontal: 25,
+    alignSelf: 'center'
+  },
+    halfCircleFooterContainer: {
+      height: DEVICE_HEIGHT * 0.45,
+      minHeight: 260,
+      paddingTop: 55,
+      paddingHorizontal: 25,
+      width: DEVICE_WIDTH,
+      overflow: 'hidden'
   }
 });
