@@ -31,7 +31,7 @@ export function* getConversationsSaga(action: Action<any>) {
       },
       state.user
     );
-
+    console.log('RAN: ', data);
     yield put(persistConversations(data));
   } catch (error) {
     handleAxiosError(error);

@@ -4,9 +4,6 @@ import { createAction, Action } from 'redux-actions';
 import api from '../../services/api';
 import { persistProposal } from '../actions/proposal';
 
-
-
-
 import { Alert } from 'react-native';
 import { persistCurrentMatch } from '../reducers/wonder';
 import WonderAppState from '../../models/wonder-app-state';
