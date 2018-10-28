@@ -13,9 +13,10 @@ const disabledColors = [lighten(theme.colors.cottonCandyBlue, 0.1), lighten(them
 
 export default class ChatActionButton extends React.Component<BaseButtonProps> {
   render() {
-    const { disabled } = this.props;
+    const { disabled, bold } = this.props;
     return (
       <BaseButton
+        bold
         rounded
         color="#FFF"
         colors={disabled ? disabledColors : enabledColors}
