@@ -130,6 +130,7 @@ class CardDetailsOverlay extends React.Component<
   render() {
     const { showDetails, imageCount, location } = this.state;
     const { candidate } = this.props;
+
     const details = (
       <React.Fragment>
         <Text color="#FFF">

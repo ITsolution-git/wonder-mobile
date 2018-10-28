@@ -100,7 +100,7 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
         >
           {icon && this.renderIcon()}
           <View style={styles.txtContainer}>
-            <Text color={color} style={styles.title}>{title}</Text>
+            <Text allowFontScaling={false} color={color} style={styles.title}>{title}</Text>
           </View>
           {icon && <View flex={1} />}
         </ViewContainer>
