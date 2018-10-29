@@ -1,5 +1,5 @@
 import React from "react";
-import {View, StyleSheet, Image, Alert, Linking, TouchableOpacityComponent, TouchableOpacity} from "react-native";
+import {View, StyleSheet, Image, Alert, Linking, Dimensions, TouchableOpacity} from "react-native";
 import { Text, Button, PrimaryButton } from "src/views/components/theme";
 import theme from "src/assets/styles/theme";
 import Screen from "src/views/components/screen";
@@ -8,6 +8,7 @@ import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import { LoginManager } from "react-native-fbsdk";
 import TextButton from "src/views/components/theme/text-button";
 import { HTTP_DOMAIN } from "src/services/api";
+const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -48,7 +49,7 @@ export default class Welcome extends React.Component<Props> {
       <Screen backgroundImage={Images.WELCOME}>
         <View flex={1} style={styles.header}>
           <Image
-            style={{ width: "50%" }}
+            style={{ width: "55%" }}
             source={Logo.DARK}
             resizeMode="contain"
           />
@@ -56,6 +57,7 @@ export default class Welcome extends React.Component<Props> {
         <View style={styles.body}>
           <View style={{ width: "80%" }}>
             <PrimaryButton
+              style={styles.facebookLoginButton}
               fullWidth
               icon="envelope-o"
               title="CREATE ACCOUNT"
@@ -124,9 +126,12 @@ const styles = StyleSheet.create({
   },
   facebookLoginButton: {
     backgroundColor: "#FFF",
+    alignItems: 'center',
     marginTop: 10,
     minWidth: 150,
-    minHeight: 44,
+    minHeight: 50,
+    maxHeight: 70,
+    height: DEVICE_WIDTH * 0.15,
     flexDirection: 'row',
     paddingTop: 14,
     paddingBottom: 14,
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 1
+    elevation: 3
   },
   legalContainer: {
     flexDirection: 'row'
