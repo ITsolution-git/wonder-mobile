@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle, Image } from 'react-native';
+import {View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle, Image, Dimensions} from 'react-native';
 import { Text } from '..';
 import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -7,6 +7,7 @@ import Color from 'color';
 import LinearGradient from 'react-native-linear-gradient';
 import GradientPoint from 'src/models/gradient-point';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
+const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 
 const palette = Color(theme.colors.backgroundPrimary);
 
@@ -112,7 +113,8 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
 const styles = StyleSheet.create({
   btnContainer: {
     minWidth: 150,
-    minHeight: 44,
+    minHeight: 50,
+    height: DEVICE_WIDTH * 0.15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
     paddingBottom: 14
   },
   container: {
-    flex: 0,
+    // flex: 0,
   },
   txtContainer: {
     flex: 7,
