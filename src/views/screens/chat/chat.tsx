@@ -14,6 +14,7 @@ import {
   Dimensions,
   ScrollView,
   ImageBackground,
+  Platform
 } from "react-native";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
@@ -364,6 +365,7 @@ class ChatScreen extends React.Component<Props> {
       >
         <View style={{ width: "50%" }} flexDirection={"row"}>
           <ChatActionButton
+            bold={Platform.OS === 'ios' ? false : true}
             title="Schedule Wonder"
             onPress={this.scheduleWonder}
           />

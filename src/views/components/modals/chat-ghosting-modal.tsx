@@ -40,32 +40,32 @@ class ChatGhostingModal extends React.Component<Props> {
                 locations={[0, 0.5, 1]}
             >
                 <View flexDirection={"column"} flex={1} style={{ justifyContent: 'space-around' }}>
-                    <Title style={styles.title} color="#333">
+                    <Title allowFontScaling={false} style={styles.title} color="#333">
                         {'Thanks for not ghosting!'}
                     </Title>
                     <View flex={1} >
-                        <Text style={styles.textColor}>
+                        <Text allowFontScaling={false} style={styles.textColor}>
                             Send a goodbye message, we will send it to them and remove them from your matches.
                         </Text>
                         <TextArea
+                            allowFontScaling={false}
                             onChangeText={(ghostMessage) => this.setState({ ghostMessage })}
                             value={this.state.ghostMessage}
                             style={styles.textArea}
                         />
                     </View>
                     <View
-                        flex={1}
                         style={styles.btnContainer}
                     >
                         <SecondaryButton
-                            // innerStyle={styles.secondInner}
+                            innerStyle={{ minWidth: 120, backgroundColor: '#f1f1f1' }}
                             title="Cancel"
                             onPress={onCancel}
-                            style={{ minWidth: 100 }}
+                        // style={{ minWidth: 100 }}
                         />
                         <PrimaryButton
-                            innerStyle={{ minWidth: 130 }}
-                            style={{ shadowOpacity: 0, minWidth: 100 }}
+                            innerStyle={{ minWidth: 120 }}
+                            style={{ shadowOpacity: 0 }}
                             title="Submit"
                             onPress={this.onSendGhost}
 
@@ -85,7 +85,7 @@ class ChatGhostingModal extends React.Component<Props> {
                 transparent
                 {...rest}
             >
-                <View style={{ flex: 1, maxHeight: 355 }}>
+                <View style={{ flex: 1, maxHeight: 320 }}>
                     {this.renderContent()}
                 </View>
             </Modal>
