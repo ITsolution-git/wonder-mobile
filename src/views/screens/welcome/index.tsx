@@ -49,7 +49,7 @@ export default class Welcome extends React.Component<Props> {
       <Screen backgroundImage={Images.WELCOME}>
         <View flex={1} style={styles.header}>
           <Image
-            style={{ width: "55%" }}
+            style={{ width: "50%" }}
             source={Logo.DARK}
             resizeMode="contain"
           />
@@ -115,23 +115,24 @@ export default class Welcome extends React.Component<Props> {
 const styles = StyleSheet.create({
   header: {
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    marginTop: '33%',
   },
   body: {
-    flex: 1,
+    flex: 2.4,
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "space-between",
-    padding: 20
+    padding: 30,
   },
   facebookLoginButton: {
     backgroundColor: "#FFF",
     alignItems: 'center',
     marginTop: 10,
     minWidth: 150,
-    minHeight: 50,
-    maxHeight: 70,
-    height: DEVICE_WIDTH * 0.15,
+    height: 55,
+    // maxHeight: 60,
+    // height: DEVICE_WIDTH * 0.15,
     flexDirection: 'row',
     paddingTop: 14,
     paddingBottom: 14,
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 3
+    elevation: 5
   },
   legalContainer: {
     flexDirection: 'row'
@@ -170,7 +171,8 @@ const styles = StyleSheet.create({
   buttonLogo: {
     width: 20,
     height: 20,
-    marginLeft: 10
+    marginLeft: 15,
+    paddingHorizontal: 5,
   },
   loginText: {
     textAlign: 'center',

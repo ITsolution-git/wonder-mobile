@@ -33,11 +33,10 @@ export default StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    bottom: (DEVICE_HEIGHT * 0.45) - 250,
+    bottom: 30,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -80
   }
 });
