@@ -22,7 +22,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 10
+    paddingVertical: 15
   },
   dot: {
     paddingHorizontal: 5
@@ -33,11 +33,11 @@ export default StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    bottom: (DEVICE_HEIGHT * 0.45) - 250,
+    bottom: (DEVICE_HEIGHT * 0.45) - 245,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -80
+    marginTop: -90
   }
 });

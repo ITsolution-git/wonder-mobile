@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Image, Platform } from 'react-native';
+import { View, StyleSheet, Dimensions, Image } from 'react-native';
 import { Text } from 'src/views/components/theme';
 import SwipeView from 'src/views/components/swipeview';
 import Assets from 'src/assets/images';
@@ -33,15 +33,9 @@ class Onboarding extends React.Component<Props> {
             <View flex={1} />
             <View style={styles.halfCircleFooterContainer}>
               <View style={styles.halfCircleFooter}>
-                <View style={{height: 24, alignItems: 'center', flexDirection: 'row'}}>
-                <Text adjustsFontSizeToFit style={[styles.body, {marginRight: 2}]}>Welcome to</Text>
-                    <Image
-                        source={Assets.Logo.DARK}
-                        resizeMode="contain"
-                        style={{ width: 90, marginBottom: 4 }}
-                    />
-                </View>
-                <Text adjustsFontSizeToFit style={styles.body}>
+                <Text style={styles.body}>
+                  Welcome to<Image source={Assets.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} />
+                  {'\n'}
                   We make it easy to connect you{'\n'} with people that enjoy the activities{'\n'} that you do.</Text>
               </View>
             </View>
@@ -52,7 +46,7 @@ class Onboarding extends React.Component<Props> {
             <View flex={1} />
             <View style={styles.halfCircleFooterContainer}>
               <View style={styles.halfCircleFooter}>
-                <Text adjustsFontSizeToFit style={styles.body}>{'Browse, match, and chat\nwith people nearby.'}</Text>
+                <Text style={styles.body}>{'Browse, match, and chat\nwith people nearby.'}</Text>
               </View>
             </View>
           </SwipeView.Slide>
@@ -62,16 +56,7 @@ class Onboarding extends React.Component<Props> {
             <View flex={1} />
             <View style={styles.halfCircleFooterContainer}>
               <View style={styles.halfCircleFooter}>
-                  <Text adjustsFontSizeToFit style={styles.body}>View and schedule activities</Text>
-                  <View style={{height: 24, alignItems: 'center', flexDirection: 'row'}}>
-                      <Text adjustsFontSizeToFit style={[styles.body, {marginRight: 2}]}>with your</Text>
-                      <Image
-                          source={Assets.Logo.DARK}
-                          resizeMode="contain"
-                          style={{ width: 90, marginBottom: 2 }}
-                      />
-                    <Text adjustsFontSizeToFit style={[styles.body, {marginLeft: 2}]}>matches!</Text>
-                  </View>
+                <Text style={styles.body}>View and schedule activities{'\n'}with your <Image source={Assets.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} /> matches!</Text>
               </View>
             </View>
           </SwipeView.Slide>
@@ -98,25 +83,14 @@ const styles = StyleSheet.create({
   body: {
     textAlign: 'center',
     color: '#000',
-    lineHeight: Platform.select({
-        ios: () => 24,
-        android: () => 30,
-    })(),
-    fontSize: Platform.select({
-        ios: () => 13,
-        android: () => 15,
-    })(),
+    lineHeight: 24,
+    fontSize: 13,
     marginLeft: 10,
     marginRight: 10,
-    textAlignVertical: 'center',
-      alignItems: 'center',
-      flexDirection: 'row'
+    textAlignVertical: 'center'
   },
   halfCircleFooter: {
-    width: Platform.select({
-        ios: () => DEVICE_WIDTH,
-        android: () => DEVICE_WIDTH * 0.77,
-    })(),
+    width: DEVICE_WIDTH,
     borderTopLeftRadius: DEVICE_WIDTH / 1.5,
     borderTopRightRadius: DEVICE_WIDTH / 1.5,
     overflow: 'hidden',
@@ -126,20 +100,16 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     height: DEVICE_HEIGHT * 0.45,
     minHeight: 260,
-    paddingTop: 45,
+    paddingTop: 35,
     paddingHorizontal: 25,
-    alignItems: 'center'
+    alignSelf: 'center'
   },
     halfCircleFooterContainer: {
       height: DEVICE_HEIGHT * 0.45,
-      minHeight: 280,
-      paddingTop: Platform.select({
-          ios: () => 55,
-          android: () => 35,
-      })(),
+      minHeight: 260,
+      paddingTop: 55,
       paddingHorizontal: 25,
       width: DEVICE_WIDTH,
-      overflow: 'hidden',
-      alignItems: 'center'
+      overflow: 'hidden'
   }
 });
