@@ -51,33 +51,15 @@ const ProfileModalChat = ({
             if (userTopics) {
               const active: boolean = !!userTopics.find((i: Topic) => i.name === x.name);
               return (
-                <Wonder key={x.name} topic={x} size={60} active={active} />
+                <View style={{ marginRight: 5 }} key={x.name}>
+                  <Wonder topic={x} size={60} active={active} />
+                </View>
               );
             }
           })}
       </View>
     );
   };
-
-  const details = (
-    <React.Fragment>
-      <Text
-        allowFontScaling={false}
-        style={{
-          color: '#fff',
-          marginLeft: 5,
-          lineHeight: 19,
-          marginTop: 3,
-          fontSize: 12
-        }}
-      >
-        {partner.occupation}
-        {"\n"}
-        {partner.school}
-      </Text>
-      {!!partner.about && <Text style={{ color: '#fff', marginLeft: 5, fontSize: 12 }}>{partner.about}</Text>}
-    </React.Fragment>
-  );
 
   return (
     <Modal
@@ -149,41 +131,48 @@ const ProfileModalChat = ({
                         >
                           <LinearGradient
                             colors={['transparent', 'black']}
-                            style={[styles.imageTopGradient, { height: showDetails ? 175 : 135 }]}
+                            style={[styles.imageTopGradient, { height: showDetails ? 205 : 134 }]}
                           >
-                            <View flex={1}>
-                              <View>
-                                <Text allowFontScaling={false} style={styles.firstNameText}>
-                                  {partner.first_name}, {partner.age}
-                                </Text>
-                                <Text style={{ marginLeft: 5 }}>
-                                  {renderDistance()}
-                                </Text>
 
-                              </View>
-                              <View style={styles.topicsContainer}>
-                                {getTopics()}
-                                <View style={{ justifyContent: "flex-end" }}>
-                                  <IconButton
-                                    size={44}
-                                    icon={showDetails ? "chevron-down" : "chevron-up"}
-                                    onPress={toggleDetails}
-                                    primary="#FFF"
-                                    secondary="transparent"
-                                  />
-                                </View>
-                              </View>
+                            <View>
+                              <Text allowFontScaling={false} style={styles.firstNameText}>
+                                {partner.first_name}, {partner.age}
+                              </Text>
+                              <Text style={{ marginLeft: 5 }}>
+                                {renderDistance()}
+                              </Text>
 
-                              <Animated.View style={{ height: animation }}>
-                                {details}
-                              </Animated.View>
-                              <View
-                                style={{ position: "absolute", bottom: -height }}
-                                onLayout={onLayout}
-                              >
-                                {details}
+                            </View>
+                            <View style={styles.topicsContainer}>
+                              {getTopics()}
+                              <View style={{ justifyContent: "flex-end" }}>
+                                <IconButton
+                                  size={44}
+                                  icon={showDetails ? "chevron-down" : "chevron-up"}
+                                  onPress={toggleDetails}
+                                  primary="#FFF"
+                                  secondary="transparent"
+                                />
                               </View>
                             </View>
+                            <Text
+                              allowFontScaling={false}
+                              style={{ marginLeft: 5, fontSize: 12, color: '#fff', marginTop: 10 }}
+                            >
+                              {partner.occupation}
+                            </Text>
+                            <Text
+                              allowFontScaling={false}
+                              style={{ marginLeft: 5, fontSize: 12, color: '#fff' }}
+                            >
+                              {partner.school}
+                            </Text>
+                            <Text
+                              allowFontScaling={false}
+                              style={{ marginLeft: 5, fontSize: 12, color: '#fff' }}
+                            >
+                              {partner.school}
+                            </Text>
                           </LinearGradient>
                         </ImageBackground>
 
@@ -265,3 +254,50 @@ const styles = StyleSheet.create({
   topicsContainer: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
   schoolText: { color: '#fff', marginLeft: 5, fontSize: 12 }
 });
+//  { height: showDetails ? 175 : 135 }
+
+{/* <ImageBackground
+key={i.url}
+style={styles.containerHeight}
+source={{ uri: i.url }}
+>
+<LinearGradient
+  colors={['transparent', 'black']}
+  style={[styles.imageTopGradient, { height: showDetails ? 175 : 134 }]}
+>
+
+  <View>
+    <Text allowFontScaling={false} style={styles.firstNameText}>
+      {partner.first_name}, {partner.age}
+    </Text>
+    <Text style={{ marginLeft: 5 }}>
+      {renderDistance()}
+    </Text>
+
+  </View>
+  <View style={styles.topicsContainer}>
+    {getTopics()}
+    <View style={{ justifyContent: "flex-end" }}>
+      <IconButton
+        size={44}
+        icon={showDetails ? "chevron-down" : "chevron-up"}
+        onPress={toggleDetails}
+        primary="#FFF"
+        secondary="transparent"
+      />
+    </View>
+  </View>
+
+  <Animated.View style={{ height: animation }}>
+    {details}
+  </Animated.View>
+  <View
+    style={{ position: "absolute", bottom: -height }}
+    onLayout={onLayout}
+  >
+    {details}
+  </View>
+  <Text style={{ color: '#fff', marginTop: 10 }}>{partner.occupation}</Text>
+  <Text style={{ color: '#fff' }}>{partner.school}</Text>
+</LinearGradient>
+</ImageBackground> */}
