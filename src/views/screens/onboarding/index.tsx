@@ -1,15 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Image, Platform, Text } from 'react-native';
-// import { Text } from 'src/views/components/theme';
+import { View, StyleSheet, Dimensions, Image, Platform } from 'react-native';
+import { Text } from 'src/views/components/theme';
 import SwipeView from 'src/views/components/swipeview';
 import Assets from 'src/assets/images';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
-import { material } from 'react-native-typography';
 
 import { Dispatch } from 'redux';
 import WonderAppState from 'src/models/wonder-app-state';
-import Theme from "../../../assets/styles/theme";
 const { width: DEVICE_WIDTH, height: DEVICE_HEIGHT } = Dimensions.get('window');
 
 interface Props {
@@ -36,24 +34,15 @@ class Onboarding extends React.Component<Props> {
             <View style={styles.halfCircleFooterContainer}>
               <View style={styles.halfCircleFooter}>
                 <View style={{height: 24, alignItems: 'center', flexDirection: 'row'}}>
-                <Text
-                    style={[material.body1, styles.body, {marginRight: 2, marginLeft: 0}]}
-                    allowFontScaling={false}
-                >
-                    Welcome to
-                </Text>
+                <Text adjustsFontSizeToFit style={[styles.body, {marginRight: 2}]}>Welcome to</Text>
                     <Image
                         source={Assets.Logo.DARK}
                         resizeMode="contain"
-                        style={{ width: 90, marginBottom: 3 }}
+                        style={{ width: 90, marginBottom: 4 }}
                     />
                 </View>
-                <Text
-                    style={[material.body1, styles.body]}
-                    allowFontScaling={false}
-                >
-                  We make it easy to connect you with people that enjoy the activities that you do.
-                </Text>
+                <Text adjustsFontSizeToFit style={styles.body}>
+                  We make it easy to connect you{'\n'} with people that enjoy the activities{'\n'} that you do.</Text>
               </View>
             </View>
           </SwipeView.Slide>
@@ -63,12 +52,7 @@ class Onboarding extends React.Component<Props> {
             <View flex={1} />
             <View style={styles.halfCircleFooterContainer}>
               <View style={styles.halfCircleFooter}>
-                <Text
-                    style={[material.body1, styles.body]}
-                    allowFontScaling={false}
-                >
-                    {'Browse, match, and chat\nwith people nearby.'}
-                </Text>
+                <Text adjustsFontSizeToFit style={styles.body}>{'Browse, match, and chat\nwith people nearby.'}</Text>
               </View>
             </View>
           </SwipeView.Slide>
@@ -78,30 +62,15 @@ class Onboarding extends React.Component<Props> {
             <View flex={1} />
             <View style={styles.halfCircleFooterContainer}>
               <View style={styles.halfCircleFooter}>
-                  <Text
-                      style={[material.body1, styles.body]}
-                      allowFontScaling={false}
-                  >
-                      View and schedule activities
-                  </Text>
+                  <Text adjustsFontSizeToFit style={styles.body}>View and schedule activities</Text>
                   <View style={{height: 24, alignItems: 'center', flexDirection: 'row'}}>
-                      <Text
-                          style={[material.body1, styles.body, {marginRight: 2}]}
-                          allowFontScaling={false}
-                      >
-                          with your
-                      </Text>
+                      <Text adjustsFontSizeToFit style={[styles.body, {marginRight: 2}]}>with your</Text>
                       <Image
                           source={Assets.Logo.DARK}
                           resizeMode="contain"
-                          style={{ width: 90, marginBottom: 3 }}
+                          style={{ width: 90, marginBottom: 2 }}
                       />
-                    <Text
-                        style={[material.body1, styles.body, {marginLeft: 2}]}
-                        allowFontScaling={false}
-                    >
-                      matches!
-                    </Text>
+                    <Text adjustsFontSizeToFit style={[styles.body, {marginLeft: 2}]}>matches!</Text>
                   </View>
               </View>
             </View>
@@ -127,16 +96,15 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   body: {
-    marginLeft: '15%',
-    marginRight: '15%',
     textAlign: 'center',
-    fontSize: Platform.select({
-      ios: () => 14,
-      android: () => 15,
-    })(),
+    color: '#000',
     lineHeight: 24,
-    letterSpacing: -0.1,
-    fontWeight: '400',
+    fontSize: 13,
+    marginLeft: 5,
+    marginRight: 5,
+    textAlignVertical: 'center',
+      alignItems: 'center',
+      flexDirection: 'row'
   },
   halfCircleFooter: {
     width: Platform.select({
@@ -147,10 +115,11 @@ const styles = StyleSheet.create({
     borderTopRightRadius: DEVICE_WIDTH / 1.5,
     overflow: 'hidden',
     transform: [{scaleX: 1.3}],
+    // borderTopLeftRadius: DEVICE_HEIGHT * 0.4,
+    // borderTopRightRadius: DEVICE_HEIGHT * 0.4,
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     height: DEVICE_HEIGHT * 0.45,
-    minHeight: 280,
-    maxHeight: 360,
+    minHeight: 260,
     paddingTop: 45,
     paddingHorizontal: 25,
     alignItems: 'center'
@@ -158,7 +127,6 @@ const styles = StyleSheet.create({
     halfCircleFooterContainer: {
       height: DEVICE_HEIGHT * 0.45,
       minHeight: 280,
-      maxHeight: 320,
       paddingTop: Platform.select({
           ios: () => 55,
           android: () => 35,

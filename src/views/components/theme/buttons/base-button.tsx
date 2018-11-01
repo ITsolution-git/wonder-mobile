@@ -115,9 +115,8 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
 const styles = StyleSheet.create({
   btnContainer: {
     minWidth: 150,
-    height: 55,
-    // maxHeight: 60,
-    // height: DEVICE_WIDTH * 0.15,
+    minHeight: 50,
+    height: DEVICE_WIDTH * 0.15,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -128,13 +127,12 @@ const styles = StyleSheet.create({
     // flex: 0,
   },
   txtContainer: {
-    flex: 9,
+    flex: 7,
     justifyContent: 'center',
   },
   iconContainer: {
     width: 40,
     paddingHorizontal: 5,
-    marginLeft: 5,
     justifyContent: 'center',
     alignItems: 'center'
   },
