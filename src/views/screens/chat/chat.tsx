@@ -431,13 +431,13 @@ class ChatScreen extends React.Component<Props> {
                       size={35}
                       icon={"camera"}
                       onPress={() => this.setState({ showVideo: false })}
-                      primary={'#fff'}
+                      primary={theme.colors.primaryLight}
                       secondary="transparent"
                     /> : <IconButton
                         size={35}
                         icon={"video-camera"}
                         onPress={() => this.setState({ showVideo: true })}
-                        primary={'#fff'}
+                        primary={theme.colors.primaryLight}
                         secondary="transparent"
                       />
                     }
@@ -446,7 +446,7 @@ class ChatScreen extends React.Component<Props> {
                     size={35}
                     icon={"close"}
                     onPress={this.openProfileModal}
-                    primary={'#fff'}
+                    primary={theme.colors.primaryLight}
                     secondary="transparent"
                   />
                 </View>
@@ -483,14 +483,27 @@ class ChatScreen extends React.Component<Props> {
                                   <Text allowFontScaling={false} style={styles.firstNameText}>
                                     {partner.first_name}, {partner.age}
                                   </Text>
-                                  {this.renderDistance()}
+                                  <Text style={{ marginLeft: 10 }}>
+                                    {this.renderDistance()}
+                                  </Text>
+
                                 </View>
                                 <View style={styles.topicsContainer}>
                                   {this.getTopics()}
-                                  <View>
-                                    <Text style={styles.occupationText}>{partner.occupation}</Text>
-                                    <Text style={styles.schoolText}>{partner.school}</Text>
-                                  </View>
+                                </View>
+                                <View style={{ marginTop: 4 }}>
+                                  <Text
+                                    allowFontScaling={false}
+                                    style={styles.occupationText}
+                                  >
+                                    {partner.occupation}
+                                  </Text>
+                                  <Text
+                                    allowFontScaling={false}
+                                    style={styles.schoolText}
+                                  >
+                                    {partner.school}
+                                  </Text>
                                 </View>
                               </LinearGradient>
                             </ImageBackground>
@@ -630,7 +643,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    height: 120,
+    height: 175,
     padding: 10,
     zIndex: 999,
   },
@@ -638,12 +651,11 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: '#fff',
     marginLeft: 10,
-    marginBottom: 5
+    marginBottom: 2
   },
   regularImageStyles: { height: height / 3 * 2, zIndex: 1 },
-  nameContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  occupationText: { color: '#fff', marginLeft: 10, lineHeight: 24 },
-  topicsContainer: { flexDirection: 'row', justifyContent: 'space-between' },
-  schoolText: { color: '#fff', marginLeft: 10 }
+  occupationText: { color: '#fff', marginLeft: 10, lineHeight: 18, fontSize: 12 },
+  topicsContainer: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 3 },
+  schoolText: { color: '#fff', marginLeft: 10, fontSize: 12 }
 });
 //  videoHeight={Platform.OS === 'ios' ? height / 3 * 2 * 4.5 : 1790}
