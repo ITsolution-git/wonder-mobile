@@ -98,10 +98,16 @@ const styles = StyleSheet.create({
   body: {
     textAlign: 'center',
     color: '#000',
-    lineHeight: 24,
-    fontSize: 13,
-    marginLeft: 5,
-    marginRight: 5,
+    lineHeight: Platform.select({
+        ios: () => 24,
+        android: () => 30,
+    })(),
+    fontSize: Platform.select({
+        ios: () => 13,
+        android: () => 15,
+    })(),
+    marginLeft: 10,
+    marginRight: 10,
     textAlignVertical: 'center',
       alignItems: 'center',
       flexDirection: 'row'
