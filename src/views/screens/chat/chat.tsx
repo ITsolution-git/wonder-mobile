@@ -381,7 +381,7 @@ class ChatScreen extends React.Component<Props> {
           justifyContent: "center",
         }}
       >
-        <View style={{ width: "50%" }} flexDirection={"row"}>
+        <View style={{ width: "50%", alignItems: 'center' }} flexDirection={"row"}>
           <ChatActionButton
             bold={Platform.OS === 'ios' ? false : true}
             title="Schedule Wonder"
@@ -389,7 +389,7 @@ class ChatScreen extends React.Component<Props> {
           />
           <TouchableOpacity
             onPress={this.openGhostingModal}
-            style={styles.ghostButtonStyle}
+            style={[styles.ghostButtonStyle, { borderWidth: 2 }]}
           >
             <Image
               source={Assets.GhostButton}
