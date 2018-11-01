@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 1,
+    elevation: 1
   }
 });

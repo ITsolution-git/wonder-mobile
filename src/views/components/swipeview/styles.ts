@@ -25,7 +25,7 @@ export default StyleSheet.create({
     paddingVertical: 15
   },
   dot: {
-    paddingHorizontal: 5
+    paddingHorizontal: 2
   },
   skipTxt: {
     color: Theme.colors.textColor,
@@ -33,11 +33,11 @@ export default StyleSheet.create({
   },
   footer: {
     position: 'absolute',
-    bottom: (DEVICE_HEIGHT * 0.45) - 245,
+    bottom: 0,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: -90
+    paddingBottom: 20
   }
 });

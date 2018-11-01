@@ -44,6 +44,7 @@ export default class SwipeView extends React.Component<SwipeViewProps, SwipeView
     }
   }
 
+
   renderBody = (body: string) => {
     if (body) {
       return (
@@ -62,7 +63,7 @@ export default class SwipeView extends React.Component<SwipeViewProps, SwipeView
 
     const dots = React.Children.map(children, (child, i) => (
       <View key={i} style={styles.dot}>
-        <Icon name="circle" size={11} color={currentIndex === i ? Theme.colors.primary : Theme.colors.textColor} />
+        <Icon name="circle" size={8} color={currentIndex === i ? Theme.colors.primary : Theme.colors.textColor} />
       </View>
     ));
 
