@@ -5,7 +5,7 @@ import RNPushNotification, {
 
 import NavigationService from './navigation';
 import { DecoratedAppointment } from '../models/appointment';
-interface RNPushNotificationToken {
+export interface RNPushNotificationToken {
   os: string;
   token: string;
 }
