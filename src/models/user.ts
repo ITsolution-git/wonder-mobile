@@ -50,6 +50,7 @@ interface User {
   online: boolean;
   last_seen_at: string | null;
   partner: object;
+  distance: number;
 }
 
 export default User;

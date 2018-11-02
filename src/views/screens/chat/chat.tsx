@@ -2,7 +2,6 @@ import React from "react";
 import _ from 'lodash';
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import Screen from "src/views/components/screen";
-import LinearGradient from 'react-native-linear-gradient';
 import {
   View,
   StyleSheet,
@@ -10,11 +9,9 @@ import {
   Image,
   Alert,
   Text,
-  Modal,
   Dimensions,
-  ScrollView,
-  ImageBackground,
-  Platform
+  Platform,
+  Animated
 } from "react-native";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
@@ -58,16 +55,15 @@ import Color from 'color';
 import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
 import Wonder from "src/views/components/theme/wonder/wonder";
-import { IconButton } from "src/views/components/theme";
-import VideoPlayer from "react-native-video-player";
 import theme from 'src/assets/styles/theme';
+import ProfileModalChat from 'src/views/components/modals/profile-modal-chat';
 const { height } = Dimensions.get('window');
 
-const gradient = [lighten(theme.colors.primaryLight, 0.5), lighten(theme.colors.primary, 0.5)];
+// const gradient = [lighten(theme.colors.primaryLight, 0.5), lighten(theme.colors.primary, 0.5)];
 
-function lighten(color: string, value: number) {
-  return Color(color).fade(value).toString();
-}
+// function lighten(color: string, value: number) {
+//   return Color(color).fade(value).toString();
+// }
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -95,6 +91,8 @@ interface ChatViewState {
   conversationMessages: GiftedChatMessage[];
   profileModalOpen: boolean;
   showVideo: boolean;
+  showDetails: boolean;
+  contentHeight: number;
 }
 
 const mapState = (state: WonderAppState): StateProps => ({
@@ -157,7 +155,9 @@ class ChatScreen extends React.Component<Props> {
     selectedSendImage: '',
     conversationMessages: [],
     profileModalOpen: false,
-    showVideo: false
+    showVideo: false,
+    contentHeight: 0,
+    showDetails: false
   };
 
   componentWillMount() {
@@ -306,7 +306,7 @@ class ChatScreen extends React.Component<Props> {
   }
 
   blockPartner = () => {
-    const { conversation, navigation, onGhostContact } = this.props;
+    const { conversation, navigation } = this.props;
 
     this.props.onReportUser({ id: conversation.partner.id });
     this.props.onSendGhostMessage(
@@ -322,15 +322,6 @@ class ChatScreen extends React.Component<Props> {
     onGhostContact({ partner: conversation.partner, message: ghostMessage });
     this.closeGhostingModal();
     navigation.navigate("ChatList");
-  }
-
-  renderDistance() {
-    const { conversation } = this.props;
-    return (
-      <Text style={{ color: '#fff' }}>
-        {conversation.partner.distance && _.get(conversation.partner, 'partner.distance', 0).toFixed(0)} miles
-        </Text>
-    );
   }
 
   getTopics = () => {
@@ -354,16 +345,17 @@ class ChatScreen extends React.Component<Props> {
     );
   }
 
+  toggleDetails = () => {
+    const showDetails = !this.state.showDetails;
+    this.setState({ showDetails });
+  }
+
   renderFooter = () => {
     return (
       <View
-        style={{
-          marginBottom: 10,
-          flexDirection: "row",
-          justifyContent: "center"
-        }}
+        style={styles.footerContainer}
       >
-        <View style={{ width: "50%" }} flexDirection={"row"}>
+        <View style={styles.actionBtnContainer} flexDirection={"row"}>
           <ChatActionButton
             bold={Platform.OS === 'ios' ? false : true}
             title="Schedule Wonder"
@@ -371,7 +363,7 @@ class ChatScreen extends React.Component<Props> {
           />
           <TouchableOpacity
             onPress={this.openGhostingModal}
-            style={styles.ghostButtonStyle}
+            style={[styles.ghostButtonStyle, { borderWidth: 2 }]}
           >
             <Image
               source={Assets.GhostButton}
@@ -385,7 +377,6 @@ class ChatScreen extends React.Component<Props> {
 
   render() {
     const { currentUser, conversation } = this.props;
-    const { partner } = conversation;
 
     return (
       <Screen>
@@ -408,110 +399,17 @@ class ChatScreen extends React.Component<Props> {
           onCancel={this.closeGhostingModal}
           conversation={conversation}
         />
-        <Modal
-          transparent={true}
-          animationType='fade'
+        <ProfileModalChat
+          currentUser={currentUser}
+          conversation={conversation}
           visible={this.state.profileModalOpen}
           onRequestClose={this.openProfileModal}
-        >
-          <LinearGradient
-            colors={gradient}
-            style={styles.modalContainer}
-          >
-            <View
-              style={styles.modalInnerContainer}
-            >
-              <LinearGradient
-                colors={['rgba(0,0,0,0.5)', 'transparent']}
-                style={styles.topGradient}
-              >
-                <View style={styles.iconContainer} >
-                  {partner.video ? <View>
-                    {this.state.showVideo ? <IconButton
-                      size={35}
-                      icon={"camera"}
-                      onPress={() => this.setState({ showVideo: false })}
-                      primary={'#fff'}
-                      secondary="transparent"
-                    /> : <IconButton
-                        size={35}
-                        icon={"video-camera"}
-                        onPress={() => this.setState({ showVideo: true })}
-                        primary={'#fff'}
-                        secondary="transparent"
-                      />
-                    }
-                  </View> : <View />}
-                  <IconButton
-                    size={35}
-                    icon={"close"}
-                    onPress={this.openProfileModal}
-                    primary={'#fff'}
-                    secondary="transparent"
-                  />
-                </View>
-
-              </LinearGradient>
-              <View style={styles.scrollContainer}>
-                <ScrollView >
-                  {partner.video && this.state.showVideo ? <View style={styles.containerHeight}>
-                    <VideoPlayer
-                      customStyles={{ videoWrapper: styles.videoStyles }}
-                      videoHeight={height / 3 * 2 * 4.5}
-                      pauseOnPress={true}
-                      disableFullscreen={true}
-                      autoplay={true}
-                      video={{
-                        uri: `${partner.video}`
-                      }}
-                    />
-                  </View> :
-                    <View style={styles.imageContainer}>
-                      {partner.images.map((i, index) => {
-                        if (index === 0) {
-                          return (
-                            <ImageBackground
-                              key={i.url}
-                              style={styles.containerHeight}
-                              source={{ uri: i.url }}
-                            >
-                              <LinearGradient
-                                colors={['transparent', 'black']}
-                                style={styles.imageTopGradient}
-                              >
-                                <View style={styles.nameContainer}>
-                                  <Text allowFontScaling={false} style={styles.firstNameText}>
-                                    {partner.first_name}, {partner.age}
-                                  </Text>
-                                  {this.renderDistance()}
-                                </View>
-                                <View style={styles.topicsContainer}>
-                                  {this.getTopics()}
-                                  <View>
-                                    <Text style={styles.occupationText}>{partner.occupation}</Text>
-                                    <Text style={styles.schoolText}>{partner.school}</Text>
-                                  </View>
-                                </View>
-                              </LinearGradient>
-                            </ImageBackground>
-
-                          );
-                        } else {
-                          return (
-                            <ImageBackground
-                              key={i.url}
-                              style={styles.regularImageStyles}
-                              source={{ uri: i.url }}
-                            />
-                          );
-                        }
-                      })}
-                    </View>}
-                </ScrollView>
-              </View>
-            </View>
-          </LinearGradient>
-        </Modal>
+          showVideo={this.state.showVideo}
+          openProfileModal={this.openProfileModal}
+          toggleVideo={() => this.setState({ showVideo: !this.state.showVideo })}
+          showDetails={this.state.showDetails}
+          toggleDetails={this.toggleDetails}
+        />
       </Screen>
     );
   }
@@ -589,61 +487,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#fcbd77"
   },
-  // BELOW THIS LINE = PROFILE MODAL STYLES
-  modalContainer: {
-    flex: 1,
-    // marginLeft: 15,
-    // marginRight: 15,
-    justifyContent: 'flex-end',
-    // marginBottom: 15,
-
+  footerContainer: {
+    marginBottom: 10,
+    flexDirection: "row",
+    justifyContent: "center",
   },
-  modalInnerContainer: {
-    position: 'relative', height: height / 3 * 2,
-    borderRadius: 10, backgroundColor: '#f1f1f1',
-    marginRight: 15,
-    marginLeft: 15,
-    marginBottom: 15
-  },
-  topGradient: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    height: 40,
-    padding: 5,
-    zIndex: 999,
-    borderTopRightRadius: 10,
-    borderTopLeftRadius: 10
-  },
-  iconContainer: {
-    alignSelf: 'stretch',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
-  },
-  scrollContainer: { borderRadius: 10, overflow: 'hidden' },
-  containerHeight: { height: height / 3 * 2, zIndex: 1 },
-  imageContainer: { borderRadius: 10, overflow: 'hidden' },
-  videoStyles: { backgroundColor: 'black', borderRadius: 10 },
-  imageTopGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 120,
-    padding: 10,
-    zIndex: 999,
-  },
-  firstNameText: {
-    fontSize: 26,
-    color: '#fff',
-    marginLeft: 10,
-    marginBottom: 5
-  },
-  regularImageStyles: { height: height / 3 * 2, zIndex: 1 },
-  nameContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  occupationText: { color: '#fff', marginLeft: 10, lineHeight: 24 },
-  topicsContainer: { flexDirection: 'row', justifyContent: 'space-between' },
-  schoolText: { color: '#fff', marginLeft: 10 }
+  actionBtnContainer: { width: "50%", alignItems: 'center' }
 });
-//  videoHeight={Platform.OS === 'ios' ? height / 3 * 2 * 4.5 : 1790}
