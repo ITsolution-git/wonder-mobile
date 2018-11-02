@@ -2,8 +2,9 @@ import RNPushNotification, {
   PushNotification,
   PushNotificationObject
 } from 'react-native-push-notification';
-import { Alert } from 'react-native';
 
+import NavigationService from './navigation';
+import { DecoratedAppointment } from '../models/appointment';
 interface RNPushNotificationToken {
   os: string;
   token: string;
@@ -24,11 +25,46 @@ class PushNotificationService {
     }
   };
 
+  // TODO: open review screen
+  private resetToDate = (
+    destination: string,
+    appointment: DecoratedAppointment | null,
+    review: boolean
+  ) => {
+    NavigationService.reset('Main', 'onboarding');
+    NavigationService.navigate('User');
+    NavigationService.navigate('Upcoming');
+    NavigationService.navigate(destination, { appointment, review });
+  };
+
+  // TODO: on messages open specific chat
+  // TODO: on chat open modals for ghosting or profile
+  private resetToChat = (partnerId: number, redirect: string) => {
+    NavigationService.reset('Main', 'onboarding');
+    NavigationService.navigate('Messages', { partnerId, redirect });
+  };
+
+  // TODO: get data from notification
   private handleNotificationReceived = (notification: PushNotification) => {
-    Alert.alert(
-      'A wonder-ful message for you',
-      notification.message.toString()
-    );
+    const { foreground } = notification;
+    if (!foreground) {
+      const type = 'upcoming_date';
+      const appointment = null;
+      const partnerId = 1;
+      if (type === 'upcoming_date' || type === 'confirm_date') {
+        this.resetToDate('UpcomingAppointmentView', appointment, false);
+      } else if (type === 'new_message') {
+        this.resetToChat(partnerId, 'none');
+      } else if (type === 'ghosting') {
+        this.resetToChat(partnerId, 'ghosting');
+      } else if (type === 'new_match') {
+        this.resetToChat(partnerId, 'profile');
+      } else if (type === 'gift_date') {
+        this.resetToDate('PastAppointmentView', appointment, false);
+      } else if (type === 'review_date') {
+        this.resetToDate('PastAppointmentView', appointment, true);
+      }
+    }
   };
 
   configure() {
