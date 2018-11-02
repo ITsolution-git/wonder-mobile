@@ -11,10 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
-    <!-- for gcm or localNotificationSchedule() -->
-    <permission android:name="${applicationId}.permission.C2D_MESSAGE" android:protectionLevel="signature" />
-    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
@@ -26,10 +23,10 @@
       android:launchMode="singleTop"
       android:theme="@style/AppTheme">
 
-      <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="my_default_channel"/>
+      <!-- <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="my_default_channel"/> -->
       <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
-      <service android:name="com.evollu.react.fcm.MessagingService" android:enabled="true" android:exported="true">
+      <!-- <service android:name="com.evollu.react.fcm.MessagingService" android:enabled="true" android:exported="true">
         <intent-filter>
           <action android:name="com.google.firebase.MESSAGING_EVENT"/>
         </intent-filter>
@@ -39,20 +36,20 @@
         <intent-filter>
           <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
         </intent-filter>
-      </service>
+      </service> -->
 
-      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_name" android:value="wonderchannel"/>
-      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_description" android:value="Where all the wonder-ful messages come from."/>
+      <!-- <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_name" android:value="wonderchannel"/>
+      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_description" android:value="Where all the wonder-ful messages come from."/> -->
       <!-- Change the resource name to your App's accent color - or any other color you want -->
-      <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/wonderpeach"/>
+      <!-- <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/wonderpeach"/> -->
 
       <!-- < Only if you're using GCM or localNotificationSchedule() > -->
-      <receiver android:name="com.google.android.gms.gcm.GcmReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
+      <!-- <receiver android:name="com.google.android.gms.gcm.GcmReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
         <intent-filter>
           <action android:name="com.google.android.c2dm.intent.RECEIVE" />
           <category android:name="${applicationId}" />
         </intent-filter>
-      </receiver>
+      </receiver> -->
       <!-- < Only if you're using GCM or localNotificationSchedule() > -->
 
       <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
@@ -64,19 +61,19 @@
       <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationRegistrationService"/>
 
       <!-- < Only if you're using GCM or localNotificationSchedule() > -->
-      <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerServiceGcm" android:exported="false">
+      <!-- <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerServiceGcm" android:exported="false">
         <intent-filter>
           <action android:name="com.google.android.c2dm.intent.RECEIVE" />
         </intent-filter>
-      </service>
+      </service> -->
       <!-- </ Only if you're using GCM or localNotificationSchedule() > -->
 
       <!-- < Else > -->
-      <!-- <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService" android:exported="false">
+      <service android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService" android:exported="false">
         <intent-filter>
           <action android:name="com.google.firebase.MESSAGING_EVENT" />
         </intent-filter>
-      </service> -->
+      </service>
       <!-- </Else> -->
 
       <meta-data
