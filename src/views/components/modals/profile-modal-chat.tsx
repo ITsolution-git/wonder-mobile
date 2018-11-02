@@ -40,8 +40,7 @@ const ProfileModalChat = (props: Props) => {
     showVideo,
     openProfileModal,
     toggleVideo,
-    showDetails,
-    toggleDetails } = props;
+  } = props;
 
   const { partner } = conversation;
 
@@ -74,8 +73,6 @@ const ProfileModalChat = (props: Props) => {
       </View>
     );
   };
-
-  console.log(height);
 
   return (
     <Modal
@@ -140,57 +137,48 @@ const ProfileModalChat = (props: Props) => {
                   {partner.images.map((i, index) => {
                     if (index === 0) {
                       return (
-                        <WonderImage
-                          background
-                          key={i.url}
-                          style={styles.containerHeight}
-                          uri={i.url}
-                        >
-                          <LinearGradient
-                            colors={['transparent', 'black']}
-                            style={[styles.imageTopGradient, { height: showDetails ? 205 : 134 }]}
+                        <View key={i.url}>
+                          <WonderImage
+                            background
+                            style={styles.containerHeight}
+                            uri={i.url}
                           >
-                            <View>
-                              <Text allowFontScaling={false} style={styles.firstNameText}>
-                                {partner.first_name}, {partner.age}
-                              </Text>
-                              <Text style={{ marginLeft: 5 }}>
-                                {renderDistance()}
-                              </Text>
-                            </View>
-                            <View style={styles.topicsContainer}>
-                              {getTopics()}
-                              <View style={styles.detailsChevron}>
-                                <IconButton
-                                  size={44}
-                                  icon={showDetails ? "chevron-down" : "chevron-up"}
-                                  onPress={toggleDetails}
-                                  primary="#FFF"
-                                  secondary="transparent"
-                                />
+                            <LinearGradient
+                              colors={['transparent', 'transparent']}
+                              style={[styles.imageTopGradient]}
+                            >
+                              <View>
+                                <Text allowFontScaling={false} style={styles.firstNameText}>
+                                  {partner.first_name}, {partner.age}
+                                </Text>
+                                <Text style={{ marginLeft: 5 }}>
+                                  {renderDistance()}
+                                </Text>
                               </View>
-                            </View>
+                            </LinearGradient>
+                          </WonderImage>
+                          <View style={styles.infoContainer}>
+                            {getTopics()}
                             <Text
                               allowFontScaling={false}
                               style={styles.occupationText}
                             >
-                              {partner.occupation}
+                              {!!partner.occupation && partner.occupation}
                             </Text>
                             <Text
                               allowFontScaling={false}
                               style={styles.genericText}
                             >
-                              {partner.school}
+                              {!!partner.school && partner.school}
                             </Text>
                             <Text
                               allowFontScaling={false}
                               style={styles.genericText}
                             >
-                              {partner.school}
+                              {!!partner.about && partner.about}
                             </Text>
-                          </LinearGradient>
-                        </WonderImage>
-
+                          </View>
+                        </View>
                       );
                     } else {
                       return (
@@ -253,13 +241,15 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: '#fff',
     marginLeft: 5,
-    marginBottom: 2
+    marginBottom: 2,
+    fontWeight: 'bold'
   },
   regularImageStyles: { height: height / 3 * 2, zIndex: 1 },
   topicsContainer: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
   schoolText: { color: '#fff', marginLeft: 5, fontSize: 12 },
   distanceText: { color: '#fff', fontSize: 13, marginLeft: 2 },
   detailsChevron: { justifyContent: "flex-end" },
-  occupationText: { marginLeft: 5, fontSize: 12, color: '#fff', marginTop: 10 },
-  genericText: { marginLeft: 5, fontSize: 12, color: '#fff', lineHeight: 18 }
+  occupationText: { marginLeft: 5, fontSize: 16, fontWeight: 'bold', marginTop: 10, color: '#333' },
+  genericText: { marginLeft: 5, fontSize: 12, lineHeight: 18, color: '#333' },
+  infoContainer: { backgroundColor: '#fff', padding: 10 }
 });

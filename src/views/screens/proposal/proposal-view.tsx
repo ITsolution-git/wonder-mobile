@@ -18,6 +18,7 @@ import pushNotification from "../../../services/push-notification";
 import { updateUser } from "../../../store/sagas/user";
 import {
   getConversations,
+  getConversation
 } from "src/store/sagas/conversations";
 
 const mapState = (state: WonderAppState) => ({
@@ -38,6 +39,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
     dispatch(rateProposal({ proposal, liked: true })),
   onClearCurrentMatch: () => dispatch(persistCurrentMatch({})),
   onRefreshConversations: () => dispatch(getConversations()),
+  onGetConversation: (partnerId: number) =>
+    dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
 });
 
 type Candidate = Partial<User>;
@@ -100,10 +103,14 @@ class ProposalViewScreen extends React.Component<Props, State> {
   }
 
   goToChat = () => {
-    const { navigation } = this.props;
+    // const { navigation } = this.props;
+
+    // this.props.onRefreshConversations();
+    // navigation.navigate("ChatList");
+
+    const { onGetConversation, currentMatch } = this.props;
     this.props.onClearCurrentMatch();
-    this.props.onRefreshConversations();
-    navigation.navigate("ChatList");
+    onGetConversation(currentMatch.candidate.id);
   }
 
   render() {
@@ -114,6 +121,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
       currentMatch,
       currentUser
     } = this.props;
+    console.log('HERE: ', this.props);
     return (
       <Screen>
         <View style={{ flex: 1 }}>

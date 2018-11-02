@@ -9,9 +9,7 @@ import {
   Image,
   Alert,
   Text,
-  Dimensions,
-  Platform,
-  Animated
+  Platform
 } from "react-native";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 import ChatActionButton from "src/views/components/chat/chat-action-button";
@@ -51,19 +49,10 @@ import {
   MenuOption,
   MenuTrigger,
 } from 'react-native-popup-menu';
-import Color from 'color';
 import { Options, Response } from "../../../models/image-picker";
 import { ImageSource } from "react-native-vector-icons/Icon";
 import Wonder from "src/views/components/theme/wonder/wonder";
-import theme from 'src/assets/styles/theme';
 import ProfileModalChat from 'src/views/components/modals/profile-modal-chat';
-const { height } = Dimensions.get('window');
-
-// const gradient = [lighten(theme.colors.primaryLight, 0.5), lighten(theme.colors.primary, 0.5)];
-
-// function lighten(color: string, value: number) {
-//   return Color(color).fade(value).toString();
-// }
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
