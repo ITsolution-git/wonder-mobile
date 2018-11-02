@@ -25,7 +25,6 @@ class PushNotificationService {
     }
   };
 
-  // TODO: open review screen
   private resetToDate = (
     destination: string,
     appointment: DecoratedAppointment | null,
@@ -37,8 +36,6 @@ class PushNotificationService {
     NavigationService.navigate(destination, { appointment, review });
   };
 
-  // TODO: on messages open specific chat
-  // TODO: on chat open modals for ghosting or profile
   private resetToChat = (partnerId: number, redirect: string) => {
     NavigationService.reset('Main', 'onboarding');
     NavigationService.navigate('Messages', { partnerId, redirect });
