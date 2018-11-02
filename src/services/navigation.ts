@@ -1,4 +1,10 @@
-import { NavigationActions, StackActions, NavigationParams, NavigationRoute } from 'react-navigation';
+import {
+  NavigationActions,
+  StackActions,
+  NavigationParams,
+  NavigationRoute,
+  NavigationNavigateAction
+} from 'react-navigation';
 
 let navigatorRef: any;
 
@@ -19,33 +25,38 @@ function reset(routeName: string, keyValue?: string | null) {
     StackActions.reset({
       key: keyValue,
       index: 0,
-      actions: [
-        NavigationActions.navigate({ routeName }),
-      ],
-    }),
+      actions: [NavigationActions.navigate({ routeName })]
+    })
   );
 }
 
-function navigate(routeName: string, params?: NavigationParams) {
+function navigate(
+  routeName: string,
+  params?: NavigationParams,
+  action?: NavigationNavigateAction
+) {
   navigatorRef.dispatch(
     NavigationActions.navigate({
       routeName,
       params,
-    }),
+      action
+    })
   );
 }
 
-function navigateDeep(actions: Array<{ routeName: string, params?: NavigationParams }>) {
+function navigateDeep(
+  actions: Array<{ routeName: string; params?: NavigationParams }>
+) {
   navigatorRef.dispatch(
     actions.reduceRight(
       (prevAction, action): any =>
         NavigationActions.navigate({
           routeName: action.routeName,
           params: action.params,
-          action: prevAction,
+          action: prevAction
         }),
-      undefined,
-    ),
+      undefined
+    )
   );
 }
 

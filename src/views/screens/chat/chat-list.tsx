@@ -114,16 +114,6 @@ class ChatListScreen extends React.Component<Props> {
     );
   }
 
-  componentDidMount() {
-    const { navigation, onGetConversation } = this.props;
-    const redirect = navigation.getParam('redirect', '');
-    const partnerId = navigation.getParam('partnerId', null);
-    if (partnerId && redirect) {
-      onGetConversation(partnerId, { redirect });
-      navigation.setParams({ partnerId: null, redirect: '' });
-    }
-  }
-
   componentDidUpdate(prevProps: any) {
     const { chat } = this.props;
     if (chat.newOutgoingMessage.hasOwnProperty('message')) {
@@ -144,6 +134,14 @@ class ChatListScreen extends React.Component<Props> {
       this.appChat.perform('read', {
         message_id: chat.lastReadMessage.last_message.id
       });
+    }
+
+    const { navigation, onGetConversation } = this.props;
+    const redirect = navigation.getParam('redirect', '');
+    const partnerId = navigation.getParam('partnerId', null);
+    if (partnerId && redirect) {
+      onGetConversation(partnerId, { redirect });
+      navigation.setParams({ partnerId: null, redirect: '' });
     }
   }
 

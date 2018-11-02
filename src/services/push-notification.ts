@@ -3,6 +3,8 @@ import RNPushNotification, {
   PushNotificationObject
 } from 'react-native-push-notification';
 
+import { NavigationActions } from 'react-navigation';
+
 import NavigationService from './navigation';
 import { DecoratedAppointment } from '../models/appointment';
 export interface RNPushNotificationToken {
@@ -38,16 +40,23 @@ class PushNotificationService {
 
   private resetToChat = (partnerId: number, redirect: string) => {
     NavigationService.reset('Main', 'onboarding');
-    NavigationService.navigate('Messages', { partnerId, redirect });
+    NavigationService.navigate(
+      'Messages',
+      {},
+      NavigationActions.navigate({
+        routeName: 'ChatList',
+        params: { partnerId, redirect }
+      })
+    );
   };
 
   // TODO: get data from notification
   private handleNotificationReceived = (notification: PushNotification) => {
     const { foreground } = notification;
     if (!foreground) {
-      const type = 'upcoming_date';
+      const type = 'new_message';
       const appointment = null;
-      const partnerId = 1;
+      const partnerId = 745;
       if (type === 'upcoming_date' || type === 'confirm_date') {
         this.resetToDate('UpcomingAppointmentView', appointment, false);
       } else if (type === 'new_message') {
