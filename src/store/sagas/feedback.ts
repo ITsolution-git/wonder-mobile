@@ -12,18 +12,33 @@ export const submitFeedback = createAction(SUBMIT_FEEDBACK);
 export function* submitFeedbackSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
+    const { body, subject, file } = action.payload;
+
+    const formData = new FormData();
+
+    formData.append('support_message[subject]', subject);
+    formData.append('support_message[body]', body);
+    formData.append('support_message[file]', file);
 
     const response: AxiosResponse = yield call(api, {
       method: 'POST',
       url: '/support_messages',
-      data: { support_message: action.payload }
+      contentType: false,
+      processData: false,
+      data: formData
     }, state.user);
 
     if (response.status === 201) {
       Alert.alert('Submitted!', 'Thanks for submitting feedback!');
     }
   } catch (error) {
-    handleAxiosError(error);
+
+    if (error.response) {
+      console.log(error.response);
+      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
+    } else {
+      console.warn(error);
+    }
   } finally {
 
   }

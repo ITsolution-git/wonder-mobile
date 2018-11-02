@@ -7,7 +7,11 @@ import VideoPlayer from "react-native-video-player";
 import theme from '../../../assets/styles/theme';
 import Topic from '../../../models/topic';
 import Wonder from "../../components/theme/wonder/wonder";
+import WonderImage from '../../components/theme/wonder-image';
 import Color from 'color';
+import {
+  DecoratedConversation,
+} from "src/models/conversation";
 const { height } = Dimensions.get('window');
 
 const gradient = [lighten(theme.colors.primaryLight, 0.5), lighten(theme.colors.primary, 0.5)];
@@ -16,24 +20,34 @@ function lighten(color: string, value: number) {
   return Color(color).fade(value).toString();
 }
 
-const ProfileModalChat = ({
-  currentUser,
-  conversation,
-  visible,
-  onRequestClose,
-  showVideo,
-  openProfileModal,
-  toggleVideo,
-  showDetails,
-  toggleDetails,
-  animation,
-  onLayout,
-}) => {
+interface Props {
+  currentUser: object;
+  conversation: DecoratedConversation;
+  visible: boolean;
+  onRequestClose: () => void;
+  showVideo: boolean;
+  openProfileModal: () => void;
+  toggleVideo: () => void;
+  showDetails: boolean;
+  toggleDetails: () => void;
+}
+
+const ProfileModalChat = (props: Props) => {
+  const { currentUser,
+    conversation,
+    visible,
+    onRequestClose,
+    showVideo,
+    openProfileModal,
+    toggleVideo,
+    showDetails,
+    toggleDetails } = props;
+
   const { partner } = conversation;
 
   const renderDistance = () => {
     return (
-      <Text allowFontScaling={false} style={{ color: '#fff', fontSize: 13, marginLeft: 2 }}>
+      <Text allowFontScaling={false} style={styles.distanceText}>
         {conversation.partner.distance && _.get(conversation.partner, 'partner.distance', 0).toFixed(0)} miles
         </Text>
     );
@@ -100,7 +114,7 @@ const ProfileModalChat = ({
                 size={35}
                 icon={"close"}
                 onPress={openProfileModal}
-                primary={theme.colors.primaryLight}
+                primary={'#fff'}
                 secondary="transparent"
               />
             </View>
@@ -124,16 +138,16 @@ const ProfileModalChat = ({
                   {partner.images.map((i, index) => {
                     if (index === 0) {
                       return (
-                        <ImageBackground
+                        <WonderImage
+                          background
                           key={i.url}
                           style={styles.containerHeight}
-                          source={{ uri: i.url }}
+                          uri={i.url}
                         >
                           <LinearGradient
                             colors={['transparent', 'black']}
                             style={[styles.imageTopGradient, { height: showDetails ? 205 : 134 }]}
                           >
-
                             <View>
                               <Text allowFontScaling={false} style={styles.firstNameText}>
                                 {partner.first_name}, {partner.age}
@@ -141,11 +155,10 @@ const ProfileModalChat = ({
                               <Text style={{ marginLeft: 5 }}>
                                 {renderDistance()}
                               </Text>
-
                             </View>
                             <View style={styles.topicsContainer}>
                               {getTopics()}
-                              <View style={{ justifyContent: "flex-end" }}>
+                              <View style={styles.detailsChevron}>
                                 <IconButton
                                   size={44}
                                   icon={showDetails ? "chevron-down" : "chevron-up"}
@@ -157,24 +170,24 @@ const ProfileModalChat = ({
                             </View>
                             <Text
                               allowFontScaling={false}
-                              style={{ marginLeft: 5, fontSize: 12, color: '#fff', marginTop: 10 }}
+                              style={styles.occupationText}
                             >
                               {partner.occupation}
                             </Text>
                             <Text
                               allowFontScaling={false}
-                              style={{ marginLeft: 5, fontSize: 12, color: '#fff' }}
+                              style={styles.genericText}
                             >
                               {partner.school}
                             </Text>
                             <Text
                               allowFontScaling={false}
-                              style={{ marginLeft: 5, fontSize: 12, color: '#fff' }}
+                              style={styles.genericText}
                             >
                               {partner.school}
                             </Text>
                           </LinearGradient>
-                        </ImageBackground>
+                        </WonderImage>
 
                       );
                     } else {
@@ -201,11 +214,7 @@ export default ProfileModalChat;
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    // marginLeft: 15,
-    // marginRight: 15,
-    justifyContent: 'flex-end',
-    // marginBottom: 15,
-
+    justifyContent: 'flex-end'
   },
   modalInnerContainer: {
     position: 'relative', height: height / 3 * 2,
@@ -235,11 +244,6 @@ const styles = StyleSheet.create({
   imageContainer: { borderRadius: 10, overflow: 'hidden' },
   videoStyles: { backgroundColor: 'black', borderRadius: 10 },
   imageTopGradient: {
-    // position: 'absolute',
-    // bottom: 0,
-    // left: 0,
-    // right: 0,
-    // height: 145,
     padding: 10,
     zIndex: 999,
   },
@@ -250,54 +254,10 @@ const styles = StyleSheet.create({
     marginBottom: 2
   },
   regularImageStyles: { height: height / 3 * 2, zIndex: 1 },
-  occupationText: { color: '#fff', marginLeft: 5, lineHeight: 18, fontSize: 12 },
   topicsContainer: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
-  schoolText: { color: '#fff', marginLeft: 5, fontSize: 12 }
+  schoolText: { color: '#fff', marginLeft: 5, fontSize: 12 },
+  distanceText: { color: '#fff', fontSize: 13, marginLeft: 2 },
+  detailsChevron: { justifyContent: "flex-end" },
+  occupationText: { marginLeft: 5, fontSize: 12, color: '#fff', marginTop: 10 },
+  genericText: { marginLeft: 5, fontSize: 12, color: '#fff', lineHeight: 18 }
 });
-//  { height: showDetails ? 175 : 135 }
-
-{/* <ImageBackground
-key={i.url}
-style={styles.containerHeight}
-source={{ uri: i.url }}
->
-<LinearGradient
-  colors={['transparent', 'black']}
-  style={[styles.imageTopGradient, { height: showDetails ? 175 : 134 }]}
->
-
-  <View>
-    <Text allowFontScaling={false} style={styles.firstNameText}>
-      {partner.first_name}, {partner.age}
-    </Text>
-    <Text style={{ marginLeft: 5 }}>
-      {renderDistance()}
-    </Text>
-
-  </View>
-  <View style={styles.topicsContainer}>
-    {getTopics()}
-    <View style={{ justifyContent: "flex-end" }}>
-      <IconButton
-        size={44}
-        icon={showDetails ? "chevron-down" : "chevron-up"}
-        onPress={toggleDetails}
-        primary="#FFF"
-        secondary="transparent"
-      />
-    </View>
-  </View>
-
-  <Animated.View style={{ height: animation }}>
-    {details}
-  </Animated.View>
-  <View
-    style={{ position: "absolute", bottom: -height }}
-    onLayout={onLayout}
-  >
-    {details}
-  </View>
-  <Text style={{ color: '#fff', marginTop: 10 }}>{partner.occupation}</Text>
-  <Text style={{ color: '#fff' }}>{partner.school}</Text>
-</LinearGradient>
-</ImageBackground> */}
