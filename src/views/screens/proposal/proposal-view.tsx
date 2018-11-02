@@ -54,6 +54,8 @@ interface Props {
   proposal: Proposal | null;
   currentUser: User;
   currentMatch: Proposal;
+  onGetConversation: Function;
+  onRefreshConversations: Function;
   updatePushToken: (
     data: {
       push_device_id: string;
@@ -103,13 +105,9 @@ class ProposalViewScreen extends React.Component<Props, State> {
   }
 
   goToChat = () => {
-    // const { navigation } = this.props;
-
-    // this.props.onRefreshConversations();
-    // navigation.navigate("ChatList");
-
     const { onGetConversation, currentMatch } = this.props;
     this.props.onClearCurrentMatch();
+    this.props.onRefreshConversations();
     onGetConversation(currentMatch.candidate.id);
   }
 
@@ -121,7 +119,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
       currentMatch,
       currentUser
     } = this.props;
-    console.log('HERE: ', this.props);
+
     return (
       <Screen>
         <View style={{ flex: 1 }}>
@@ -130,7 +128,6 @@ class ProposalViewScreen extends React.Component<Props, State> {
             proposal={proposal}
             onSwipeRight={onRightSwipe}
             onSwipeLeft={onLeftSwipe}
-          // onTap={this.setCandidate}
           />
         </View>
         <FoundMatchModal
