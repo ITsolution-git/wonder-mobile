@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import Screen from 'src/views/components/screen';
 
 import {
@@ -46,58 +46,80 @@ const mapState = (state: WonderAppState) => ({
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onGetConversation: (partnerId: number) => dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
+  onGetConversation: (partnerId: number) =>
+    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   static navigationOptions = ({ navigation }) => {
-    const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
+    const appointment: DecoratedAppointment = navigation.getParam(
+      'appointment',
+      {}
+    );
     return {
       title: appointment.match.first_name
     };
-  }
+  };
 
   state: AppointmentViewState = {
     isModalOpen: false
   };
 
+  componentDidMount() {
+    const { navigation } = this.props;
+    const open = navigation.getParam('review', false);
+    if (open) {
+      this.openReviewModal();
+      navigation.setParams({ review: false });
+    }
+  }
+
   isPastAppointment = () => {
     const { navigation } = this.props;
-    const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
+    const appointment: DecoratedAppointment = navigation.getParam(
+      'appointment',
+      {}
+    );
     return isAppointmentBeforeToday(appointment);
-  }
+  };
 
   openReviewModal = () => {
     this.setState({ isModalOpen: true });
-  }
+  };
 
   closeReviewModal = () => {
     this.setState({ isModalOpen: false });
-  }
+  };
 
   onCall = async (url?: string | null) => {
     await callPhoneNumber(url);
-  }
+  };
 
   onServicePress = (url: string) => {
     Alert.alert('Third Party', `This would go to ${url}`);
-  }
+  };
 
   onUber = async () => {
     const { navigation } = this.props;
-    const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
-    const { location, longitude, latitude, } = appointment;
+    const appointment: DecoratedAppointment = navigation.getParam(
+      'appointment',
+      {}
+    );
+    const { location, longitude, latitude } = appointment;
 
     await UserService.scheduleUber({
       formattedAddress: location,
       longitude,
       latitude
     });
-  }
+  };
 
   onAmazon = async () => {
     const { navigation } = this.props;
-    const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
+    const appointment: DecoratedAppointment = navigation.getParam(
+      'appointment',
+      {}
+    );
     const { topic } = appointment;
 
     if (topic) {
@@ -105,18 +127,24 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     } else {
       Toast.show({ text: 'Unable to launch amazon, missing topic' });
     }
-  }
+  };
 
   goToChat = () => {
     const { navigation, onGetConversation } = this.props;
-    const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
+    const appointment: DecoratedAppointment = navigation.getParam(
+      'appointment',
+      {}
+    );
 
     onGetConversation(appointment.match.id);
-  }
+  };
 
   render() {
     const { navigation, currentUser } = this.props;
-    const appointment: DecoratedAppointment = navigation.getParam('appointment', {});
+    const appointment: DecoratedAppointment = navigation.getParam(
+      'appointment',
+      {}
+    );
     const isPast = this.isPastAppointment();
     return (
       <Screen horizontalPadding={20}>
@@ -126,11 +154,18 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         > */}
         <View flex={1}>
           <View style={styles.header}>
-            <Avatar circle size="xl" uri={_.get(appointment, 'match.images[0].url', null)} />
+            <Avatar
+              circle
+              size="xl"
+              uri={_.get(appointment, 'match.images[0].url', null)}
+            />
           </View>
 
           <View style={{ marginTop: 15 }}>
-            <Title align="center">{appointment.name} with {appointment.match.first_name} {isPast.toString()}</Title>
+            <Title align="center">
+              {appointment.name} with {appointment.match.first_name}{' '}
+              {isPast.toString()}
+            </Title>
 
             <SubTitle align="center">{appointment.location}</SubTitle>
             {appointment.phone && (
@@ -151,51 +186,45 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         <View>
           <PrimaryButton title="Leave Review" onPress={this.openReviewModal} />
           <View style={[styles.row, styles.buttonRow]}>
-            {!isPast &&
-              (
-                <View style={styles.col}>
-                  <IconButton
-                    size={50}
-                    iconSize={44}
-                    icon="car"
-                    primary={theme.colors.primaryLight}
-                    secondary="transparent"
-                    onPress={this.onUber}
-                  />
-                  <Text style={styles.btnLabel}>Catch a Ride</Text>
-                </View>
-              )
-            }
-            {!isPast &&
-              (
-                <View style={styles.col}>
-                  <IconButton
-                    size={50}
-                    iconSize={44}
-                    icon="shopping-cart"
-                    primary={theme.colors.primaryLight}
-                    secondary="transparent"
-                    onPress={this.onAmazon}
-                  />
-                  <Text style={styles.btnLabel}>Shop Amazon</Text>
-                </View>
-              )
-            }
-            {isPast &&
-              (
-                <View style={styles.col}>
-                  <IconButton
-                    size={50}
-                    iconSize={44}
-                    icon="gift"
-                    primary={theme.colors.primaryLight}
-                    secondary="transparent"
-                    onPress={() => this.onServicePress('1-800-Flowers')}
-                  />
-                  <Text style={styles.btnLabel}>Send Flowers</Text>
-                </View>
-              )
-            }
+            {!isPast && (
+              <View style={styles.col}>
+                <IconButton
+                  size={50}
+                  iconSize={44}
+                  icon="car"
+                  primary={theme.colors.primaryLight}
+                  secondary="transparent"
+                  onPress={this.onUber}
+                />
+                <Text style={styles.btnLabel}>Catch a Ride</Text>
+              </View>
+            )}
+            {!isPast && (
+              <View style={styles.col}>
+                <IconButton
+                  size={50}
+                  iconSize={44}
+                  icon="shopping-cart"
+                  primary={theme.colors.primaryLight}
+                  secondary="transparent"
+                  onPress={this.onAmazon}
+                />
+                <Text style={styles.btnLabel}>Shop Amazon</Text>
+              </View>
+            )}
+            {isPast && (
+              <View style={styles.col}>
+                <IconButton
+                  size={50}
+                  iconSize={44}
+                  icon="gift"
+                  primary={theme.colors.primaryLight}
+                  secondary="transparent"
+                  onPress={() => this.onServicePress('1-800-Flowers')}
+                />
+                <Text style={styles.btnLabel}>Send Flowers</Text>
+              </View>
+            )}
             <View style={styles.col}>
               <IconButton
                 size={50}
@@ -209,14 +238,17 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             </View>
           </View>
 
-          <View style={[styles.row, { marginVertical: 15, justifyContent: 'space-between' }]}>
-            {!isPast &&
-              (
-                <View style={styles.col}>
-                  <SecondaryButton title="Cancel" onPress={_.noop} />
-                </View>
-              )
-            }
+          <View
+            style={[
+              styles.row,
+              { marginVertical: 15, justifyContent: 'space-between' }
+            ]}
+          >
+            {!isPast && (
+              <View style={styles.col}>
+                <SecondaryButton title="Cancel" onPress={_.noop} />
+              </View>
+            )}
             <View style={styles.col}>
               <SecondaryButton title="Delete" onPress={_.noop} />
             </View>
@@ -228,14 +260,16 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           visible={this.state.isModalOpen}
           currentUser={currentUser}
           appointment={appointment}
-
         />
       </Screen>
     );
   }
 }
 
-export default connect(mapState, mapDispatch)(AppointmentViewScreen);
+export default connect(
+  mapState,
+  mapDispatch
+)(AppointmentViewScreen);
 
 const styles = StyleSheet.create({
   header: {
