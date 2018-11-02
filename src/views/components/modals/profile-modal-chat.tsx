@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { View, Text, Modal, Animated, ScrollView, ImageBackground, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, Modal, Animated, ScrollView, ImageBackground, StyleSheet, Dimensions, Platform } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IconButton } from "../../components/theme";
 import VideoPlayer from "react-native-video-player";
@@ -75,6 +75,8 @@ const ProfileModalChat = (props: Props) => {
     );
   };
 
+  console.log(height);
+
   return (
     <Modal
       transparent={true}
@@ -125,7 +127,7 @@ const ProfileModalChat = (props: Props) => {
               {partner.video && showVideo ? <View style={styles.containerHeight}>
                 <VideoPlayer
                   customStyles={{ videoWrapper: styles.videoStyles }}
-                  videoHeight={height / 3 * 2 * 4.5}
+                  videoHeight={Platform.OS === 'ios' ? height / 3 * 2 * 4.74 : height * 2.58}
                   pauseOnPress={true}
                   disableFullscreen={true}
                   autoplay={true}
@@ -242,7 +244,7 @@ const styles = StyleSheet.create({
   scrollContainer: { borderRadius: 10, overflow: 'hidden' },
   containerHeight: { height: height / 3 * 2, zIndex: 1, justifyContent: 'flex-end' },
   imageContainer: { borderRadius: 10, overflow: 'hidden' },
-  videoStyles: { backgroundColor: 'black', borderRadius: 10 },
+  videoStyles: { backgroundColor: 'black', borderRadius: 10, overflow: 'hidden' },
   imageTopGradient: {
     padding: 10,
     zIndex: 999,
