@@ -38,10 +38,10 @@
         </intent-filter>
       </service> -->
 
-      <!-- <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_name" android:value="wonderchannel"/>
-      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_description" android:value="Where all the wonder-ful messages come from."/> -->
+      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_name" android:value="wonderchannel"/>
+      <meta-data android:name="com.dieam.reactnativepushnotification.notification_channel_description" android:value="Where all the wonder-ful messages come from."/>
       <!-- Change the resource name to your App's accent color - or any other color you want -->
-      <!-- <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/wonderpeach"/> -->
+      <meta-data android:name="com.dieam.reactnativepushnotification.notification_color" android:resource="@color/wonderpeach"/>
 
       <!-- < Only if you're using GCM or localNotificationSchedule() > -->
       <!-- <receiver android:name="com.google.android.gms.gcm.GcmReceiver" android:exported="true" android:permission="com.google.android.c2dm.permission.SEND">
