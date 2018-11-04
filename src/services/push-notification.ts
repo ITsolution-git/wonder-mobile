@@ -13,6 +13,11 @@ export interface RNPushNotificationToken {
 }
 type onRegisterToken = (token: RNPushNotificationToken) => void;
 
+interface WonderPushNotification extends PushNotification {
+  type?: string;
+  extra?: string;
+}
+
 class PushNotificationService {
   public token?: RNPushNotificationToken;
   public onRegister?: onRegisterToken;
@@ -50,14 +55,15 @@ class PushNotificationService {
     );
   };
 
-  // TODO: get data from notification
-  private handleNotificationReceived = (notification: PushNotification) => {
+  private handleNotificationReceived = (
+    notification: WonderPushNotification
+  ) => {
     console.log('on notification', notification);
-    const { foreground, userInteraction } = notification;
-    if (!foreground && userInteraction) {
-      const type = 'new_match';
-      const appointment = null;
-      const partnerId = 745;
+    const { foreground, userInteraction, type, extra } = notification;
+    if (!foreground && userInteraction && type && extra) {
+      const extraData = JSON.parse(extra);
+      const { appointment, partnerId } = extraData;
+
       if (type === 'upcoming_date' || type === 'confirm_date') {
         this.resetToDate('UpcomingAppointmentView', appointment, false);
       } else if (type === 'new_message') {
@@ -77,7 +83,8 @@ class PushNotificationService {
   configure() {
     RNPushNotification.configure({
       onRegister: this.handleRegister,
-      onNotification: this.handleNotificationReceived,
+      onNotification: (notification: WonderPushNotification) =>
+        this.handleNotificationReceived(notification),
       senderID: this.senderID,
       popInitialNotification: true,
       requestPermissions: true
