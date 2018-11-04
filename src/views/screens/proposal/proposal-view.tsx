@@ -90,7 +90,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
       }
     };
 
-    PushNotificationService.configure();
+    PushNotificationService.configure(currentUser);
   }
 
   setCandidate = (candidate?: Candidate | null) => {
