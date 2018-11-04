@@ -70,12 +70,13 @@ class PushNotificationService {
       appointment: null
     };
 
-    if (!this.token || (this.token.os === 'ios' && !notification.data)) {
+    const { data } = notification;
+    if (!this.token || (this.token.os === 'ios' && !data)) {
       return error;
     }
 
     const payload: NotificationPayload =
-      this.token.os === 'ios' ? notification.data : notification;
+      this.token.os === 'ios' ? data : notification;
     const { extra, type } = payload;
     const extraData = extra
       ? JSON.parse(extra)
