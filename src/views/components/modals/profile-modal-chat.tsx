@@ -1,6 +1,15 @@
 import React from 'react';
 import _ from 'lodash';
-import { View, Text, Modal, Animated, ScrollView, ImageBackground, StyleSheet, Dimensions, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  Modal,
+  ScrollView,
+  ImageBackground,
+  StyleSheet,
+  Dimensions,
+  Platform
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IconButton } from "../../components/theme";
 import VideoPlayer from "react-native-video-player";
@@ -65,7 +74,12 @@ const ProfileModalChat = (props: Props) => {
               const active: boolean = !!userTopics.find((i: Topic) => i.name === x.name);
               return (
                 <View style={{ marginRight: 5 }} key={x.name}>
-                  <Wonder topic={x} size={60} active={active} />
+                  <Wonder
+                    labelStyles={{ color: '#333' }}
+                    topic={x}
+                    size={60}
+                    active={active}
+                  />
                 </View>
               );
             }
@@ -144,7 +158,7 @@ const ProfileModalChat = (props: Props) => {
                             uri={i.url}
                           >
                             <LinearGradient
-                              colors={['transparent', 'transparent']}
+                              colors={['transparent', 'rgba(0,0,0,0.5)']}
                               style={[styles.imageTopGradient]}
                             >
                               <View>
@@ -242,7 +256,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginLeft: 5,
     marginBottom: 2,
-    fontWeight: 'bold'
+    fontWeight: '800'
   },
   regularImageStyles: { height: height / 3 * 2, zIndex: 1 },
   topicsContainer: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
