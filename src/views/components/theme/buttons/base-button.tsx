@@ -24,6 +24,7 @@ export interface BaseButtonProps {
   title: string;
   onPress: TouchableOpacityOnPress;
   disabled?: boolean;
+  bold?: boolean;
 }
 
 export default class BaseButton extends React.Component<Partial<BaseButtonProps>, any> {
@@ -62,6 +63,7 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
       onPress,
       fullWidth,
       icon,
+      bold,
       ...rest
     } = this.props;
 
@@ -100,7 +102,7 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
         >
           {icon && this.renderIcon()}
           <View style={styles.txtContainer}>
-            <Text color={color} style={styles.title}>{title}</Text>
+            <Text allowFontScaling={false} color={color} style={[styles.title, bold && { fontWeight: 'bold' }]}>{title}</Text>
           </View>
           {icon && <View flex={1} />}
         </ViewContainer>

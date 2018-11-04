@@ -45,15 +45,16 @@ class ChatListItem extends React.Component<ChatListItemProps> {
 
     if (chat && chat.last_message) {
       if (hours > 72) {
-        return <SmallText style={{ color: 'red' }}>{_.get(chat, 'last_message.body', '') || ''}</SmallText>;
+        return <Text numberOfLines={2} style={styles.oldText}>{_.get(chat, 'last_message.body', '') || ''}</Text>;
       }
       return (
-        <SmallText
-          style={!chat.last_message.read_at && chat.last_message.sender_id !== currentUser.id ?
-            { color: 'black' } : null}
+        <Text
+          numberOfLines={2}
+          style={[!chat.last_message.read_at && chat.last_message.sender_id !== currentUser.id ?
+            { color: 'black' } : null, { fontSize: 14 }]}
         >
           {chat.last_message.body == null ? "" : chat.last_message.body}
-        </SmallText>
+        </Text>
       );
     }
     return <SmallText>No Messages</SmallText>;
@@ -74,6 +75,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
   }
   renderDistance() {
     const { chat } = this.props;
+
     return (
       <View style={{ marginTop: 8 }}>
         <SmallText>
@@ -171,17 +173,18 @@ const styles = StyleSheet.create({
     borderBottomColor: '#e6e6ec',
   },
   avatarOuterContainer: {
-    height: 80,
-    width: 80,
+    height: 82,
+    width: 82,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   unreadMessage: {
-    height: 74,
-    width: 74, borderColor: theme.colors.primaryLight,
-    borderWidth: 4,
+    height: 76,
+    width: 76, borderColor: theme.colors.primary,
+    borderWidth: 5,
     borderRadius: 37,
     justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
+  oldText: { color: '#eb4d4b', fontSize: 14 }
 });

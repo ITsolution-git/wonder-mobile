@@ -14,9 +14,13 @@ import { selectCurrentUser } from 'src/store/selectors/user';
 import WonderAppState from 'src/models/wonder-app-state';
 import Proposal from 'src/models/proposal';
 import User from 'src/models/user';
-import PushNotificationService from '../../../services/push-notification';
 import { updateUser } from '../../../store/sagas/user';
-import { getConversations } from 'src/store/sagas/conversations';
+import {
+  getConversations,
+  getConversation
+} from 'src/store/sagas/conversations';
+
+import PushNotificationService from '../../../services/push-notification';
 import { RNPushNotificationToken } from '../../../services/push-notification';
 
 const mapState = (state: WonderAppState) => ({
@@ -36,7 +40,9 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onRightSwipe: (proposal: Proposal) =>
     dispatch(rateProposal({ proposal, liked: true })),
   onClearCurrentMatch: () => dispatch(persistCurrentMatch({})),
-  onRefreshConversations: () => dispatch(getConversations())
+  onRefreshConversations: () => dispatch(getConversations()),
+  onGetConversation: (partnerId: number) =>
+    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
 });
 
 type Candidate = Partial<User>;
@@ -50,6 +56,8 @@ interface Props {
   proposal: Proposal | null;
   currentUser: User;
   currentMatch: Proposal;
+  onGetConversation: Function;
+  onRefreshConversations: Function;
   updatePushToken: (
     data: {
       push_device_id: string;
@@ -103,13 +111,14 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   clearCurrentMatch = () => {
     this.props.onClearCurrentMatch();
+    this.props.onRefreshConversations();
   };
 
   goToChat = () => {
-    const { navigation } = this.props;
+    const { onGetConversation, currentMatch } = this.props;
     this.props.onClearCurrentMatch();
     this.props.onRefreshConversations();
-    navigation.navigate('ChatList');
+    onGetConversation(currentMatch.candidate.id);
   };
 
   render() {
@@ -120,6 +129,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
       currentMatch,
       currentUser
     } = this.props;
+
     return (
       <Screen>
         <View style={{ flex: 1 }}>
@@ -128,7 +138,6 @@ class ProposalViewScreen extends React.Component<Props, State> {
             proposal={proposal}
             onSwipeRight={onRightSwipe}
             onSwipeLeft={onLeftSwipe}
-            // onTap={this.setCandidate}
           />
         </View>
         <FoundMatchModal
