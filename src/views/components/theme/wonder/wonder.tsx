@@ -11,13 +11,15 @@ interface WonderProps {
   topic: Topic;
   active?: boolean;
   size?: number;
+  labelStyles: any;
 }
-const Wonder: React.SFC<WonderProps> = ({ topic, active, size = 80 }) => {
+const Wonder: React.SFC<WonderProps> = ({ labelStyles, topic, active, size = 80 }) => {
   const imageSize = (size / 2) * 0.75;
   const containerStyles = {
     height: size,
     width: size,
-    borderRadius: size / 2
+    borderRadius: size / 2,
+    backgroundColor: 'transparent'
   };
 
   const wonderStyles = [styles.container, containerStyles];
@@ -31,7 +33,14 @@ const Wonder: React.SFC<WonderProps> = ({ topic, active, size = 80 }) => {
         style={{ height: imageSize, width: imageSize, marginBottom: 5 }}
         uri={topic.icon}
       />
-      <Text style={styles.label}>{_.toUpper(topic.name)}</Text>
+      <Text
+        numberOfLines={1}
+        adjustsFontSizeToFit={true}
+        allowFontScaling={false}
+        style={[styles.label, labelStyles && labelStyles]}
+      >
+        {_.toUpper(topic.name)}
+      </Text>
     </View>
   );
 };
@@ -52,13 +61,14 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: theme.colors.primaryLight,
     opacity: 0.8,
-    elevation: 4,
+    // elevation: 4,
     shadowOffset: { width: 0, height: 1 },
     shadowColor: theme.colors.primaryLight,
     shadowOpacity: 0.7,
     shadowRadius: 3
   },
   label: {
-    fontSize: 6
+    fontSize: 6,
+    textAlign: 'center'
   }
 });
