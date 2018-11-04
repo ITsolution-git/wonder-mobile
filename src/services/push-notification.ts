@@ -52,9 +52,10 @@ class PushNotificationService {
 
   // TODO: get data from notification
   private handleNotificationReceived = (notification: PushNotification) => {
-    const { foreground } = notification;
-    if (!foreground) {
-      const type = 'new_message';
+    console.log('on notification', notification);
+    const { foreground, userInteraction } = notification;
+    if (!foreground && userInteraction) {
+      const type = 'new_match';
       const appointment = null;
       const partnerId = 745;
       if (type === 'upcoming_date' || type === 'confirm_date') {
