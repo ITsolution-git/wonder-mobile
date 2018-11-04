@@ -1,30 +1,33 @@
-import React from "react";
+import React from 'react';
 import _ from 'lodash';
-import Screen from "src/views/components/screen";
-import { ChatList, LatestMatches } from "src/views/components/chat";
-import { Title } from "src/views/components/theme";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
+import Screen from 'src/views/components/screen';
+import { ChatList, LatestMatches } from 'src/views/components/chat';
+import { Title } from 'src/views/components/theme';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 
-import { Dispatch } from "redux";
+import { Dispatch } from 'redux';
 import {
   getConversations,
   getConversation,
   ghostContact
-} from "src/store/sagas/conversations";
+} from 'src/store/sagas/conversations';
 
-import { persistNewReceivedMessage, persistChatSearch } from 'src/store/reducers/chat';
+import {
+  persistNewReceivedMessage,
+  persistChatSearch
+} from 'src/store/reducers/chat';
 
-import { connect } from "react-redux";
-import { selectCurrentUser } from "src/store/selectors/user";
-import Conversation from "src/models/conversation";
-import WonderAppState from "src/models/wonder-app-state";
-import Chat from "src/models/chat";
-import { View, StyleSheet, Alert, Dimensions, Modal } from "react-native";
-import ChatActionButton from "src/views/components/chat/chat-action-button";
-import SearchBar from "react-native-searchbar";
-import { getAttendances } from "src/store/sagas/attendance";
+import { connect } from 'react-redux';
+import { selectCurrentUser } from 'src/store/selectors/user';
+import Conversation from 'src/models/conversation';
+import WonderAppState from 'src/models/wonder-app-state';
+import Chat from 'src/models/chat';
+import { View, StyleSheet, Alert, Dimensions, Modal } from 'react-native';
+import ChatActionButton from 'src/views/components/chat/chat-action-button';
+import SearchBar from 'react-native-searchbar';
+import { getAttendances } from 'src/store/sagas/attendance';
 import ActionCable from 'react-native-actioncable';
-import { DOMAIN } from "src/services/api";
+import { DOMAIN } from 'src/services/api';
 import { TextButton, PrimaryButton, Text } from 'src/views/components/theme';
 
 const { width } = Dimensions.get('window');
@@ -33,7 +36,7 @@ interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   conversations: Conversation[];
   onRefreshConversations: () => void;
-  onGetConversation: (partnerId: number) => void;
+  onGetConversation: (partnerId: number, params: object) => void;
   onGetAttendances: () => void;
   token: string;
   onReceiveMessage: (data: object) => void;
@@ -57,11 +60,11 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onRefreshConversations: () => dispatch(getConversations()),
-  onGetConversation: (partnerId: number) =>
-    dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
+  onGetConversation: (partnerId: number, params: object) =>
+    dispatch(getConversation({ id: partnerId, successRoute: 'Chat', params })),
   onGetAttendances: () => dispatch(getAttendances()),
   onReceiveMessage: (data: object) => dispatch(persistNewReceivedMessage(data)),
-  onSearchChange: (data: object) => dispatch(persistChatSearch(data)),
+  onSearchChange: (data: object) => dispatch(persistChatSearch(data))
 });
 
 class ChatListScreen extends React.Component<Props> {
@@ -72,8 +75,7 @@ class ChatListScreen extends React.Component<Props> {
   state: ChatListScreenState = {
     isSearchModalOpen: false,
     results: [],
-    handleChangeText: "",
-
+    handleChangeText: ''
   };
 
   componentWillMount() {
@@ -82,52 +84,75 @@ class ChatListScreen extends React.Component<Props> {
     this.props.onGetAttendances();
 
     this.appChat = {};
-    this.cable = ActionCable.createConsumer(`wss://${DOMAIN}/cable?token=${token}`);
-    this.appChat = this.cable.subscriptions.create({
-      channel: "ConversationChannel",
-    },
+    this.cable = ActionCable.createConsumer(
+      `wss://${DOMAIN}/cable?token=${token}`
+    );
+    this.appChat = this.cable.subscriptions.create(
+      {
+        channel: 'ConversationChannel'
+      },
       {
         received: (data: any) => {
-          if (data === `{"error":{"message":"Event 'read' cannot transition from 'read'. "}}`) {
+          if (
+            data ===
+            `{"error":{"message":"Event 'read' cannot transition from 'read'. "}}`
+          ) {
             return;
-          } else if (data === '{"error":{"message":"Validation failed: Recipient must have already matched"}}') {
+          } else if (
+            data ===
+            '{"error":{"message":"Validation failed: Recipient must have already matched"}}'
+          ) {
             this.showGhostedAlert();
           } else {
             this.props.onReceiveMessage(data);
           }
-
         },
         deliver: ({ message, recipient_id }) => {
           this.appChat.perform('deliver', { body: message, recipient_id });
         }
-      });
+      }
+    );
   }
 
   componentDidUpdate(prevProps: any) {
     const { chat } = this.props;
     if (chat.newOutgoingMessage.hasOwnProperty('message')) {
       if (
-        chat.newOutgoingMessage.message !== prevProps.chat.newOutgoingMessage.message) {
-        this.appChat.deliver(
-          {
-            message: chat.newOutgoingMessage.message.text,
-            recipient_id: chat.newOutgoingMessage.recipient_id
-          });
+        chat.newOutgoingMessage.message !==
+        prevProps.chat.newOutgoingMessage.message
+      ) {
+        this.appChat.deliver({
+          message: chat.newOutgoingMessage.message.text,
+          recipient_id: chat.newOutgoingMessage.recipient_id
+        });
       }
     }
-    if (!_.isEmpty(chat.lastReadMessage) && chat.lastReadMessage !== prevProps.chat.lastReadMessage) {
-      this.appChat.perform('read', { message_id: chat.lastReadMessage.last_message.id });
+    if (
+      !_.isEmpty(chat.lastReadMessage) &&
+      chat.lastReadMessage !== prevProps.chat.lastReadMessage
+    ) {
+      this.appChat.perform('read', {
+        message_id: chat.lastReadMessage.last_message.id
+      });
+    }
+
+    const { navigation, onGetConversation } = this.props;
+    const redirect = navigation.getParam('redirect', '');
+    const partnerId = navigation.getParam('partnerId', null);
+    if (partnerId && redirect) {
+      onGetConversation(partnerId, { redirect });
+      navigation.setParams({ partnerId: null, redirect: '' });
     }
   }
 
   goToChat = (chat: Chat) => {
     const { onGetConversation } = this.props;
-    onGetConversation(chat.partner.id);
-  }
+    onGetConversation(chat.partner.id, {});
+  };
 
   openSearchModal = () => {
     this.setState({ isSearchModalOpen: !this.state.isSearchModalOpen });
-  }
+  };
 
   handleResults = (results: Conversation[]) => {
     const { conversations } = this.props;
@@ -136,11 +161,11 @@ class ChatListScreen extends React.Component<Props> {
     } else {
       this.setState({ results });
     }
-  }
+  };
 
   handleChangeText = (text: string) => {
     this.props.onSearchChange(text);
-  }
+  };
 
   componentWillUnmount() {
     if (this.appChat) {
@@ -152,20 +177,17 @@ class ChatListScreen extends React.Component<Props> {
     Alert.alert(
       'Sorry!',
       'This person has removed you from their conversations',
-      [
-        { text: 'OK' },
-      ],
+      [{ text: 'OK' }],
       { cancelable: false }
     );
-  }
+  };
 
   renderSearchbar = () => {
-
     const { conversations } = this.props;
     if (this.state.isSearchModalOpen) {
       return (
         <SearchBar
-          ref={(ref: any) => this.searchBar = ref}
+          ref={(ref: any) => (this.searchBar = ref)}
           data={conversations}
           onBack={this.openSearchModal}
           handleResults={this.handleResults}
@@ -174,13 +196,13 @@ class ChatListScreen extends React.Component<Props> {
         />
       );
     }
-  }
+  };
 
   renderSearchButton() {
     const { conversations } = this.props;
     if (conversations.length) {
       return (
-        <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0 }} >
+        <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0 }}>
           <PrimaryButton
             rounded={false}
             title="Search"
@@ -193,8 +215,15 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   render() {
-    const { conversations, onRefreshConversations, currentUser, chat } = this.props;
-    const filteredConvos = conversations.filter((c) => c.partner !== null && !c.last_message);
+    const {
+      conversations,
+      onRefreshConversations,
+      currentUser,
+      chat
+    } = this.props;
+    const filteredConvos = conversations.filter(
+      c => c.partner !== null && !c.last_message
+    );
 
     return (
       <Screen horizontalPadding={20}>
@@ -215,7 +244,6 @@ class ChatListScreen extends React.Component<Props> {
         />
 
         {this.renderSearchButton()}
-
       </Screen>
     );
   }
@@ -228,7 +256,7 @@ export default connect(
 
 const styles = StyleSheet.create({
   footer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0
@@ -237,13 +265,13 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 2,
     borderRadius: 100 / 2,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 46,
     height: 46,
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     borderWidth: 1,
-    borderColor: "#fcbd77"
+    borderColor: '#fcbd77'
   },
   searchButtonContainer: {
     alignItems: 'stretch',
