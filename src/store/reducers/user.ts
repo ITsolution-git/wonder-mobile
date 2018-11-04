@@ -17,7 +17,19 @@ export const initialState: UserState = {
   }
 };
 
+export const addProfileImage = createAction("ADD_PROFILE_IMAGE");
+
 export default handleActions({
+  ADD_PROFILE_IMAGE: (state: UserState, action) => {
+    return {
+      ...state,
+      profile: {
+        ...state.profile,
+        images: [...state.profile.images, { id: 345, url: action.payload.uri, position: 2 }]
+      }
+    };
+  }
+  ,
   PERSIST_AUTH: (state: UserState, action) => ({
     ...state,
     auth: {
