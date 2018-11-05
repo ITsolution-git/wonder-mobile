@@ -49,7 +49,7 @@ export default class MediaGridItem extends React.Component<Props> {
       return (
         <Video
           paused
-          source={{ uri: `${BASE_URL}/${videoSource}` }}
+          source={{ uri: `${videoSource}` }}
           style={{ width: '100%', height: '100%', zIndex: 2 }}
           controls={false}
         />

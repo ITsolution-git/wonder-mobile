@@ -226,7 +226,6 @@ export function* watchUpdateUser() {
 const UPDATE_IMAGE = "UPDATE_IMAGE";
 export const updateImage = createAction(UPDATE_IMAGE);
 export function* updateImageSaga(action: Action<any>) {
-  console.log('BEGAN');
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
@@ -266,7 +265,6 @@ export function* updateImageSaga(action: Action<any>) {
         },
         state.user
       );
-      console.log('DONE');
     }
 
     yield put(getUser());
