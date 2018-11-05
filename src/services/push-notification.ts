@@ -3,6 +3,7 @@ import RNPushNotification, {
   PushNotificationObject
 } from 'react-native-push-notification';
 
+import { PushNotificationIOS } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 import NavigationService from './navigation';
@@ -96,8 +97,8 @@ class PushNotificationService {
   private handleNotificationReceived = (
     notification: WonderPushNotification
   ) => {
-    const { foreground, userInteraction } = notification;
-    if (!foreground && userInteraction) {
+    const { userInteraction } = notification;
+    if (userInteraction) {
       const payload = this.parseNotification(notification);
       const { type, partnerId, appointment } = payload;
 
@@ -117,6 +118,10 @@ class PushNotificationService {
       } else if (type === 'review_date' && appointment) {
         this.resetToDate('PastAppointmentView', appointment, true);
       }
+    }
+
+    if (this.token && this.token.os === 'ios') {
+      notification.finish(PushNotificationIOS.FetchResult.NoData);
     }
   };
 
