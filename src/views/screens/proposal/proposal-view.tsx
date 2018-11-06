@@ -103,23 +103,23 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   setCandidate = (candidate?: Candidate | null) => {
     this.setState({ candidate });
-  };
+  }
 
   clearCandidate = () => {
     this.setState({ candidate: null });
-  };
+  }
 
   clearCurrentMatch = () => {
     this.props.onClearCurrentMatch();
     this.props.onRefreshConversations();
-  };
+  }
 
   goToChat = () => {
     const { onGetConversation, currentMatch } = this.props;
     this.props.onClearCurrentMatch();
     this.props.onRefreshConversations();
     onGetConversation(currentMatch.candidate.id);
-  };
+  }
 
   render() {
     const {

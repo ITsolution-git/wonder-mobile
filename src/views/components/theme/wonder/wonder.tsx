@@ -11,7 +11,7 @@ interface WonderProps {
   topic: Topic;
   active?: boolean;
   size?: number;
-  labelStyles: any;
+  labelStyles?: any;
 }
 const Wonder: React.SFC<WonderProps> = ({ labelStyles, topic, active, size = 80 }) => {
   const imageSize = (size / 2) * 0.75;
