@@ -141,6 +141,7 @@ class CardDetailsOverlay extends React.Component<
         {!!candidate.about && <Text color="#FFF">{candidate.about}</Text>}
       </React.Fragment>
     );
+    console.log('container: ', styles.container);
     return (
       <TouchableWithoutFeedback
         style={styles.cardOverlayContainer}
@@ -270,7 +271,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     backgroundColor: "#EEE",
     justifyContent: "space-between",
-    height: Dimensions.get("window").height - 60
+    height: Dimensions.get("window").height - 60,
+    width: Dimensions.get("window").width
   },
   textContainer: {
     padding: 20,

@@ -9,7 +9,7 @@ export interface UserState {
 
 export const initialState: UserState = {
   profile: {
-
+    images: []
   },
   auth: {
     token: null,
@@ -26,11 +26,12 @@ export default handleActions({
   //   console.log('ACTION: ', action);
   // },
   ADD_PROFILE_IMAGE: (state: UserState, action) => {
+    console.log('REDUCER: ', state);
     return {
       ...state,
       profile: {
         ...state.profile,
-        images: [...state.profile.images, {
+        images: [...state.profile.images || [], {
           id: Math.floor(1000 + Math.random() * 9000)
           , url: action.payload.uri, position: 2
         }]

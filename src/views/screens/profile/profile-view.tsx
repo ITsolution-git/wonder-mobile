@@ -53,6 +53,7 @@ class ProfileViewScreen extends React.Component<Props> {
 
   getProfileImage = () => {
     const { currentUser } = this.props;
+
     if (currentUser.images && currentUser.images.length) {
       return currentUser.images[0].url;
     }
