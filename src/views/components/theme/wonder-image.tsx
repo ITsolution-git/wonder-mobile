@@ -15,8 +15,6 @@ import Omit from "src/models/omit";
 const backgroundImageExtension = '?w=600&h=1200&auto=enhance,format&fit=crop&crop=entropy&q=60';
 const avatarImageExtension = '?w=200&h=200&auto=enhance,format&fit=crop&crop=entropy&q=60';
 
-// const imageDimensions = `?w=${}&h=${}&auto=enhance,format&fit=crop&crop=entropy&q=60`
-
 interface Props extends Omit<ImageProps, "source"> {
   uri: string;
   background?: boolean;
@@ -46,7 +44,6 @@ class WonderImage extends React.PureComponent<Props> {
       }
 
       if (background) {
-
         return (
           <ImageBackground
             style={style}
@@ -57,7 +54,6 @@ class WonderImage extends React.PureComponent<Props> {
           </ImageBackground>
         );
       }
-      console.log('image: ', style);
       return (
         <Image
           style={style}
@@ -71,8 +67,3 @@ class WonderImage extends React.PureComponent<Props> {
 }
 
 export default WonderImage;
-// ?w=300&max-h=1200&fit=crop
-
-// ?w=${style.width ? style.width : 300}&auto=compress&fit=crop&auto=enhance
-
-// `${uri}?auto=format&lossless=1`

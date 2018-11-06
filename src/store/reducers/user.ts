@@ -22,11 +22,7 @@ export const addProfileVideo = createAction("ADD_PROFILE_VIDEO");
 export const removeProfileImage = createAction("REMOVE_PROFILE_IMAGE");
 
 export default handleActions({
-  // REMOVE_PROFILE_IMAGE: (state: UserState, action) => {
-  //   console.log('ACTION: ', action);
-  // },
   ADD_PROFILE_IMAGE: (state: UserState, action) => {
-    console.log('REDUCER: ', state);
     return {
       ...state,
       profile: {
