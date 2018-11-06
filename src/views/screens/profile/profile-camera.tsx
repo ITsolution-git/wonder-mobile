@@ -12,11 +12,14 @@ import ImageRotate from 'react-native-image-rotate';
 import { Options, Response } from 'src/models/image-picker';
 import ImageToolbar from 'src/views/components/camera/image-toolbar';
 import ProfileImage from 'src/models/profile-image';
+import { addProfileImage, removeProfileImage } from "src/store/reducers/user";
 const backgrounImageExtension = '?w=600&h=1200&auto=enhance,format&fit=crop&crop=entropy&q=60';
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateImage: (data: Response) => dispatch(updateImage(data)),
-  onDeleteImage: (data: ProfileImage) => dispatch(deleteProfileImage(data))
+  onDeleteImage: (data: ProfileImage) => dispatch(deleteProfileImage(data)),
+  onAddImage: (data) => dispatch(addProfileImage(data)),
+  onRemoveImage: (data) => dispatch(removeProfileImage(data))
 });
 
 interface ProfileCameraScreenProps {
@@ -39,6 +42,7 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
     const { onUpdateImage, navigation } = this.props;
     const { data } = this.state;
 
+    this.props.onAddImage(data);
     onUpdateImage(data);
     navigation.goBack();
   }
@@ -46,7 +50,11 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
   getImage = () => {
     const options: Options = {
       title: 'Upload a Photo',
-      mediaType: 'photo'
+      mediaType: 'photo',
+      storageOptions: {
+        skipBackup: true,
+        cameraRoll: true
+      }
     };
 
     ImagePicker.showImagePicker(options, (res: Response) => {
@@ -86,7 +94,9 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
     const { navigation, onDeleteImage } = this.props;
     const currentImage: ProfileImage = navigation.getParam('data');
     if (currentImage) {
+
       onDeleteImage(currentImage);
+      this.props.onRemoveImage(currentImage);
       // Delete the image
       navigation.goBack();
     }

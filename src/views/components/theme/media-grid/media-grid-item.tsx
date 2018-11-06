@@ -44,18 +44,18 @@ export default class MediaGridItem extends React.Component<Props> {
   }
 
   renderMediaContent = () => {
-    const { source, videoSource, video } = this.props;
+    const { source, videoSource, video, size } = this.props;
     if (video && videoSource) {
       return (
         <Video
           paused
-          source={{ uri: `${BASE_URL}/${videoSource}` }}
-          style={{ width: '100%', height: '100%', zIndex: 2 }}
+          source={{ uri: `${videoSource}` }}
+          style={{ width: size, height: size, zIndex: 2 }}
           controls={false}
         />
       );
     } else if (source) {
-      return <WonderImage style={{ width: '100%', height: '100%', borderRadius: 10 }} uri={source.url} />;
+      return <WonderImage style={{ width: size, height: size, borderRadius: 10 }} uri={source.url} />;
     }
     return null;
   }

@@ -9,7 +9,7 @@ export interface UserState {
 
 export const initialState: UserState = {
   profile: {
-
+    images: []
   },
   auth: {
     token: null,
@@ -17,7 +17,33 @@ export const initialState: UserState = {
   }
 };
 
+export const addProfileImage = createAction("ADD_PROFILE_IMAGE");
+export const addProfileVideo = createAction("ADD_PROFILE_VIDEO");
+export const removeProfileImage = createAction("REMOVE_PROFILE_IMAGE");
+
 export default handleActions({
+  ADD_PROFILE_IMAGE: (state: UserState, action) => {
+    return {
+      ...state,
+      profile: {
+        ...state.profile,
+        images: [...state.profile.images || [], {
+          id: Math.floor(1000 + Math.random() * 9000)
+          , url: action.payload.uri, position: 2
+        }]
+      },
+    };
+  }
+  ,
+  ADD_PROFILE_VIDEO: (state: UserState, action) => {
+    return {
+      ...state,
+      profile: {
+        ...state.profile,
+        video: action.payload.uri
+      }
+    };
+  },
   PERSIST_AUTH: (state: UserState, action) => ({
     ...state,
     auth: {

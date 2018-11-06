@@ -29,6 +29,7 @@ class WonderImage extends React.PureComponent<Props> {
 
   render() {
     const { uri, children, background, style, ...rest } = this.props;
+
     if (uri) {
       // Handle SVG images differently
       if (uri.toString().endsWith(".svg")) {
@@ -47,7 +48,7 @@ class WonderImage extends React.PureComponent<Props> {
           <ImageBackground
             style={style}
             {...rest}
-            source={{ uri: `${uri}${backgroundImageExtension}` }}
+            source={{ uri: `${uri}?w=${style.width}&h=${style.height}&auto=enhance,format&fit=crop&crop=entropy&q=60` }}
           >
             {children}
           </ImageBackground>
@@ -56,7 +57,7 @@ class WonderImage extends React.PureComponent<Props> {
       return (
         <Image
           style={style}
-          source={{ uri: `${uri}${avatarImageExtension}` }}
+          source={{ uri: `${uri}?w=${400}&h=${400}&auto=enhance,format&fit=crop&crop=entropy&q=60` }}
           {...rest}
         />
       );

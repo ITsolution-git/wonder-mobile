@@ -12,6 +12,7 @@ import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
 import { Response, Options } from 'src/models/image-picker';
 import ImageToolbar from '../../components/camera/image-toolbar';
+import { addProfileVideo } from "src/store/reducers/user";
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -23,7 +24,8 @@ interface State {
 }
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateVideo: (data: any) => dispatch(updateVideo(data)),
-  onDeleteVideo: () => dispatch(deleteProfileVideo())
+  onDeleteVideo: () => dispatch(deleteProfileVideo()),
+  onAddVideo: (data) => dispatch(addProfileVideo(data))
 });
 
 class ProfileVideoScreen extends React.Component<Props, State> {
@@ -47,6 +49,7 @@ class ProfileVideoScreen extends React.Component<Props, State> {
     const { data } = this.state;
     const { onUpdateVideo, navigation } = this.props;
     if (data) {
+      this.props.onAddVideo(data);
       onUpdateVideo(data);
       navigation.goBack();
     }
