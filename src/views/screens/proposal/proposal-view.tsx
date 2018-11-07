@@ -103,29 +103,37 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   setCandidate = (candidate?: Candidate | null) => {
     this.setState({ candidate });
-  };
+  }
 
   clearCandidate = () => {
     this.setState({ candidate: null });
-  };
+  }
 
   clearCurrentMatch = () => {
     this.props.onClearCurrentMatch();
     this.props.onRefreshConversations();
-  };
+  }
 
   goToChat = () => {
     const { onGetConversation, currentMatch } = this.props;
     this.props.onClearCurrentMatch();
     this.props.onRefreshConversations();
     onGetConversation(currentMatch.candidate.id);
-  };
+  }
+
+  swipeRight = () => {
+    const { proposal } = this.props;
+    this.props.onRightSwipe(proposal);
+  }
+
+  swipeLeft = () => {
+    const { proposal } = this.props;
+    this.props.onLeftSwipe(proposal);
+  }
 
   render() {
     const {
       proposal,
-      onLeftSwipe,
-      onRightSwipe,
       currentMatch,
       currentUser
     } = this.props;
@@ -136,8 +144,8 @@ class ProposalViewScreen extends React.Component<Props, State> {
           <ProposalSwiper
             currentUser={currentUser}
             proposal={proposal}
-            onSwipeRight={onRightSwipe}
-            onSwipeLeft={onLeftSwipe}
+            onSwipeRight={this.swipeRight}
+            onSwipeLeft={this.swipeLeft}
           />
         </View>
         <FoundMatchModal
@@ -156,3 +164,4 @@ export default connect(
   mapState,
   mapDispatch
 )(ProposalViewScreen);
+// THE PROBLEM HERE IS THE LASTEST AND MOST CURRENT MATCH IS ALWAYS BEING SENT TO RATE

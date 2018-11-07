@@ -1,5 +1,6 @@
 import _ from "lodash";
 import React from "react";
+import { connect } from 'react-redux';
 import { DeckSwiper } from "native-base";
 import { Text, Title, WonderImage, SubTitle, IconButton } from "../theme";
 import {
@@ -7,11 +8,13 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Dimensions,
-  Animated
+  Animated,
+  Image,
+  Alert
 } from "react-native";
 
 import moment from "moment-timezone";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/Entypo";
 import Topic from "src/models/topic";
 import Images from "src/assets/images";
 
@@ -33,6 +36,7 @@ interface Props {
   onSwipeLeft: Function;
   onSwipeRight: Function;
   currentUser: User;
+  stateProposal: Proposal;
 }
 
 interface CardDetailsOverlayProps {
@@ -48,6 +52,10 @@ interface CardDetailsOverlayState {
   location: string;
   showVideoPlayer: boolean;
 }
+
+const mapState = (state: WonderAppState) => ({
+  stateProposal: state.wonder.proposal
+});
 
 class CardDetailsOverlay extends React.Component<
   CardDetailsOverlayProps,
@@ -107,7 +115,9 @@ class CardDetailsOverlay extends React.Component<
             if (userTopics) {
               const active: boolean = !!userTopics.find((i: Topic) => i.name === x.name);
               return (
-                <Wonder key={x.name} topic={x} size={60} active={active} />
+                <View key={x.name} style={{ marginRight: 4 }}>
+                  <Wonder topic={x} size={60} active={active} />
+                </View>
               );
             }
           })}
@@ -125,6 +135,17 @@ class CardDetailsOverlay extends React.Component<
     } else {
       this.setState({ imageCount: 0 });
     }
+  }
+
+  showAlert = () => {
+    Alert.alert(
+      'Coming Soon',
+      'Check back soon for Wonder Premium!',
+      [
+        { text: 'Ok' },
+      ],
+      { cancelable: false }
+    );
   }
 
   render() {
@@ -164,16 +185,16 @@ class CardDetailsOverlay extends React.Component<
             end={{ x: 0, y: 1 }}
           >
             <View flex={1}>
-              <Title style={{ fontSize: 24 }} color="#FFF">
+              <Title style={{ fontSize: 24, fontWeight: 'bold' }} color="#FFF">
                 {[
                   candidate.first_name,
                   moment().diff(candidate.birthdate, "years")
                 ].join(", ")}
               </Title>
-              <SubTitle style={{ fontSize: 16 }} color="#FFF">
-                {!!location && location}
+              <SubTitle style={{ fontSize: 14, marginBottom: 5 }} color="#FFF" >
+                24 miles away
               </SubTitle>
-              <View>{this.getTopics()}</View>
+              <View style={{ paddingBottom: 6 }}>{this.getTopics()}</View>
               <Animated.View style={{ height: this.state.animation }}>
                 {details}
               </Animated.View>
@@ -188,14 +209,19 @@ class CardDetailsOverlay extends React.Component<
                 {details}
               </View>
             </View>
-            <View style={{ justifyContent: "flex-end" }}>
-              <IconButton
-                size={44}
-                icon={showDetails ? "chevron-down" : "chevron-up"}
+            <View style={{ justifyContent: 'space-between', alignItems: 'center', paddingBottom: 15, paddingTop: 15 }}>
+              <View>
+                <TouchableWithoutFeedback onPress={this.showAlert}>
+                  <Image source={Images.LogoIcon} style={{ width: 40, height: 40 }} />
+                </TouchableWithoutFeedback>
+              </View>
+              <Icon
+                name={showDetails ? "chevron-thin-down" : "chevron-thin-up"}
+                color={"#fff"}
+                size={20}
                 onPress={this.toggleDetails}
-                primary="#FFF"
-                secondary="transparent"
               />
+
             </View>
           </LinearGradient>
           <VibeVideoModal
@@ -230,16 +256,22 @@ class ProposalSwiper extends React.Component<Props> {
     }
   }
 
-  renderCard = (proposal: Proposal) => (
-    <CardDetailsOverlay
-      candidate={proposal.candidate}
-      currentUser={this.props.currentUser}
-    />
-  )
+  renderCard = () => {
+    const { stateProposal } = this.props;
+    return (
+      (
+        <CardDetailsOverlay
+          candidate={stateProposal.candidate}
+          currentUser={this.props.currentUser}
+        />
+      )
+    );
+  }
 
   render() {
     const { proposal, onSwipeLeft, onSwipeRight } = this.props;
     const data = [proposal];
+
     // TODO: prefetch one more proposal
     if (proposal) {
       return (
@@ -263,7 +295,7 @@ class ProposalSwiper extends React.Component<Props> {
   }
 }
 
-export default ProposalSwiper;
+export default connect(mapState)(ProposalSwiper);
 
 const styles = StyleSheet.create({
   container: {
@@ -275,7 +307,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width
   },
   textContainer: {
-    padding: 20,
+    padding: 15,
     flexDirection: "row"
   },
   noMatchesContainer: {

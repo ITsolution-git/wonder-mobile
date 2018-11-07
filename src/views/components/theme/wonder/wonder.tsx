@@ -11,7 +11,7 @@ interface WonderProps {
   topic: Topic;
   active?: boolean;
   size?: number;
-  labelStyles: any;
+  labelStyles?: any;
 }
 const Wonder: React.SFC<WonderProps> = ({ labelStyles, topic, active, size = 80 }) => {
   const imageSize = (size / 2) * 0.75;
@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: theme.colors.primaryLight,
     opacity: 0.8,
-    // elevation: 4,
     shadowOffset: { width: 0, height: 1 },
     shadowColor: theme.colors.primaryLight,
     shadowOpacity: 0.7,
