@@ -97,7 +97,7 @@ class PushNotificationService {
   private handleNotificationReceived = (
     notification: WonderPushNotification
   ) => {
-    const { userInteraction } = notification;
+    const { userInteraction, foreground, message } = notification;
     if (userInteraction) {
       const payload = this.parseNotification(notification);
       const { type, partnerId, appointment } = payload;
@@ -118,6 +118,12 @@ class PushNotificationService {
       } else if (type === 'review_date' && appointment) {
         this.resetToDate('PastAppointmentView', appointment, true);
       }
+    } else if (foreground && this.token && this.token.os === 'ios') {
+      // RNPushNotification.localNotification({
+      //   title: '',
+      //   message: `${message}`,
+      //   userInfo: {}
+      // });
     }
 
     if (this.token && this.token.os === 'ios') {
