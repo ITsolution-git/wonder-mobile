@@ -146,7 +146,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   renderConfirmationButton = (appointment: DecoratedAppointment) => {
     const { onConfirmAppointment } = this.props;
     const { state } = appointment;
-    if (state === 'negotiating') {
+    if (state === 'negotiating' || state === 'invited') {
       return (
         <PrimaryButton title='Confirm' onPress={() => onConfirmAppointment(appointment)} />
       );
