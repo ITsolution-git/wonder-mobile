@@ -36,6 +36,7 @@ interface Props {
   onSwipeLeft: Function;
   onSwipeRight: Function;
   currentUser: User;
+  stateProposal: Proposal;
 }
 
 interface CardDetailsOverlayProps {
@@ -78,14 +79,6 @@ class CardDetailsOverlay extends React.Component<
       this.setState({ imageCount: 0 });
     }
   }
-
-  // shouldComponentUpdate(nextProps) {
-  //   if (nextProps.candidate.id !== this.props.candidate.id) {
-  //     console.log('SWIPER UPDATE');
-  //     return true;
-  //   }
-  //   return false;
-  // }
 
   lookupZipcode = async () => {
     const { zipcode } = this.props.candidate;
@@ -263,10 +256,8 @@ class ProposalSwiper extends React.Component<Props> {
     }
   }
 
-  renderCard = (proposal: Proposal) => {
-    // console.log('RENDER CARD IS SHOWING THIS: ', proposal.candidate);
+  renderCard = () => {
     const { stateProposal } = this.props;
-
     return (
       (
         <CardDetailsOverlay
@@ -278,9 +269,8 @@ class ProposalSwiper extends React.Component<Props> {
   }
 
   render() {
-    const { proposal, onSwipeLeft, onSwipeRight, stateProposal } = this.props;
+    const { proposal, onSwipeLeft, onSwipeRight } = this.props;
     const data = [proposal];
-    // console.log('PROPOSAL SWIPER IS SENDING THIS: ', proposal.candidate);
 
     // TODO: prefetch one more proposal
     if (proposal) {
@@ -347,4 +337,3 @@ const styles = StyleSheet.create({
     right: 0
   }
 });
-// showDetails ? "chevron-thin-down" : "chevron-up"

@@ -21,8 +21,6 @@ export function* getNewProposalSaga() {
       url: '/proposals/new'
     }, state.user);
 
-    console.log('GET NEW PROPOSAL WAS FIRED AND RETURNED: ', response.data.candidate);
-
     yield put(persistProposal(response.data));
   } catch (error) {
     const { response } = error;
@@ -48,7 +46,6 @@ interface RateProposalPayload {
 const RATE_PROPOSAL = 'RATE_PROPOSAL';
 export const rateProposal = createAction(RATE_PROPOSAL);
 export function* rateProposalSaga(action: Action<any>) {
-  console.log('THIS PROPOSAL WAS RATED', action.payload);
   try {
     const { proposal, liked }: RateProposalPayload = action.payload;
 
@@ -69,7 +66,7 @@ export function* rateProposalSaga(action: Action<any>) {
       // TODO: We are matched, show the modal
       yield put(persistCurrentMatch(data));
     }
-    console.log('RATE PROPOSAL WAS FIRED AND RETURNED: ', data);
+
     yield put(persistProposal(data));
   } catch (error) {
     const { response } = error;
