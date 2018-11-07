@@ -37,6 +37,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onGetNewProposal: () => dispatch(getNewProposal()),
   onLeftSwipe: (proposal: Proposal) =>
     dispatch(rateProposal({ proposal, liked: false })),
+  // its currently not sending latest data to this function
   onRightSwipe: (proposal: Proposal) =>
     dispatch(rateProposal({ proposal, liked: true })),
   onClearCurrentMatch: () => dispatch(persistCurrentMatch({})),
@@ -101,6 +102,18 @@ class ProposalViewScreen extends React.Component<Props, State> {
     PushNotificationService.configure(currentUser);
   }
 
+  // shouldComponentUpdate(nextProps) {
+  //   if (nextProps.proposal.candidate.id !== this.props.proposal.candidate.id) {
+  //     console.log('COMP hsould UPDATE');
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
+  // componentDidUpdate() {
+  //   console.log('UPDATED IN PROPOSAL VIEW: ', this.props.proposal);
+  // }
+
   setCandidate = (candidate?: Candidate | null) => {
     this.setState({ candidate });
   }
@@ -136,7 +149,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
           <ProposalSwiper
             currentUser={currentUser}
             proposal={proposal}
-            onSwipeRight={onRightSwipe}
+            onSwipeRight={() => onRightSwipe(proposal)}
             onSwipeLeft={onLeftSwipe}
           />
         </View>
@@ -156,3 +169,4 @@ export default connect(
   mapState,
   mapDispatch
 )(ProposalViewScreen);
+// THE PROBLEM HERE IS THE LASTEST AND MOST CURRENT MATCH IS ALWAYS BEING SENT TO RATE

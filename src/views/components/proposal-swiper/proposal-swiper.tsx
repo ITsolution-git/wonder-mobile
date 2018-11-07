@@ -1,5 +1,6 @@
 import _ from "lodash";
 import React from "react";
+import { connect } from 'react-redux';
 import { DeckSwiper } from "native-base";
 import { Text, Title, WonderImage, SubTitle, IconButton } from "../theme";
 import {
@@ -51,6 +52,10 @@ interface CardDetailsOverlayState {
   showVideoPlayer: boolean;
 }
 
+const mapState = (state: WonderAppState) => ({
+  stateProposal: state.wonder.proposal
+});
+
 class CardDetailsOverlay extends React.Component<
   CardDetailsOverlayProps,
   CardDetailsOverlayState
@@ -73,6 +78,14 @@ class CardDetailsOverlay extends React.Component<
       this.setState({ imageCount: 0 });
     }
   }
+
+  // shouldComponentUpdate(nextProps) {
+  //   if (nextProps.candidate.id !== this.props.candidate.id) {
+  //     console.log('SWIPER UPDATE');
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   lookupZipcode = async () => {
     const { zipcode } = this.props.candidate;
@@ -250,16 +263,25 @@ class ProposalSwiper extends React.Component<Props> {
     }
   }
 
-  renderCard = (proposal: Proposal) => (
-    <CardDetailsOverlay
-      candidate={proposal.candidate}
-      currentUser={this.props.currentUser}
-    />
-  )
+  renderCard = (proposal: Proposal) => {
+    // console.log('RENDER CARD IS SHOWING THIS: ', proposal.candidate);
+    const { stateProposal } = this.props;
+
+    return (
+      (
+        <CardDetailsOverlay
+          candidate={stateProposal.candidate}
+          currentUser={this.props.currentUser}
+        />
+      )
+    );
+  }
 
   render() {
-    const { proposal, onSwipeLeft, onSwipeRight } = this.props;
+    const { proposal, onSwipeLeft, onSwipeRight, stateProposal } = this.props;
     const data = [proposal];
+    // console.log('PROPOSAL SWIPER IS SENDING THIS: ', proposal.candidate);
+
     // TODO: prefetch one more proposal
     if (proposal) {
       return (
@@ -283,7 +305,7 @@ class ProposalSwiper extends React.Component<Props> {
   }
 }
 
-export default ProposalSwiper;
+export default connect(mapState)(ProposalSwiper);
 
 const styles = StyleSheet.create({
   container: {
