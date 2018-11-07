@@ -138,7 +138,34 @@ export function* watchLoginUser() {
 
 const LOGOUT_USER = 'LOGOUT_USER';
 export const logoutUser = createAction(LOGOUT_USER);
-export function* logoutUserSaga() {
+export function* logoutUserSaga(action: Action<any>) {
+  try {
+    // try to clean push token, but do not blocks user from logout
+    const { id, token }: { id: number, token: string } = action.payload;
+
+    const authHeader = {
+      auth: {
+        token
+      }
+    };
+
+    yield call(
+      api,
+      {
+        method: 'PUT',
+        url: `/users/${id}`,
+        data: {
+          user: {
+            push_device_id: '',
+            push_device_type: ''
+          }
+        }
+      },
+      authHeader
+    );
+  } catch (error) {
+  }
+
   yield put(persistAuth({}));
   yield put(persistUser({}));
   NavigatorService.reset('Onboarding', null);

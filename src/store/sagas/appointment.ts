@@ -10,7 +10,7 @@ import {
   resetAppointment
 } from "../reducers/appointment";
 import WonderAppState from "../../models/wonder-app-state";
-import Appointment from "../../models/appointment";
+import Appointment, { DecoratedAppointment } from "../../models/appointment";
 import { handleAxiosError } from "./utils";
 import RNCalendarEvents, { RNCalendarEvent, RNCalendarCalendar } from "react-native-calendar-events";
 import moment from 'moment';
@@ -122,4 +122,36 @@ export function* createAppointmentSaga(action: Action<any>) {
 
 export function* watchCreateAppointment() {
   yield takeEvery(CREATE_APPOINTMENT, createAppointmentSaga);
+}
+
+export const CONFIRM_APPOINTMENT = "CONFIRM_APPOINTMENT";
+export const confirmAppointment = createAction(CONFIRM_APPOINTMENT);
+export function* confirmAppointmentSaga(action: Action<any>) {
+  const { appointment }: { appointment: DecoratedAppointment } = action.payload;
+
+  const { event_at, match, topic, location } = appointment;
+  if (event_at && match && topic && location) {
+
+    // Save the calendar Event to the users calendar
+    const calendars = yield call([RNCalendarEvents, 'findCalendars']);
+    if (calendars.length) {
+      const primaryCalendar: RNCalendarCalendar | undefined =
+        calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
+      if (primaryCalendar) {
+        const title = `${topic.name} with ${match.first_name}`;
+        const details: Partial<RNCalendarEvent> = {
+          calendarId: primaryCalendar.id,
+          location,
+          startDate: event_at,
+          endDate: moment(event_at).add(1, 'hour').toDate()
+        };
+
+        yield call([RNCalendarEvents, 'saveEvent'], title, details, undefined);
+      }
+    }
+  }
+}
+
+export function* watchConfirmtAppointment() {
+  yield takeEvery(CONFIRM_APPOINTMENT, confirmAppointmentSaga);
 }

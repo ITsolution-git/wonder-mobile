@@ -24,6 +24,7 @@ import { DecoratedAppointment } from 'src/models/appointment';
 import WonderAppState from 'src/models/wonder-app-state';
 import theme from 'src/assets/styles/theme';
 import { getConversation } from 'src/store/sagas/conversations';
+import { confirmAppointment } from 'src/store/sagas/appointment';
 import { isAppointmentBeforeToday } from 'src/utils/appointment';
 import { callPhoneNumber } from 'src/services/communication';
 import UserService from 'src/services/uber';
@@ -35,6 +36,7 @@ interface AppointmentViewProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
   appointment: DecoratedAppointment;
   onGetConversation: (partnerId: number) => void;
+  onConfirmAppointment: (appointment: DecoratedAppointment) => void;
 }
 
 interface AppointmentViewState {
@@ -47,7 +49,9 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
-    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
+    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
+  onConfirmAppointment: (appointment: DecoratedAppointment) =>
+    dispatch(confirmAppointment({ appointment })),
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -139,6 +143,18 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     onGetConversation(appointment.match.id);
   };
 
+  renderConfirmationButton = (appointment: DecoratedAppointment) => {
+    const { onConfirmAppointment } = this.props;
+    const { state } = appointment;
+    if (state === 'negotiating' || state === 'invited') {
+      return (
+        <PrimaryButton title='Confirm' onPress={() => onConfirmAppointment(appointment)} />
+      );
+    }
+
+    return null;
+  }
+
   render() {
     const { navigation, currentUser } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
@@ -184,7 +200,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         </View>
 
         <View>
-          <PrimaryButton title="Leave Review" onPress={this.openReviewModal} />
+          {
+            isPast
+            ? <PrimaryButton title="Leave Review" onPress={this.openReviewModal} />
+            : this.renderConfirmationButton(appointment)
+          }
           <View style={[styles.row, styles.buttonRow]}>
             {!isPast && (
               <View style={styles.col}>

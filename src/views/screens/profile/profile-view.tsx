@@ -13,26 +13,32 @@ import { connect } from 'react-redux';
 import { logoutUser, getUser, deactivateAccount } from 'src/store/sagas/user';
 import Avatar, { AvatarSize } from 'src/views/components/theme/avatar';
 
-import { selectCurrentUser } from 'src/store/selectors/user';
+import { selectCurrentUser, selectAuth } from 'src/store/selectors/user';
 import User from 'src/models/user';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
 import WonderAppState from 'src/models/wonder-app-state';
 import { HTTP_DOMAIN } from "src/services/api";
 
+interface AuthToken {
+  uid: number;
+  token: string;
+}
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   currentUser: User;
-  onLogout: () => void;
+  onLogout: (id: number, token: string) => void;
   onRefreshProfile: () => void;
   deactivateUsersAccount: () => void;
+  auth: AuthToken;
 }
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state)
+  currentUser: selectCurrentUser(state),
+  auth: selectAuth(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onLogout: () => dispatch(logoutUser()),
+  onLogout: (id: number, token: string) => dispatch(logoutUser({ id, token })),
   onRefreshProfile: () => dispatch(getUser()),
   deactivateUsersAccount: () => dispatch(deactivateAccount())
 });
@@ -81,9 +87,10 @@ class ProfileViewScreen extends React.Component<Props> {
   }
 
   promptLogout = () => {
+    const { onLogout, auth } = this.props;
     const options = [
       { text: 'Cancel', onPress: _.noop },
-      { text: 'Yes, Logout', onPress: this.props.onLogout || _.noop },
+      { text: 'Yes, Logout', onPress: () => onLogout(auth.uid, auth.token) },
     ];
 
     Alert.alert('Confirm Logout', 'Are you sure you want to logout?', options);

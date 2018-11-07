@@ -21,7 +21,7 @@ export default interface Appointment {
   owner: AppointmentUser;
   users: AppointmentUser[];
 
-  state: 'created' | 'negotiating' | 'confirmed' | 'cancelled';
+  state: 'created' | 'negotiating' | 'confirmed' | 'cancelled' | 'invited';
   invited_at: Date;
   confirmed_at: Date;
 }

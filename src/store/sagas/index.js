@@ -14,7 +14,7 @@ import {
   watchDeactivateAccount
 } from "./user";
 import { watchGetNewProposal, watchRateProposal } from "./proposal";
-import { watchCreateAppointment, watchGetAppointments } from "./appointment";
+import { watchCreateAppointment, watchGetAppointments, watchConfirmtAppointment } from "./appointment";
 import {
   watchGetPartners,
   watchGetPartnerActivities,
@@ -54,6 +54,7 @@ export default function* rootSaga() {
     // Appointments
     watchGetAppointments(),
     watchCreateAppointment(),
+    watchConfirmtAppointment(),
 
     // Attendances
     watchGetAttendances(),
