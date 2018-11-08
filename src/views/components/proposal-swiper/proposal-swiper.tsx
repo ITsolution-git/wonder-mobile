@@ -74,6 +74,13 @@ class CardDetailsOverlay extends React.Component<
     this.lookupZipcode();
   }
 
+  // shouldComponentUpdate(nextProps: any) {
+  //   if (nextProps.candidate.id !== this.props.candidate.id) {
+  //     return true;
+  //   }
+  //   return false;
+  // }
+
   componentDidUpdate(prevProps: any) {
     if (this.props.candidate.id !== prevProps.candidate.id) {
       this.setState({ imageCount: 0 });
