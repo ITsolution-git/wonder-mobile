@@ -28,8 +28,10 @@ import Candidate from "src/models/candidate";
 import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
 import MatchAvailableMedia from "../../components/proposal-swiper/match-available-media";
 import VibeVideoModal from "../modals/vibe-video-modal";
+import { cadetblue } from "color-name";
 
 const deviceHeight = Dimensions.get("window").height;
+const deviceWidth = Dimensions.get("window").width;
 
 interface Props {
   proposal: Proposal | null;
@@ -74,13 +76,6 @@ class CardDetailsOverlay extends React.Component<
     this.lookupZipcode();
   }
 
-  // shouldComponentUpdate(nextProps: any) {
-  //   if (nextProps.candidate.id !== this.props.candidate.id) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
   componentDidUpdate(prevProps: any) {
     if (this.props.candidate.id !== prevProps.candidate.id) {
       this.setState({ imageCount: 0 });
@@ -95,6 +90,15 @@ class CardDetailsOverlay extends React.Component<
       );
       this.setState({ location: `${geolocation.city}, ${geolocation.state}` });
     }
+  }
+
+  renderDistance = () => {
+    const { candidate } = this.props;
+    return (
+      <Text allowFontScaling={false} style={{ fontSize: 14, marginBottom: 5, color: '#fff' }}>
+        {candidate.distance && _.get(candidate, 'distance', 0).toFixed(0)} miles
+        </Text>
+    );
   }
 
   toggleDetails = () => {
@@ -175,6 +179,7 @@ class CardDetailsOverlay extends React.Component<
         style={styles.cardOverlayContainer}
         onPress={this.getNextPhoto}
       >
+
         <WonderImage
           background
           uri={_.get(candidate, `images[${imageCount}].url`, Images.WELCOME)}
@@ -198,9 +203,7 @@ class CardDetailsOverlay extends React.Component<
                   moment().diff(candidate.birthdate, "years")
                 ].join(", ")}
               </Title>
-              <SubTitle style={{ fontSize: 14, marginBottom: 5 }} color="#FFF" >
-                24 miles away
-              </SubTitle>
+              {this.renderDistance()}
               <View style={{ paddingBottom: 6 }}>{this.getTopics()}</View>
               <Animated.View style={{ height: this.state.animation }}>
                 {details}
@@ -237,6 +240,7 @@ class CardDetailsOverlay extends React.Component<
             videoUrl={candidate.video}
           />
         </WonderImage>
+
       </TouchableWithoutFeedback>
     );
   }
@@ -308,10 +312,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: "#EEE",
+    backgroundColor: "#eee",
     justifyContent: "space-between",
     height: Dimensions.get("window").height - 60,
-    width: Dimensions.get("window").width
+    width: Dimensions.get("window").width,
   },
   textContainer: {
     padding: 15,
@@ -341,6 +345,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
+    zIndex: 1
   }
 });

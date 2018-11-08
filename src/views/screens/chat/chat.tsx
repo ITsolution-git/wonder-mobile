@@ -110,8 +110,8 @@ class ChatScreen extends React.Component<Props> {
   static navigationOptions = ({
     navigation
   }: {
-    navigation: NavigationScreenProp<any, NavigationParams>;
-  }) => {
+      navigation: NavigationScreenProp<any, NavigationParams>;
+    }) => {
     return {
       title: navigation.getParam('title', 'Chat'),
       headerRight: (
@@ -154,7 +154,7 @@ class ChatScreen extends React.Component<Props> {
         </View>
       )
     };
-  };
+  }
 
   state: ChatViewState = {
     isGhostingModalOpen: false,
@@ -217,19 +217,19 @@ class ChatScreen extends React.Component<Props> {
     const { navigation, conversation, onUpdateAppointment } = this.props;
     onUpdateAppointment({ match: conversation.partner });
     navigation.navigate('WonderMap', { id: conversation.partner.id });
-  };
+  }
 
   openGhostingModal = () => {
     this.setState({ isGhostingModalOpen: true });
-  };
+  }
 
   closeGhostingModal = () => {
     this.setState({ isGhostingModalOpen: false });
-  };
+  }
 
   openProfileModal = () => {
     this.setState({ profileModalOpen: !this.state.profileModalOpen });
-  };
+  }
 
   showBlockAlert = () => {
     Alert.alert(
@@ -238,7 +238,7 @@ class ChatScreen extends React.Component<Props> {
       [{ text: 'Cancel' }, { text: 'YES', onPress: this.blockPartner }],
       { cancelable: false }
     );
-  };
+  }
 
   // could refactor these two alerts
   showAlert = () => {
@@ -248,7 +248,7 @@ class ChatScreen extends React.Component<Props> {
       [{ text: 'Cancel' }, { text: 'YES', onPress: this.ghostPartner }],
       { cancelable: false }
     );
-  };
+  }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
     const { conversation } = this.props;
@@ -263,7 +263,7 @@ class ChatScreen extends React.Component<Props> {
     });
 
     this.setState({ selectedSendImage: '' });
-  };
+  }
 
   renderBubble(props: any) {
     return (
@@ -283,7 +283,7 @@ class ChatScreen extends React.Component<Props> {
         </View>
       </Send>
     );
-  };
+  }
 
   renderActions = (props: any) => {
     return (
@@ -293,7 +293,7 @@ class ChatScreen extends React.Component<Props> {
         </View>
       </TouchableOpacity>
     );
-  };
+  }
 
   getImage = () => {
     const options: Options = {
@@ -311,7 +311,7 @@ class ChatScreen extends React.Component<Props> {
         this.setState({ selectedSendImage: source });
       }
     });
-  };
+  }
 
   blockPartner = () => {
     const { conversation, navigation } = this.props;
@@ -323,7 +323,7 @@ class ChatScreen extends React.Component<Props> {
       partner: conversation.partner
     });
     navigation.navigate('ChatList');
-  };
+  }
 
   ghostPartner = (ghostMessage: string) => {
     const { navigation, onGhostContact, conversation } = this.props;
@@ -336,7 +336,7 @@ class ChatScreen extends React.Component<Props> {
     onGhostContact({ partner: conversation.partner, message: ghostMessage });
     this.closeGhostingModal();
     navigation.navigate('ChatList');
-  };
+  }
 
   getTopics = () => {
     const { currentUser, conversation } = this.props;
@@ -359,12 +359,12 @@ class ChatScreen extends React.Component<Props> {
           })}
       </View>
     );
-  };
+  }
 
   toggleDetails = () => {
     const showDetails = !this.state.showDetails;
     this.setState({ showDetails });
-  };
+  }
 
   renderFooter = () => {
     return (
@@ -387,7 +387,7 @@ class ChatScreen extends React.Component<Props> {
         </View>
       </View>
     );
-  };
+  }
 
   render() {
     const { currentUser, conversation } = this.props;
