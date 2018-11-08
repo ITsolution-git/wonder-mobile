@@ -46,7 +46,6 @@ class WonderImage extends React.PureComponent<Props> {
       }
 
       if (background) {
-        console.log(uri);
         return (
           <FastImage
             fallback={true}
