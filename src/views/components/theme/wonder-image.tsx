@@ -49,9 +49,7 @@ class WonderImage extends React.PureComponent<Props> {
             style={style}
             {...rest}
             source={{
-              uri: uri !== 7 || uri !== null || uri !== undefined ?
-                `${uri}?w=${style.width}&h=${style.height}&auto=enhance,format&fit=crop&crop=entropy&q=60` :
-                'https://www.gstatic.com/webp/gallery/4.sm.jpg',
+              uri: uri !== 7 ? `${uri}?w=${style.width}&h=${style.height}&auto=enhance,format&fit=crop&crop=entropy&q=60` : 'https://www.gstatic.com/webp/gallery/4.sm.jpg',
               priority: FastImage.priority.high
             }}
           >
