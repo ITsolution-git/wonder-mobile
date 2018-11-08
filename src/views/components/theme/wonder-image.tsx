@@ -3,14 +3,13 @@ import React from "react";
 import {
   ImageProps,
   Image,
-  ImageBackground,
   ImageStyle,
-  StyleProp,
-  Dimensions
+  StyleProp
 } from "react-native";
 import SvgUri from "react-native-svg-uri";
 import api, { BASE_URL } from "src/services/api";
 import Omit from "src/models/omit";
+import FastImage from 'react-native-fast-image';
 
 const backgroundImageExtension = '?w=600&h=1200&auto=enhance,format&fit=crop&crop=entropy&q=60';
 const avatarImageExtension = '?w=200&h=200&auto=enhance,format&fit=crop&crop=entropy&q=60';
@@ -45,14 +44,19 @@ class WonderImage extends React.PureComponent<Props> {
 
       if (background) {
         return (
-          <ImageBackground
+          <FastImage
+            fallback={true}
             style={style}
             {...rest}
-            source={{ uri: `${uri}?w=${style.width}&h=${style.height}&auto=enhance,format&fit=crop&crop=entropy&q=60` }}
+            source={{
+              uri: uri !== 7 ? `${uri}?w=${style.width}&h=${style.height}&auto=enhance,format&fit=crop&crop=entropy&q=60` : 'https://www.gstatic.com/webp/gallery/4.sm.jpg',
+              priority: FastImage.priority.high
+            }}
           >
             {children}
-          </ImageBackground>
+          </FastImage>
         );
+
       }
       return (
         <Image

@@ -27,6 +27,8 @@ import com.facebook.soloader.SoLoader;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 
+import com.dylanvann.fastimage.FastImageViewPackage;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -63,7 +65,8 @@ public class MainApplication extends Application implements ReactApplication {
             new ImageRotatePackage(),
             new ImagePickerPackage(),
             new ReactNativePushNotificationPackage(),
-            new ReactVideoPackage()
+            new ReactVideoPackage(),
+            new FastImageViewPackage()
       );
     }
 

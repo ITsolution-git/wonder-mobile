@@ -59,7 +59,7 @@ target 'WonderApp' do
   pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
   pod 'react-native-calendar-events', :path => '../node_modules/react-native-calendar-events'
-
+  pod 'react-native-fast-image', :path => '../node_modules/react-native-fast-image'
 end
 
 post_install do |installer|
