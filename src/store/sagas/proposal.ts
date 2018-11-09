@@ -39,6 +39,28 @@ export function* watchGetNewProposal() {
   yield takeEvery(GET_NEW_PROPOSAL, getNewProposalSaga);
 }
 
+const GET_NEXT_PROPOSAL = "GET_NEXT_PROPOSAL";
+export const getNextProposal = createAction(GET_NEXT_PROPOSAL);
+
+export function* getNextProposalSaga() {
+  console.log('RAN');
+  try {
+    const state: WonderAppState = yield select();
+    const newProp = yield call(api, {
+      method: 'GET',
+      url: '/proposals'
+    }, state.user);
+
+    console.log(newProp);
+  } catch (e) {
+    console.log('E: ', e);
+  }
+}
+
+export function* watchGetNextProposal() {
+  yield takeEvery(GET_NEXT_PROPOSAL, getNextProposalSaga);
+}
+
 interface RateProposalPayload {
   proposal: Proposal;
   liked: boolean;

@@ -185,7 +185,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
                 errorHint={errors.school}
               />
               <TextInput
-                label="Occupaction"
+                label="Occupation"
                 onChangeText={this.onChangeText('occupation')}
                 defaultValue={currentUser.occupation}
                 errorHint={errors.occupation}

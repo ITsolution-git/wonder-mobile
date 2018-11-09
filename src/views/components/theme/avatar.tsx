@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, StyleProp, ImageStyle, ViewStyle, Platform } from 'react-native';
+import { View, StyleSheet, StyleProp, ImageStyle, ViewStyle } from 'react-native';
 import { WonderImage } from '../theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import theme from '../../../assets/styles/theme';
@@ -39,7 +39,8 @@ class Avatar extends React.Component<AvatarProps> {
     sm: 64,
     md: 96,
     lg: 128,
-    xl: 160
+    xl: 160,
+    xmd: 74
   };
 
   getDimensions = () => {
@@ -59,7 +60,7 @@ class Avatar extends React.Component<AvatarProps> {
   }
 
   renderImage = () => {
-    const { uri, style, chat, currentUser, circle } = this.props;
+    const { uri, style, chat, circle } = this.props;
 
     if (uri) {
       if (circle && chat) {

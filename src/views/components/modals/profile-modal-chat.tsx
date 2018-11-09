@@ -196,10 +196,10 @@ const ProfileModalChat = (props: Props) => {
                       );
                     } else {
                       return (
-                        <ImageBackground
+                        <WonderImage
                           key={i.url}
                           style={styles.regularImageStyles}
-                          source={{ uri: i.url }}
+                          uri={i.url}
                         />
                       );
                     }

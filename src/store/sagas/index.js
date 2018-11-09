@@ -13,7 +13,7 @@ import {
   watchDeleteProfileVideoSaga,
   watchDeactivateAccount
 } from "./user";
-import { watchGetNewProposal, watchRateProposal } from "./proposal";
+import { watchGetNewProposal, watchRateProposal, watchGetNextProposal } from "./proposal";
 import { watchCreateAppointment, watchGetAppointments, watchConfirmtAppointment } from "./appointment";
 import {
   watchGetPartners,
@@ -50,6 +50,7 @@ export default function* rootSaga() {
     // Proposals
     watchGetNewProposal(),
     watchRateProposal(),
+    watchGetNextProposal(),
 
     // Appointments
     watchGetAppointments(),

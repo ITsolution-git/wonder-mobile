@@ -133,6 +133,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
                   styles.unreadMessage : null}
             >
               <Avatar
+                size={'xmd'}
                 chat={chat}
                 sender={chat.last_message.sender_id}
                 currentUser={currentUser}
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-
+    padding: 4
   },
   textContainer: {
     justifyContent: 'center',
@@ -169,20 +170,21 @@ const styles = StyleSheet.create({
   },
   swipeContainer: {
     borderBottomWidth: 1,
-    height: 90,
+    height: 98,
     borderBottomColor: '#e6e6ec',
   },
   avatarOuterContainer: {
-    height: 82,
-    width: 82,
+    height: 86,
+    width: 86,
     justifyContent: 'center',
     alignItems: 'center',
   },
   unreadMessage: {
-    height: 76,
-    width: 76, borderColor: theme.colors.primary,
+    height: 88,
+    width: 88,
+    borderColor: theme.colors.primary,
     borderWidth: 5,
-    borderRadius: 37,
+    borderRadius: 44,
     justifyContent: 'center',
     alignItems: 'center',
   },
