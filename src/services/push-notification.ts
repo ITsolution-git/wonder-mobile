@@ -7,7 +7,7 @@ import { PushNotificationIOS } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 import NavigationService from './navigation';
-import { DecoratedAppointment } from '../models/appointment';
+import Appointment, { DecoratedAppointment } from '../models/appointment';
 import { decorateAppointment } from '../store/selectors/appointment';
 import User from '../models/user';
 export interface RNPushNotificationToken {
@@ -21,9 +21,15 @@ interface WonderPushNotification extends PushNotification {
   extra?: string;
 }
 
-interface NotificationPayload {
+interface AndroidNotificationPayload {
   type?: string;
-  extra?: string;
+  partner_id?: number;
+  appointment?: string;
+}
+interface IosNotificationPayload {
+  type?: string;
+  partner_id?: number;
+  appointment?: Appointment;
 }
 
 class PushNotificationService {
@@ -52,6 +58,12 @@ class PushNotificationService {
     NavigationService.navigate(destination, { appointment, review });
   };
 
+  private resetToPast = () => {
+    NavigationService.reset('Main', 'onboarding');
+    NavigationService.navigate('User');
+    NavigationService.navigate('Past');
+  };
+
   private resetToChat = (partnerId: number, redirect: string) => {
     NavigationService.reset('Main', 'onboarding');
     NavigationService.navigate(
@@ -63,6 +75,31 @@ class PushNotificationService {
       })
     );
   };
+
+  private handleIosNotifications = (payload: IosNotificationPayload) => {
+    const { partner_id, appointment, type } = payload;
+    return {
+      type,
+      partnerId: partner_id,
+      appointment:
+        appointment && this.user
+          ? decorateAppointment(appointment, this.user)
+          : null
+    };
+  }
+
+  private handleAndroidNotifications = (payload: AndroidNotificationPayload) => {
+    const { partner_id, appointment, type } = payload;
+    const parsedAppointment: Appointment = appointment ? JSON.parse(appointment) : null;
+    return {
+      type,
+      partnerId: partner_id,
+      appointment:
+        parsedAppointment && this.user
+          ? decorateAppointment(parsedAppointment, this.user)
+          : null
+    };
+  }
 
   private parseNotification = (notification: WonderPushNotification) => {
     const error = {
@@ -76,22 +113,7 @@ class PushNotificationService {
       return error;
     }
 
-    const payload: NotificationPayload =
-      this.token.os === 'ios' ? data : notification;
-    const { extra, type } = payload;
-    const extraData = extra
-      ? JSON.parse(extra)
-      : { partner_id: null, appointment: null };
-
-    const { partner_id, appointment } = extraData;
-    return {
-      type,
-      partnerId: partner_id,
-      appointment:
-        appointment && this.user
-          ? decorateAppointment(appointment, this.user)
-          : null
-    };
+    return this.token.os === 'ios' ? this.handleIosNotifications(data) : this.handleAndroidNotifications(notification);
   };
 
   private handleNotificationReceived = (
@@ -101,9 +123,8 @@ class PushNotificationService {
     if (userInteraction) {
       const payload = this.parseNotification(notification);
       const { type, partnerId, appointment } = payload;
-
       if (
-        (type === 'upcoming_date' || type === 'confirm_date') &&
+        (type === 'upcoming_date' || type === 'confirm_date' || type === 'invite_date') &&
         appointment
       ) {
         this.resetToDate('UpcomingAppointmentView', appointment, false);
@@ -117,6 +138,8 @@ class PushNotificationService {
         this.resetToDate('PastAppointmentView', appointment, false);
       } else if (type === 'review_date' && appointment) {
         this.resetToDate('PastAppointmentView', appointment, true);
+      } else if (type === 'cancel_date' && appointment) {
+        this.resetToPast();
       }
     } else if (foreground && this.token && this.token.os === 'ios') {
       // RNPushNotification.localNotification({
