@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet, Image, Alert, Linking } from "react-native";
+import { View, StyleSheet, Image, Alert, Linking, TouchableOpacity } from "react-native";
 import { Text, Button, PrimaryButton } from "src/views/components/theme";
 import theme from "src/assets/styles/theme";
 import Screen from "src/views/components/screen";
@@ -61,29 +61,20 @@ export default class Welcome extends React.Component<Props> {
               title="CREATE ACCOUNT"
               onPress={() => navigation.navigate("Register1")}
             />
-            <Button
-              rounded
-              color="#3D90F0"
-              icon="facebook"
-              title="LOGIN WITH FACEBOOK"
-              onPress={() => this.onFacebookLogin()}
-              fullWidth
+            <TouchableOpacity
               style={styles.facebookLoginButton}
-            />
-            <View style={styles.middleContainer}>
-              <Text color="#FFF" style={styles.boldText}>
-                Already have an account?
-            </Text>
-              <TextButton
-                style={{
-                  textAlign: "center",
-                  color: theme.colors.primary,
-                  fontWeight: "bold"
-                }}
-                text="Sign In"
-                onPress={() => navigation.navigate("Login")}
-              />
-            </View>
+              onPress={() => navigation.navigate("Login")}
+            >
+              <View style={{ flex: 1 }}>
+                <Image
+                  style={styles.buttonLogo}
+                  source={require("src/assets/images/icons/LogoIcon.png")}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={styles.loginText}>LOGIN</Text>
+              <View style={{ flex: 1 }} />
+            </TouchableOpacity>
           </View>
 
           <View style={styles.legalContainer}>
@@ -111,8 +102,8 @@ export default class Welcome extends React.Component<Props> {
               </Text>
             </Text>
           </View>
-        </View>
-      </Screen>
+        </View >
+      </Screen >
     );
   }
 }
@@ -132,6 +123,12 @@ const styles = StyleSheet.create({
   facebookLoginButton: {
     backgroundColor: "#FFF",
     marginTop: 10,
+    minWidth: 150,
+    minHeight: 44,
+    flexDirection: 'row',
+    paddingTop: 14,
+    paddingBottom: 14,
+    borderRadius: 30,
     shadowOffset: {
       width: 0,
       height: 5
@@ -158,5 +155,15 @@ const styles = StyleSheet.create({
     marginTop: 25,
     alignItems: 'center'
   },
-  boldText: { fontWeight: "bold" }
+  boldText: { fontWeight: "bold" },
+  buttonLogo: {
+    width: 20,
+    height: 20,
+    marginLeft: 10
+  },
+  loginText: {
+    textAlign: 'center',
+    flex: 1,
+    color: "#3D90F0"
+  }
 });

@@ -5,7 +5,7 @@ import api from '../../services/api';
 import { persistProposal } from '../actions/proposal';
 
 import { Alert } from 'react-native';
-import { persistCurrentMatch } from '../reducers/wonder';
+import { persistCurrentMatch, persistPropsalImages } from '../reducers/wonder';
 import WonderAppState from '../../models/wonder-app-state';
 import Proposal from '../../models/proposal';
 import { handleAxiosError } from './utils';
@@ -45,9 +45,10 @@ export function* getNextProposalSaga() {
     const state: WonderAppState = yield select();
     const newProp = yield call(api, {
       method: 'GET',
-      url: '/proposals'
+      url: '/proposables?limit=5'
     }, state.user);
-
+    console.log('PROPOSABLES: ', newProp);
+    yield put(persistPropsalImages(newProp.data));
   } catch (e) {
     handleAxiosError(e);
   }
