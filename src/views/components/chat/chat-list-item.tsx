@@ -5,6 +5,7 @@ import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { connect } from "react-redux";
 import Avatar from 'src/views/components/theme/avatar';
 import theme from 'src/assets/styles/theme';
+import { Dispatch } from "redux";
 import Conversation from 'src/models/conversation';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
 import {

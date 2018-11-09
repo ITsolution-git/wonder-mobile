@@ -9,6 +9,7 @@ export enum AvatarSize {
   md = 'md',
   lg = 'lg',
   xl = 'xl',
+  xmd = 'xmd'
 }
 
 interface AvatarProps {
@@ -17,12 +18,12 @@ interface AvatarProps {
   rounded?: boolean;
   circle?: boolean;
   uri?: string | null;
-  size?: AvatarSize | 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  size?: AvatarSize | 'xs' | 'sm' | 'xmd' | 'md' | 'lg' | 'xl';
   containerStyle?: StyleProp<ViewStyle>;
   style?: StyleProp<ImageStyle>;
   chat?: any;
   currentUser?: { id: number };
-  sender: number;
+  sender?: number;
 }
 
 class Avatar extends React.Component<AvatarProps> {
@@ -37,10 +38,10 @@ class Avatar extends React.Component<AvatarProps> {
   static Sizes = {
     xs: 32,
     sm: 64,
+    xmd: 74,
     md: 96,
     lg: 128,
     xl: 160,
-    xmd: 74
   };
 
   getDimensions = () => {

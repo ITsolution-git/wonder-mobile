@@ -51,6 +51,7 @@ interface User {
   last_seen_at: string | null;
   partner: object;
   distance: number;
+  age?: number;
 }
 
 export default User;

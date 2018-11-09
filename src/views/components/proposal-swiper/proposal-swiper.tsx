@@ -24,7 +24,7 @@ import Proposal from "src/models/proposal";
 import User from "src/models/user";
 import ProfileImage from "src/models/profile-image";
 import Candidate from "src/models/candidate";
-
+import WonderAppState from 'src/models/wonder-app-state';
 import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
 import MatchAvailableMedia from "../../components/proposal-swiper/match-available-media";
 import VibeVideoModal from "../modals/vibe-video-modal";

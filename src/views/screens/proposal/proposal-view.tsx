@@ -165,4 +165,3 @@ export default connect(
   mapState,
   mapDispatch
 )(ProposalViewScreen);
-// THE PROBLEM HERE IS THE LASTEST AND MOST CURRENT MATCH IS ALWAYS BEING SENT TO RATE

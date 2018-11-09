@@ -48,6 +48,7 @@ interface StateErrors {
   last_name?: string;
   school?: string;
   occupation?: string;
+  birthdate?: string;
 }
 
 class ProfileEditScreen extends React.Component<Props, State> {
@@ -113,14 +114,10 @@ class ProfileEditScreen extends React.Component<Props, State> {
     }
   }
 
-  // onDateChange = (date: Date) => {
-  //   this.setState({ birthdate: date });
-  // }
-
   public render() {
     const { navigation, currentUser } = this.props;
     const { errors, birthdate } = this.state;
-    console.log('current: ', currentUser);
+
     return (
       <Screen>
         <ScrollView style={styles.container}>

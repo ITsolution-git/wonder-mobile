@@ -30,20 +30,17 @@ export function* getNewProposalSaga() {
     } else {
       handleAxiosError(error);
     }
-  } finally {
-
   }
 }
 
 export function* watchGetNewProposal() {
   yield takeEvery(GET_NEW_PROPOSAL, getNewProposalSaga);
 }
-
+// THIS SAGA IS NOT YET BEING USED
 const GET_NEXT_PROPOSAL = "GET_NEXT_PROPOSAL";
 export const getNextProposal = createAction(GET_NEXT_PROPOSAL);
 
 export function* getNextProposalSaga() {
-  console.log('RAN');
   try {
     const state: WonderAppState = yield select();
     const newProp = yield call(api, {
@@ -51,9 +48,8 @@ export function* getNextProposalSaga() {
       url: '/proposals'
     }, state.user);
 
-    console.log(newProp);
   } catch (e) {
-    console.log('E: ', e);
+    handleAxiosError(e);
   }
 }
 
