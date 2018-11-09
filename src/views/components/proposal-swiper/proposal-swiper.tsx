@@ -17,14 +17,14 @@ import moment from "moment-timezone";
 import Icon from "react-native-vector-icons/Entypo";
 import Topic from "src/models/topic";
 import Images from "src/assets/images";
-
+import FastImage from 'react-native-fast-image';
 import LinearGradient from "react-native-linear-gradient";
 import Wonder from "../theme/wonder/wonder";
 import Proposal from "src/models/proposal";
 import User from "src/models/user";
 import ProfileImage from "src/models/profile-image";
 import Candidate from "src/models/candidate";
-
+import WonderAppState from 'src/models/wonder-app-state';
 import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
 import MatchAvailableMedia from "../../components/proposal-swiper/match-available-media";
 import VibeVideoModal from "../modals/vibe-video-modal";
@@ -94,10 +94,11 @@ class CardDetailsOverlay extends React.Component<
 
   renderDistance = () => {
     const { candidate } = this.props;
+    const distance = candidate.distance && _.get(candidate, 'distance', 0).toFixed(0);
     return (
       <Text allowFontScaling={false} style={{ fontSize: 14, marginBottom: 5, color: '#fff' }}>
-        {candidate.distance && _.get(candidate, 'distance', 0).toFixed(0)} miles
-        </Text>
+        {distance <= 1 ? "< 1 mile" : distance + ' miles'}
+      </Text>
     );
   }
 

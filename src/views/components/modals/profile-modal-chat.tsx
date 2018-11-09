@@ -5,7 +5,6 @@ import {
   Text,
   Modal,
   ScrollView,
-  ImageBackground,
   StyleSheet,
   Dimensions,
   Platform
@@ -30,7 +29,9 @@ function lighten(color: string, value: number) {
 }
 
 interface Props {
-  currentUser: object;
+  currentUser: {
+    topics: Topic[]
+  };
   conversation: DecoratedConversation;
   visible: boolean;
   onRequestClose: () => void;
@@ -196,10 +197,10 @@ const ProfileModalChat = (props: Props) => {
                       );
                     } else {
                       return (
-                        <ImageBackground
+                        <WonderImage
                           key={i.url}
                           style={styles.regularImageStyles}
-                          source={{ uri: i.url }}
+                          uri={i.url}
                         />
                       );
                     }

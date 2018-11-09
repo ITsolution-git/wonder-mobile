@@ -11,8 +11,7 @@ import api, { BASE_URL } from "src/services/api";
 import Omit from "src/models/omit";
 import FastImage from 'react-native-fast-image';
 
-const backgroundImageExtension = '?w=600&h=1200&auto=enhance,format&fit=crop&crop=entropy&q=60';
-const avatarImageExtension = '?w=200&h=200&auto=enhance,format&fit=crop&crop=entropy&q=60';
+const imageExtension = `&auto=enhance,format&fit=crop&crop=entropy&q=60`;
 
 interface Props extends Omit<ImageProps, "source"> {
   uri: string;
@@ -49,7 +48,9 @@ class WonderImage extends React.PureComponent<Props> {
             style={style}
             {...rest}
             source={{
-              uri: uri !== 7 ? `${uri}?w=${style.width}&h=${style.height}&auto=enhance,format&fit=crop&crop=entropy&q=60` : 'https://www.gstatic.com/webp/gallery/4.sm.jpg',
+              uri: uri !== 7 ?
+                `${uri}?w=${style.width}&h=${style.height}${imageExtension}` :
+                `https://wonderapp.imgix.net/female-silhouette.jpg`,
               priority: FastImage.priority.high
             }}
           >
@@ -61,7 +62,7 @@ class WonderImage extends React.PureComponent<Props> {
       return (
         <Image
           style={style}
-          source={{ uri: `${uri}?w=${400}&h=${400}&auto=enhance,format&fit=crop&crop=entropy&q=60` }}
+          source={{ uri: `${uri}?w=${400}&h=${400}${imageExtension}` }}
           {...rest}
         />
       );

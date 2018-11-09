@@ -104,7 +104,7 @@ const UpcomingAppointmentsNavigator = createStackNavigator({
       ...theme.NavBar.transparent
     }
   }
-}, );
+});
 
 const PastAppointmentsNavigator = createStackNavigator({
   PastAppointments: {

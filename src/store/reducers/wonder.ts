@@ -4,6 +4,7 @@ import Proposal from "../../models/proposal";
 import Partner from "../../models/partner";
 import Appointment from "../../models/appointment";
 import Attendance from "src/models/attendance";
+import { actionChannel } from "redux-saga/effects";
 export interface WonderState {
   readonly topics: Topic[];
   readonly proposal: Proposal | null;
@@ -11,6 +12,7 @@ export interface WonderState {
   readonly currentMatch: Proposal | {};
   readonly appointments: Appointment[];
   readonly attendances: Attendance[];
+  readonly proposalImages: [];
 }
 
 const defaultState: WonderState = {
@@ -19,7 +21,8 @@ const defaultState: WonderState = {
   partners: [],
   currentMatch: {},
   appointments: [],
-  attendances: []
+  attendances: [],
+  proposalImages: []
 };
 
 export const persistTopics = createAction("PERSIST_TOPICS");
@@ -27,9 +30,15 @@ export const persistPartners = createAction("PERSIST_PARTNERS");
 export const persistCurrentMatch = createAction("PERSIST_CURRENT_MATCH");
 export const persistAppointments = createAction("PERSIST_APPOINTMENTS");
 export const persistAttendances = createAction("PERSIST_ATTENDANCES");
+export const persistPropsalImages = createAction("PERSIST_PROPOSAL_IMAGES");
 
 export default handleActions(
   {
+    PERSIST_PROPOSAL_IMAGES: (state: WonderState, action: Action<any>) => ({
+      ...state,
+      proposalImages: action.payload || defaultState.proposalImages
+    }),
+
     PERSIST_CURRENT_MATCH: (state: WonderState, action: Action<any>) => ({
       ...state,
       currentMatch: action.payload || defaultState.currentMatch

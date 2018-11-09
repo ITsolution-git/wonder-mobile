@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Image, TouchableOpacity, StyleProp } from 'react-native';
+import { StyleSheet, View, ImageBackground, Image, TouchableOpacity, StyleProp, Text } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import WonderImage from '../wonder-image';
@@ -7,6 +7,7 @@ import api, { ApiConfig, BASE_URL } from 'src/services/api';
 import Video from 'react-native-video';
 import { Response } from 'src/models/image-picker';
 import ProfileImage from 'src/models/profile-image';
+import theme from 'src/assets/styles/theme';
 
 interface Props {
   videoSource?: string;
@@ -83,7 +84,15 @@ export default class MediaGridItem extends React.Component<Props> {
             end={{ x: 1, y: 0.5 }}
             colors={['#FFF799', '#FFC3A0']}
           >
-            <Icon name={video ? 'video-camera' : 'plus'} size={size ? (size / 5) : 16} color="#FFF" />
+            <Icon
+              name={video ? 'video-camera' : 'plus'}
+              size={video ? 22 : size ? (size / 5) : 16}
+              color={video ? theme.colors.textColor : '#fff'}
+            />
+            {video &&
+              <Text allowFontScaling={false} style={{ fontSize: 9, color: theme.colors.textColor }}>
+                Upload vibe {"\n"} video clip
+            </Text>}
           </LinearGradient>
         </TouchableOpacity >
       );

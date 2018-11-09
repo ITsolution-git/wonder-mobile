@@ -9,7 +9,7 @@ import theme from "src/assets/styles/theme";
 // the colors currently make use of the primary color of the app and white
 
 interface StateButtonProps {
-  active: boolean;
+  active: boolean | undefined;
   text: string;
   onPress: () => void;
 }

@@ -24,6 +24,7 @@ class LatestMatchesItem extends React.Component<LatestMatchesItemProps> {
       <TouchableOpacity style={styles.container} onPress={onPress}>
         <View flex={5}>
           <Avatar
+            size={'xmd'}
             circle
             uri={_.get(chat, 'partner.images[0].url', null)}
           />
@@ -37,7 +38,7 @@ export default LatestMatchesItem;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    padding: 10,
   },
   textContainer: {
     justifyContent: 'center'
