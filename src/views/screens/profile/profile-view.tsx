@@ -152,7 +152,6 @@ class ProfileViewScreen extends React.Component<Props> {
     const { currentUser, onLogout } = this.props;
     const { showVideo } = this.state;
     const years = moment().diff(currentUser.birthdate, 'years');
-    console.log(this.state);
 
     return (
       <Screen horizontalPadding={10}>
