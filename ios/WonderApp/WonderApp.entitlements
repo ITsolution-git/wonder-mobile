@@ -15,6 +15,6 @@
 		<string>$(AppIdentifierPrefix)com.thewonderapp</string>
 	</array>
 	<key>beta-reports-active</key>
-	<boolean>true</boolean>
+	<true/>
 </dict>
 </plist>
