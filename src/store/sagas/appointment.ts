@@ -127,28 +127,47 @@ export function* watchCreateAppointment() {
 export const CONFIRM_APPOINTMENT = "CONFIRM_APPOINTMENT";
 export const confirmAppointment = createAction(CONFIRM_APPOINTMENT);
 export function* confirmAppointmentSaga(action: Action<any>) {
-  const { appointment }: { appointment: DecoratedAppointment } = action.payload;
+  try {
+    const state: WonderAppState = yield select();
+    const { appointment }: { appointment: DecoratedAppointment } = action.payload;
 
-  const { event_at, match, topic, location } = appointment;
-  if (event_at && match && topic && location) {
-
-    // Save the calendar Event to the users calendar
-    const calendars = yield call([RNCalendarEvents, 'findCalendars']);
-    if (calendars.length) {
-      const primaryCalendar: RNCalendarCalendar | undefined =
-        calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
-      if (primaryCalendar) {
-        const title = `${topic.name} with ${match.first_name}`;
-        const details: Partial<RNCalendarEvent> = {
-          calendarId: primaryCalendar.id,
-          location,
-          startDate: event_at,
-          endDate: moment(event_at).add(1, 'hour').toDate()
-        };
-
-        yield call([RNCalendarEvents, 'saveEvent'], title, details, undefined);
+    const { event_at, match, topic, location, id } = appointment;
+    const authorized = yield call([RNCalendarEvents, 'authorizationStatus']);
+    if (authorized && event_at && match && topic && location) {
+      // Save the calendar Event to the users calendar
+      const calendars = yield call([RNCalendarEvents, 'findCalendars']);
+      if (calendars.length) {
+        const primaryCalendar: RNCalendarCalendar | undefined =
+          calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
+        if (primaryCalendar) {
+          const title = `${topic.name} with ${match.first_name}`;
+          const details: Partial<RNCalendarEvent> = {
+            calendarId: primaryCalendar.id,
+            location,
+            startDate: event_at,
+            endDate: moment(event_at).add(1, 'hour').toDate()
+          };
+          yield call([RNCalendarEvents, 'saveEvent'], title, details, undefined);
+        }
       }
     }
+    yield call(
+      api,
+      {
+        method: "POST",
+        url: `/appointments/${id}/confirm`
+      },
+      state.user
+    );
+
+    yield put(resetAppointment());
+    yield put(getAppointments());
+    NavigatorService.popToTop();
+  } catch (error) {
+    handleAxiosError(error);
+  } finally {
+    yield put(getAttendances());
+    yield put(getAppointments());
   }
 }
 
