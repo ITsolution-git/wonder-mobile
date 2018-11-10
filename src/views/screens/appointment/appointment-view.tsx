@@ -152,7 +152,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       );
     } else {
       return (
-        <PrimaryButton title='Confirm' onPress={() => onConfirmAppointment(appointment)} disabled />
+        <PrimaryButton title='Confirm' onPress={_.noop} disabled />
       );
     }
   }
