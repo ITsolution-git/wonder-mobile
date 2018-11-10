@@ -125,5 +125,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>beta-reports-active</key>
+	<boolean>true</boolean>
 </dict>
 </plist>
