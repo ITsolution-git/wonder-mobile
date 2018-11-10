@@ -29,7 +29,7 @@ import { callPhoneNumber } from 'src/services/communication';
 import UserService from 'src/services/uber';
 import AmazonService from 'src/services/amazon';
 import { Toast } from 'native-base';
-
+import Color from 'color';
 interface AppointmentViewProps {
   currentUser: User;
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -147,17 +147,24 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   }
 
   renderConfirmationButton = (appointment: DecoratedAppointment) => {
-    const { state } = appointment;
-
-    const owner = appointment.owner.id === appointment.me.id;
-    if (!owner && (state === 'negotiating' || state === 'invited')) {
+    const { state, owner, me } = appointment;
+    console.log('appointment', appointment)
+    const isOwner = owner.id === me.id;
+    if (!isOwner && (state === 'negotiating' || state === 'invited')) {
       return (
         <PrimaryButton title='Confirm' onPress={() => this.handleConfirmation(appointment)} />
       );
     } else {
       const label = state === 'confirmed' ? 'Confirmed' : 'Confirm';
+      const greyedColor = Color(theme.colors.backgroundPrimary).toString();
       return (
-        <PrimaryButton title={label} onPress={_.noop} disabled />
+        <PrimaryButton
+          color={theme.colors.textColor}
+          colors={[greyedColor, greyedColor]}
+          title={label}
+          onPress={_.noop}
+          disabled
+        />
       );
     }
   }
