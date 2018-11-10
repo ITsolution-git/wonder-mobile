@@ -302,7 +302,7 @@ class ProfileViewScreen extends React.Component<Props> {
                     />
                   </View> :
                     <View style={styles.imageContainer}>
-                      {currentUser.images.map((i, index) => {
+                      {currentUser.images && currentUser.images.map((i, index) => {
                         if (index === 0) {
                           return (
                             <View key={i.url}>
