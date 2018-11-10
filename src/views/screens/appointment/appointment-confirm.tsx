@@ -18,6 +18,8 @@ import { Title } from "native-base";
 import { confirmAppointment } from 'src/store/sagas/appointment';
 import { DecoratedAppointment } from 'src/models/appointment';
 
+import RNCalendarEvents from 'react-native-calendar-events';
+
 const mapState = (state: WonderAppState) => ({
   appointment: state.appointment
 });
@@ -36,6 +38,13 @@ interface AppointmentConfirmProps {
 }
 
 class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> {
+  componentDidMount() {
+    RNCalendarEvents.authorizationStatus().then((status) => {
+      if (status !== 'authorized') {
+        RNCalendarEvents.authorizeEventStore();
+      }
+    });
+  }
   onComplete = () => {
     const { onConfirm } = this.props;
     onConfirm();
