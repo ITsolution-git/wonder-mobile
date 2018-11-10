@@ -15,18 +15,24 @@ import { createAppointment } from "src/store/sagas/appointment";
 import Avatar, { AvatarSize } from "src/views/components/theme/avatar";
 import { Title } from "native-base";
 
+import { confirmAppointment } from 'src/store/sagas/appointment';
+import { DecoratedAppointment } from 'src/models/appointment';
+
 const mapState = (state: WonderAppState) => ({
   appointment: state.appointment
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onConfirm: () => dispatch(createAppointment())
+  onConfirm: () => dispatch(createAppointment()),
+  onConfirmAppointment: (appointment: DecoratedAppointment) =>
+    dispatch(confirmAppointment({ appointment }))
 });
 
 interface AppointmentConfirmProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
   appointment: AppointmentState;
   onConfirm: Function;
+  onConfirmAppointment: (appointment: DecoratedAppointment) => void;
 }
 
 class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> {
@@ -60,10 +66,35 @@ class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> 
       );
     }
   }
+
+  renderConfirmContent = (appointment: DecoratedAppointment) => {
+    const { onConfirmAppointment } = this.props;
+    const { match, eventMoment, name } = appointment;
+    return (
+      <View flex={1}>
+        <Title>{match.first_name}</Title>
+        <View style={{ alignItems: 'center', marginTop: 15 }}>
+          <Avatar size={AvatarSize.md} circle />
+        </View>
+        <View style={styles.body}>
+          <Text style={{ fontSize: 18 }}>
+            Invite {match.first_name} to have a wonderful time at <Strong>{name}</Strong> at{' '}
+            {eventMoment && eventMoment.format('MMMM Do, [at] h:mma')}
+          </Text>
+        </View>
+        <View style={styles.footer}>
+          <PrimaryButton title="Confirm Wonder" onPress={() => onConfirmAppointment(appointment)} />
+        </View>
+      </View>
+    );
+  }
+
   render() {
+    const { navigation } = this.props;
+    const appointment = navigation.getParam('appointment', null);
     return (
       <Screen>
-        {this.renderContent()}
+        {appointment ? this.renderConfirmContent(appointment) : this.renderContent()}
       </Screen>
     );
   }
