@@ -148,9 +148,8 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
   renderConfirmationButton = (appointment: DecoratedAppointment) => {
     const { state, owner, me } = appointment;
-    console.log('appointment', appointment)
     const isOwner = owner.id === me.id;
-    if (!isOwner && (state === 'negotiating' || state === 'invited')) {
+    if ((isOwner && state === 'negotiating') || (!isOwner && state === 'invited')) {
       return (
         <PrimaryButton title='Confirm' onPress={() => this.handleConfirmation(appointment)} />
       );
