@@ -66,14 +66,8 @@ class PushNotificationService {
 
   private resetToChat = (partnerId: number, redirect: string) => {
     NavigationService.reset('Main', 'onboarding');
-    NavigationService.navigate(
-      'Messages',
-      {},
-      NavigationActions.navigate({
-        routeName: 'ChatList',
-        params: { partnerId, redirect }
-      })
-    );
+    NavigationService.navigate('Messages');
+    NavigationService.navigate('ChatList', { partnerId, redirect });
   };
 
   private handleIosNotifications = (payload: IosNotificationPayload) => {
