@@ -123,7 +123,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     const { topic } = appointment;
 
     if (topic) {
-      await AmazonService.search(topic.name);
+      await AmazonService.search(topic.keywords);
     } else {
       Toast.show({ text: 'Unable to launch amazon, missing topic' });
     }

@@ -6,4 +6,5 @@ export default interface Topic {
   name: string;
   keywords: string[];
   icon: string;
+  supplies_keywords: string;
 }
