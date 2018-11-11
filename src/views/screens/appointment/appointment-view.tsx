@@ -24,19 +24,17 @@ import { DecoratedAppointment } from 'src/models/appointment';
 import WonderAppState from 'src/models/wonder-app-state';
 import theme from 'src/assets/styles/theme';
 import { getConversation } from 'src/store/sagas/conversations';
-import { confirmAppointment } from 'src/store/sagas/appointment';
 import { isAppointmentBeforeToday } from 'src/utils/appointment';
 import { callPhoneNumber } from 'src/services/communication';
 import UserService from 'src/services/uber';
 import AmazonService from 'src/services/amazon';
 import { Toast } from 'native-base';
-
+import Color from 'color';
 interface AppointmentViewProps {
   currentUser: User;
   navigation: NavigationScreenProp<any, NavigationParams>;
   appointment: DecoratedAppointment;
   onGetConversation: (partnerId: number) => void;
-  onConfirmAppointment: (appointment: DecoratedAppointment) => void;
 }
 
 interface AppointmentViewState {
@@ -49,9 +47,7 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
-    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
-  onConfirmAppointment: (appointment: DecoratedAppointment) =>
-    dispatch(confirmAppointment({ appointment })),
+    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -143,16 +139,33 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     onGetConversation(appointment.match.id);
   };
 
+  handleConfirmation = (appointment: DecoratedAppointment) => {
+    const { navigation } = this.props;
+    navigation.navigate('AppointmentConfirm', {
+      appointment
+    });
+  }
+
   renderConfirmationButton = (appointment: DecoratedAppointment) => {
-    const { onConfirmAppointment } = this.props;
-    const { state } = appointment;
-    if (state === 'negotiating' || state === 'invited') {
+    const { state, owner, me } = appointment;
+    const isOwner = owner.id === me.id;
+    if ((isOwner && state === 'negotiating') || (!isOwner && state === 'invited')) {
       return (
-        <PrimaryButton title='Confirm' onPress={() => onConfirmAppointment(appointment)} />
+        <PrimaryButton title='Confirm' onPress={() => this.handleConfirmation(appointment)} />
+      );
+    } else {
+      const label = state === 'confirmed' ? 'Confirmed' : 'Confirm';
+      const greyedColor = Color(theme.colors.backgroundPrimary).toString();
+      return (
+        <PrimaryButton
+          color={theme.colors.textColor}
+          colors={[greyedColor, greyedColor]}
+          title={label}
+          onPress={_.noop}
+          disabled
+        />
       );
     }
-
-    return null;
   }
 
   render() {
