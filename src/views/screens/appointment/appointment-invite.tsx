@@ -86,7 +86,7 @@ class AppointmentInviteScreen extends React.Component<
     // const dateTime = result.format('YYYY-MM-DD[T]HH:mm:ssZ');
 
     onUpdateAppointment({ eventAt: result.toDate() });
-    navigation.navigate("AppointmentConfirm");
+    navigation.navigate("AppointmentConfirm", { appointment: null });
   };
 
   renderTitle = () => {

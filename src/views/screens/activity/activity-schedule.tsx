@@ -111,7 +111,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
       dateMoment.minutes(selectedTime.minute);
 
       onUpdateAppointment({ eventAt: dateMoment.toDate() });
-      navigation.navigate("AppointmentConfirm");
+      navigation.navigate("AppointmentConfirm", { appointment: null });
     }
   }
 
