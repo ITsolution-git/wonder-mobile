@@ -169,7 +169,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
               label="BIRTHDAY"
               placeholder="Select Date"
               onChange={this.onDateChange}
-              initialDate={birthdate}
+              initialDate={new Date(birthdate)}
               minDate={new Date("1950-01-01")}
               maxDate={this.eighteenYearsAgoToday.toDate()}
             />

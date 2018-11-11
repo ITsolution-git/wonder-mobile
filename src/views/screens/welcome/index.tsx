@@ -48,18 +48,24 @@ export default class Welcome extends React.Component<Props> {
       <Screen backgroundImage={Images.WELCOME}>
         <View flex={1} style={styles.header}>
           <Image
-            style={{ width: "80%" }}
+            style={{ width: "80%", height: 100 }}
             source={Logo.DARK}
             resizeMode="contain"
           />
         </View>
         <View style={styles.body}>
-          <View style={{ width: "100%" }}>
+          <View />
+          <View style={{ width: "80%" }}>
             <PrimaryButton
               fullWidth
               icon="envelope-o"
               title="CREATE ACCOUNT"
               onPress={() => navigation.navigate("Register1")}
+              innerStyle={{
+                minHeight: 44,
+                paddingTop: 14,
+                paddingBottom: 14,
+              }}
             />
             <TouchableOpacity
               style={styles.facebookLoginButton}
@@ -72,7 +78,7 @@ export default class Welcome extends React.Component<Props> {
                   resizeMode="contain"
                 />
               </View>
-              <Text style={styles.loginText}>LOGIN</Text>
+              <Text allowFontScaling={false} style={styles.loginText}>LOGIN</Text>
               <View style={{ flex: 1 }} />
             </TouchableOpacity>
           </View>
@@ -110,7 +116,6 @@ export default class Welcome extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   header: {
-    justifyContent: "center",
     alignItems: "center"
   },
   body: {
@@ -164,6 +169,7 @@ const styles = StyleSheet.create({
   loginText: {
     textAlign: 'center',
     flex: 1,
-    color: "#3D90F0"
+    color: "#3D90F0",
+    fontSize: 14
   }
 });
