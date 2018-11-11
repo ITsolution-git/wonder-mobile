@@ -66,6 +66,7 @@ class PushNotificationService {
 
   private resetToChat = (partnerId: number, redirect: string) => {
     NavigationService.reset('Main', 'onboarding');
+    NavigationService.navigate('Messages');
     NavigationService.navigate('ChatList', { partnerId, redirect });
   };
 
