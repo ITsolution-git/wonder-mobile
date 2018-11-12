@@ -1,7 +1,7 @@
 import { Linking, Alert } from "react-native";
 
 const AMAZON_AFFILIATE_ID = "wonderdatinga-20";
-const AMAZON_BASE_URL = `http://www.amazon.com/s/?ref=${AMAZON_AFFILIATE_ID}&url=search-alias%3Daps&field-keywords=`;
+const AMAZON_BASE_URL = `https://www.amazon.com/gp/search?ie=UTF8&tag=${AMAZON_AFFILIATE_ID}&index=aps&keywords=`;
 
 const search = async (query: string): Promise<void> => {
   try {
