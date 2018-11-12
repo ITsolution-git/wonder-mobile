@@ -158,7 +158,6 @@ class Register2 extends React.Component<Props, State> {
               maxDate={this.eighteenYearsAgoToday.toDate()}
             />
             <TextInput
-              onValidate={(text: string) => text && !validator.isEmpty(text)}
               label="EDUCATION"
               errorHint={errors.education}
               autoCorrect={false}
@@ -166,7 +165,6 @@ class Register2 extends React.Component<Props, State> {
               onChangeText={this.onChangeText("education")}
             />
             <TextInput
-              onValidate={(text: string) => text && !validator.isEmpty(text)}
               label="OCCUPATION"
               errorHint={errors.occupation}
               autoCorrect={false}
@@ -234,14 +232,6 @@ class Register2 extends React.Component<Props, State> {
       errors.birthdate = "Please enter your birthday";
     } else if (moment(birthdate).isAfter(this.eighteenYearsAgoToday)) {
       errors.birthdate = "You are not old enough to use this app";
-    }
-
-    if (validator.isEmpty(education)) {
-      errors.education = "Please enter where you went to school";
-    }
-
-    if (validator.isEmpty(occupation)) {
-      errors.occupation = "Please enter your occupation";
     }
 
     if (validator.isEmpty(zipcode)) {
