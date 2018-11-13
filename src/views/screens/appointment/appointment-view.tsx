@@ -172,7 +172,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   }
 
   decline = () => {
-    const { appointment } = this.props;
+    const { navigation } = this.props;
+    const appointment: DecoratedAppointment = navigation.getParam(
+      'appointment',
+      {}
+    );
     Alert.alert(
       'Confirm Decline',
       'Are you sure you want to decline?',
@@ -185,7 +189,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   }
 
   cancel = () => {
-    const { appointment } = this.props;
+    const { navigation } = this.props;
+    const appointment: DecoratedAppointment = navigation.getParam(
+      'appointment',
+      {}
+    );
     Alert.alert(
       'Confirm Cancel',
       'Are you sure you want to cancel?',

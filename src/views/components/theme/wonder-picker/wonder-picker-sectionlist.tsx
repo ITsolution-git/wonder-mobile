@@ -31,7 +31,7 @@ const WonderPickerSectionList = (props: Props) => {
           style={styles.lessThanThree}
         >
           {item.map((i) => {
-            return <View key={i.name} style={{ marginRight: 20 }}>{renderWonder(i)}</View>;
+            return <View key={i.name} style={styles.wonderMargin}>{renderWonder(i)}</View>;
           })}
         </View>
       );
@@ -83,5 +83,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginRight: 15
-  }
+  },
+  wonderMargin: { marginRight: 20 }
 });

@@ -53,7 +53,7 @@ class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> 
   handleConfirmAppointment = (appointment: DecoratedAppointment) => {
     const { onConfirmAppointment, navigation } = this.props;
     onConfirmAppointment(appointment);
-    navigation.setParams({ appointment: null });
+    // navigation.setParams({ appointment: null });
   }
 
   renderContent = () => {
@@ -84,11 +84,12 @@ class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> 
 
   renderConfirmContent = (appointment: DecoratedAppointment) => {
     const { match, eventMoment, name } = appointment;
+
     return (
       <View flex={1}>
         <Title>{match.first_name}</Title>
         <View style={{ alignItems: 'center', marginTop: 15 }}>
-          <Avatar size={AvatarSize.md} circle />
+          <Avatar size={AvatarSize.md} circle uri={match.images[0].url} />
         </View>
         <View style={styles.body}>
           <Text style={{ fontSize: 18 }}>
@@ -106,7 +107,7 @@ class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> 
   render() {
     const { navigation } = this.props;
     const appointment = navigation.getParam('appointment', null);
-    console.log('appointment on confirm', appointment)
+
     return (
       <Screen>
         {appointment ? this.renderConfirmContent(appointment) : this.renderContent()}

@@ -31,7 +31,7 @@ class AppointmentItem extends React.Component<Props> {
     if (moment(event_at).isSameOrAfter(now)) {
       return (
         <Title>
-          {name} at <Strong>{moment(event_at).format("h:mma")}</Strong> with{" "}
+          {item.topic.name} at <Strong>{moment(event_at).format("h:mma")}</Strong> with{" "}
           {match.first_name}
         </Title>
       );
@@ -45,6 +45,7 @@ class AppointmentItem extends React.Component<Props> {
 
   render() {
     const { item, onPress, callNumber } = this.props;
+
     return (
       <TouchableOpacity
         style={styles.container}
@@ -63,7 +64,7 @@ class AppointmentItem extends React.Component<Props> {
         </View>
         <View style={styles.contentContainer}>
           {this.renderTitle()}
-          <SubTitle>{moment(item.event_at).format("Do, MMMM YYYY")}</SubTitle>
+          <SubTitle>{moment(item.event_at).format("Do, MMMM")}</SubTitle>
           <View style={styles.locationRow}>
             <View>
               <Icon
@@ -86,7 +87,7 @@ class AppointmentItem extends React.Component<Props> {
               color: item.state === 'confirmed' ? 'green' : 'red'
             }]}
           >
-            {item.state}
+            {item.state === 'invited' ? 'unconfirmed' : item.state}
           </Text>
         </View>
       </TouchableOpacity>
