@@ -97,7 +97,7 @@ export function* createAppointmentSaga(action: Action<any>) {
       }
 
       // api call to make the appointment, optionally with calendar data
-      const res = yield call(
+      yield call(
         api,
         {
           method: "POST",
@@ -132,6 +132,20 @@ export function* confirmAppointmentSaga(action: Action<any>) {
     const { appointment }: { appointment: DecoratedAppointment } = action.payload;
 
     const { event_at, match, topic, location, id } = appointment;
+
+    yield call(
+      api,
+      {
+        method: "POST",
+        url: `/appointments/${id}/confirm`
+      },
+      state.user
+    );
+
+    yield put(resetAppointment());
+    yield put(getAppointments());
+    NavigatorService.popToTop();
+
     const authorized = yield call([RNCalendarEvents, 'authorizationStatus']);
     if (authorized && event_at && match && topic && location) {
       // Save the calendar Event to the users calendar
@@ -148,21 +162,30 @@ export function* confirmAppointmentSaga(action: Action<any>) {
             endDate: moment(event_at).add(1, 'hour').toDate()
           };
           yield call([RNCalendarEvents, 'saveEvent'], title, details, undefined);
+        } else {
+          Alert.alert(
+            'BUG!',
+            `This is where the problem for confirming a date lies`,
+            [
+              { text: 'OK' },
+            ],
+            { cancelable: false }
+          );
         }
       }
     }
-    const res = yield call(
-      api,
-      {
-        method: "POST",
-        url: `/appointments/${id}/confirm`
-      },
-      state.user
-    );
+    // yield call(
+    //   api,
+    //   {
+    //     method: "POST",
+    //     url: `/appointments/${id}/confirm`
+    //   },
+    //   state.user
+    // );
 
-    yield put(resetAppointment());
-    yield put(getAppointments());
-    NavigatorService.popToTop();
+    // yield put(resetAppointment());
+    // yield put(getAppointments());
+    // NavigatorService.popToTop();
   } catch (error) {
     handleAxiosError(error);
   } finally {
@@ -214,7 +237,7 @@ export function* cancelAppointmentSaga(action: Action<any>) {
       { cancelable: false }
     );
 
-    // yield put(persistAppointments(data));
+    yield put(getAppointments());
 
   } catch (error) {
     handleAxiosError(error);
@@ -264,7 +287,7 @@ export function* declineAppointmentSaga(action: Action<any>) {
       { cancelable: false }
     );
 
-    // yield put(persistAppointments(data));
+    yield put(getAppointments());
 
   } catch (error) {
     handleAxiosError(error);
