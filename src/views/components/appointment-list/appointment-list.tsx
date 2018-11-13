@@ -23,6 +23,7 @@ class AppointmentList extends React.Component<Props> {
 
   renderRow = ({ item }: { item: DecoratedAppointment }) => {
     const { onPress, onDelete, onPressCallNumber } = this.props;
+
     return (
       <SwipeRow
         rightOpenValue={-75}
@@ -42,6 +43,7 @@ class AppointmentList extends React.Component<Props> {
 
   render() {
     const { data, onRefresh, isLoading } = this.props;
+
     return (
       <FlatList
         refreshing={isLoading || false}

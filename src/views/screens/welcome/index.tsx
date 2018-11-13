@@ -48,14 +48,14 @@ export default class Welcome extends React.Component<Props> {
       <Screen backgroundImage={Images.WELCOME}>
         <View flex={1} style={styles.header}>
           <Image
-            style={{ width: "80%", height: 100 }}
+            style={{ width: "80%", height: 50, marginBottom: 40 }}
             source={Logo.DARK}
             resizeMode="contain"
           />
         </View>
         <View style={styles.body}>
           <View />
-          <View style={{ width: "80%" }}>
+          <View style={{ width: "80%", marginBottom: 45 }}>
             <PrimaryButton
               fullWidth
               icon="envelope-o"
@@ -116,7 +116,8 @@ export default class Welcome extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   header: {
-    alignItems: "center"
+    alignItems: "center",
+    justifyContent: 'center'
   },
   body: {
     flex: 1,

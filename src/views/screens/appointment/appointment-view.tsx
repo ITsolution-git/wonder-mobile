@@ -24,6 +24,7 @@ import { DecoratedAppointment } from 'src/models/appointment';
 import WonderAppState from 'src/models/wonder-app-state';
 import theme from 'src/assets/styles/theme';
 import { getConversation } from 'src/store/sagas/conversations';
+import { cancelAppointment, declineAppointment } from 'src/store/sagas/appointment';
 import { isAppointmentBeforeToday } from 'src/utils/appointment';
 import { callPhoneNumber } from 'src/services/communication';
 import UserService from 'src/services/uber';
@@ -47,7 +48,9 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
-    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
+    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
+  onCancelAppointment: (data) => dispatch(cancelAppointment(data)),
+  onDeclineAppointment: (data) => dispatch(declineAppointment(data))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -59,7 +62,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     return {
       title: appointment.match.first_name
     };
-  };
+  }
 
   state: AppointmentViewState = {
     isModalOpen: false
@@ -81,23 +84,23 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     return isAppointmentBeforeToday(appointment);
-  };
+  }
 
   openReviewModal = () => {
     this.setState({ isModalOpen: true });
-  };
+  }
 
   closeReviewModal = () => {
     this.setState({ isModalOpen: false });
-  };
+  }
 
   onCall = async (url?: string | null) => {
     await callPhoneNumber(url);
-  };
+  }
 
   onServicePress = (url: string) => {
     Alert.alert('Third Party', `This would go to ${url}`);
-  };
+  }
 
   onUber = async () => {
     const { navigation } = this.props;
@@ -112,7 +115,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       longitude,
       latitude
     });
-  };
+  }
 
   onAmazon = async () => {
     const { navigation } = this.props;
@@ -127,7 +130,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     } else {
       Toast.show({ text: 'Unable to launch amazon, missing topic' });
     }
-  };
+  }
 
   goToChat = () => {
     const { navigation, onGetConversation } = this.props;
@@ -137,7 +140,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     );
 
     onGetConversation(appointment.match.id);
-  };
+  }
 
   handleConfirmation = (appointment: DecoratedAppointment) => {
     const { navigation } = this.props;
@@ -166,6 +169,32 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         />
       );
     }
+  }
+
+  decline = () => {
+    const { appointment } = this.props;
+    Alert.alert(
+      'Confirm Decline',
+      'Are you sure you want to decline?',
+      [
+        { text: 'Cancel' },
+        { text: 'YES', onPress: () => this.props.onDeclineAppointment(appointment) },
+      ],
+      { cancelable: false }
+    );
+  }
+
+  cancel = () => {
+    const { appointment } = this.props;
+    Alert.alert(
+      'Confirm Cancel',
+      'Are you sure you want to cancel?',
+      [
+        { text: 'Cancel' },
+        { text: 'YES', onPress: () => this.props.onCancelAppointment(appointment) },
+      ],
+      { cancelable: false }
+    );
   }
 
   render() {
@@ -215,8 +244,8 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         <View>
           {
             isPast
-            ? <PrimaryButton title="Leave Review" onPress={this.openReviewModal} />
-            : this.renderConfirmationButton(appointment)
+              ? <PrimaryButton title="Leave Review" onPress={this.openReviewModal} />
+              : this.renderConfirmationButton(appointment)
           }
           <View style={[styles.row, styles.buttonRow]}>
             {!isPast && (
@@ -279,11 +308,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           >
             {!isPast && (
               <View style={styles.col}>
-                <SecondaryButton title="Cancel" onPress={_.noop} />
+                <SecondaryButton title="Cancel" onPress={this.cancel} />
               </View>
             )}
             <View style={styles.col}>
-              <SecondaryButton title="Delete" onPress={_.noop} />
+              <SecondaryButton title="Decline" onPress={this.decline} />
             </View>
           </View>
         </View>

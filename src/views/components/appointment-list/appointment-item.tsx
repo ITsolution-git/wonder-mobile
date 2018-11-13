@@ -86,7 +86,7 @@ class AppointmentItem extends React.Component<Props> {
               color: item.state === 'confirmed' ? 'green' : 'red'
             }]}
           >
-            {item.state === 'confirmed' ? 'CONFIRM' : 'UNCONFIRMED'}
+            {item.state}
           </Text>
         </View>
       </TouchableOpacity>
