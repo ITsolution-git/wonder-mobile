@@ -45,7 +45,7 @@ class AppointmentItem extends React.Component<Props> {
 
   render() {
     const { item, onPress, callNumber } = this.props;
-    console.log(this.props);
+
     return (
       <TouchableOpacity
         style={styles.container}
@@ -87,7 +87,7 @@ class AppointmentItem extends React.Component<Props> {
               color: item.state === 'confirmed' ? 'green' : 'red'
             }]}
           >
-            {item.state}
+            {item.state === 'invited' ? 'unconfirmed' : item.state}
           </Text>
         </View>
       </TouchableOpacity>

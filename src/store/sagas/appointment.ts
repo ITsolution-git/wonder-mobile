@@ -97,7 +97,7 @@ export function* createAppointmentSaga(action: Action<any>) {
       }
 
       // api call to make the appointment, optionally with calendar data
-      yield call(
+      const res = yield call(
         api,
         {
           method: "POST",
@@ -151,7 +151,7 @@ export function* confirmAppointmentSaga(action: Action<any>) {
         }
       }
     }
-    yield call(
+    const res = yield call(
       api,
       {
         method: "POST",
@@ -205,6 +205,15 @@ export function* cancelAppointmentSaga(action: Action<any>) {
       state.user
     );
 
+    Alert.alert(
+      'Success',
+      `Your appointment with ${action.payload.match.first_name} has been canceled`,
+      [
+        { text: 'OK' },
+      ],
+      { cancelable: false }
+    );
+
     // yield put(persistAppointments(data));
 
   } catch (error) {
@@ -244,6 +253,15 @@ export function* declineAppointmentSaga(action: Action<any>) {
         data: info
       },
       state.user
+    );
+
+    Alert.alert(
+      'Success',
+      `Your appointment with ${action.payload.match.first_name} has been declined`,
+      [
+        { text: 'OK' },
+      ],
+      { cancelable: false }
     );
 
     // yield put(persistAppointments(data));
