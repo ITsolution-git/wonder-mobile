@@ -107,7 +107,7 @@ class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> 
   render() {
     const { navigation } = this.props;
     const appointment = navigation.getParam('appointment', null);
-    console.log('appointment confirm screen: ', appointment);
+
     return (
       <Screen>
         {appointment ? this.renderConfirmContent(appointment) : this.renderContent()}
