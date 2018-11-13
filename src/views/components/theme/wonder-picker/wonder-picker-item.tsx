@@ -27,7 +27,7 @@ export default class WonderPickerItem extends React.Component<Props> {
         style={[styles.btn, selected && styles.selectedBtn]}
         onPress={() => onPress && onPress(topic)}
       >
-        <Wonder topic={topic} active={selected} />
+        <Wonder labelStyles={{ color: '#000' }} topic={topic} active={selected} />
       </TouchableOpacity>
     );
   }

@@ -34,7 +34,7 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
 
   goToAppointment = (appointment: DecoratedAppointment) => {
     this.props.navigation.navigate("PastAppointmentView", { appointment });
-  };
+  }
 
   deleteAppointment = (appointment: DecoratedAppointment) => {
     const options = [
@@ -51,7 +51,7 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
       "Would you like to remove this appointment?",
       options
     );
-  };
+  }
 
   render() {
     const { appointments, onRefreshAppointments } = this.props;

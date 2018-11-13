@@ -174,3 +174,89 @@ export function* confirmAppointmentSaga(action: Action<any>) {
 export function* watchConfirmtAppointment() {
   yield takeEvery(CONFIRM_APPOINTMENT, confirmAppointmentSaga);
 }
+
+// DELETE AN APPOINTMENT
+
+export const CANCEL_APPOINTMENT = "CANCEL_APPOINTMENT";
+export const cancelAppointment = createAction(CANCEL_APPOINTMENT);
+export function* cancelAppointmentSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+
+    const info = {
+      invited_user_id: action.payload.owner.id,
+      appointment: {
+        name: action.payload.name,
+        location: action.payload.location,
+        latitude: action.payload.latitude,
+        longitude: action.payload.longitude,
+        event_at: action.payload.event_at,
+        topic_id: action.payload.topic.id
+      }
+    };
+
+    const { data }: { data: Appointment[] } = yield call(
+      api,
+      {
+        method: "POST",
+        url: `/appointments/${action.payload.id}/cancel`,
+        data: info
+      },
+      state.user
+    );
+
+    // yield put(persistAppointments(data));
+
+  } catch (error) {
+    handleAxiosError(error);
+  } finally {
+    // yield put(getUser());
+  }
+}
+
+export function* watchcancelAppointmentSaga() {
+  yield takeEvery(CANCEL_APPOINTMENT, cancelAppointmentSaga);
+}
+
+export const DECLINE_APPOINTMENT = "DECLINE_APPOINTMENT";
+export const declineAppointment = createAction(DECLINE_APPOINTMENT);
+export function* declineAppointmentSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+
+    const info = {
+      invited_user_id: action.payload.owner.id,
+      appointment: {
+        name: action.payload.name,
+        location: action.payload.location,
+        latitude: action.payload.latitude,
+        longitude: action.payload.longitude,
+        event_at: action.payload.event_at,
+        topic_id: action.payload.topic.id
+      }
+    };
+
+    const { data }: { data: Appointment[] } = yield call(
+      api,
+      {
+        method: "POST",
+        url: `/appointments/${action.payload.id}/decline`,
+        data: info
+      },
+      state.user
+    );
+
+    // yield put(persistAppointments(data));
+
+  } catch (error) {
+    handleAxiosError(error);
+  } finally {
+    // yield put(getUser());
+  }
+}
+
+export function* watchDeclineAppointmentSaga() {
+  yield takeEvery(DECLINE_APPOINTMENT, declineAppointmentSaga);
+}
+
+// "/v1/appointments/:appointment_id/decline"

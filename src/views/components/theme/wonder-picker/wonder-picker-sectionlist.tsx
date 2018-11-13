@@ -25,6 +25,17 @@ const WonderPickerSectionList = (props: Props) => {
   };
 
   const renderRow = ({ item }: { item: any }) => {
+    if (item.length < 3) {
+      return (
+        <View
+          style={styles.lessThanThree}
+        >
+          {item.map((i) => {
+            return <View key={i.name} style={{ marginRight: 20 }}>{renderWonder(i)}</View>;
+          })}
+        </View>
+      );
+    }
     return <View style={styles.row}>{item.map(renderWonder)}</View>;
   };
   return (
@@ -66,5 +77,11 @@ const styles = StyleSheet.create({
     width: "80%",
     padding: 10
   },
-  footer: { height: 80 }
+  footer: { height: 80 },
+  lessThanThree: {
+    padding: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 15
+  }
 });
