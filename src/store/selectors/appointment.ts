@@ -12,8 +12,10 @@ import Appointment, {
   AppointmentUser
 } from 'src/models/appointment';
 import User from 'src/models/user';
+import Wonder from 'src/views/components/theme/wonder/wonder';
 
 const allAppointments = (state: WonderAppState) => state.wonder.appointments;
+const allAttendances = (state: WonderAppState) => state.wonder.attendances;
 
 export const decorateAppointment = (
   appointment: Appointment,
@@ -41,6 +43,15 @@ export const selectUpcomingAppointments = createSelector(
   (currentUser, appointments) => {
     return _.sortBy(appointments, 'event_at')
       .map((a: Appointment) => decorateAppointment(a, currentUser))
+      .filter(isAppointmentAfterToday);
+  }
+);
+
+export const selectUpcomingAttendances = createSelector(
+  [selectCurrentUser, allAttendances],
+  (currentUser, appointments) => {
+    return _.sortBy(appointments, 'departure_at')
+      .map((a: Appointment) => decorateAppointment(a.appointment, currentUser))
       .filter(isAppointmentAfterToday);
   }
 );

@@ -26,13 +26,13 @@ class AppointmentItem extends React.Component<Props> {
   renderTitle = () => {
     const { item } = this.props;
     const { name, users, event_at, match } = item;
-    console.log('ITEM: ', item);
+
     const now = moment();
     if (moment(event_at).isSameOrAfter(now)) {
       return (
         <Title>
-          {/* {item.topic.name} at <Strong>{moment(event_at).format("h:mma")}</Strong> with{" "}
-          {match.first_name} */}
+          {item.topic.name} at <Strong>{moment(event_at).format("h:mma")}</Strong> with{" "}
+          {match.first_name}
         </Title>
       );
     }

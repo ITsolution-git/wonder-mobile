@@ -8,7 +8,7 @@ import theme from "src/assets/styles/theme";
 import { Dispatch } from "redux";
 import { getAppointments } from "src/store/sagas/appointment";
 import moment from "moment-timezone";
-import { selectUpcomingAppointments } from "src/store/selectors/appointment";
+import { selectUpcomingAppointments, selectUpcomingAttendances } from "src/store/selectors/appointment";
 import { deleteAttendance, getAttendances } from "src/store/sagas/attendance";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import WonderAppState from "src/models/wonder-app-state";
@@ -20,7 +20,8 @@ interface State {
 
 const mapState = (state: WonderAppState) => ({
   appointments: selectUpcomingAppointments(state),
-  attendances: state.wonder.attendances
+  attendances: selectUpcomingAttendances(state)
+  // selectUpcomingAttendances(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
