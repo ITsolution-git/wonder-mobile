@@ -160,13 +160,14 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       const label = state === 'confirmed' ? 'Confirmed' : 'Confirm';
       const greyedColor = Color(theme.colors.backgroundPrimary).toString();
       return (
-        <PrimaryButton
-          color={theme.colors.textColor}
-          colors={[greyedColor, greyedColor]}
-          title={label}
-          onPress={_.noop}
-          disabled
-        />
+        <Text>HY</Text>
+        // <PrimaryButton
+        //   color={theme.colors.textColor}
+        //   colors={[greyedColor, greyedColor]}
+        //   title={label}
+        //   onPress={_.noop}
+        //   disabled
+        // />
       );
     }
   }
@@ -212,6 +213,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     const isPast = this.isPastAppointment();
+    console.log('a', appointment);
     return (
       <Screen horizontalPadding={20}>
         {/* <ScrollView
@@ -229,11 +231,10 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
           <View style={{ marginTop: 15 }}>
             <Title align="center">
-              {appointment.name} with {appointment.match.first_name}{' '}
-              {isPast.toString()}
+              {appointment.topic.name} with {appointment.match.first_name}{' '}
             </Title>
 
-            <SubTitle align="center">{appointment.location}</SubTitle>
+            <SubTitle align="center">{appointment.name} - {appointment.location}</SubTitle>
             {appointment.phone && (
               <TextButton
                 btnStyle={{ alignSelf: 'center' }}
@@ -243,7 +244,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             )}
             {appointment.eventMoment && (
               <Text align="center">
-                {appointment.eventMoment.format('MMMM Do, YYYY [at] h:mma')}
+                {appointment.eventMoment.format('MMMM Do, [at] h:mma')}
               </Text>
             )}
           </View>
