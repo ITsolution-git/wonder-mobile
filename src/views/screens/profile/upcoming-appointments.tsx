@@ -26,14 +26,17 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onRefreshAppointments: () => dispatch(getAppointments()),
-  onDeleteAttendance: (data) => dispatch(deleteAttendance(data)),
+  onDeleteAttendance: (data: DecoratedAppointment) => dispatch(deleteAttendance(data)),
   onRefreshAttendances: () => dispatch(getAttendances())
 });
 
 interface UpcomingAppointmentsProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
   appointments: DecoratedAppointment[];
+  attendances: DecoratedAppointment[];
   onRefreshAppointments: () => void;
+  onRefreshAttendances: () => void;
+  onDeleteAttendance: () => void;
 }
 
 class UpcomingAppointmentsScreen extends React.Component<
@@ -79,13 +82,13 @@ class UpcomingAppointmentsScreen extends React.Component<
   }
 
   renderList = () => {
-    const { appointments, onRefreshAppointments, attendances } = this.props;
+    const { appointments, onRefreshAppointments, attendances, onRefreshAttendances } = this.props;
     const filteredAppointments = this.filterAppointments();
     if (filteredAppointments.length) {
       return (
         <AppointmentList
           onPressCallNumber={this.callNumber}
-          onRefresh={onRefreshAppointments}
+          onRefresh={onRefreshAttendances}
           data={attendances}
           onPress={this.goToAppointment}
           onDelete={this.props.onDeleteAttendance}

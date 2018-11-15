@@ -30,10 +30,8 @@ export function* getAppointmentsSaga(action: Action<any>) {
       },
       state.user
     );
-
     yield put(persistAppointments(data));
-    // yield put(persistUser(data));
-    // yield put(resetRegistration());
+
   } catch (error) {
     handleAxiosError(error);
   } finally {
@@ -76,16 +74,16 @@ export function* createAppointmentSaga(action: Action<any>) {
       const calendars = yield call([RNCalendarEvents, 'findCalendars']);
       if (calendars.length) {
         const primaryCalendar: RNCalendarCalendar | undefined =
-          calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
-        if (primaryCalendar) {
+          calendars.filter((c: RNCalendarCalendar) => c.allowsModifications);
+        // calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
+        if (primaryCalendar[0]) {
           const title = `${topic.name} with ${match.first_name}`;
           const details: Partial<RNCalendarEvent> = {
-            calendarId: primaryCalendar.id,
+            calendarId: primaryCalendar[0].id,
             location: activity.location.join(','),
             startDate: eventAt,
             endDate: moment(eventAt).add(1, 'hour').toDate()
           };
-
           const eventId = yield call([RNCalendarEvents, 'saveEvent'], title, details, undefined);
           if (eventId) {
             body.attendance = {
@@ -95,7 +93,6 @@ export function* createAppointmentSaga(action: Action<any>) {
           }
         }
       }
-
       // api call to make the appointment, optionally with calendar data
       yield call(
         api,
@@ -133,6 +130,26 @@ export function* confirmAppointmentSaga(action: Action<any>) {
 
     const { event_at, match, topic, location, id } = appointment;
 
+    const authorized = yield call([RNCalendarEvents, 'authorizationStatus']);
+    if (authorized && event_at && match && topic && location) {
+      // Save the calendar Event to the users calendar
+      const calendars = yield call([RNCalendarEvents, 'findCalendars']);
+      if (calendars.length) {
+        const primaryCalendar: RNCalendarCalendar | undefined =
+          calendars.filter((c: RNCalendarCalendar) => c.allowsModifications);
+        // calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
+        if (primaryCalendar) {
+          const title = `${topic.name} with ${match.first_name}`;
+          const details: Partial<RNCalendarEvent> = {
+            calendarId: primaryCalendar.id,
+            location,
+            startDate: event_at,
+            endDate: moment(event_at).add(1, 'hour').toDate()
+          };
+          yield call([RNCalendarEvents, 'saveEvent'], title, details, undefined);
+        }
+      }
+    }
     yield call(
       api,
       {
@@ -145,47 +162,6 @@ export function* confirmAppointmentSaga(action: Action<any>) {
     yield put(resetAppointment());
     yield put(getAppointments());
     NavigatorService.popToTop();
-
-    const authorized = yield call([RNCalendarEvents, 'authorizationStatus']);
-    if (authorized && event_at && match && topic && location) {
-      // Save the calendar Event to the users calendar
-      const calendars = yield call([RNCalendarEvents, 'findCalendars']);
-      if (calendars.length) {
-        const primaryCalendar: RNCalendarCalendar | undefined =
-          calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
-        if (primaryCalendar) {
-          const title = `${topic.name} with ${match.first_name}`;
-          const details: Partial<RNCalendarEvent> = {
-            calendarId: primaryCalendar.id,
-            location,
-            startDate: event_at,
-            endDate: moment(event_at).add(1, 'hour').toDate()
-          };
-          yield call([RNCalendarEvents, 'saveEvent'], title, details, undefined);
-        } else {
-          Alert.alert(
-            'BUG!',
-            `This is where the problem for confirming a date lies`,
-            [
-              { text: 'OK' },
-            ],
-            { cancelable: false }
-          );
-        }
-      }
-    }
-    // yield call(
-    //   api,
-    //   {
-    //     method: "POST",
-    //     url: `/appointments/${id}/confirm`
-    //   },
-    //   state.user
-    // );
-
-    // yield put(resetAppointment());
-    // yield put(getAppointments());
-    // NavigatorService.popToTop();
   } catch (error) {
     handleAxiosError(error);
   } finally {
@@ -199,7 +175,6 @@ export function* watchConfirmtAppointment() {
 }
 
 // DELETE AN APPOINTMENT
-
 export const CANCEL_APPOINTMENT = "CANCEL_APPOINTMENT";
 export const cancelAppointment = createAction(CANCEL_APPOINTMENT);
 export function* cancelAppointmentSaga(action: Action<any>) {
@@ -237,12 +212,9 @@ export function* cancelAppointmentSaga(action: Action<any>) {
       { cancelable: false }
     );
 
-    yield put(getAppointments());
-
+    yield put(getAttendances());
   } catch (error) {
     handleAxiosError(error);
-  } finally {
-    // yield put(getUser());
   }
 }
 
@@ -286,18 +258,12 @@ export function* declineAppointmentSaga(action: Action<any>) {
       ],
       { cancelable: false }
     );
-
-    yield put(getAppointments());
-
+    yield put(getAttendances());
   } catch (error) {
     handleAxiosError(error);
-  } finally {
-    // yield put(getUser());
   }
 }
 
 export function* watchDeclineAppointmentSaga() {
   yield takeEvery(DECLINE_APPOINTMENT, declineAppointmentSaga);
 }
-
-// "/v1/appointments/:appointment_id/decline"

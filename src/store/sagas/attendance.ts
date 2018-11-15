@@ -23,12 +23,8 @@ export function* getAttendancesSaga(action: Action<any>) {
     );
 
     yield put(persistAttendances(data));
-    // yield put(persistUser(data));
-    // yield put(resetRegistration());
   } catch (error) {
     handleAxiosError(error);
-  } finally {
-    // yield put(getUser());
   }
 }
 
@@ -46,17 +42,14 @@ export function* deleteAttendanceSaga(action: Action<any>) {
       api,
       {
         method: "DELETE",
-        url: `/attendances/${action.payload.id}`
+        url: `/attendances/${action.payload.attendanceId}`
       },
       state.user
     );
 
-    yield put(getAppointments());
-
+    yield put(getAttendances());
   } catch (error) {
     handleAxiosError(error);
-  } finally {
-    // yield put(getUser());
   }
 }
 

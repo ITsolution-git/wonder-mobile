@@ -37,6 +37,28 @@ export const decorateAppointment = (
   }
   return undefined;
 };
+// ONLY THIS ONE
+export const decorateAttendance = (
+  appointment: any,
+  me: User
+): DecoratedAppointment | undefined => {
+
+  if (appointment) {
+    const result: any = {
+      ...appointment.appointment,
+      attendanceId: appointment.id,
+      me,
+      match: appointment.appointment.users.find(
+        (user: AppointmentUser) => user.id !== me.id
+      ),
+      eventMoment: appointment.appointment.event_at
+        ? moment(appointment.event_at)
+        : undefined
+    };
+    return result;
+  }
+  return undefined;
+};
 
 export const selectUpcomingAppointments = createSelector(
   [selectCurrentUser, allAppointments],
@@ -51,7 +73,7 @@ export const selectUpcomingAttendances = createSelector(
   [selectCurrentUser, allAttendances],
   (currentUser, appointments) => {
     return _.sortBy(appointments, 'departure_at')
-      .map((a: Appointment) => decorateAppointment(a.appointment, currentUser))
+      .map((a: any) => decorateAttendance(a, currentUser))
       .filter(isAppointmentAfterToday);
   }
 );

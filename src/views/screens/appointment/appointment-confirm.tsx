@@ -1,4 +1,5 @@
 import React from "react";
+import _ from "lodash";
 import { connect } from "react-redux";
 import Screen from "src/views/components/screen";
 import { Text, Strong, PrimaryButton } from "src/views/components/theme";
@@ -40,6 +41,7 @@ interface AppointmentConfirmProps {
 class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> {
   componentDidMount() {
     RNCalendarEvents.authorizationStatus().then((status) => {
+
       if (status !== 'authorized') {
         RNCalendarEvents.authorizeEventStore();
       }
@@ -66,7 +68,7 @@ class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> 
         <View flex={1}>
           <Title>{match.first_name}</Title>
           <View style={{ alignItems: 'center', marginTop: 15 }}>
-            <Avatar size={AvatarSize.md} circle />
+            <Avatar size={AvatarSize.md} circle uri={_.get(match, "images[0].url", null)} />
           </View>
           <View style={styles.body}>
             <Text style={{ fontSize: 18 }}>
@@ -89,7 +91,7 @@ class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> 
       <View flex={1}>
         <Title>{match.first_name}</Title>
         <View style={{ alignItems: 'center', marginTop: 15 }}>
-          <Avatar size={AvatarSize.md} circle uri={match.images[0].url} />
+          <Avatar size={AvatarSize.md} circle uri={_.get(match, "images[0].url", null)} />
         </View>
         <View style={styles.body}>
           <Text style={{ fontSize: 18 }}>

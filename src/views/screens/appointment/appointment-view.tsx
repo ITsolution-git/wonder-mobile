@@ -36,6 +36,8 @@ interface AppointmentViewProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
   appointment: DecoratedAppointment;
   onGetConversation: (partnerId: number) => void;
+  onDeclineAppointment: (data: DecoratedAppointment) => void;
+  onCancelAppointment: (data: DecoratedAppointment) => void;
 }
 
 interface AppointmentViewState {
@@ -49,8 +51,8 @@ const mapState = (state: WonderAppState) => ({
 const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
     dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
-  onCancelAppointment: (data) => dispatch(cancelAppointment(data)),
-  onDeclineAppointment: (data) => dispatch(declineAppointment(data))
+  onCancelAppointment: (data: DecoratedAppointment) => dispatch(cancelAppointment(data)),
+  onDeclineAppointment: (data: DecoratedAppointment) => dispatch(declineAppointment(data))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -160,14 +162,13 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       const label = state === 'confirmed' ? 'Confirmed' : 'Confirm';
       const greyedColor = Color(theme.colors.backgroundPrimary).toString();
       return (
-        <Text>HY</Text>
-        // <PrimaryButton
-        //   color={theme.colors.textColor}
-        //   colors={[greyedColor, greyedColor]}
-        //   title={label}
-        //   onPress={_.noop}
-        //   disabled
-        // />
+        <PrimaryButton
+          color={theme.colors.textColor}
+          colors={[greyedColor, greyedColor]}
+          title={label}
+          onPress={_.noop}
+          disabled
+        />
       );
     }
   }
@@ -213,7 +214,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     const isPast = this.isPastAppointment();
-    console.log('a', appointment);
+
     return (
       <Screen horizontalPadding={20}>
         {/* <ScrollView
@@ -231,7 +232,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
           <View style={{ marginTop: 15 }}>
             <Title align="center">
-              {appointment.topic.name} with {appointment.match.first_name}{' '}
+              {_.get(appointment, 'topic.name', null)} with {appointment.match.first_name}{' '}
             </Title>
 
             <SubTitle align="center">{appointment.name} - {appointment.location}</SubTitle>
