@@ -12,8 +12,10 @@ import Appointment, {
   AppointmentUser
 } from 'src/models/appointment';
 import User from 'src/models/user';
+import Wonder from 'src/views/components/theme/wonder/wonder';
 
 const allAppointments = (state: WonderAppState) => state.wonder.appointments;
+const allAttendances = (state: WonderAppState) => state.wonder.attendances;
 
 export const decorateAppointment = (
   appointment: Appointment,
@@ -35,12 +37,43 @@ export const decorateAppointment = (
   }
   return undefined;
 };
+// ONLY THIS ONE
+export const decorateAttendance = (
+  appointment: any,
+  me: User
+): DecoratedAppointment | undefined => {
+
+  if (appointment) {
+    const result: any = {
+      ...appointment.appointment,
+      attendanceId: appointment.id,
+      me,
+      match: appointment.appointment.users.find(
+        (user: AppointmentUser) => user.id !== me.id
+      ),
+      eventMoment: appointment.appointment.event_at
+        ? moment(appointment.event_at)
+        : undefined
+    };
+    return result;
+  }
+  return undefined;
+};
 
 export const selectUpcomingAppointments = createSelector(
   [selectCurrentUser, allAppointments],
   (currentUser, appointments) => {
     return _.sortBy(appointments, 'event_at')
       .map((a: Appointment) => decorateAppointment(a, currentUser))
+      .filter(isAppointmentAfterToday);
+  }
+);
+
+export const selectUpcomingAttendances = createSelector(
+  [selectCurrentUser, allAttendances],
+  (currentUser, appointments) => {
+    return _.sortBy(appointments, 'departure_at')
+      .map((a: any) => decorateAttendance(a, currentUser))
       .filter(isAppointmentAfterToday);
   }
 );

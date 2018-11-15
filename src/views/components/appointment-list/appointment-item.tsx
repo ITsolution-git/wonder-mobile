@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Button, Platform } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Platform } from "react-native";
 import {
   Text,
   Title,
@@ -31,7 +31,7 @@ class AppointmentItem extends React.Component<Props> {
     if (moment(event_at).isSameOrAfter(now)) {
       return (
         <Title>
-          {item.topic.name} at <Strong>{moment(event_at).format("h:mma")}</Strong> with{" "}
+          {_.get(item, "topic.name", null)} at <Strong>{moment(event_at).format("h:mma")}</Strong> with{" "}
           {match.first_name}
         </Title>
       );

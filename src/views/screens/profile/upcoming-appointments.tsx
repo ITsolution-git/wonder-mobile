@@ -8,7 +8,8 @@ import theme from "src/assets/styles/theme";
 import { Dispatch } from "redux";
 import { getAppointments } from "src/store/sagas/appointment";
 import moment from "moment-timezone";
-import { selectUpcomingAppointments } from "src/store/selectors/appointment";
+import { selectUpcomingAppointments, selectUpcomingAttendances } from "src/store/selectors/appointment";
+import { deleteAttendance, getAttendances } from "src/store/sagas/attendance";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import WonderAppState from "src/models/wonder-app-state";
 import { DecoratedAppointment } from "src/models/appointment";
@@ -18,17 +19,24 @@ interface State {
 }
 
 const mapState = (state: WonderAppState) => ({
-  appointments: selectUpcomingAppointments(state)
+  appointments: selectUpcomingAppointments(state),
+  attendances: selectUpcomingAttendances(state)
+  // selectUpcomingAttendances(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onRefreshAppointments: () => dispatch(getAppointments())
+  onRefreshAppointments: () => dispatch(getAppointments()),
+  onDeleteAttendance: (data: DecoratedAppointment) => dispatch(deleteAttendance(data)),
+  onRefreshAttendances: () => dispatch(getAttendances())
 });
 
 interface UpcomingAppointmentsProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
   appointments: DecoratedAppointment[];
+  attendances: DecoratedAppointment[];
   onRefreshAppointments: () => void;
+  onRefreshAttendances: () => void;
+  onDeleteAttendance: () => void;
 }
 
 class UpcomingAppointmentsScreen extends React.Component<
@@ -39,6 +47,7 @@ class UpcomingAppointmentsScreen extends React.Component<
   };
   componentDidMount() {
     this.props.onRefreshAppointments();
+    this.props.onRefreshAttendances();
   }
 
   goToAppointment = (appointment: DecoratedAppointment) => {
@@ -73,15 +82,16 @@ class UpcomingAppointmentsScreen extends React.Component<
   }
 
   renderList = () => {
-    const { appointments, onRefreshAppointments } = this.props;
+    const { appointments, onRefreshAppointments, attendances, onRefreshAttendances } = this.props;
     const filteredAppointments = this.filterAppointments();
     if (filteredAppointments.length) {
       return (
         <AppointmentList
           onPressCallNumber={this.callNumber}
-          onRefresh={onRefreshAppointments}
-          data={appointments}
+          onRefresh={onRefreshAttendances}
+          data={attendances}
           onPress={this.goToAppointment}
+          onDelete={this.props.onDeleteAttendance}
         />
       );
     }

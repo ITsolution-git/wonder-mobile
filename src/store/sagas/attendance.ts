@@ -1,7 +1,7 @@
 import { select, call, put, takeEvery } from "redux-saga/effects";
 import { createAction, Action } from "redux-actions";
 import api from "../../services/api";
-
+import { getAppointments } from "./appointment";
 import { persistAttendances } from "../reducers/wonder";
 import WonderAppState from "../../models/wonder-app-state";
 import { handleAxiosError } from "./utils";
@@ -23,15 +23,36 @@ export function* getAttendancesSaga(action: Action<any>) {
     );
 
     yield put(persistAttendances(data));
-    // yield put(persistUser(data));
-    // yield put(resetRegistration());
   } catch (error) {
     handleAxiosError(error);
-  } finally {
-    // yield put(getUser());
   }
 }
 
 export function* watchGetAttendances() {
   yield takeEvery(GET_ATTENDANCES, getAttendancesSaga);
+}
+
+export const DELETE_ATTENDANCE = "DELETE_ATTENDANCE";
+export const deleteAttendance = createAction(DELETE_ATTENDANCE);
+export function* deleteAttendanceSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+
+    const { data }: { data: Attendance[] } = yield call(
+      api,
+      {
+        method: "DELETE",
+        url: `/attendances/${action.payload.attendanceId}`
+      },
+      state.user
+    );
+
+    yield put(getAttendances());
+  } catch (error) {
+    handleAxiosError(error);
+  }
+}
+
+export function* watchDeleteAttendance() {
+  yield takeEvery(DELETE_ATTENDANCE, deleteAttendanceSaga);
 }

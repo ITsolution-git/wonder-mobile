@@ -36,6 +36,8 @@ interface AppointmentViewProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
   appointment: DecoratedAppointment;
   onGetConversation: (partnerId: number) => void;
+  onDeclineAppointment: (data: DecoratedAppointment) => void;
+  onCancelAppointment: (data: DecoratedAppointment) => void;
 }
 
 interface AppointmentViewState {
@@ -49,8 +51,8 @@ const mapState = (state: WonderAppState) => ({
 const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
     dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
-  onCancelAppointment: (data) => dispatch(cancelAppointment(data)),
-  onDeclineAppointment: (data) => dispatch(declineAppointment(data))
+  onCancelAppointment: (data: DecoratedAppointment) => dispatch(cancelAppointment(data)),
+  onDeclineAppointment: (data: DecoratedAppointment) => dispatch(declineAppointment(data))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -212,6 +214,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     const isPast = this.isPastAppointment();
+
     return (
       <Screen horizontalPadding={20}>
         {/* <ScrollView
@@ -229,11 +232,10 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
           <View style={{ marginTop: 15 }}>
             <Title align="center">
-              {appointment.name} with {appointment.match.first_name}{' '}
-              {isPast.toString()}
+              {_.get(appointment, 'topic.name', null)} with {appointment.match.first_name}{' '}
             </Title>
 
-            <SubTitle align="center">{appointment.location}</SubTitle>
+            <SubTitle align="center">{appointment.name} - {appointment.location}</SubTitle>
             {appointment.phone && (
               <TextButton
                 btnStyle={{ alignSelf: 'center' }}
@@ -243,7 +245,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             )}
             {appointment.eventMoment && (
               <Text align="center">
-                {appointment.eventMoment.format('MMMM Do, YYYY [at] h:mma')}
+                {appointment.eventMoment.format('MMMM Do, [at] h:mma')}
               </Text>
             )}
           </View>
