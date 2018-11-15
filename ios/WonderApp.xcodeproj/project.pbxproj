@@ -79,7 +79,6 @@
 		D838078ABA594C11B670BCC2 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8D3B0792542743DD9B101CC5 /* Octicons.ttf */; };
 		DD9EE53842DD48F4826B253A /* libAppCenterReactNativePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C30F4E561B045409538FE00 /* libAppCenterReactNativePush.a */; };
 		DFBC0823D25F499881323098 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D5F609ED5F184BCC870F1416 /* rubicon-icon-font.ttf */; };
-		E8E801065CDAEFBBE8E6A5B8 /* libPods-WonderApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9F1923B39809CE106A0C9B /* libPods-WonderApp.a */; };
 		E9F00882E354423DA174E94D /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 267404022FBF49D3B58407AA /* Poppins-ExtraLightItalic.ttf */; };
 		ED2267CECD7845849B7D8F8D /* AppCenter-Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = F23F966A51AD48459923FF55 /* AppCenter-Config.plist */; };
 		ED49A5F4B44B4D648CB8A89E /* libAppCenterReactNativeCrashes.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB1A29AB1C2A454C905B3276 /* libAppCenterReactNativeCrashes.a */; };
@@ -87,6 +86,7 @@
 		F820D0839EB14BD5893495F4 /* libAppCenterReactNativeAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 33BFC9C93E784506BAE692B8 /* libAppCenterReactNativeAnalytics.a */; };
 		FA17C834242246A6A311BB45 /* libRNVersionNumber.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D25FBF052FD140F3A901337C /* libRNVersionNumber.a */; };
 		FB2D02BC2D624C69B73EF0DE /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5CD99B238F04A47BC391A98 /* SimpleLineIcons.ttf */; };
+		FF3D4DC66DC3DBC1E5CDAF7D /* libPods-WonderApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DA8280D17E3EDC1DEC38FE2 /* libPods-WonderApp.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -640,6 +640,7 @@
 		08975297F4DB4CC2858AC415 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		0C30F4E561B045409538FE00 /* libAppCenterReactNativePush.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativePush.a; sourceTree = "<group>"; };
 		0CD97EF3006E4F82AD5BA7AF /* Poppins-LightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-LightItalic.ttf"; path = "../src/assets/fonts/Poppins-LightItalic.ttf"; sourceTree = "<group>"; };
+		0DA8280D17E3EDC1DEC38FE2 /* libPods-WonderApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WonderApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EC96DAF2D4D47649A354BCF /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/native-base/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		13963B2F55CF41758D30B1D0 /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
@@ -652,6 +653,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = WonderApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = WonderApp/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		18033DABB28246A2906C43C7 /* Pods-WonderApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WonderApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-WonderApp/Pods-WonderApp.release.xcconfig"; sourceTree = "<group>"; };
 		1E5D1F44212FEB9500419E22 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "WonderApp/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = Pods/Pods.xcodeproj; sourceTree = "<group>"; };
 		209A289DD15A4351A6A25141 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
@@ -667,7 +669,6 @@
 		41760A64B8634C74B17F582D /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-SemiBoldItalic.ttf"; path = "../src/assets/fonts/Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		4724574DD2A843BE99282E56 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
 		47EB1C8B34BA475282EAB9DD /* AppCenterReactNativePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativePush.xcodeproj; path = "../node_modules/appcenter-push/ios/AppCenterReactNativePush.xcodeproj"; sourceTree = "<group>"; };
-		48570CA314F0B559F43DAA36 /* Pods-WonderApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WonderApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-WonderApp/Pods-WonderApp.release.xcconfig"; sourceTree = "<group>"; };
 		497D65E7215B16120010C52F /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		49CB0C49215B169F00B6D13D /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		49FF70B22119EC4200AE86E6 /* WonderApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = WonderApp.entitlements; path = WonderApp/WonderApp.entitlements; sourceTree = "<group>"; };
@@ -687,7 +688,6 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		7F98B9D8BF6240CFBA6864B4 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Regular.ttf"; path = "../src/assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		8A9F1923B39809CE106A0C9B /* libPods-WonderApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WonderApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AF9B6543DA34562ADA4BCA0 /* libAppCenterReactNative.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNative.a; sourceTree = "<group>"; };
 		8D3B0792542743DD9B101CC5 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/native-base/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		90045976E6514DBAAC31082C /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../src/assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -707,12 +707,12 @@
 		DB1A29AB1C2A454C905B3276 /* libAppCenterReactNativeCrashes.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAppCenterReactNativeCrashes.a; sourceTree = "<group>"; };
 		DB2D09743C814293A01947D4 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Medium.ttf"; path = "../src/assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		DC4473FF9CFF44FF987A06C5 /* AppCenterReactNativeAnalytics.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNativeAnalytics.xcodeproj; path = "../node_modules/appcenter-analytics/ios/AppCenterReactNativeAnalytics.xcodeproj"; sourceTree = "<group>"; };
-		DDFF71817086353580708691 /* Pods-WonderApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WonderApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WonderApp/Pods-WonderApp.debug.xcconfig"; sourceTree = "<group>"; };
 		E43305D8D3EC4F09B8CA4FD8 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		ECE0B464C63843EFBB8E659E /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/native-base/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		F23F966A51AD48459923FF55 /* AppCenter-Config.plist */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = text.plist.xml; name = "AppCenter-Config.plist"; path = "WonderApp/AppCenter-Config.plist"; sourceTree = "<group>"; };
 		F5CD99B238F04A47BC391A98 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		F91A0591A3F94C2AA1A3426F /* libRangeSlider.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRangeSlider.a; sourceTree = "<group>"; };
+		FBBDA1768C89506666E6C7AC /* Pods-WonderApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WonderApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WonderApp/Pods-WonderApp.debug.xcconfig"; sourceTree = "<group>"; };
 		FD435CA350B148BEBCB22E3D /* AppCenterReactNative.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AppCenterReactNative.xcodeproj; path = ../node_modules/appcenter/ios/AppCenterReactNative.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -750,11 +750,11 @@
 				646118AFEEC24BF080D7CE2E /* libRNVectorIcons.a in Frameworks */,
 				CE04E8F831464000B3757ADE /* libBVLinearGradient.a in Frameworks */,
 				57CC1AF11A15455992D46C65 /* libRangeSlider.a in Frameworks */,
-				E8E801065CDAEFBBE8E6A5B8 /* libPods-WonderApp.a in Frameworks */,
 				F820D0839EB14BD5893495F4 /* libAppCenterReactNativeAnalytics.a in Frameworks */,
 				DD9EE53842DD48F4826B253A /* libAppCenterReactNativePush.a in Frameworks */,
 				ED49A5F4B44B4D648CB8A89E /* libAppCenterReactNativeCrashes.a in Frameworks */,
 				B35AB390D6154D2EBF0EE607 /* libAppCenterReactNative.a in Frameworks */,
+				FF3D4DC66DC3DBC1E5CDAF7D /* libPods-WonderApp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -949,7 +949,7 @@
 				49CB0C49215B169F00B6D13D /* CoreFoundation.framework */,
 				497D65E7215B16120010C52F /* EventKit.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				8A9F1923B39809CE106A0C9B /* libPods-WonderApp.a */,
+				0DA8280D17E3EDC1DEC38FE2 /* libPods-WonderApp.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1064,6 +1064,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		5F8367DAE30F2D07997AD28E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FBBDA1768C89506666E6C7AC /* Pods-WonderApp.debug.xcconfig */,
+				18033DABB28246A2906C43C7 /* Pods-WonderApp.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1121,9 +1130,9 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				43AA426B9E8A41478D0A336F /* Resources */,
-				880AF269E407198B5BC25F3F /* Pods */,
 				49DEB33C2107DAF800D72FFE /* Recovered References */,
 				F23F966A51AD48459923FF55 /* AppCenter-Config.plist */,
+				5F8367DAE30F2D07997AD28E /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -1139,15 +1148,6 @@
 				2D02E4901E0B4A5D006451C7 /* WonderApp-tvOSTests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		880AF269E407198B5BC25F3F /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				DDFF71817086353580708691 /* Pods-WonderApp.debug.xcconfig */,
-				48570CA314F0B559F43DAA36 /* Pods-WonderApp.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		AC3ED9152173D5D900E00E7C /* Products */ = {
@@ -1216,12 +1216,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "WonderApp" */;
 			buildPhases = (
-				C95F046FB7BCC99422BF8BFF /* [CP] Check Pods Manifest.lock */,
+				60D1998ADD919956FD4309FB /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				8729AC664846C1BBB104EDEC /* [CP] Copy Pods Resources */,
+				DDCA1A50093AFD254F1152BC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2046,7 +2046,25 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		8729AC664846C1BBB104EDEC /* [CP] Copy Pods Resources */ = {
+		60D1998ADD919956FD4309FB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-WonderApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DDCA1A50093AFD254F1152BC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2064,24 +2082,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WonderApp/Pods-WonderApp-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C95F046FB7BCC99422BF8BFF /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-WonderApp-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2240,7 +2240,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DDFF71817086353580708691 /* Pods-WonderApp.debug.xcconfig */;
+			baseConfigurationReference = FBBDA1768C89506666E6C7AC /* Pods-WonderApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = WonderApp/WonderApp.entitlements;
@@ -2279,7 +2279,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48570CA314F0B559F43DAA36 /* Pods-WonderApp.release.xcconfig */;
+			baseConfigurationReference = 18033DABB28246A2906C43C7 /* Pods-WonderApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = WonderApp/WonderApp.entitlements;
