@@ -12,7 +12,7 @@ import {
   TextButton,
   SecondaryButton
 } from 'src/views/components/theme';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, Linking, Platform } from 'react-native';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import AppointmentReviewModal from 'src/views/components/modals/appointment-review-modal';
 
@@ -97,7 +97,13 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   }
 
   onCall = async (url?: string | null) => {
-    await callPhoneNumber(url);
+    Linking.canOpenURL(url).then((supported) => {
+      if (!supported) {
+        Alert.alert("Sorry! This number can't be opened from the app");
+      } else {
+        return Linking.openURL(url);
+      }
+    }).catch((err) => console.error('An error occurred', err));
   }
 
   onServicePress = (url: string) => {
@@ -162,13 +168,14 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       const label = state === 'confirmed' ? 'Confirmed' : 'Confirm';
       const greyedColor = Color(theme.colors.backgroundPrimary).toString();
       return (
-        <PrimaryButton
-          color={theme.colors.textColor}
-          colors={[greyedColor, greyedColor]}
-          title={label}
-          onPress={_.noop}
-          disabled
-        />
+        <Text>YUP</Text>
+        // <PrimaryButton
+        //   color={theme.colors.textColor}
+        //   colors={[greyedColor, greyedColor]}
+        //   title={label}
+        //   onPress={_.noop}
+        //   disabled
+        // />
       );
     }
   }
@@ -236,17 +243,18 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             </Title>
 
             <SubTitle align="center">{appointment.name} - {appointment.location}</SubTitle>
-            {appointment.phone && (
-              <TextButton
-                btnStyle={{ alignSelf: 'center' }}
-                text="appointment.phone"
-                onPress={() => this.onCall(appointment.phone)}
-              />
-            )}
             {appointment.eventMoment && (
               <Text align="center">
                 {appointment.eventMoment.format('MMMM Do, [at] h:mma')}
               </Text>
+            )}
+            {appointment.phone && (
+              <TextButton
+                btnStyle={{ alignSelf: 'center', marginTop: 10 }}
+                style={styles.phoneText}
+                text={appointment.phone}
+                onPress={() => this.onCall(`tel:${appointment.phone}`)}
+              />
             )}
           </View>
         </View>
@@ -361,5 +369,10 @@ const styles = StyleSheet.create({
   btnLabel: {
     textAlign: 'center',
     fontSize: 12
-  }
+  },
+  phoneText: {
+    fontSize: 14,
+    color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
+    marginLeft: 10
+  },
 });

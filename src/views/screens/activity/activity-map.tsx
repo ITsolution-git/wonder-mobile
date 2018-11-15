@@ -121,7 +121,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
       <MarkerContainer
         key={`${id} - ${name}`}
         coordinate={{ latitude, longitude }}
-        // onPress={() => onGetActivity(id)}
+      // onPress={() => onGetActivity(id)}
       >
         <Marker title={topic.name} icon={topic.icon} />
         <Callout

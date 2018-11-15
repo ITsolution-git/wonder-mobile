@@ -78,7 +78,7 @@ class AppointmentItem extends React.Component<Props> {
               {item.phone && <TextButton
                 text={item.phone}
                 style={styles.phoneText}
-                onPress={() => callNumber(`tel:+1${item.phone}`)}
+                onPress={() => callNumber(`tel:${item.phone}`)}
               />}
             </View>
           </View>

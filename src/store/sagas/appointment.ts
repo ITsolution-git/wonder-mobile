@@ -53,7 +53,8 @@ const serializeAppointment = (appt: AppointmentState): any => {
         latitude: appt.activity.latitude,
         longitude: appt.activity.longitude,
         event_at: appt.eventAt,
-        topic_id: appt.topic.id
+        topic_id: appt.topic.id,
+        phone: appt.activity.phone
       }
     };
   }
