@@ -35,7 +35,8 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
         rating,
         review_count,
         price_level,
-        images
+        images,
+        phone
       } = details;
 
       return (
