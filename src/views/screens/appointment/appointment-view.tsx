@@ -168,14 +168,13 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       const label = state === 'confirmed' ? 'Confirmed' : 'Confirm';
       const greyedColor = Color(theme.colors.backgroundPrimary).toString();
       return (
-        <Text>YUP</Text>
-        // <PrimaryButton
-        //   color={theme.colors.textColor}
-        //   colors={[greyedColor, greyedColor]}
-        //   title={label}
-        //   onPress={_.noop}
-        //   disabled
-        // />
+        <PrimaryButton
+          color={theme.colors.textColor}
+          colors={[greyedColor, greyedColor]}
+          title={label}
+          onPress={_.noop}
+          disabled
+        />
       );
     }
   }
