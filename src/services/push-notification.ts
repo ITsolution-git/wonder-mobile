@@ -45,7 +45,7 @@ class PushNotificationService {
     if (this.onRegister) {
       this.onRegister(token);
     }
-  };
+  }
 
   private resetToDate = (
     destination: string,
@@ -56,19 +56,19 @@ class PushNotificationService {
     NavigationService.navigate('User');
     NavigationService.navigate('Upcoming');
     NavigationService.navigate(destination, { appointment, review });
-  };
+  }
 
   private resetToPast = () => {
     NavigationService.reset('Main', 'onboarding');
     NavigationService.navigate('User');
     NavigationService.navigate('Past');
-  };
+  }
 
   private resetToChat = (partnerId: number, redirect: string) => {
     NavigationService.reset('Main', 'onboarding');
     NavigationService.navigate('Messages');
     NavigationService.navigate('ChatList', { partnerId, redirect });
-  };
+  }
 
   private handleIosNotifications = (payload: IosNotificationPayload) => {
     const { partner_id, appointment, type } = payload;
@@ -108,7 +108,7 @@ class PushNotificationService {
     }
 
     return this.token.os === 'ios' ? this.handleIosNotifications(data) : this.handleAndroidNotifications(notification);
-  };
+  }
 
   private handleNotificationReceived = (
     notification: WonderPushNotification
@@ -146,7 +146,7 @@ class PushNotificationService {
     if (this.token && this.token.os === 'ios') {
       notification.finish(PushNotificationIOS.FetchResult.NoData);
     }
-  };
+  }
 
   configure(user: User) {
     this.user = user;
@@ -162,7 +162,7 @@ class PushNotificationService {
 
   localNotification = (content: PushNotificationObject): void => {
     RNPushNotification.presentLocalNotification(content);
-  };
+  }
 }
 
 export default new PushNotificationService();

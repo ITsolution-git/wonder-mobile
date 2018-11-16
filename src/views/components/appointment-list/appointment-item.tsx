@@ -75,7 +75,7 @@ class AppointmentItem extends React.Component<Props> {
             </View>
             <View>
               <SmallText style={styles.locationText}>{item.location}</SmallText>
-              {item.phone && <TextButton
+              {item.phone !== null && <TextButton
                 text={item.phone}
                 style={styles.phoneText}
                 onPress={() => callNumber(`tel:${item.phone}`)}
