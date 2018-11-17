@@ -156,6 +156,7 @@ android {
 }
 
 dependencies {
+    compile project(':bugsnag-react-native')
     compile project(':appcenter')
     compile project(':appcenter-crashes')
     compile project(':appcenter-push')

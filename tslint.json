@@ -1,23 +1,37 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended",
-        "tslint-react"
+  "defaultSeverity": "error",
+  "extends": ["tslint:recommended", "tslint-react"],
+  "jsRules": {},
+  "rules": {
+    "jsx-boolean-value": false,
+    "ban-types": false,
+    "no-console": false,
+    "ordered-imports": false,
+    "quotemark": [true, "double", "jsx-double", "avoid-escape"],
+    "semicolon": false,
+    "member-access": false,
+    "member-ordering": false,
+    "interface-name": false,
+    "trailing-comma": [
+      true,
+      {
+        "singleline": "never",
+        "multiline": "always"
+      }
     ],
-    "jsRules": {},
-    "rules": {
-        "interface-name": false,
-        "trailing-comma": false,
-        "quotemark": false,
-        "ordered-imports": false,
-        "object-literal-sort-keys": false,
-        "jsx-boolean-value": false,
-        "jsx-no-lambda": false,
-        "member-ordering": false,
-        "ban-types": false,
-        "jsx-no-multiline-js": false,
-        "member-access": false,
-        "max-classes-per-file": false
-    },
-    "rulesDirectory": []
+    "variable-name": false,
+    "object-literal-sort-keys": false,
+    "no-empty": false,
+    "no-submodule-imports": false,
+    "no-implicit-dependencies": false,
+    "no-constant-condition": false,
+    "triple-equals": [true, "allow-undefined-check"],
+    "no-duplicate-imports": false,
+    "jsx-alignment": true,
+    "jsx-no-bind": true,
+    "jsx-no-lambda": true,
+    "jsx-no-multiline-js": false,
+    "max-classes-per-file": false
+  },
+  "rulesDirectory": []
 }
