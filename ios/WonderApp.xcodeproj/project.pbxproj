@@ -573,6 +573,34 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		77415B2C21A0C59000EF1C82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 94F9435D54D255D1ADFC17596AE75A37;
+			remoteInfo = FLAnimatedImage;
+		};
+		77415B2E21A0C59000EF1C82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C25D32B769E13D8D00EEEDE648294E85;
+			remoteInfo = "react-native-fast-image";
+		};
+		77415B3021A0C59000EF1C82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 126D5290BA418AFB41DF00C766E3BF4F;
+			remoteInfo = SDWebImage;
+		};
+		77415BAE21A0D17400EF1C82 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 86A90332181353AC89F4057458BF33C2;
+			remoteInfo = BugsnagReactNative;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -917,12 +945,14 @@
 			isa = PBXGroup;
 			children = (
 				070BEB66214EDECB00309E64 /* libBolts.a */,
+				77415BAF21A0D17400EF1C82 /* libBugsnagReactNative.a */,
 				1E5D1F85212FEC1F00419E22 /* libDoubleConversion.a */,
 				070BEB68214EDECB00309E64 /* libFBSDKCoreKit.a */,
 				070BEB6A214EDECB00309E64 /* libFBSDKLoginKit.a */,
 				070BEB6C214EDECB00309E64 /* libFBSDKShareKit.a */,
 				0769D629214369D200DB2301 /* libFirebaseCore.a */,
 				0769D62B214369D200DB2301 /* libFirebaseMessaging.a */,
+				77415B2D21A0C59000EF1C82 /* libFLAnimatedImage.a */,
 				1E5D1F87212FEC1F00419E22 /* libFolly.a */,
 				1E5D1F89212FEC1F00419E22 /* libglog.a */,
 				1E5D1F8B212FEC1F00419E22 /* libGoogle-Maps-iOS-Utils.a */,
@@ -931,6 +961,7 @@
 				1E5D1F91212FEC1F00419E22 /* libPods-WonderApp.a */,
 				1E5D1F93212FEC1F00419E22 /* libProtobuf.a */,
 				493F1EDF215B026D0047FC5E /* libreact-native-calendar-events.a */,
+				77415B2F21A0C59000EF1C82 /* libreact-native-fast-image.a */,
 				070BEB6E214EDECB00309E64 /* libreact-native-fbsdk.a */,
 				1E5D1F99212FEC1F00419E22 /* libreact-native-google-maps.a */,
 				0769D62F214369D200DB2301 /* libreact-native-image-picker.a */,
@@ -938,6 +969,7 @@
 				1E5D1F9D212FEC1F00419E22 /* libreact-native-video.a */,
 				0769D631214369D200DB2301 /* libRNImageRotate.a */,
 				0769D633214369D200DB2301 /* libRNSVG.a */,
+				77415B3121A0C59000EF1C82 /* libSDWebImage.a */,
 				1E5D1F9F212FEC1F00419E22 /* libyoga.a */,
 			);
 			name = Products;
@@ -1282,8 +1314,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = B99YWDZPRP;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplePay = {
 								enabled = 1;
@@ -1898,6 +1929,34 @@
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		77415B2D21A0C59000EF1C82 /* libFLAnimatedImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFLAnimatedImage.a;
+			remoteRef = 77415B2C21A0C59000EF1C82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		77415B2F21A0C59000EF1C82 /* libreact-native-fast-image.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libreact-native-fast-image.a";
+			remoteRef = 77415B2E21A0C59000EF1C82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		77415B3121A0C59000EF1C82 /* libSDWebImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSDWebImage.a;
+			remoteRef = 77415B3021A0C59000EF1C82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		77415BAF21A0D17400EF1C82 /* libBugsnagReactNative.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBugsnagReactNative.a;
+			remoteRef = 77415BAE21A0D17400EF1C82 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2245,10 +2304,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = WonderApp/WonderApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 50;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = B99YWDZPRP;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
@@ -2284,9 +2343,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = WonderApp/WonderApp.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 50;
-				DEVELOPMENT_TEAM = B99YWDZPRP;
+				DEVELOPMENT_TEAM = "";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",

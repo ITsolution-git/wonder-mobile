@@ -1,8 +1,8 @@
-import _ from 'lodash';
-import React from 'react';
-import { Switch } from 'react-native';
-import theme from 'src/assets/styles/theme';
-import SwitchValueChange from 'src/models/switch-value-change';
+import _ from "lodash";
+import React from "react";
+import { Switch } from "react-native";
+import SwitchValueChange from "src/models/switch-value-change";
+import { colors } from "@assets";
 
 interface Props {
   disabled?: boolean;
@@ -10,12 +10,11 @@ interface Props {
   value?: boolean;
   initialValue?: boolean;
 }
-const { primary, primaryLight } = theme.colors;
-class Toggle extends React.Component<Props> {
 
+class Toggle extends React.Component<Props> {
   static defaultProps = {
     onValueChange: _.noop,
-    value: false
+    value: false,
   };
 
   onChangeValue = (value: boolean) => {
@@ -23,18 +22,22 @@ class Toggle extends React.Component<Props> {
     if (onValueChange) {
       onValueChange(value);
     }
-  }
+  };
 
   render() {
     const { disabled, value } = this.props;
+
+    const disabledState = disabled || !value;
+
     return (
       <Switch
         disabled={disabled}
-        thumbTintColor={disabled ? primaryLight : primary}
-        tintColor={disabled ? primaryLight : primary}
-        onTintColor={primaryLight}
+        thumbTintColor={disabledState ? colors.lightPurple : colors.peach}
+        tintColor={disabledState ? colors.lightPurple : colors.lightPeach}
+        onTintColor={colors.lightPeach}
         onValueChange={this.onChangeValue}
         value={value}
+        trackColor={disabledState ? "white" : colors.lightPeach}
       />
     );
   }

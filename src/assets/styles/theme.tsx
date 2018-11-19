@@ -1,57 +1,67 @@
-import { Dimensions } from 'react-native';
-import Color from 'color';
+import { Dimensions, Platform } from "react-native";
+import Color from "color";
 
-const colors = {
-  white: '#FFF',
-  black: '#000',
-  primary: '#F68E56',
+export const IOS = Platform.OS === "ios";
+export const colors = {
+  white: "#FFF",
+  black: "#000",
+  primary: "#F68E56",
   // If this changes, don't forget to update /android/app/src/main/res/values/colors.xml
-  primaryLight: 'rgb(251, 223, 194)',
+  primaryLight: "#fbdfc2",
   // primaryLight: '#FDE0C1',
-  secondary: 'rgb(255, 238, 75)',
-  backgroundPrimary: '#ECECEC',
-  textColor: '#8E8EAA',
-  textColorLight: Color('#8E8EAA').lighten(0.5).toString(),
-  cottonCandyPink: '#E7A4CA',
-  cottonCandyBlue: '#84CCF1',
+  secondary: "rgb(255, 238, 75)",
+  backgroundPrimary: "#ECECEC",
+  textColor: "#8E8EAA",
+  textColorLight: Color("#8E8EAA")
+    .lighten(0.5)
+    .toString(),
+  cottonCandyPink: "#E7A4CA",
+  cottonCandyBlue: "#84CCF1",
+  // NK below
+  purple: "#8E8EAA",
+  lightPeach: "#efb16e",
+  lightPurple: "#cbc2fa",
+  peach: "#ffdf95",
+  lightGray: "#e5e3e3",
+  iron: "#cbc9cb",
 };
 
 const transparentNavigationStyles = {
   headerStyle: {
     backgroundColor: colors.white,
     borderBottomWidth: 0,
-    elevation: 0
+    elevation: 0,
   },
   headerTintColor: colors.textColor,
   headerTitleStyle: {
     fontSize: 14,
-    fontFamily: 'Poppins',
-    fontWeight: 'normal',
+    fontFamily: "Poppins",
+    fontWeight: "normal",
     color: colors.textColor,
   },
-  headerBackTitle: null
+  headerBackTitle: null,
 };
 
-const { width, height, scale, fontScale } = Dimensions.get('window');
+export const { width, height, scale, fontScale } = Dimensions.get("window");
 
 export const Device = {
   WIDTH: width,
   HEIGHT: height,
   SCALE: scale,
-  FONT_SCALE: fontScale
+  FONT_SCALE: fontScale,
 };
 
 export default {
   colors,
   NavBar: {
-    transparent: transparentNavigationStyles
+    transparent: transparentNavigationStyles,
   },
   fonts: {
-    primary: 'Poppins'
+    primary: "Poppins",
   },
   borders: {
     radius: 15,
     color: colors.textColor,
-    width: 2
-  }
+    width: 2,
+  },
 };

@@ -7,11 +7,11 @@ import { selectCurrentUser } from "src/store/selectors/user";
 
 const mapState = (state: WonderAppState) => ({
   token: state.user.auth.token,
-  currentUser: selectCurrentUser(state)
+  currentUser: selectCurrentUser(state),
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onSave: (data: UserPushNotificationOptions) => dispatch(updateUser(data))
+  onSave: (data: UserPushNotificationOptions) => dispatch(updateUser(data)),
 });
 
 interface Props {
@@ -41,5 +41,5 @@ class AppLoadingScreen extends React.Component<Props> {
 
 export default connect(
   mapState,
-  mapDispatch
+  mapDispatch,
 )(AppLoadingScreen);
