@@ -1,19 +1,19 @@
-import React from "react";
-import { Platform } from "react-native";
+import React from 'react';
+import { Platform } from 'react-native';
 import {
   createStackNavigator,
   createMaterialTopTabNavigator,
   createSwitchNavigator,
-} from "react-navigation";
-import Icon from "react-native-vector-icons/FontAwesome";
+} from 'react-navigation';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { AppLoading, Onboarding, ProposalView, ActivityMap } from "../screens";
-import theme from "src/assets/styles/theme";
+import { AppLoading, Onboarding, ProposalView, ActivityMap } from '../screens';
+import theme from 'src/assets/styles/theme';
 
-import UserNavigator from "./user-navigator";
-import RegistrationNavigator from "./registration-navigator";
-import ChatNavigator from "./chat-navigator";
-import { INITIAL_HOME_SCREEN } from "@appConfig";
+import UserNavigator from './user-navigator';
+import RegistrationNavigator from './registration-navigator';
+import ChatNavigator from './chat-navigator';
+import { INITIAL_HOME_SCREEN } from '@appConfig';
 
 // Manages the Matches and Scheduling flow
 const HomeNavigator = createStackNavigator(
@@ -26,8 +26,8 @@ const HomeNavigator = createStackNavigator(
     },
   },
   {
-    headerMode: "none",
-    initialRouteName: "Proposal",
+    headerMode: 'none',
+    initialRouteName: 'Proposal',
   },
 );
 
@@ -37,7 +37,7 @@ const AuthenticatedNavigator = createMaterialTopTabNavigator(
       screen: UserNavigator,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Icon name="user" size={24} color={tintColor} />
+          <Icon name='user' size={24} color={tintColor} />
         ),
       },
     },
@@ -45,7 +45,7 @@ const AuthenticatedNavigator = createMaterialTopTabNavigator(
       screen: HomeNavigator,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Icon name="sun-o" size={24} color={tintColor} />
+          <Icon name='sun-o' size={24} color={tintColor} />
         ),
       },
     },
@@ -53,7 +53,7 @@ const AuthenticatedNavigator = createMaterialTopTabNavigator(
       screen: ChatNavigator,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
-          <Icon name="comments" size={24} color={tintColor} />
+          <Icon name='comments' size={24} color={tintColor} />
         ),
       },
     },
@@ -88,7 +88,7 @@ const OnboardingNavigator = createStackNavigator(
     Register: { screen: RegistrationNavigator },
     Main: { screen: AuthenticatedNavigator },
   },
-  { headerMode: "none" },
+  { headerMode: 'none' },
 );
 
 const MainNavigator = createSwitchNavigator(
@@ -99,7 +99,7 @@ const MainNavigator = createSwitchNavigator(
     onboarding: OnboardingNavigator,
   },
   {
-    initialRouteName: "AppLoading",
+    initialRouteName: 'AppLoading',
   },
 );
 

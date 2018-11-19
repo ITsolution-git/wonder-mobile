@@ -15,11 +15,13 @@ class RatingIndicator extends React.Component<Props> {
       <Icon
         key={i}
         size={10}
-        name="star"
-        color={i <= rating ? theme.colors.primaryLight : theme.colors.textColorLight}
+        name='star'
+        color={
+          i <= rating ? theme.colors.primaryLight : theme.colors.textColorLight
+        }
       />
     ));
-  }
+  };
 
   render() {
     const { containerStyle } = this.props;
@@ -34,8 +36,8 @@ class RatingIndicator extends React.Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default RatingIndicator;

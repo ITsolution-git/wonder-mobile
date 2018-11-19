@@ -12,14 +12,15 @@ import ImageRotate from 'react-native-image-rotate';
 import { Options, Response } from 'src/models/image-picker';
 import ImageToolbar from 'src/views/components/camera/image-toolbar';
 import ProfileImage from 'src/models/profile-image';
-import { addProfileImage, removeProfileImage } from "src/store/reducers/user";
-const backgrounImageExtension = '?w=600&h=1200&auto=enhance,format&fit=crop&crop=entropy&q=60';
+import { addProfileImage, removeProfileImage } from 'src/store/reducers/user';
+const backgrounImageExtension =
+  '?w=600&h=1200&auto=enhance,format&fit=crop&crop=entropy&q=60';
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateImage: (data: Response) => dispatch(updateImage(data)),
   onDeleteImage: (data: ProfileImage) => dispatch(deleteProfileImage(data)),
   onAddImage: (data) => dispatch(addProfileImage(data)),
-  onRemoveImage: (data) => dispatch(removeProfileImage(data))
+  onRemoveImage: (data) => dispatch(removeProfileImage(data)),
 });
 
 interface ProfileCameraScreenProps {
@@ -32,9 +33,12 @@ interface ProfileCameraScreenState {
   data: Response | null;
 }
 
-class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, ProfileCameraScreenState> {
+class ProfileCameraScreen extends React.Component<
+  ProfileCameraScreenProps,
+  ProfileCameraScreenState
+> {
   state: ProfileCameraScreenState = {
-    data: null
+    data: null,
   };
 
   onClear = () => this.setState({ data: null });
@@ -45,7 +49,7 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
     this.props.onAddImage(data);
     onUpdateImage(data);
     navigation.goBack();
-  }
+  };
 
   getImage = () => {
     const options: Options = {
@@ -53,8 +57,8 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
       mediaType: 'photo',
       storageOptions: {
         skipBackup: true,
-        cameraRoll: true
-      }
+        cameraRoll: true,
+      },
     };
 
     ImagePicker.showImagePicker(options, (res: Response) => {
@@ -66,7 +70,7 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
         this.setState({ data: res });
       }
     });
-  }
+  };
 
   onRotate = () => {
     const { data } = this.state;
@@ -78,29 +82,27 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
           this.setState({
             data: {
               ...data,
-              uri
-            }
+              uri,
+            },
           });
         },
         (error: Error) => {
           console.error(error);
-        }
+        },
       );
     }
-
-  }
+  };
 
   onDeleteImage = () => {
     const { navigation, onDeleteImage } = this.props;
     const currentImage: ProfileImage = navigation.getParam('data');
     if (currentImage) {
-
       onDeleteImage(currentImage);
       this.props.onRemoveImage(currentImage);
       // Delete the image
       navigation.goBack();
     }
-  }
+  };
 
   renderContent = () => {
     const { navigation } = this.props;
@@ -109,7 +111,6 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
 
     let image = null;
     if (currentImage) {
-
       image = (
         <Image
           source={{ uri: currentImage.url + backgrounImageExtension }}
@@ -127,12 +128,10 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
     }
     if (image) {
       return (
-        <View flex={1} >
-          <View style={[styles.imgcontainer, { padding: 0 }]}>
-            {image}
-          </View>
+        <View flex={1}>
+          <View style={[styles.imgcontainer, { padding: 0 }]}>{image}</View>
           <ImageToolbar
-            mode="photo"
+            mode='photo'
             isNew={!currentImage || !!data}
             onRotate={this.onRotate}
             onRetake={this.getImage}
@@ -145,52 +144,50 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
     }
 
     return (
-      <View flex={1} >
+      <View flex={1}>
         <View style={styles.container}>
           <Text>
-            Take a selfie to express who you are.
-            Your profile images are displayed for other
-            people who match your interests
+            Take a selfie to express who you are. Your profile images are
+            displayed for other people who match your interests
           </Text>
         </View>
         <View>
           <PrimaryButton
             rounded={false}
-            title="SELECT IMAGE"
+            title='SELECT IMAGE'
             onPress={this.getImage}
           />
         </View>
       </View>
     );
-  }
+  };
 
   render() {
-    return (
-      <Screen>
-        {this.renderContent()}
-      </Screen>
-    );
+    return <Screen>{this.renderContent()}</Screen>;
   }
 }
 
-export default connect(null, mapDispatch)(ProfileCameraScreen);
+export default connect(
+  null,
+  mapDispatch,
+)(ProfileCameraScreen);
 // export default ProfileCameraScreen;
 
 const styles = StyleSheet.create({
   imgcontainer: {
     flex: 1,
     flexDirection: 'column',
-    padding: 20
+    padding: 20,
   },
   container: {
     flex: 1,
     flexDirection: 'column',
-    padding: 20
+    padding: 20,
   },
   preview: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   capture: {
     backgroundColor: theme.colors.primary,
@@ -201,16 +198,16 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     alignSelf: 'center',
-    margin: 20
+    margin: 20,
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   footerCol: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });

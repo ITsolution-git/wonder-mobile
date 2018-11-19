@@ -1,28 +1,28 @@
-import React from "react";
-import { connect } from "react-redux";
-import Screen from "src/views/components/screen";
-import { Text, Strong, PrimaryButton } from "src/views/components/theme";
-import { Dispatch } from "redux";
-import { Calendar } from "react-native-calendars";
-import moment from "moment-timezone";
-import CalendarDate, { DATE_STRING_FORMAT } from "src/models/calendar-date";
-import theme from "src/assets/styles/theme";
-import { View, StyleSheet } from "react-native";
-import WonderAppState from "src/models/wonder-app-state";
+import React from 'react';
+import { connect } from 'react-redux';
+import Screen from 'src/views/components/screen';
+import { Text, Strong, PrimaryButton } from 'src/views/components/theme';
+import { Dispatch } from 'redux';
+import { Calendar } from 'react-native-calendars';
+import moment from 'moment-timezone';
+import CalendarDate, { DATE_STRING_FORMAT } from 'src/models/calendar-date';
+import theme from 'src/assets/styles/theme';
+import { View, StyleSheet } from 'react-native';
+import WonderAppState from 'src/models/wonder-app-state';
 import {
   AppointmentState,
-  persistAppointmentData
-} from "src/store/reducers/appointment";
-import TimePicker from "src/views/components/theme/pickers/time-picker";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
+  persistAppointmentData,
+} from 'src/store/reducers/appointment';
+import TimePicker from 'src/views/components/theme/pickers/time-picker';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 
 const mapState = (state: WonderAppState) => ({
-  appointment: state.appointment
+  appointment: state.appointment,
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateAppointment: (data: AppointmentState) =>
-    dispatch(persistAppointmentData(data))
+    dispatch(persistAppointmentData(data)),
 });
 
 interface AppointmentInviteProps {
@@ -39,10 +39,10 @@ interface State {
 class AppointmentInviteScreen extends React.Component<
   AppointmentInviteProps,
   State
-  > {
+> {
   static navigationOptions = ({ navigation }) => ({
-    title: "Invite to Wonder"
-  })
+    title: 'Invite to Wonder',
+  });
 
   private init = (): CalendarDate => {
     const now = moment();
@@ -51,34 +51,34 @@ class AppointmentInviteScreen extends React.Component<
       month: now.month() + 1,
       year: now.year(),
       timestamp: now.utc().valueOf(),
-      dateString: now.format(DATE_STRING_FORMAT)
+      dateString: now.format(DATE_STRING_FORMAT),
     };
-  }
+  };
 
   state: State = {
     selected: this.init(),
     selectedTime: moment()
-      .add(15, "minutes")
-      .toDate()
+      .add(15, 'minutes')
+      .toDate(),
   };
 
-  today = () => moment().startOf("day");
+  today = () => moment().startOf('day');
 
   onDateChange = (date: any) => {
     const selected: CalendarDate = date as CalendarDate;
     this.setState({ selected });
-  }
+  };
 
   onTimeChange = (selectedTime: Date) => {
     this.setState({ selectedTime });
-  }
+  };
 
   getMarkedDates = () => ({
     [this.state.selected.dateString]: {
       selected: true,
-      selectedDotColor: theme.colors.primaryLight
-    }
-  })
+      selectedDotColor: theme.colors.primaryLight,
+    },
+  });
 
   onComplete = () => {
     const { onUpdateAppointment, navigation } = this.props;
@@ -86,19 +86,19 @@ class AppointmentInviteScreen extends React.Component<
     // const dateTime = result.format('YYYY-MM-DD[T]HH:mm:ssZ');
 
     onUpdateAppointment({ eventAt: result.toDate() });
-    navigation.navigate("AppointmentConfirm", { appointment: null });
-  }
+    navigation.navigate('AppointmentConfirm', { appointment: null });
+  };
 
   renderTitle = () => {
     const { activity } = this.props.appointment;
     if (activity) {
       return (
         <View style={styles.header}>
-          <Strong style={{ textAlign: "center" }}>{activity.name}</Strong>
+          <Strong style={{ textAlign: 'center' }}>{activity.name}</Strong>
         </View>
       );
     }
-  }
+  };
 
   getCombinedMoment = () => {
     const { selected, selectedTime } = this.state;
@@ -110,7 +110,7 @@ class AppointmentInviteScreen extends React.Component<
       .minutes(timeMoment.minutes())
       .seconds(0);
     return dateMoment;
-  }
+  };
 
   render() {
     const { selected } = this.state;
@@ -121,7 +121,7 @@ class AppointmentInviteScreen extends React.Component<
           current={selected.dateString}
           minDate={this.today().format(DATE_STRING_FORMAT)}
           maxDate={this.today()
-            .add(1, "month")
+            .add(1, 'month')
             .format(DATE_STRING_FORMAT)}
           onDayPress={this.onDateChange}
           monthFormat="MMMM '('yyyy')'" // http://arshaw.com/xdate/#Formatting
@@ -139,19 +139,19 @@ class AppointmentInviteScreen extends React.Component<
         />
         <View flex={1} style={{ paddingHorizontal: 20 }}>
           <TimePicker
-            label="Select a time"
+            label='Select a time'
             minDate={moment()
-              .add(15, "minutes")
+              .add(15, 'minutes')
               .toDate()}
             initialDate={moment()
-              .add(15, "minutes")
+              .add(15, 'minutes')
               .toDate()}
             onChange={this.onTimeChange}
           />
         </View>
-        <View flex={1} style={{ justifyContent: "flex-end", margin: 10 }}>
+        <View flex={1} style={{ justifyContent: 'flex-end', margin: 10 }}>
           <PrimaryButton
-            title={this.getCombinedMoment().format("MMMM Do [@] h:mma")}
+            title={this.getCombinedMoment().format('MMMM Do [@] h:mma')}
             onPress={this.onComplete}
           />
         </View>
@@ -162,11 +162,11 @@ class AppointmentInviteScreen extends React.Component<
 
 export default connect(
   mapState,
-  mapDispatch
+  mapDispatch,
 )(AppointmentInviteScreen);
 
 const styles = StyleSheet.create({
   header: {
-    padding: 10
-  }
+    padding: 10,
+  },
 });

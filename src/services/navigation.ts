@@ -3,7 +3,7 @@ import {
   StackActions,
   NavigationParams,
   NavigationRoute,
-  NavigationNavigateAction
+  NavigationNavigateAction,
 } from 'react-navigation';
 
 let navigatorRef: any;
@@ -25,27 +25,27 @@ function reset(routeName: string, keyValue?: string | null) {
     StackActions.reset({
       key: keyValue,
       index: 0,
-      actions: [NavigationActions.navigate({ routeName })]
-    })
+      actions: [NavigationActions.navigate({ routeName })],
+    }),
   );
 }
 
 function navigate(
   routeName: string,
   params?: NavigationParams,
-  action?: NavigationNavigateAction
+  action?: NavigationNavigateAction,
 ) {
   navigatorRef.dispatch(
     NavigationActions.navigate({
       routeName,
       params,
-      action
-    })
+      action,
+    }),
   );
 }
 
 function navigateDeep(
-  actions: Array<{ routeName: string; params?: NavigationParams }>
+  actions: Array<{ routeName: string; params?: NavigationParams }>,
 ) {
   navigatorRef.dispatch(
     actions.reduceRight(
@@ -53,10 +53,10 @@ function navigateDeep(
         NavigationActions.navigate({
           routeName: action.routeName,
           params: action.params,
-          action: prevAction
+          action: prevAction,
         }),
-      undefined
-    )
+      undefined,
+    ),
   );
 }
 
@@ -75,5 +75,5 @@ export default {
   navigate,
   reset,
   getCurrentRoute,
-  popToTop
+  popToTop,
 };

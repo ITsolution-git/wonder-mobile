@@ -1,6 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
-import { View, StyleSheet, TextInput as Input, TextInputProps } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TextInput as Input,
+  TextInputProps,
+} from 'react-native';
 import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from 'color';
@@ -35,17 +40,20 @@ interface State {
   text?: string;
 }
 
-export default class RoundedTextInput extends React.Component<RoundedTextInputProps, State> {
+export default class RoundedTextInput extends React.Component<
+  RoundedTextInputProps,
+  State
+> {
   innerRef: any = null;
 
   static defaultProps = {
     padLeft: false,
     start: undefined,
-    getRef: _.noop
+    getRef: _.noop,
   };
 
   state = {
-    text: undefined
+    text: undefined,
   };
 
   renderIcon = () => {
@@ -53,18 +61,22 @@ export default class RoundedTextInput extends React.Component<RoundedTextInputPr
     if (icon) {
       return (
         <View style={styles.iconContainer}>
-          <Icon name={icon} color={color || palette.darken(0.2).toString()} size={14} />
+          <Icon
+            name={icon}
+            color={color || palette.darken(0.2).toString()}
+            size={14}
+          />
         </View>
       );
     }
-  }
+  };
 
   renderErrorHint = () => {
     const { errorHint } = this.props;
     // if (errorHint) {
-    return (<ErrorHint style={{ marginLeft: 20 }}>{errorHint}</ErrorHint>);
+    return <ErrorHint style={{ marginLeft: 20 }}>{errorHint}</ErrorHint>;
     // }
-  }
+  };
 
   validate = () => {
     const { onValidate } = this.props;
@@ -72,10 +84,14 @@ export default class RoundedTextInput extends React.Component<RoundedTextInputPr
     const valid = onValidate && onValidate(text);
     return (
       <View style={styles.iconContainer}>
-        <Icon color={valid ? 'green' : styles.container.backgroundColor} size={14} name="check" />
+        <Icon
+          color={valid ? 'green' : styles.container.backgroundColor}
+          size={14}
+          name='check'
+        />
       </View>
     );
-  }
+  };
 
   onTextChange = (text: string) => {
     const { onChangeText } = this.props;
@@ -83,7 +99,7 @@ export default class RoundedTextInput extends React.Component<RoundedTextInputPr
     if (onChangeText) {
       onChangeText(text);
     }
-  }
+  };
 
   render() {
     const {
@@ -97,7 +113,7 @@ export default class RoundedTextInput extends React.Component<RoundedTextInputPr
       colors,
       padLeft,
       getRef,
-      ...rest
+      ...rest,
     } = this.props;
 
     const passwordProps: PasswordProps = {};
@@ -110,7 +126,7 @@ export default class RoundedTextInput extends React.Component<RoundedTextInputPr
     const input = (
       <Input
         ref={getRef}
-        underlineColorAndroid="transparent"
+        underlineColorAndroid='transparent'
         placeholderTextColor={color}
         secureTextEntry={passwordProps.secureTextEntry}
         autoCapitalize={passwordProps.autoCapitalize}
@@ -156,25 +172,25 @@ export default class RoundedTextInput extends React.Component<RoundedTextInputPr
 
 const styles = StyleSheet.create({
   label: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 30,
     width: '100%',
-    backgroundColor: palette.toString()
+    backgroundColor: palette.toString(),
   },
   iconContainer: {
     flex: 1,
     paddingHorizontal: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   input: {
     fontFamily: theme.fonts.primary,
     flex: 10,
     color: theme.colors.black,
-    height: 44
-  }
+    height: 44,
+  },
 });

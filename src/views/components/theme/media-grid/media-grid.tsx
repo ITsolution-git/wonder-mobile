@@ -1,6 +1,12 @@
 import _ from 'lodash';
 import React from 'react';
-import { StyleSheet, View, Image, ImageSourcePropType, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  ImageSourcePropType,
+  TouchableOpacity,
+} from 'react-native';
 import MediaGridItem from './media-grid-item';
 
 import { connect } from 'react-redux';
@@ -10,7 +16,7 @@ import User from 'src/models/user';
 import WonderAppState from 'src/models/wonder-app-state';
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state)
+  currentUser: selectCurrentUser(state),
 });
 
 interface Props {
@@ -33,18 +39,24 @@ class MediaGrid extends React.Component<Props> {
 
   calcGridSpace = (span: number) => {
     const { gutter, width } = this.props;
-    const base = ((width / 3) - (2 * gutter)) * span;
+    const base = (width / 3 - 2 * gutter) * span;
 
     let result = base;
     if (span > 1) {
-      result += (span * gutter);
+      result += span * gutter;
     }
 
     return result;
-  }
+  };
 
   render() {
-    const { featured, gutter, onNewPicture, onNewVideo, currentUser } = this.props;
+    const {
+      featured,
+      gutter,
+      onNewPicture,
+      onNewVideo,
+      currentUser,
+    } = this.props;
 
     return (
       <View style={styles.container}>
@@ -100,7 +112,6 @@ class MediaGrid extends React.Component<Props> {
             />
           </View>
         </View>
-
       </View>
     );
   }
@@ -111,20 +122,17 @@ export default connect(mapState)(MediaGrid);
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   column: {
     flexDirection: 'column',
   },
-  container: {
-
-  },
+  container: {},
   featuredContainer: {
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     width: 154,
-    height: 154
+    height: 154,
   },
-
 });

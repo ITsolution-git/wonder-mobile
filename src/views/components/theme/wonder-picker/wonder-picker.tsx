@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, View, FlatList, StyleProp, ViewStyle } from "react-native";
-import WonderPickerItem from "./wonder-picker-item";
+import React from 'react';
+import { StyleSheet, View, FlatList, StyleProp, ViewStyle } from 'react-native';
+import WonderPickerItem from './wonder-picker-item';
 
-import _ from "lodash";
-import Topic from "src/models/topic";
+import _ from 'lodash';
+import Topic from 'src/models/topic';
 
 interface Props {
   style?: StyleProp<ViewStyle>;
@@ -20,13 +20,13 @@ interface State {
 
 export default class WonderPicker extends React.Component<Props, State> {
   static defaultProps = {
-    topics: []
+    topics: [],
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      selected: props.initialValue || []
+      selected: props.initialValue || [],
     };
   }
 
@@ -39,16 +39,16 @@ export default class WonderPicker extends React.Component<Props, State> {
     ) {
       this.setState(
         {
-          selected: [...selected, topic]
+          selected: [...selected, topic],
         },
-        this.update
+        this.update,
       );
     } else {
       this.setState(
         {
-          selected: selected.filter((t: Topic) => t.name !== topic.name)
+          selected: selected.filter((t: Topic) => t.name !== topic.name),
         },
-        this.update
+        this.update,
       );
     }
   };
@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
   },
   row: {
     padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  }
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });

@@ -20,35 +20,48 @@ const ImageToolbar: React.SFC<ImageToolbarProps> = ({
   onDelete,
   onRetake,
   onSave,
-  onCancel
+  onCancel,
 }) => {
-
   const options: Element[] = [];
 
   options.push(
     <IconButton
       icon={isNew ? 'times' : 'trash'}
-      primary="#FFF"
-      secondary="transparent"
+      primary='#FFF'
+      secondary='transparent'
       onPress={isNew ? onCancel : onDelete}
-    />
+    />,
   );
 
   if (isNew && onRotate) {
-    options.push(<IconButton icon="refresh" primary="#FFF" secondary="transparent" onPress={onRotate} />);
+    options.push(
+      <IconButton
+        icon='refresh'
+        primary='#FFF'
+        secondary='transparent'
+        onPress={onRotate}
+      />,
+    );
   }
 
   options.push(
     <IconButton
-      icon={mode === 'photo' ? "camera" : 'video-camera'}
-      primary="#FFF"
-      secondary="transparent"
+      icon={mode === 'photo' ? 'camera' : 'video-camera'}
+      primary='#FFF'
+      secondary='transparent'
       onPress={onRetake}
-    />
+    />,
   );
 
   if (isNew) {
-    options.push(<IconButton icon="check" primary="#FFF" secondary="transparent" onPress={onSave} />);
+    options.push(
+      <IconButton
+        icon='check'
+        primary='#FFF'
+        secondary='transparent'
+        onPress={onSave}
+      />,
+    );
   }
 
   return (
@@ -70,11 +83,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#000',
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   footerCol: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });

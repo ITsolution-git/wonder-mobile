@@ -22,7 +22,10 @@ interface SwipeViewConfig {
   allowSkip?: boolean;
 }
 
-export default class SwipeView extends React.Component<SwipeViewProps, SwipeViewState> {
+export default class SwipeView extends React.Component<
+  SwipeViewProps,
+  SwipeViewState
+> {
   static Slide = SwipeViewSlide;
 
   constructor(props: SwipeViewProps) {
@@ -30,7 +33,7 @@ export default class SwipeView extends React.Component<SwipeViewProps, SwipeView
   }
 
   state: SwipeViewState = {
-    currentIndex: 0
+    currentIndex: 0,
   };
 
   list: ScrollView | null = null;
@@ -42,20 +45,17 @@ export default class SwipeView extends React.Component<SwipeViewProps, SwipeView
       this.list.scrollTo({ x: DEVICE_WIDTH * idx });
       this.setState({ currentIndex: idx });
     }
-  }
-
+  };
 
   renderBody = (body: string) => {
     if (body) {
       return (
         <View>
-          <Text style={styles.bodyTxt}>
-            {body}
-          </Text>
+          <Text style={styles.bodyTxt}>{body}</Text>
         </View>
       );
     }
-  }
+  };
 
   renderDots = () => {
     const { currentIndex } = this.state;
@@ -63,7 +63,13 @@ export default class SwipeView extends React.Component<SwipeViewProps, SwipeView
 
     const dots = React.Children.map(children, (child, i) => (
       <View key={i} style={styles.dot}>
-        <Icon name="circle" size={8} color={currentIndex === i ? Theme.colors.primary : Theme.colors.textColor} />
+        <Icon
+          name='circle'
+          size={8}
+          color={
+            currentIndex === i ? Theme.colors.primary : Theme.colors.textColor
+          }
+        />
       </View>
     ));
 
@@ -71,22 +77,20 @@ export default class SwipeView extends React.Component<SwipeViewProps, SwipeView
 
     return (
       <View>
-        <View style={styles.dotsContainer}>
-          {dots}
-        </View>
+        <View style={styles.dotsContainer}>{dots}</View>
         <TouchableOpacity onPress={isLast ? onComplete : onSkip}>
           <Text style={styles.skipTxt}>{isLast ? 'GET STARTED' : 'SKIP'}</Text>
         </TouchableOpacity>
       </View>
     );
-  }
+  };
 
   onScroll = (e: any) => {
     const { contentOffset } = e.nativeEvent;
     if (contentOffset.x % DEVICE_WIDTH === 0) {
       this.goTo(contentOffset.x / DEVICE_WIDTH);
     }
-  }
+  };
 
   renderFooter = () => {
     const actions = [];
@@ -94,7 +98,7 @@ export default class SwipeView extends React.Component<SwipeViewProps, SwipeView
     if (!config.showControls) {
       actions.push(<View />);
     }
-  }
+  };
 
   render() {
     const { children } = this.props;
@@ -104,14 +108,14 @@ export default class SwipeView extends React.Component<SwipeViewProps, SwipeView
           onScroll={this.onScroll}
           pagingEnabled
           showsHorizontalScrollIndicator={false}
-          ref={(list) => { this.list = list; }}
+          ref={(list) => {
+            this.list = list;
+          }}
           horizontal
         >
           {children}
         </ScrollView>
-        <View style={styles.footer}>
-          {this.renderDots()}
-        </View>
+        <View style={styles.footer}>{this.renderDots()}</View>
       </View>
     );
   }

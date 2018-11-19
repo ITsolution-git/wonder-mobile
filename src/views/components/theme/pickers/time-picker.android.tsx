@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, DatePickerAndroid, TouchableOpacity, TimePickerAndroid } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  DatePickerAndroid,
+  TouchableOpacity,
+  TimePickerAndroid,
+} from 'react-native';
 import { Label, Text } from '..';
 import moment from 'moment-timezone';
 import theme from 'src/assets/styles/theme';
@@ -26,10 +32,9 @@ interface State {
 }
 
 export default class DatePicker extends React.Component<Props, State> {
-
   static defaultProps = {
     displayFormat: 'h:mma',
-    is24Hour: false
+    is24Hour: false,
   };
 
   constructor(props: Props) {
@@ -37,24 +42,32 @@ export default class DatePicker extends React.Component<Props, State> {
     this.state = {
       hour: undefined,
       minute: undefined,
-      open: false
+      open: false,
     };
   }
 
   public render() {
-    const { label, displayFormat, errorHint, minDate, maxDate, onChange } = this.props;
+    const {
+      label,
+      displayFormat,
+      errorHint,
+      minDate,
+      maxDate,
+      onChange,
+    } = this.props;
     const { open, hour, minute } = this.state;
 
     return (
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.container}>
-          <Text>{hour && minute ? moment(`${hour}:${minute}`, 'HH:mm').format(displayFormat) : 'Select Time'}</Text>
-          <TouchableOpacity
-            style={styles.iconBtn}
-            onPress={this.openModal}
-          >
-            <Icon name="clock-o" color={theme.colors.white} />
+          <Text>
+            {hour && minute
+              ? moment(`${hour}:${minute}`, 'HH:mm').format(displayFormat)
+              : 'Select Time'}
+          </Text>
+          <TouchableOpacity style={styles.iconBtn} onPress={this.openModal}>
+            <Icon name='clock-o' color={theme.colors.white} />
           </TouchableOpacity>
         </View>
         {<ErrorHint>{errorHint}</ErrorHint>}
@@ -70,7 +83,7 @@ export default class DatePicker extends React.Component<Props, State> {
       const { action, hour, minute } = await TimePickerAndroid.open({
         hour: 12,
         minute: 0,
-        is24Hour
+        is24Hour,
       });
       if (action !== DatePickerAndroid.dismissedAction) {
         // Selected year, month (0-11), day
@@ -81,15 +94,15 @@ export default class DatePicker extends React.Component<Props, State> {
     } catch ({ code, message }) {
       console.warn('Cannot open date picker', message);
     }
-  }
+  };
 
-  onChange = ({ hour, minute }: { hour: number, minute: number }) => {
+  onChange = ({ hour, minute }: { hour: number; minute: number }) => {
     const { onChange } = this.props;
     this.setState({ hour, minute });
     if (onChange) {
       onChange({ hour, minute });
     }
-  }
+  };
 }
 
 const styles = StyleSheet.create({
@@ -98,7 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   container: {
     flexDirection: 'row',
@@ -110,6 +123,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: theme.colors.textColor,
-    fontFamily: theme.fonts.primary
-  }
-})
+    fontFamily: theme.fonts.primary,
+  },
+});

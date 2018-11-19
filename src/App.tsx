@@ -1,24 +1,24 @@
-import "../ReactotronConfig";
-import { Root } from "native-base";
-import NavigatorService from "./services/navigation";
-import React, { Component } from "react";
-import { SafeAreaView, Platform, Dimensions } from "react-native";
-import { PersistGate } from "redux-persist/integration/react";
-import { Provider } from "react-redux";
-import { AppLoader } from "@components";
-import configureStore from "./store/configureStore";
-import AppRouter from "./views/router";
-import { MenuProvider } from "react-native-popup-menu";
+import '../ReactotronConfig';
+import { Root } from 'native-base';
+import NavigatorService from './services/navigation';
+import React, { Component } from 'react';
+import { SafeAreaView, Platform, Dimensions } from 'react-native';
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from 'react-redux';
+import { AppLoader } from '@components';
+import configureStore from './store/configureStore';
+import AppRouter from './views/router';
+import { MenuProvider } from 'react-native-popup-menu';
 
 // Allow access to navigation in sagas
 export let navigatorRef: any;
 const { store, persistor } = configureStore();
 
 const isIphoneX = () => {
-  const { height, width } = Dimensions.get("window");
+  const { height, width } = Dimensions.get('window');
   return (
     // This has to be iOS duh
-    Platform.OS === "ios" &&
+    Platform.OS === 'ios' &&
     // Accounting for the height in either orientation
     (height === 812 || width === 812)
   );

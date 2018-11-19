@@ -1,8 +1,18 @@
 import React from 'react';
 import Screen from 'src/views/components/screen';
 import validator from 'validator';
-import { PrimaryButton, TextInput, DatePicker, } from 'src/views/components/theme';
-import { View, StyleSheet, KeyboardAvoidingView, ScrollView, Platform } from 'react-native';
+import {
+  PrimaryButton,
+  TextInput,
+  DatePicker,
+} from 'src/views/components/theme';
+import {
+  View,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
+} from 'react-native';
 
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -12,18 +22,18 @@ import { selectCurrentUser } from 'src/store/selectors/user';
 import WonderAppState from 'src/models/wonder-app-state';
 import User from 'src/models/user';
 
-import StateButton from "src/views/components/theme/buttons/state-button";
-import { Label } from "../../components/theme";
-import Color from "color";
+import StateButton from 'src/views/components/theme/buttons/state-button';
+import { Label } from '../../components/theme';
+import Color from 'color';
 import theme from 'src/assets/styles/theme';
-import moment from "moment-timezone";
+import moment from 'moment-timezone';
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state)
+  currentUser: selectCurrentUser(state),
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onSave: (data: State) => dispatch(updateUser(data))
+  onSave: (data: State) => dispatch(updateUser(data)),
 });
 
 interface Props {
@@ -53,8 +63,8 @@ interface StateErrors {
 
 class ProfileEditScreen extends React.Component<Props, State> {
   private eighteenYearsAgoToday = moment()
-    .subtract(18, "years")
-    .startOf("day");
+    .subtract(18, 'years')
+    .startOf('day');
 
   state: State = {
     first_name: this.props.currentUser.first_name,
@@ -64,28 +74,36 @@ class ProfileEditScreen extends React.Component<Props, State> {
     errors: {},
     birthdate: this.props.currentUser.birthdate,
     male_interest: this.props.currentUser.male_interest,
-    female_interest: this.props.currentUser.female_interest
+    female_interest: this.props.currentUser.female_interest,
   };
 
   validate = () => {
     const errors: StateErrors = {};
     const { onSave, navigation } = this.props;
-    const { first_name, last_name, school, occupation, birthdate, male_interest, female_interest } = this.state;
+    const {
+      first_name,
+      last_name,
+      school,
+      occupation,
+      birthdate,
+      male_interest,
+      female_interest,
+    } = this.state;
 
     if (validator.isEmpty(first_name)) {
-      errors.first_name = "First name is required";
+      errors.first_name = 'First name is required';
     }
 
     if (validator.isEmpty(last_name)) {
-      errors.last_name = "Last name is required";
+      errors.last_name = 'Last name is required';
     }
 
     if (validator.isEmpty(school)) {
-      errors.school = "Please enter your education";
+      errors.school = 'Please enter your education';
     }
 
     if (validator.isEmpty(occupation)) {
-      errors.occupation = "Please enter your occupation";
+      errors.occupation = 'Please enter your occupation';
     }
 
     if (Object.keys(errors).length) {
@@ -93,26 +111,34 @@ class ProfileEditScreen extends React.Component<Props, State> {
       return;
     }
 
-    onSave({ first_name, last_name, school, occupation, birthdate, male_interest, female_interest });
+    onSave({
+      first_name,
+      last_name,
+      school,
+      occupation,
+      birthdate,
+      male_interest,
+      female_interest,
+    });
     navigation.goBack();
-  }
+  };
 
   onChangeText = (key: string) => {
     return (text: string) => {
       this.setState({
         ...this.state,
-        [key]: text
+        [key]: text,
       });
     };
-  }
+  };
 
   setGenderPreference = (gender: string) => {
-    if (gender === "male") {
+    if (gender === 'male') {
       this.setState({ male_interest: !this.state.male_interest });
-    } else if (gender === "female") {
+    } else if (gender === 'female') {
       this.setState({ female_interest: !this.state.female_interest });
     }
-  }
+  };
 
   public render() {
     const { navigation, currentUser } = this.props;
@@ -123,7 +149,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
         <ScrollView style={styles.container}>
           <KeyboardAvoidingView
             keyboardVerticalOffset={Platform.select({ android: -40, ios: 0 })}
-            behavior="position"
+            behavior='position'
             contentContainerStyle={{ flex: 1 }}
             // style={styles.body}
             style={{ flex: 1 }}
@@ -131,7 +157,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
             <View style={styles.row}>
               <View flex={1}>
                 <TextInput
-                  label="First Name"
+                  label='First Name'
                   defaultValue={currentUser.first_name}
                   onChangeText={this.onChangeText('first_name')}
                   errorHint={errors.first_name}
@@ -139,7 +165,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
               </View>
               <View flex={1}>
                 <TextInput
-                  label="Last Name"
+                  label='Last Name'
                   defaultValue={currentUser.last_name}
                   onChangeText={this.onChangeText('last_name')}
                   errorHint={errors.last_name}
@@ -152,43 +178,43 @@ class ProfileEditScreen extends React.Component<Props, State> {
               <View style={styles.genderBtnsContainer}>
                 <StateButton
                   active={this.state.male_interest}
-                  onPress={() => this.setGenderPreference("male")}
-                  text="Men"
+                  onPress={() => this.setGenderPreference('male')}
+                  text='Men'
                 />
 
                 <StateButton
                   active={this.state.female_interest}
-                  onPress={() => this.setGenderPreference("female")}
-                  text="Women"
+                  onPress={() => this.setGenderPreference('female')}
+                  text='Women'
                 />
               </View>
             </View>
 
             <DatePicker
               errorHint={errors.birthdate}
-              label="BIRTHDAY"
-              placeholder="Select Date"
+              label='BIRTHDAY'
+              placeholder='Select Date'
               onChange={this.onDateChange}
               initialDate={new Date(birthdate)}
-              minDate={new Date("1950-01-01")}
+              minDate={new Date('1950-01-01')}
               maxDate={this.eighteenYearsAgoToday.toDate()}
             />
 
             <View>
               <TextInput
-                label="Education"
+                label='Education'
                 onChangeText={this.onChangeText('education')}
                 defaultValue={currentUser.school}
                 errorHint={errors.school}
               />
               <TextInput
-                label="Occupation"
+                label='Occupation'
                 onChangeText={this.onChangeText('occupation')}
                 defaultValue={currentUser.occupation}
                 errorHint={errors.occupation}
               />
               <TextInput
-                label="Activity Zip Code"
+                label='Activity Zip Code'
                 disabled
                 defaultValue={currentUser.zipcode}
               />
@@ -196,11 +222,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
           </KeyboardAvoidingView>
         </ScrollView>
         <View>
-          <PrimaryButton
-            rounded={false}
-            title="Save"
-            onPress={this.validate}
-          />
+          <PrimaryButton rounded={false} title='Save' onPress={this.validate} />
         </View>
       </Screen>
     );
@@ -208,26 +230,29 @@ class ProfileEditScreen extends React.Component<Props, State> {
 
   private onDateChange = (date: Date) => {
     this.setState({ birthdate: date });
-  }
+  };
 }
 
-export default connect(mapState, mapDispatch)(ProfileEditScreen);
+export default connect(
+  mapState,
+  mapDispatch,
+)(ProfileEditScreen);
 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    flex: 1
+    flex: 1,
   },
   row: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   genderBtns: {
     paddingBottom: 4,
     borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.5),
   },
   genderBtnsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around"
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });

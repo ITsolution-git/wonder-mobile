@@ -1,6 +1,6 @@
 import RNPushNotification, {
   PushNotification,
-  PushNotificationObject
+  PushNotificationObject,
 } from 'react-native-push-notification';
 
 import { PushNotificationIOS } from 'react-native';
@@ -45,30 +45,30 @@ class PushNotificationService {
     if (this.onRegister) {
       this.onRegister(token);
     }
-  }
+  };
 
   private resetToDate = (
     destination: string,
     appointment: DecoratedAppointment | null,
-    review: boolean
+    review: boolean,
   ) => {
     NavigationService.reset('Main', 'onboarding');
     NavigationService.navigate('User');
     NavigationService.navigate('Upcoming');
     NavigationService.navigate(destination, { appointment, review });
-  }
+  };
 
   private resetToPast = () => {
     NavigationService.reset('Main', 'onboarding');
     NavigationService.navigate('User');
     NavigationService.navigate('Past');
-  }
+  };
 
   private resetToChat = (partnerId: number, redirect: string) => {
     NavigationService.reset('Main', 'onboarding');
     NavigationService.navigate('Messages');
     NavigationService.navigate('ChatList', { partnerId, redirect });
-  }
+  };
 
   private handleIosNotifications = (payload: IosNotificationPayload) => {
     const { partner_id, appointment, type } = payload;
@@ -78,28 +78,32 @@ class PushNotificationService {
       appointment:
         appointment && this.user
           ? decorateAppointment(appointment, this.user)
-          : null
+          : null,
     };
-  }
+  };
 
-  private handleAndroidNotifications = (payload: AndroidNotificationPayload) => {
+  private handleAndroidNotifications = (
+    payload: AndroidNotificationPayload,
+  ) => {
     const { partner_id, appointment, type } = payload;
-    const parsedAppointment: Appointment = appointment ? JSON.parse(appointment) : null;
+    const parsedAppointment: Appointment = appointment
+      ? JSON.parse(appointment)
+      : null;
     return {
       type,
       partnerId: partner_id,
       appointment:
         parsedAppointment && this.user
           ? decorateAppointment(parsedAppointment, this.user)
-          : null
+          : null,
     };
-  }
+  };
 
   private parseNotification = (notification: WonderPushNotification) => {
     const error = {
       type: null,
       partnerId: null,
-      appointment: null
+      appointment: null,
     };
 
     const { data } = notification;
@@ -107,18 +111,22 @@ class PushNotificationService {
       return error;
     }
 
-    return this.token.os === 'ios' ? this.handleIosNotifications(data) : this.handleAndroidNotifications(notification);
-  }
+    return this.token.os === 'ios'
+      ? this.handleIosNotifications(data)
+      : this.handleAndroidNotifications(notification);
+  };
 
   private handleNotificationReceived = (
-    notification: WonderPushNotification
+    notification: WonderPushNotification,
   ) => {
     const { userInteraction, foreground, message } = notification;
     if (userInteraction) {
       const payload = this.parseNotification(notification);
       const { type, partnerId, appointment } = payload;
       if (
-        (type === 'upcoming_date' || type === 'confirm_date' || type === 'invite_date') &&
+        (type === 'upcoming_date' ||
+          type === 'confirm_date' ||
+          type === 'invite_date') &&
         appointment
       ) {
         this.resetToDate('UpcomingAppointmentView', appointment, false);
@@ -146,7 +154,7 @@ class PushNotificationService {
     if (this.token && this.token.os === 'ios') {
       notification.finish(PushNotificationIOS.FetchResult.NoData);
     }
-  }
+  };
 
   configure(user: User) {
     this.user = user;
@@ -156,13 +164,13 @@ class PushNotificationService {
         this.handleNotificationReceived(notification),
       senderID: this.senderID,
       popInitialNotification: true,
-      requestPermissions: true
+      requestPermissions: true,
     });
   }
 
   localNotification = (content: PushNotificationObject): void => {
     RNPushNotification.presentLocalNotification(content);
-  }
+  };
 }
 
 export default new PushNotificationService();

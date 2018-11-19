@@ -1,8 +1,8 @@
-import React from "react";
-import { View, Text, Modal, SafeAreaView, StyleSheet } from "react-native";
-import { PrimaryButton, RoundedTextInput } from "../theme";
-import theme from "../../../assets/styles/theme";
-import TouchableOpacityOnPress from "../../../models/touchable-on-press";
+import React from 'react';
+import { View, Text, Modal, SafeAreaView, StyleSheet } from 'react-native';
+import { PrimaryButton, RoundedTextInput } from '../theme';
+import theme from '../../../assets/styles/theme';
+import TouchableOpacityOnPress from '../../../models/touchable-on-press';
 
 interface Props {
   visible: boolean;
@@ -17,7 +17,7 @@ interface Props {
 const ForgotPasswordModal = (props: Props) => {
   return (
     <Modal
-      animationType="slide"
+      animationType='slide'
       transparent={false}
       visible={props.visible}
       onRequestClose={() => props.onRequestClose}
@@ -29,18 +29,18 @@ const ForgotPasswordModal = (props: Props) => {
           Enter your email address to receive a new verification link
         </Text>
         <RoundedTextInput
-          returnKeyType="next"
+          returnKeyType='next'
           getRef={props.getRef}
-          autoCapitalize="none"
+          autoCapitalize='none'
           autoCorrect={false}
-          icon="envelope-o"
-          placeholder="Email"
+          icon='envelope-o'
+          placeholder='Email'
           onChangeText={props.onChangeText}
           fullWidth
           errorHint={props.errorHint}
         />
 
-        <PrimaryButton title="Send" onPress={props.submit} />
+        <PrimaryButton title='Send' onPress={props.submit} />
       </View>
     </Modal>
   );
@@ -51,26 +51,26 @@ export default ForgotPasswordModal;
 const styles = StyleSheet.create({
   container: {
     flex: 2,
-    flexDirection: "column",
-    alignItems: "center",
+    flexDirection: 'column',
+    alignItems: 'center',
     padding: 20,
-    marginTop: 60
+    marginTop: 60,
   },
   descriptionText: {
     fontSize: 15,
     color: theme.colors.textColor,
-    textAlign: "left"
+    textAlign: 'left',
   },
   largeText: {
     fontSize: 26,
     color: theme.colors.textColor,
-    textAlign: "left"
+    textAlign: 'left',
   },
   actionText: {
     fontSize: 15,
     color: theme.colors.textColor,
-    textAlign: "center",
+    textAlign: 'center',
     marginTop: 20,
-    marginBottom: 30
-  }
+    marginBottom: 30,
+  },
 });

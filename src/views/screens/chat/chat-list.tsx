@@ -9,12 +9,12 @@ import { Dispatch } from 'redux';
 import {
   getConversations,
   getConversation,
-  ghostContact
+  ghostContact,
 } from 'src/store/sagas/conversations';
 
 import {
   persistNewReceivedMessage,
-  persistChatSearch
+  persistChatSearch,
 } from 'src/store/reducers/chat';
 
 import { connect } from 'react-redux';
@@ -55,7 +55,7 @@ const mapState = (state: WonderAppState) => ({
   token: state.user.auth.token,
   currentUser: selectCurrentUser(state),
   conversations: state.chat.conversations,
-  chat: state.chat
+  chat: state.chat,
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
@@ -64,7 +64,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
     dispatch(getConversation({ id: partnerId, successRoute: 'Chat', params })),
   onGetAttendances: () => dispatch(getAttendances()),
   onReceiveMessage: (data: object) => dispatch(persistNewReceivedMessage(data)),
-  onSearchChange: (data: object) => dispatch(persistChatSearch(data))
+  onSearchChange: (data: object) => dispatch(persistChatSearch(data)),
 });
 
 class ChatListScreen extends React.Component<Props> {
@@ -75,7 +75,7 @@ class ChatListScreen extends React.Component<Props> {
   state: ChatListScreenState = {
     isSearchModalOpen: false,
     results: [],
-    handleChangeText: ''
+    handleChangeText: '',
   };
 
   componentWillMount() {
@@ -85,11 +85,11 @@ class ChatListScreen extends React.Component<Props> {
 
     this.appChat = {};
     this.cable = ActionCable.createConsumer(
-      `wss://${DOMAIN}/cable?token=${token}`
+      `wss://${DOMAIN}/cable?token=${token}`,
     );
     this.appChat = this.cable.subscriptions.create(
       {
-        channel: 'ConversationChannel'
+        channel: 'ConversationChannel',
       },
       {
         received: (data: any) => {
@@ -109,8 +109,8 @@ class ChatListScreen extends React.Component<Props> {
         },
         deliver: ({ message, recipient_id }) => {
           this.appChat.perform('deliver', { body: message, recipient_id });
-        }
-      }
+        },
+      },
     );
   }
 
@@ -123,7 +123,7 @@ class ChatListScreen extends React.Component<Props> {
       ) {
         this.appChat.deliver({
           message: chat.newOutgoingMessage.message.text,
-          recipient_id: chat.newOutgoingMessage.recipient_id
+          recipient_id: chat.newOutgoingMessage.recipient_id,
         });
       }
     }
@@ -132,7 +132,7 @@ class ChatListScreen extends React.Component<Props> {
       chat.lastReadMessage !== prevProps.chat.lastReadMessage
     ) {
       this.appChat.perform('read', {
-        message_id: chat.lastReadMessage.last_message.id
+        message_id: chat.lastReadMessage.last_message.id,
       });
     }
 
@@ -178,7 +178,7 @@ class ChatListScreen extends React.Component<Props> {
       'Sorry!',
       'This person has removed you from their conversations',
       [{ text: 'OK' }],
-      { cancelable: false }
+      { cancelable: false },
     );
   };
 
@@ -205,7 +205,7 @@ class ChatListScreen extends React.Component<Props> {
         <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0 }}>
           <PrimaryButton
             rounded={false}
-            title="Search"
+            title='Search'
             onPress={this.openSearchModal}
           />
         </View>
@@ -219,10 +219,10 @@ class ChatListScreen extends React.Component<Props> {
       conversations,
       onRefreshConversations,
       currentUser,
-      chat
+      chat,
     } = this.props;
     const filteredConvos = conversations.filter(
-      c => c.partner !== null && !c.last_message
+      (c) => c.partner !== null && !c.last_message,
     );
 
     return (
@@ -251,7 +251,7 @@ class ChatListScreen extends React.Component<Props> {
 
 export default connect(
   mapState,
-  mapDispatch
+  mapDispatch,
 )(ChatListScreen);
 
 const styles = StyleSheet.create({
@@ -259,7 +259,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    right: 0
+    right: 0,
   },
   ghostButtonStyle: {
     marginLeft: 20,
@@ -271,11 +271,11 @@ const styles = StyleSheet.create({
     height: 46,
     backgroundColor: '#FFF',
     borderWidth: 1,
-    borderColor: '#fcbd77'
+    borderColor: '#fcbd77',
   },
   searchButtonContainer: {
     alignItems: 'stretch',
-    width: '100%'
+    width: '100%',
   },
-  latestText: { marginTop: 12 }
+  latestText: { marginTop: 12 },
 });

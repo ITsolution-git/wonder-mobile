@@ -1,4 +1,3 @@
-
 export interface Response {
   customButton: string;
   didCancel: boolean;

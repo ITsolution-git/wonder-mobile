@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity } from "react-native";
-import Text from "./text/text";
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import Text from './text/text';
 import Strong from './text/strong';
 interface BooleanToggleProps {
   yesLabel?: string;
@@ -13,14 +13,17 @@ interface BooleanToggleState {
   value: boolean;
 }
 
-class BooleanToggle extends React.Component<BooleanToggleProps, BooleanToggleState> {
+class BooleanToggle extends React.Component<
+  BooleanToggleProps,
+  BooleanToggleState
+> {
   static defaultProps = {
     yesLabel: 'Yes',
-    noLabel: 'No'
+    noLabel: 'No',
   };
 
   state = {
-    value: this.props.initialValue || true
+    value: this.props.initialValue || true,
   };
 
   setNo = () => {
@@ -30,7 +33,7 @@ class BooleanToggle extends React.Component<BooleanToggleProps, BooleanToggleSta
     if (onValueChange) {
       onValueChange(false);
     }
-  }
+  };
 
   setYes = () => {
     const { onValueChange } = this.props;
@@ -38,14 +41,20 @@ class BooleanToggle extends React.Component<BooleanToggleProps, BooleanToggleSta
     if (onValueChange) {
       onValueChange(true);
     }
-  }
+  };
 
-  renderLabel = ({ label, selected }: { label?: string, selected: boolean }) => {
+  renderLabel = ({
+    label,
+    selected,
+  }: {
+    label?: string;
+    selected: boolean;
+  }) => {
     if (label) {
       const Wrapper = selected ? Strong : Text;
       return <Wrapper style={[styles.optionText]}>{label}</Wrapper>;
     }
-  }
+  };
 
   render() {
     const { noLabel, yesLabel } = this.props;
@@ -67,9 +76,9 @@ export default BooleanToggle;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   optionText: {
-    padding: 10
-  }
+    padding: 10,
+  },
 });

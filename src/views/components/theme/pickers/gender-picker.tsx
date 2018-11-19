@@ -16,11 +16,14 @@ class GenderPickerOption extends React.Component<OptionProps> {
     const { option, selected, onPress } = this.props;
     return (
       <View style={styles.optionContainer}>
-        <TouchableOpacity
-          style={styles.optionBtn}
-          onPress={onPress}
-        >
-          <Icon name={option} color={selected ? theme.colors.primaryLight : theme.colors.textColor} size={48} />
+        <TouchableOpacity style={styles.optionBtn} onPress={onPress}>
+          <Icon
+            name={option}
+            color={
+              selected ? theme.colors.primaryLight : theme.colors.textColor
+            }
+            size={48}
+          />
         </TouchableOpacity>
       </View>
     );
@@ -39,7 +42,7 @@ export const GENDERS = [Gender.male, Gender.female];
 // tslint:disable-next-line
 export default class GenderPicker extends React.Component<Props, State> {
   static defaultProps = {
-    onChange: undefined
+    onChange: undefined,
   };
 
   static Genders = GENDERS;
@@ -47,7 +50,7 @@ export default class GenderPicker extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
-      selected: GENDERS[0]
+      selected: GENDERS[0],
     };
   }
 
@@ -60,7 +63,7 @@ export default class GenderPicker extends React.Component<Props, State> {
         onChange(gender);
       }
     }
-  }
+  };
 
   render() {
     const { selected } = this.state;
@@ -87,15 +90,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '75%',
     justifyContent: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   optionContainer: {
-    flex: 1
+    flex: 1,
   },
   optionBtn: {
     // flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 5
-  }
-})
+    paddingVertical: 5,
+  },
+});

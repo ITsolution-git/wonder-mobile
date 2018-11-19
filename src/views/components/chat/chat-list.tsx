@@ -13,12 +13,12 @@ interface ChatListProps {
 
 class ChatList extends React.Component<ChatListProps> {
   static defaultProps = {
-    chats: []
+    chats: [],
   };
 
   keyExtractor = (item: Conversation, index: number) => {
     return `${item.id}`;
-  }
+  };
 
   renderItem = ({ item: chat }: { item: Conversation }) => {
     const { onPressChat, currentUser } = this.props;
@@ -29,13 +29,11 @@ class ChatList extends React.Component<ChatListProps> {
         onPress={() => onPressChat(chat)}
       />
     );
-  }
+  };
 
   renderEmpty = () => {
-    return (
-      <View />
-    );
-  }
+    return <View />;
+  };
 
   render() {
     const { chats, onRefresh } = this.props;
@@ -59,6 +57,6 @@ export default ChatList;
 
 const styles = StyleSheet.create({
   emptyContainer: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });

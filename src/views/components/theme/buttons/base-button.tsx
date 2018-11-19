@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import { Text } from '..';
 import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -27,7 +33,10 @@ export interface BaseButtonProps {
   bold?: boolean;
 }
 
-export default class BaseButton extends React.Component<Partial<BaseButtonProps>, any> {
+export default class BaseButton extends React.Component<
+  Partial<BaseButtonProps>,
+  any
+> {
   static defaultProps = {
     rounded: false,
     iconColor: undefined,
@@ -35,7 +44,7 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
     start: undefined,
     end: undefined,
     fullWidth: false,
-    color: undefined
+    color: undefined,
   };
 
   renderIcon = () => {
@@ -43,11 +52,15 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
     if (icon) {
       return (
         <View style={styles.iconContainer}>
-          <Icon name={icon} color={iconColor || color || palette.darken(0.2).toString()} size={14} />
+          <Icon
+            name={icon}
+            color={iconColor || color || palette.darken(0.2).toString()}
+            size={14}
+          />
         </View>
       );
     }
-  }
+  };
 
   render() {
     const {
@@ -64,7 +77,7 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
       fullWidth,
       icon,
       bold,
-      ...rest
+      ...rest,
     } = this.props;
 
     const renderedStyles: any = {};
@@ -84,12 +97,11 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
       viewProps = {
         start,
         end,
-        colors
+        colors,
       };
     }
 
     return (
-
       <TouchableOpacity
         disabled={disabled}
         onPress={onPress}
@@ -102,7 +114,13 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
         >
           {icon && this.renderIcon()}
           <View style={styles.txtContainer}>
-            <Text allowFontScaling={false} color={color} style={[styles.title, bold && { fontWeight: 'bold' }]}>{title}</Text>
+            <Text
+              allowFontScaling={false}
+              color={color}
+              style={[styles.title, bold && { fontWeight: 'bold' }]}
+            >
+              {title}
+            </Text>
           </View>
           {icon && <View flex={1} />}
         </ViewContainer>
@@ -121,7 +139,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: {
-    flex: 0
+    flex: 0,
   },
   txtContainer: {
     flex: 7,
@@ -131,10 +149,10 @@ const styles = StyleSheet.create({
     width: 40,
     paddingHorizontal: 5,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   title: {
     fontSize: 14,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });

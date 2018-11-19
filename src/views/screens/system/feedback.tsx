@@ -1,25 +1,25 @@
-import React from "react";
-import Screen from "src/views/components/screen";
-import { StyleSheet, View, KeyboardAvoidingView, Button } from "react-native";
+import React from 'react';
+import Screen from 'src/views/components/screen';
+import { StyleSheet, View, KeyboardAvoidingView, Button } from 'react-native';
 import {
   Text,
   Strong,
   TextArea,
   PrimaryButton,
-  TextInput
-} from "src/views/components/theme";
-import theme from "src/assets/styles/theme";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import { KeyboardDismissView } from "src/views/components/keyboard-dismiss-view";
-import validator from "validator";
-import { Dispatch } from "redux";
-import { submitFeedback } from "src/store/sagas/feedback";
-import { connect } from "react-redux";
-import SupportMessage from "src/models/support-message";
-import WonderAppState from "src/models/wonder-app-state";
-import { Content } from "native-base";
-import ImagePicker from "react-native-image-picker";
-import StateButton from "src/views/components/theme/buttons/state-button";
+  TextInput,
+} from 'src/views/components/theme';
+import theme from 'src/assets/styles/theme';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view';
+import validator from 'validator';
+import { Dispatch } from 'redux';
+import { submitFeedback } from 'src/store/sagas/feedback';
+import { connect } from 'react-redux';
+import SupportMessage from 'src/models/support-message';
+import WonderAppState from 'src/models/wonder-app-state';
+import { Content } from 'native-base';
+import ImagePicker from 'react-native-image-picker';
+import StateButton from 'src/views/components/theme/buttons/state-button';
 
 interface FeedbackScreenProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -39,36 +39,36 @@ const mapState = (state: WonderAppState) => ({});
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onSubmitFeedback: (feedback: SupportMessage) =>
-    dispatch(submitFeedback(feedback))
+    dispatch(submitFeedback(feedback)),
 });
 
 // automatically get name and email from user in redux
 class FeedbackScreen extends React.Component<
   FeedbackScreenProps,
   FeedbackScreenState
-  > {
+> {
   state: FeedbackScreenState = {
-    subject: "",
-    body: "",
+    subject: '',
+    body: '',
     subjectError: false,
     bodyError: false,
-    subjectErrorText: "Please add a subject",
-    bodyErrorText: "Please add some information about your query",
-    data: {}
+    subjectErrorText: 'Please add a subject',
+    bodyErrorText: 'Please add some information about your query',
+    data: {},
   };
 
   onChangeSubjectText = (text: string) => {
     this.setState({ subject: text });
-  }
+  };
 
   onChangebodyText = (text: string) => {
     this.setState({ body: text });
-  }
+  };
 
   getImage = () => {
     const options: Options = {
-      title: "Upload a Photo",
-      mediaType: "photo"
+      title: 'Upload a Photo',
+      mediaType: 'photo',
     };
 
     ImagePicker.showImagePicker(options, (res: Response) => {
@@ -80,7 +80,7 @@ class FeedbackScreen extends React.Component<
         this.setState({ data: res });
       }
     });
-  }
+  };
 
   submit = () => {
     const { subject, body, data } = this.state;
@@ -96,7 +96,7 @@ class FeedbackScreen extends React.Component<
         this.setState({ bodyError: true });
       }
     }
-  }
+  };
 
   render() {
     const { navigation } = this.props;
@@ -104,7 +104,7 @@ class FeedbackScreen extends React.Component<
       subjectError,
       bodyError,
       subjectErrorText,
-      bodyErrorText
+      bodyErrorText,
     } = this.state;
 
     return (
@@ -117,52 +117,52 @@ class FeedbackScreen extends React.Component<
           >
             <KeyboardDismissView style={{ flex: 1 }}> */}
           <Text style={styles.infoText}>
-            We want you to have a{" "}
-            <Strong style={{ color: theme.colors.primary }}>Wonderful</Strong>{" "}
+            We want you to have a{' '}
+            <Strong style={{ color: theme.colors.primary }}>Wonderful</Strong>{' '}
             experience! We would love to hear your feedback.
           </Text>
           <View>
             {subjectError && (
-              <Text style={{ fontSize: 10, color: "red" }}>
+              <Text style={{ fontSize: 10, color: 'red' }}>
                 {subjectErrorText}
               </Text>
             )}
             <TextInput
               onFocus={() => this.setState({ subjectError: false })}
-              placeholder="Subject"
+              placeholder='Subject'
               onChangeText={this.onChangeSubjectText}
             />
             <View
               style={{
                 padding: 5,
-                backgroundColor: "#E1E1E1",
+                backgroundColor: '#E1E1E1',
                 marginBottom: 10,
                 borderRadius: 4,
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-between'
+                justifyContent: 'space-between',
               }}
             >
               <StateButton
                 active={true}
-                text="Add File"
+                text='Add File'
                 onPress={this.getImage}
               />
               {this.state.data.uri && <Text>slected image</Text>}
             </View>
             {bodyError && (
-              <Text style={{ fontSize: 10, color: "red" }}>
+              <Text style={{ fontSize: 10, color: 'red' }}>
                 {bodyErrorText}
               </Text>
             )}
             <TextArea
               onFocus={() => this.setState({ bodyError: false })}
               onChangeText={this.onChangebodyText}
-              placeholder="Message..."
+              placeholder='Message...'
               style={{
                 minHeight: 150,
-                backgroundColor: "#E1E1E1",
-                color: "#444"
+                backgroundColor: '#E1E1E1',
+                color: '#444',
               }}
             />
           </View>
@@ -170,7 +170,7 @@ class FeedbackScreen extends React.Component<
           </KeyboardAvoidingView> */}
         </Content>
 
-        <PrimaryButton title="Submit" onPress={this.submit} />
+        <PrimaryButton title='Submit' onPress={this.submit} />
       </Screen>
     );
   }
@@ -178,18 +178,18 @@ class FeedbackScreen extends React.Component<
 
 export default connect(
   mapState,
-  mapDispatch
+  mapDispatch,
 )(FeedbackScreen);
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 15
+    paddingBottom: 15,
   },
   infoText: {
     fontSize: 18,
     paddingHorizontal: 25,
     lineHeight: 24,
-    textAlign: "center",
-    marginBottom: 20
-  }
+    textAlign: 'center',
+    marginBottom: 20,
+  },
 });

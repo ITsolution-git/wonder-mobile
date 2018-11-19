@@ -1,14 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
 
-interface MediaViewProps {
+interface MediaViewProps {}
 
-}
-
-const MediaView: React.SFC<MediaViewProps> = ({ }) => {
-  return (
-    <View>
-
-    </View>
-  );
+const MediaView: React.SFC<MediaViewProps> = ({}) => {
+  return <View />;
 };

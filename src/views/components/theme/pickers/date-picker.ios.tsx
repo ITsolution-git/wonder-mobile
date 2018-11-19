@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Modal, DatePickerIOS, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Modal,
+  DatePickerIOS,
+  TouchableOpacity,
+} from 'react-native';
 import { Label, Text } from '..';
 import moment from 'moment-timezone';
 import theme from 'src/assets/styles/theme';
@@ -26,44 +32,52 @@ interface State {
 }
 
 export default class DatePicker extends React.Component<Props, State> {
-
   static defaultProps = {
-    displayFormat: 'MM-DD-YYYY'
+    displayFormat: 'MM-DD-YYYY',
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
       value: props.initialDate || new Date(),
-      open: false
+      open: false,
     };
   }
 
   public render() {
-    const { label, displayFormat, errorHint, minDate, maxDate, onChange } = this.props;
+    const {
+      label,
+      displayFormat,
+      errorHint,
+      minDate,
+      maxDate,
+      onChange,
+    } = this.props;
     const { open, value } = this.state;
     return (
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.container}>
-          <Text style={{textAlign: 'center'}}>{moment(value).format(displayFormat)}</Text>
+          <Text style={{ textAlign: 'center' }}>
+            {moment(value).format(displayFormat)}
+          </Text>
           <TouchableOpacity
             style={styles.iconBtn}
             onPress={() => this.setState({ open: true })}
           >
-            <Icon name="calendar" color={theme.colors.white} />
+            <Icon name='calendar' color={theme.colors.white} />
           </TouchableOpacity>
         </View>
         {<ErrorHint>{errorHint}</ErrorHint>}
         <FooterModal
-          closeText="Done"
-          animationType="slide"
+          closeText='Done'
+          animationType='slide'
           transparent
           visible={open}
           onClose={() => this.setState({ open: false })}
         >
           <DatePickerIOS
-            mode="date"
+            mode='date'
             date={this.state.value}
             onDateChange={this.onChange}
             minimumDate={minDate}
@@ -80,7 +94,7 @@ export default class DatePicker extends React.Component<Props, State> {
     if (onChange) {
       onChange(date);
     }
-  }
+  };
 }
 
 const styles = StyleSheet.create({
@@ -89,7 +103,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   container: {
     flexDirection: 'row',
@@ -101,6 +115,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: theme.colors.textColor,
-    fontFamily: theme.fonts.primary
-  }
-})
+    fontFamily: theme.fonts.primary,
+  },
+});

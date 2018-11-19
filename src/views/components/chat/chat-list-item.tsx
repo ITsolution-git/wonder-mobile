@@ -2,19 +2,17 @@ import _ from 'lodash';
 import React from 'react';
 import { Text, Title, SmallText } from '../theme';
 import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import Avatar from 'src/views/components/theme/avatar';
 import theme from 'src/assets/styles/theme';
-import { Dispatch } from "redux";
+import { Dispatch } from 'redux';
 import Conversation from 'src/models/conversation';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
-import {
-  ghostContact
-} from "src/store/sagas/conversations";
+import { ghostContact } from 'src/store/sagas/conversations';
 import { SwipeRow, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { deleteConversation } from 'src/store/sagas/conversations';
-import { persistGhostMessage } from "src/store/reducers/chat";
+import { persistGhostMessage } from 'src/store/reducers/chat';
 
 interface ChatListItemProps {
   chat: Conversation;
@@ -27,14 +25,14 @@ interface ChatListItemProps {
 const mapDispatch = (dispatch: Dispatch) => ({
   onDeleteConversation: (data: object) => dispatch(deleteConversation(data)),
   onGhostContact: (data: object) => dispatch(ghostContact(data)),
-  onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data))
+  onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data)),
 });
 
 class ChatListItem extends React.Component<ChatListItemProps> {
   static defaultProps = {
     chat: {
-      messages: []
-    }
+      messages: [],
+    },
   };
 
   renderRecentMessage = () => {
@@ -46,20 +44,29 @@ class ChatListItem extends React.Component<ChatListItemProps> {
 
     if (chat && chat.last_message) {
       if (hours > 72) {
-        return <Text numberOfLines={2} style={styles.oldText}>{_.get(chat, 'last_message.body', '') || ''}</Text>;
+        return (
+          <Text numberOfLines={2} style={styles.oldText}>
+            {_.get(chat, 'last_message.body', '') || ''}
+          </Text>
+        );
       }
       return (
         <Text
           numberOfLines={2}
-          style={[!chat.last_message.read_at && chat.last_message.sender_id !== currentUser.id ?
-            { color: 'black' } : null, { fontSize: 14 }]}
+          style={[
+            !chat.last_message.read_at &&
+            chat.last_message.sender_id !== currentUser.id
+              ? { color: 'black' }
+              : null,
+            { fontSize: 14 },
+          ]}
         >
-          {chat.last_message.body == null ? "" : chat.last_message.body}
+          {chat.last_message.body == null ? '' : chat.last_message.body}
         </Text>
       );
     }
     return <SmallText>No Messages</SmallText>;
-  }
+  };
 
   renderGreenDot() {
     const { chat } = this.props;
@@ -67,7 +74,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
       return (
         <View style={{ marginLeft: 10 }}>
           <SmallText>
-            <Icon name="circle" size={10} color="#48dc0e" />
+            <Icon name='circle' size={10} color='#48dc0e' />
           </SmallText>
         </View>
       );
@@ -80,7 +87,9 @@ class ChatListItem extends React.Component<ChatListItemProps> {
     return (
       <View style={{ marginTop: 8 }}>
         <SmallText>
-          {chat.partner.distance && _.get(chat, 'partner.distance', 0).toFixed(0)} miles
+          {chat.partner.distance &&
+            _.get(chat, 'partner.distance', 0).toFixed(0)}{' '}
+          miles
         </SmallText>
       </View>
     );
@@ -89,25 +98,26 @@ class ChatListItem extends React.Component<ChatListItemProps> {
   deleteConversation = () => {
     const { chat } = this.props;
     this.props.onGhostContact({ partner: chat.partner });
-    this.props.onSendGhostMessage({ ghostMessage: '', conversation_id: chat.id, partner: chat.partner });
-  }
+    this.props.onSendGhostMessage({
+      ghostMessage: '',
+      conversation_id: chat.id,
+      partner: chat.partner,
+    });
+  };
 
   showAlert = () => {
     Alert.alert(
       'Confirm',
       'Are you sure you want to remove this conversation?',
-      [
-        { text: 'Cancel' },
-        { text: 'YES', onPress: this.deleteConversation },
-      ],
-      { cancelable: false }
+      [{ text: 'Cancel' }, { text: 'YES', onPress: this.deleteConversation }],
+      { cancelable: false },
     );
-  }
+  };
 
   render() {
     const config = {
       velocityThreshold: 0.3,
-      directionalOffsetThreshold: 80
+      directionalOffsetThreshold: 80,
     };
     const { chat, onPress, currentUser } = this.props;
 
@@ -119,51 +129,65 @@ class ChatListItem extends React.Component<ChatListItemProps> {
       <SwipeRow
         style={styles.swipeContainer}
         rightOpenValue={-75}
-        right={(
+        right={
           <Button danger onPress={this.showAlert}>
-            <Icon name="trash" size={30} color="#FFF" />
-          </Button>
-        )}
-        body={<TouchableOpacity activeOpacity={0.8} style={styles.container} onPress={onPress}>
-          <View
-            style={styles.avatarOuterContainer}
+            <Icon name='trash' size={30} color='#FFF' />
+          </Button>}
+        body={
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={styles.container}
+            onPress={onPress}
           >
-            <View
-              style={
-                chat.last_message.sender_id !== currentUser.id && !chat.last_message.read_at ?
-                  styles.unreadMessage : null}
-            >
-              <Avatar
-                size={'xmd'}
-                chat={chat}
-                sender={chat.last_message.sender_id}
-                currentUser={currentUser}
-                circle
-                uri={(chat.partner.images && chat.partner.images.length) ? chat.partner.images[0].url : null}
-              />
+            <View style={styles.avatarOuterContainer}>
+              <View
+                style={
+                  chat.last_message.sender_id !== currentUser.id &&
+                  !chat.last_message.read_at
+                    ? styles.unreadMessage
+                    : null
+                }
+              >
+                <Avatar
+                  size={'xmd'}
+                  chat={chat}
+                  sender={chat.last_message.sender_id}
+                  currentUser={currentUser}
+                  circle
+                  uri={
+                    chat.partner.images && chat.partner.images.length
+                      ? chat.partner.images[0].url
+                      : null
+                  }
+                />
+              </View>
             </View>
-          </View>
-          <View flex={2} style={styles.textContainer}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Title style={{ color: '#000' }}>{chat.partner.first_name} </Title>
-              {this.renderGreenDot()}
+            <View flex={2} style={styles.textContainer}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Title style={{ color: '#000' }}>
+                  {chat.partner.first_name}{' '}
+                </Title>
+                {this.renderGreenDot()}
+              </View>
+              {this.renderRecentMessage()}
             </View>
-            {this.renderRecentMessage()}
-          </View>
-        </ TouchableOpacity>}
+          </TouchableOpacity>
+        }
       />
     );
-
   }
 }
 
-export default connect(null, mapDispatch)(ChatListItem);
+export default connect(
+  null,
+  mapDispatch,
+)(ChatListItem);
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 4
+    padding: 4,
   },
   textContainer: {
     justifyContent: 'center',
@@ -189,5 +213,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  oldText: { color: '#eb4d4b', fontSize: 14 }
+  oldText: { color: '#eb4d4b', fontSize: 14 },
 });

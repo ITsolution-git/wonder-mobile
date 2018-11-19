@@ -1,16 +1,16 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import MultiSlider from "react-native-multi-slider";
-import theme from "src/assets/styles/theme";
-import { Text } from "src/views/components/theme";
-import { width as WIDTH } from "@assets";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import MultiSlider from 'react-native-multi-slider';
+import theme from 'src/assets/styles/theme';
+import { Text } from 'src/views/components/theme';
+import { width as WIDTH } from '@assets';
 
 const localStyles = StyleSheet.create({
-  container: { flex: 1, flexDirection: "row" },
-  sliderContainer: { height: 70, width: "100%" },
+  container: { flex: 1, flexDirection: 'row' },
+  sliderContainer: { height: 70, width: '100%' },
   track: {
     backgroundColor: theme.colors.lightGray,
-    width: "100%",
+    width: '100%',
   },
   marker: {
     width: 30,
@@ -31,35 +31,35 @@ const localStyles = StyleSheet.create({
     backgroundColor: theme.colors.lightPeach,
   },
   sliderValueText: {
-    position: "absolute",
+    position: 'absolute',
     bottom: -20,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
   triangle: {
-    position: "absolute",
+    position: 'absolute',
     top: -10,
     height: 0,
     width: 0,
     backgroundColor: theme.colors.lightPeach,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderTopWidth: 0,
     borderRightWidth: 5,
     borderBottomWidth: 10,
     borderLeftWidth: 5,
-    borderTopColor: "transparent",
-    borderRightColor: "transparent",
+    borderTopColor: 'transparent',
+    borderRightColor: 'transparent',
     borderBottomColor: theme.colors.peach,
-    borderLeftColor: "transparent",
+    borderLeftColor: 'transparent',
   },
   sliderValueContainer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: -40,
     paddingVertical: 2.5,
     // paddingHorizontal: 15,
     width: 35,
     borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: theme.colors.lightPeach,
   },
 });

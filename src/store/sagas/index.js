@@ -11,21 +11,31 @@ import {
   watchUpdateVideo,
   watchDeleteProfileImageSaga,
   watchDeleteProfileVideoSaga,
-  watchDeactivateAccount
+  watchDeactivateAccount,
 } from "./user";
-import { watchGetNewProposal, watchRateProposal, watchGetNextProposal } from "./proposal";
-import { watchCreateAppointment, watchGetAppointments, watchConfirmtAppointment, watchcancelAppointmentSaga, watchDeclineAppointmentSaga } from "./appointment";
+import {
+  watchGetNewProposal,
+  watchRateProposal,
+  watchGetNextProposal,
+} from "./proposal";
+import {
+  watchCreateAppointment,
+  watchGetAppointments,
+  watchConfirmtAppointment,
+  watchcancelAppointmentSaga,
+  watchDeclineAppointmentSaga,
+} from "./appointment";
 import {
   watchGetPartners,
   watchGetPartnerActivities,
   watchGetActivityDetails,
-  watchBlockUser
+  watchBlockUser,
 } from "./partner";
 import {
   watchGetConversation,
   watchGetConversations,
   watchSendMessage,
-  watchGhostContact
+  watchGhostContact,
 } from "./conversations";
 import { watchSubmitFeedback } from "./feedback";
 import { watchGetAttendances, watchDeleteAttendance } from "./attendance";
@@ -75,6 +85,6 @@ export default function* rootSaga() {
     watchGhostContact(),
 
     // Feedback
-    watchSubmitFeedback()
+    watchSubmitFeedback(),
   ]);
 }

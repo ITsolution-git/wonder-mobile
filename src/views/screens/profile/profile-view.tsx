@@ -1,5 +1,5 @@
-import _ from "lodash";
-import React from "react";
+import _ from 'lodash';
+import React from 'react';
 
 import {
   Platform,
@@ -13,41 +13,41 @@ import {
   Linking,
   TouchableHighlight,
   ScrollView,
-} from "react-native";
-import Screen from "src/views/components/screen";
-import ElevatedButton from "src/views/components/theme/elevated-button";
+} from 'react-native';
+import Screen from 'src/views/components/screen';
+import ElevatedButton from 'src/views/components/theme/elevated-button';
 import {
   PrimaryButton,
   Text,
   SecondaryButton as Button,
   Title,
-} from "src/views/components/theme";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
+} from 'src/views/components/theme';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
-import { logoutUser, getUser, deactivateAccount } from "src/store/sagas/user";
-import Avatar, { AvatarSize } from "src/views/components/theme/avatar";
+import { logoutUser, getUser, deactivateAccount } from 'src/store/sagas/user';
+import Avatar, { AvatarSize } from 'src/views/components/theme/avatar';
 
-import { selectCurrentUser, selectAuth } from "src/store/selectors/user";
-import User from "src/models/user";
-import TouchableOpacityOnPress from "src/models/touchable-on-press";
-import WonderAppState from "src/models/wonder-app-state";
-import ProfileModalChat from "src/views/components/modals/profile-modal-chat";
-import { HTTP_DOMAIN } from "src/services/api";
+import { selectCurrentUser, selectAuth } from 'src/store/selectors/user';
+import User from 'src/models/user';
+import TouchableOpacityOnPress from 'src/models/touchable-on-press';
+import WonderAppState from 'src/models/wonder-app-state';
+import ProfileModalChat from 'src/views/components/modals/profile-modal-chat';
+import { HTTP_DOMAIN } from 'src/services/api';
 
-import moment from "moment";
-import VideoPlayer from "react-native-video-player";
-import LinearGradient from "react-native-linear-gradient";
-import { IconButton } from "../../components/theme";
-import WonderImage from "../../components/theme/wonder-image";
-import theme from "../../../assets/styles/theme";
-import Wonder from "../../components/theme/wonder/wonder";
-import Color from "color";
-import { INITIAL_PROFILE_NAV } from "@appConfig";
+import moment from 'moment';
+import VideoPlayer from 'react-native-video-player';
+import LinearGradient from 'react-native-linear-gradient';
+import { IconButton } from '../../components/theme';
+import WonderImage from '../../components/theme/wonder-image';
+import theme from '../../../assets/styles/theme';
+import Wonder from '../../components/theme/wonder/wonder';
+import Color from 'color';
+import { INITIAL_PROFILE_NAV } from '@appConfig';
 
-const { height } = Dimensions.get("window");
+const { height } = Dimensions.get('window');
 
 const gradient = [
   lighten(theme.colors.primaryLight, 0.5),
@@ -121,13 +121,13 @@ class ProfileViewScreen extends React.Component<Props> {
     const { currentUser } = this.props;
 
     const options = [
-      { text: "Cancel" },
-      { text: "Yes", onPress: this.props.deactivateUsersAccount },
+      { text: 'Cancel' },
+      { text: 'Yes', onPress: this.props.deactivateUsersAccount },
     ];
 
     Alert.alert(
-      "Confirm Deactivate Account",
-      "Are you sure you want to deactivate your account?",
+      'Confirm Deactivate Account',
+      'Are you sure you want to deactivate your account?',
       options,
     );
   };
@@ -137,7 +137,7 @@ class ProfileViewScreen extends React.Component<Props> {
       if (supported) {
         Linking.openURL(url);
       } else {
-        Alert.alert("Sorry! This link cannot be opened on your device");
+        Alert.alert('Sorry! This link cannot be opened on your device');
       }
     });
   };
@@ -145,11 +145,11 @@ class ProfileViewScreen extends React.Component<Props> {
   promptLogout = () => {
     const { onLogout, auth } = this.props;
     const options = [
-      { text: "Cancel", onPress: _.noop },
-      { text: "Yes, Logout", onPress: () => onLogout(auth.uid, auth.token) },
+      { text: 'Cancel', onPress: _.noop },
+      { text: 'Yes, Logout', onPress: () => onLogout(auth.uid, auth.token) },
     ];
 
-    Alert.alert("Confirm Logout", "Are you sure you want to logout?", options);
+    Alert.alert('Confirm Logout', 'Are you sure you want to logout?', options);
   };
 
   openProfileModal = () => {
@@ -163,7 +163,7 @@ class ProfileViewScreen extends React.Component<Props> {
     const userTopics = currentUser.topics;
 
     return (
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: 'row' }}>
         {currentUser &&
           candidateTopics.map((x: Topic) => {
             if (userTopics) {
@@ -182,7 +182,7 @@ class ProfileViewScreen extends React.Component<Props> {
   render() {
     const { currentUser, onLogout } = this.props;
     const { showVideo } = this.state;
-    const years = moment().diff(currentUser.birthdate, "years");
+    const years = moment().diff(currentUser.birthdate, 'years');
 
     return (
       <Screen horizontalPadding={10}>
@@ -190,7 +190,7 @@ class ProfileViewScreen extends React.Component<Props> {
           <View style={[styles.col, styles.heading]}>
             <TouchableHighlight
               onPress={this.openProfileModal}
-              underlayColor="transparent"
+              underlayColor='transparent'
             >
               <Avatar
                 rounded
@@ -204,47 +204,47 @@ class ProfileViewScreen extends React.Component<Props> {
           <View style={styles.row}>
             <View style={styles.col}>
               <ElevatedButton
-                icon="user"
+                icon='user'
                 title={currentUser.first_name}
-                onPress={this.goTo("ProfileEdit")}
+                onPress={this.goTo('ProfileEdit')}
               />
             </View>
             <View style={styles.col}>
               <ElevatedButton
-                icon="heart"
-                title="Activities"
-                onPress={this.goTo("ProfileWonders")}
-              />
-            </View>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.col}>
-              <ElevatedButton
-                icon="image"
-                title="Photos"
-                onPress={this.goTo("ProfileMedia")}
-              />
-            </View>
-            <View style={styles.col}>
-              <ElevatedButton
-                icon="envelope-o"
-                title="Contact"
-                onPress={this.goTo("Feedback")}
+                icon='heart'
+                title='Activities'
+                onPress={this.goTo('ProfileWonders')}
               />
             </View>
           </View>
           <View style={styles.row}>
             <View style={styles.col}>
               <ElevatedButton
-                icon="gear"
-                title="Settings"
-                onPress={this.goTo("ProfilePreferences")}
+                icon='image'
+                title='Photos'
+                onPress={this.goTo('ProfileMedia')}
               />
             </View>
             <View style={styles.col}>
               <ElevatedButton
-                icon="question"
-                title="FAQ"
+                icon='envelope-o'
+                title='Contact'
+                onPress={this.goTo('Feedback')}
+              />
+            </View>
+          </View>
+          <View style={styles.row}>
+            <View style={styles.col}>
+              <ElevatedButton
+                icon='gear'
+                title='Settings'
+                onPress={this.goTo('ProfilePreferences')}
+              />
+            </View>
+            <View style={styles.col}>
+              <ElevatedButton
+                icon='question'
+                title='FAQ'
                 onPress={() => this.showFaq(`${HTTP_DOMAIN}/faq.html`)}
               />
             </View>
@@ -255,18 +255,18 @@ class ProfileViewScreen extends React.Component<Props> {
           <View style={styles.row}>
             <PrimaryButton
               fullWidth
-              title="UPGRADE TO WONDER PREMIUM"
+              title='UPGRADE TO WONDER PREMIUM'
               onPress={_.noop}
             />
           </View>
           <View style={styles.row}>
             <View style={styles.col}>
-              <Button rounded title="Logout" onPress={this.promptLogout} />
+              <Button rounded title='Logout' onPress={this.promptLogout} />
             </View>
             <View style={styles.col}>
               <Button
                 rounded
-                title="Deactivate"
+                title='Deactivate'
                 onPress={this.deactivateAccount}
               />
             </View>
@@ -274,14 +274,14 @@ class ProfileViewScreen extends React.Component<Props> {
         </View>
         <Modal
           transparent={true}
-          animationType="fade"
+          animationType='fade'
           visible={this.state.profileModalOpen}
           onRequestClose={this.openProfileModal}
         >
           <LinearGradient colors={gradient} style={styles.modalContainer}>
             <View style={styles.modalInnerContainer}>
               <LinearGradient
-                colors={["rgba(0,0,0,0.5)", "transparent"]}
+                colors={['rgba(0,0,0,0.5)', 'transparent']}
                 style={styles.topGradient}
               >
                 <View style={styles.iconContainer}>
@@ -290,22 +290,22 @@ class ProfileViewScreen extends React.Component<Props> {
                       {showVideo ? (
                         <IconButton
                           size={35}
-                          icon={"camera"}
+                          icon={'camera'}
                           onPress={() =>
                             this.setState({ showVideo: !this.state.showVideo })
                           }
                           primary={theme.colors.primaryLight}
-                          secondary="transparent"
+                          secondary='transparent'
                         />
                       ) : (
                         <IconButton
                           size={35}
-                          icon={"video-camera"}
+                          icon={'video-camera'}
                           onPress={() =>
                             this.setState({ showVideo: !this.state.showVideo })
                           }
                           primary={theme.colors.primaryLight}
-                          secondary="transparent"
+                          secondary='transparent'
                         />
                       )}
                     </View>
@@ -314,10 +314,10 @@ class ProfileViewScreen extends React.Component<Props> {
                   )}
                   <IconButton
                     size={35}
-                    icon={"close"}
+                    icon={'close'}
                     onPress={this.openProfileModal}
-                    primary={"#fff"}
-                    secondary="transparent"
+                    primary={'#fff'}
+                    secondary='transparent'
                   />
                 </View>
               </LinearGradient>
@@ -328,7 +328,7 @@ class ProfileViewScreen extends React.Component<Props> {
                       <VideoPlayer
                         customStyles={{ videoWrapper: styles.videoStyles }}
                         videoHeight={
-                          Platform.OS === "ios"
+                          Platform.OS === 'ios'
                             ? (height / 3) * 2 * 4.74
                             : height * 2.58
                         }
@@ -353,7 +353,7 @@ class ProfileViewScreen extends React.Component<Props> {
                                   uri={i.url}
                                 >
                                   <LinearGradient
-                                    colors={["transparent", "rgba(0,0,0,0.5)"]}
+                                    colors={['transparent', 'rgba(0,0,0,0.5)']}
                                     style={[styles.imageTopGradient]}
                                   >
                                     <View>
@@ -367,7 +367,7 @@ class ProfileViewScreen extends React.Component<Props> {
                                   </LinearGradient>
                                 </WonderImage>
                                 <View style={styles.infoContainer}>
-                                  <View style={{ flexDirection: "row" }}>
+                                  <View style={{ flexDirection: 'row' }}>
                                     {currentUser &&
                                       currentUser.topics.map((x) => {
                                         return (
@@ -431,9 +431,9 @@ export default connect(
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 5,
   },
   col: {
@@ -441,24 +441,24 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   heading: {
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   modalContainer: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
   modalInnerContainer: {
-    position: "relative",
+    position: 'relative',
     height: (height / 3) * 2,
     borderRadius: 10,
-    backgroundColor: "#f1f1f1",
+    backgroundColor: '#f1f1f1',
     marginRight: 15,
     marginLeft: 15,
     marginBottom: 15,
   },
   topGradient: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
@@ -469,21 +469,21 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
   },
   iconContainer: {
-    alignSelf: "stretch",
-    flexDirection: "row",
-    justifyContent: "space-between",
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
-  scrollContainer: { borderRadius: 10, overflow: "hidden" },
+  scrollContainer: { borderRadius: 10, overflow: 'hidden' },
   containerHeight: {
     height: (height / 3) * 2,
     zIndex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end',
   },
-  imageContainer: { borderRadius: 10, overflow: "hidden" },
+  imageContainer: { borderRadius: 10, overflow: 'hidden' },
   videoStyles: {
-    backgroundColor: "black",
+    backgroundColor: 'black',
     borderRadius: 10,
-    overflow: "hidden",
+    overflow: 'hidden',
   },
   imageTopGradient: {
     padding: 10,
@@ -491,27 +491,27 @@ const styles = StyleSheet.create({
   },
   firstNameText: {
     fontSize: 26,
-    color: "#fff",
+    color: '#fff',
     marginLeft: 5,
     marginBottom: 2,
-    fontWeight: "800",
+    fontWeight: '800',
   },
   regularImageStyles: { height: (height / 3) * 2, zIndex: 1 },
   topicsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     marginTop: 4,
   },
-  schoolText: { color: "#fff", marginLeft: 5, fontSize: 12 },
-  distanceText: { color: "#fff", fontSize: 13, marginLeft: 2 },
-  detailsChevron: { justifyContent: "flex-end" },
+  schoolText: { color: '#fff', marginLeft: 5, fontSize: 12 },
+  distanceText: { color: '#fff', fontSize: 13, marginLeft: 2 },
+  detailsChevron: { justifyContent: 'flex-end' },
   occupationText: {
     marginLeft: 5,
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginTop: 10,
-    color: "#333",
+    color: '#333',
   },
-  genericText: { marginLeft: 5, fontSize: 12, lineHeight: 18, color: "#333" },
-  infoContainer: { backgroundColor: "#fff", padding: 10 },
+  genericText: { marginLeft: 5, fontSize: 12, lineHeight: 18, color: '#333' },
+  infoContainer: { backgroundColor: '#fff', padding: 10 },
 });

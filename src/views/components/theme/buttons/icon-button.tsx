@@ -1,5 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, StyleProp, ViewStyle } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import theme from 'src/assets/styles/theme';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
@@ -21,11 +26,20 @@ class IconButton extends React.Component<IconButtonProps> {
     secondary: theme.colors.primaryLight,
     size: 45,
     disabled: false,
-    iconSize: undefined
+    iconSize: undefined,
   };
 
   render() {
-    const { size, icon, primary, secondary, circle, onPress, disabled, iconSize } = this.props;
+    const {
+      size,
+      icon,
+      primary,
+      secondary,
+      circle,
+      onPress,
+      disabled,
+      iconSize,
+    } = this.props;
 
     const btnStyle: StyleProp<ViewStyle> = {
       backgroundColor: secondary,
@@ -33,7 +47,7 @@ class IconButton extends React.Component<IconButtonProps> {
 
     let computedIconSize = 18;
     if (size) {
-      btnStyle.borderRadius = circle ? (size / 2) : 3;
+      btnStyle.borderRadius = circle ? size / 2 : 3;
       btnStyle.width = size;
       btnStyle.height = size;
       computedIconSize = size * 0.4;

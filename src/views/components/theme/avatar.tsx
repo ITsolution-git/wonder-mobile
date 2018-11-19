@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, StyleProp, ImageStyle, ViewStyle } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  StyleProp,
+  ImageStyle,
+  ViewStyle,
+} from 'react-native';
 import { WonderImage } from '../theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import theme from '../../../assets/styles/theme';
@@ -9,7 +15,7 @@ export enum AvatarSize {
   md = 'md',
   lg = 'lg',
   xl = 'xl',
-  xmd = 'xmd'
+  xmd = 'xmd',
 }
 
 interface AvatarProps {
@@ -32,7 +38,7 @@ class Avatar extends React.Component<AvatarProps> {
     bordered: false,
     rounded: false,
     circle: false,
-    uri: null
+    uri: null,
   };
 
   static Sizes = {
@@ -47,7 +53,7 @@ class Avatar extends React.Component<AvatarProps> {
   getDimensions = () => {
     const { size } = this.props;
     return Avatar.Sizes[size || AvatarSize.sm];
-  }
+  };
 
   getContainerStyles = () => {
     const { bordered, rounded, circle } = this.props;
@@ -55,10 +61,10 @@ class Avatar extends React.Component<AvatarProps> {
     return {
       height: length,
       width: length,
-      borderRadius: circle ? (length / 2) : (rounded ? 5 : 0),
-      borderWidth: bordered ? 3 : 0
+      borderRadius: circle ? length / 2 : rounded ? 5 : 0,
+      borderWidth: bordered ? 3 : 0,
     };
-  }
+  };
 
   renderImage = () => {
     const { uri, style, chat, circle } = this.props;
@@ -67,43 +73,56 @@ class Avatar extends React.Component<AvatarProps> {
       if (circle && chat) {
         return (
           <View>
-            {uri ? <WonderImage
-              style={[{
-                ...this.getContainerStyles(),
-                width: this.getDimensions(),
-                height: this.getDimensions(),
-
-              }, style]}
-              uri={uri}
-            /> :
+            {uri ? (
+              <WonderImage
+                style={[
+                  {
+                    ...this.getContainerStyles(),
+                    width: this.getDimensions(),
+                    height: this.getDimensions(),
+                  },
+                  style,
+                ]}
+                uri={uri}
+              />
+            ) : (
               <Icon
-                color="#BBB"
-                name="user"
+                color='#BBB'
+                name='user'
                 size={this.getDimensions() * 0.4}
               />
-            }
+            )}
           </View>
         );
       } else {
         return (
           <WonderImage
-            style={[{
-              ...this.getContainerStyles(),
-              width: this.getDimensions(),
-              height: this.getDimensions(),
-
-            }, style, { margin: 2 }]}
+            style={[
+              {
+                ...this.getContainerStyles(),
+                width: this.getDimensions(),
+                height: this.getDimensions(),
+              },
+              style,
+              { margin: 2 },
+            ]}
             uri={uri}
           />
         );
       }
     }
-  }
+  };
 
   render() {
     const { containerStyle } = this.props;
     return (
-      <View style={[styles.avatarContainer, this.getContainerStyles(), containerStyle]}>
+      <View
+        style={[
+          styles.avatarContainer,
+          this.getContainerStyles(),
+          containerStyle,
+        ]}
+      >
         {this.renderImage()}
       </View>
     );
@@ -122,9 +141,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: {
       width: 0,
-      height: 2
+      height: 2,
     },
     shadowColor: '#000',
-    shadowOpacity: 0.3
-  }
+    shadowOpacity: 0.3,
+  },
 });

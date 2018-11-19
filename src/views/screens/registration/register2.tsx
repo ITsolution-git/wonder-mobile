@@ -1,36 +1,36 @@
-import React from "react";
+import React from 'react';
 import {
   ScrollView,
   View,
   StyleSheet,
   KeyboardAvoidingView,
-  Platform
-} from "react-native";
+  Platform,
+} from 'react-native';
 import {
   TextInput,
   Text,
   GenderPicker,
   PrimaryButton,
   DatePicker,
-  Title
-} from "src/views/components/theme";
-import Screen from "src/views/components/screen";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import Gender from "../../../models/gender";
-import moment from "moment-timezone";
-import validator from "validator";
-import { connect } from "react-redux";
-import WonderAppState from "../../../models/wonder-app-state";
-import { Dispatch } from "redux";
+  Title,
+} from 'src/views/components/theme';
+import Screen from 'src/views/components/screen';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import Gender from '../../../models/gender';
+import moment from 'moment-timezone';
+import validator from 'validator';
+import { connect } from 'react-redux';
+import WonderAppState from '../../../models/wonder-app-state';
+import { Dispatch } from 'redux';
 import {
   persistRegistrationInfo,
-  RegistrationState
-} from "../../../store/reducers/registration";
-import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
-import theme from "src/assets/styles/theme";
-import StateButton from "src/views/components/theme/buttons/state-button";
-import Color from "color";
-import { Label } from "../../components/theme";
+  RegistrationState,
+} from '../../../store/reducers/registration';
+import googleMaps, { GoogleGeoLocation } from '../../../services/google-maps';
+import theme from 'src/assets/styles/theme';
+import StateButton from 'src/views/components/theme/buttons/state-button';
+import Color from 'color';
+import { Label } from '../../components/theme';
 
 interface Props {
   registration: RegistrationState;
@@ -59,56 +59,56 @@ interface State {
 }
 
 const mapState = (state: WonderAppState) => ({
-  registration: state.registration
+  registration: state.registration,
 });
 const mapDispatch = (dispatch: Dispatch) => ({
-  onSave: (data: State) => dispatch(persistRegistrationInfo(data))
+  onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
 });
 
 class Register2 extends React.Component<Props, State> {
   private eighteenYearsAgoToday = moment()
-    .subtract(18, "years")
-    .startOf("day");
+    .subtract(18, 'years')
+    .startOf('day');
 
   state: State = {
     gender: Gender.male,
     birthdate: this.eighteenYearsAgoToday.toDate(),
-    education: "",
-    occupation: "",
-    zipcode: "",
+    education: '',
+    occupation: '',
+    zipcode: '',
     geolocation: null,
     errors: {},
     male_interest: false,
-    female_interest: true
+    female_interest: true,
   };
 
   lookupZipcode = async () => {
     const { zipcode } = this.state;
-    if (!validator.isEmpty(zipcode) && validator.isPostalCode(zipcode, "US")) {
+    if (!validator.isEmpty(zipcode) && validator.isPostalCode(zipcode, 'US')) {
       const geolocation: GoogleGeoLocation = await googleMaps.geocodeByZipCode(
-        zipcode
+        zipcode,
       );
       this.setState({ geolocation });
     } else {
       this.setState({ geolocation: null });
     }
-  }
+  };
 
   formattedGeo = () => {
     const { geolocation } = this.state;
     if (geolocation) {
       return ` (${geolocation.city}, ${geolocation.state})`;
     }
-    return "";
-  }
+    return '';
+  };
 
   setGenderPreference = (gender: string) => {
-    if (gender === "male") {
+    if (gender === 'male') {
       this.setState({ male_interest: !this.state.male_interest });
-    } else if (gender === "female") {
+    } else if (gender === 'female') {
       this.setState({ female_interest: !this.state.female_interest });
     }
-  }
+  };
 
   public render() {
     const { errors, birthdate } = this.state;
@@ -119,7 +119,7 @@ class Register2 extends React.Component<Props, State> {
         <ScrollView>
           <KeyboardAvoidingView
             keyboardVerticalOffset={Platform.select({ android: -40, ios: 0 })}
-            behavior="position"
+            behavior='position'
             contentContainerStyle={{ flex: 1 }}
             // style={styles.body}
             style={{ flex: 1 }}
@@ -130,61 +130,61 @@ class Register2 extends React.Component<Props, State> {
               Tell us a little more about yourself
             </Text>
             <GenderPicker
-              onChange={(gender: Gender) => this.onChangeText("gender")(gender)}
+              onChange={(gender: Gender) => this.onChangeText('gender')(gender)}
             />
             <View style={styles.genderBtns}>
               <Label>LOOKING FOR</Label>
               <View style={styles.genderBtnsContainer}>
                 <StateButton
                   active={this.state.male_interest}
-                  onPress={() => this.setGenderPreference("male")}
-                  text="Men"
+                  onPress={() => this.setGenderPreference('male')}
+                  text='Men'
                 />
 
                 <StateButton
                   active={this.state.female_interest}
-                  onPress={() => this.setGenderPreference("female")}
-                  text="Women"
+                  onPress={() => this.setGenderPreference('female')}
+                  text='Women'
                 />
               </View>
             </View>
             <DatePicker
               errorHint={errors.birthdate}
-              label="BIRTHDAY"
-              placeholder="Select Date"
+              label='BIRTHDAY'
+              placeholder='Select Date'
               onChange={this.onDateChange}
               initialDate={birthdate}
-              minDate={new Date("1950-01-01")}
+              minDate={new Date('1950-01-01')}
               maxDate={this.eighteenYearsAgoToday.toDate()}
             />
             <TextInput
-              label="EDUCATION"
+              label='EDUCATION'
               errorHint={errors.education}
               autoCorrect={false}
-              autoCapitalize="words"
-              onChangeText={this.onChangeText("education")}
+              autoCapitalize='words'
+              onChangeText={this.onChangeText('education')}
             />
             <TextInput
-              label="OCCUPATION"
+              label='OCCUPATION'
               errorHint={errors.occupation}
               autoCorrect={false}
-              autoCapitalize="words"
-              onChangeText={this.onChangeText("occupation")}
+              autoCapitalize='words'
+              onChangeText={this.onChangeText('occupation')}
             />
             <TextInput
               onValidate={(text: string) =>
-                text && validator.isPostalCode(text, "US")
+                text && validator.isPostalCode(text, 'US')
               }
-              keyboardType="number-pad"
+              keyboardType='number-pad'
               label={`ZIP CODE${this.formattedGeo()}`}
               errorHint={errors.zipcode}
               autoCorrect={false}
-              autoCapitalize="words"
-              onChangeText={this.onChangeText("zipcode")}
+              autoCapitalize='words'
+              onChangeText={this.onChangeText('zipcode')}
               onBlur={this.lookupZipcode}
             />
             <View style={{ marginVertical: 10 }}>
-              <PrimaryButton title="Next" onPress={this.validate} />
+              <PrimaryButton title='Next' onPress={this.validate} />
             </View>
             {/* </KeyboardDismissView> */}
           </KeyboardAvoidingView>
@@ -195,7 +195,7 @@ class Register2 extends React.Component<Props, State> {
 
   private onDateChange = (date: Date) => {
     this.setState({ birthdate: date });
-  }
+  };
 
   private onChangeText = (key: string) => {
     const { errors } = this.state;
@@ -204,11 +204,11 @@ class Register2 extends React.Component<Props, State> {
         [key]: text,
         errors: {
           ...errors,
-          [key]: undefined
-        }
+          [key]: undefined,
+        },
       });
     };
-  }
+  };
 
   private validate = () => {
     const errors: StateErrors = {};
@@ -221,23 +221,23 @@ class Register2 extends React.Component<Props, State> {
       birthdate,
       zipcode,
       male_interest,
-      female_interest
+      female_interest,
     } = this.state;
 
     if (GenderPicker.Genders.indexOf(gender) < 0) {
-      errors.gender = "Please select a gender";
+      errors.gender = 'Please select a gender';
     }
 
     if (!birthdate) {
-      errors.birthdate = "Please enter your birthday";
+      errors.birthdate = 'Please enter your birthday';
     } else if (moment(birthdate).isAfter(this.eighteenYearsAgoToday)) {
-      errors.birthdate = "You are not old enough to use this app";
+      errors.birthdate = 'You are not old enough to use this app';
     }
 
     if (validator.isEmpty(zipcode)) {
-      errors.zipcode = "Please enter a Postal Code";
-    } else if (!validator.isPostalCode(zipcode, "US")) {
-      errors.zipcode = "Please enter a valid Postal Code";
+      errors.zipcode = 'Please enter a Postal Code';
+    } else if (!validator.isPostalCode(zipcode, 'US')) {
+      errors.zipcode = 'Please enter a valid Postal Code';
     }
 
     if (Object.keys(errors).length) {
@@ -250,43 +250,43 @@ class Register2 extends React.Component<Props, State> {
       zipcode,
       school: education,
       occupation,
-      birthdate: birthdate.toISOString().split("T")[0],
+      birthdate: birthdate.toISOString().split('T')[0],
       male_interest,
-      female_interest
+      female_interest,
     });
 
-    navigation.navigate("Register4");
-  }
+    navigation.navigate('Register4');
+  };
 }
 
 export default connect(
   mapState,
-  mapDispatch
+  mapDispatch,
 )(Register2);
 
 const styles = StyleSheet.create({
   welcome: {
     fontSize: 14,
-    textAlign: "center",
-    margin: 10
+    textAlign: 'center',
+    margin: 10,
   },
   instructions: {
-    textAlign: "center",
-    color: "#333333",
-    marginBottom: 5
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
   },
   genderBtns: {
     paddingBottom: 4,
     borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.5),
   },
   genderBtnsContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around"
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
   title: {
     color: theme.colors.primary,
-    textAlign: "center",
-    fontWeight: "bold"
-  }
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
 });

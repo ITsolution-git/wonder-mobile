@@ -9,27 +9,27 @@ export const DEVICE_HEIGHT = height;
 export default StyleSheet.create({
   container: {
     flex: 1,
-    width
+    width,
   },
   titleContainer: {
-    paddingVertical: 15
+    paddingVertical: 15,
   },
   titleTxt: {
     textAlign: 'center',
-    fontSize: 18
+    fontSize: 18,
   },
   dotsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 15
+    paddingVertical: 15,
   },
   dot: {
-    paddingHorizontal: 2
+    paddingHorizontal: 2,
   },
   skipTxt: {
     color: Theme.colors.textColor,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   footer: {
     position: 'absolute',
@@ -38,6 +38,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 20
-  }
+    paddingBottom: 20,
+  },
 });

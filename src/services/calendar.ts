@@ -1,8 +1,7 @@
-import RNCalendarEvents,
-{
+import RNCalendarEvents, {
   RNCalendarCalendar,
   RNCalendarEvent,
-  RNCalendarEventPermissionLevel
+  RNCalendarEventPermissionLevel,
 } from 'react-native-calendar-events';
 
 export type Calendar = RNCalendarCalendar;

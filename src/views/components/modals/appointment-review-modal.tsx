@@ -1,7 +1,23 @@
 import React from 'react';
 import _ from 'lodash';
-import { Modal, View, ModalProps, StyleSheet, Platform, ScrollView } from 'react-native';
-import { Text, TextArea, Title, SubTitle, Strong, Label, PrimaryButton, TextButton } from '../theme';
+import {
+  Modal,
+  View,
+  ModalProps,
+  StyleSheet,
+  Platform,
+  ScrollView,
+} from 'react-native';
+import {
+  Text,
+  TextArea,
+  Title,
+  SubTitle,
+  Strong,
+  Label,
+  PrimaryButton,
+  TextButton,
+} from '../theme';
 
 import Avatar from '../theme/avatar';
 import { Card, CardItem, Body, Content } from 'native-base';
@@ -21,7 +37,10 @@ interface AppointmentReviewModalState {
   // isModalOpen: boolean;
 }
 
-class AppointmentReviewModal extends React.Component<AppointmentReviewModalProps, AppointmentReviewModalState> {
+class AppointmentReviewModal extends React.Component<
+  AppointmentReviewModalProps,
+  AppointmentReviewModalState
+> {
   state: AppointmentReviewModalState = {
     // isModalOpen: false
   };
@@ -29,49 +48,67 @@ class AppointmentReviewModal extends React.Component<AppointmentReviewModalProps
   render() {
     const { appointment, currentUser, ...rest } = this.props;
     return (
-      <Modal {...rest} animationType="fade" transparent>
-        <LinearGradient colors={[theme.colors.cottonCandyBlue, theme.colors.cottonCandyPink]} style={styles.modal}>
+      <Modal {...rest} animationType='fade' transparent>
+        <LinearGradient
+          colors={[theme.colors.cottonCandyBlue, theme.colors.cottonCandyPink]}
+          style={styles.modal}
+        >
           <Content>
             <Card style={styles.container}>
               <CardItem header style={styles.header}>
                 <Title style={{ textAlign: 'center' }}>
-                  We are <Strong>Wonder&apos;N</Strong>{'\n'}how your date went?
+                  We are <Strong>Wonder&apos;N</Strong>
+                  {'\n'}how your date went?
                 </Title>
 
                 <View style={styles.userAvatarContainer}>
-                  <Avatar circle size="md" uri={_.get(appointment, 'match.images[0].url', null)} />
-                  <SubTitle style={{ textAlign: 'center' }}>{appointment.match.first_name}</SubTitle>
+                  <Avatar
+                    circle
+                    size='md'
+                    uri={_.get(appointment, 'match.images[0].url', null)}
+                  />
+                  <SubTitle style={{ textAlign: 'center' }}>
+                    {appointment.match.first_name}
+                  </SubTitle>
                 </View>
               </CardItem>
               <CardItem>
                 <View style={styles.body}>
                   <View style={styles.row}>
-                    <Text style={styles.label}>Did {appointment.match.first_name} Flake?</Text>
-                    <BooleanToggle />
-                  </View>
-                  <View style={styles.row}>
-                    <Text style={styles.label}>Hows was {appointment.name}?</Text>
-                    <StarRatingInput />
-                  </View>
-                  <View style={styles.row}>
-                    <Text style={styles.label}>Did {appointment.match.first_name} look like their photos?</Text>
-                    <BooleanToggle />
-                  </View>
-                  <View style={styles.row}>
                     <Text style={styles.label}>
-                      Did {appointment.match.first_name} fib about anything? (Height, Weight, etc.)
+                      Did {appointment.match.first_name} Flake?
                     </Text>
                     <BooleanToggle />
                   </View>
                   <View style={styles.row}>
                     <Text style={styles.label}>
-                      Do you want to setup another wonder with {appointment.match.first_name}?
+                      Hows was {appointment.name}?
+                    </Text>
+                    <StarRatingInput />
+                  </View>
+                  <View style={styles.row}>
+                    <Text style={styles.label}>
+                      Did {appointment.match.first_name} look like their photos?
+                    </Text>
+                    <BooleanToggle />
+                  </View>
+                  <View style={styles.row}>
+                    <Text style={styles.label}>
+                      Did {appointment.match.first_name} fib about anything?
+                      (Height, Weight, etc.)
+                    </Text>
+                    <BooleanToggle />
+                  </View>
+                  <View style={styles.row}>
+                    <Text style={styles.label}>
+                      Do you want to setup another wonder with{' '}
+                      {appointment.match.first_name}?
                     </Text>
                     <BooleanToggle />
                   </View>
                   <View style={[styles.row, { alignItems: undefined }]}>
                     <TextArea
-                      placeholder="Tell us more! How&apos;d it go?"
+                      placeholder="Tell us more! How'd it go?"
                       style={{ flex: 1, minHeight: 150 }}
                     />
                   </View>
@@ -80,11 +117,16 @@ class AppointmentReviewModal extends React.Component<AppointmentReviewModalProps
               <CardItem footer style={styles.footer}>
                 <View>
                   <Label style={{ textAlign: 'center' }}>
-                    All feedback is anonymous and used to improve Wonder for you!
+                    All feedback is anonymous and used to improve Wonder for
+                    you!
                   </Label>
                 </View>
-                <PrimaryButton title="Submit" onPress={_.noop} />
-                <TextButton style={{ marginTop: 10 }} text="Cancel" onPress={this.props.onRequestClose} />
+                <PrimaryButton title='Submit' onPress={_.noop} />
+                <TextButton
+                  style={{ marginTop: 10 }}
+                  text='Cancel'
+                  onPress={this.props.onRequestClose}
+                />
               </CardItem>
             </Card>
           </Content>
@@ -100,7 +142,7 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20
+    padding: 20,
   },
   container: {
     borderRadius: 10,
@@ -110,31 +152,31 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: {
       width: 0,
-      height: 0
+      height: 0,
     },
-    shadowRadius: 5
+    shadowRadius: 5,
   },
   header: {
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   footer: {
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
     alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   userAvatarContainer: {
-    marginTop: 15
+    marginTop: 15,
   },
   body: {},
   label: {
-    textAlign: 'center'
+    textAlign: 'center',
   },
   row: {
     width: '100%',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });

@@ -1,6 +1,13 @@
 import _ from 'lodash';
 import React from 'react';
-import { View, StyleSheet, TextInput as Input, TextInputProps, StyleProp, ViewStyle } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TextInput as Input,
+  TextInputProps,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import theme from 'src/assets/styles/theme';
 import Color from 'color';
 import Label from './label';
@@ -27,11 +34,11 @@ const palette = Color(theme.colors.backgroundPrimary);
 export default class TextInput extends React.Component<Props, State> {
   static defaultProps = {
     disabled: false,
-    getRef: _.noop
+    getRef: _.noop,
   };
 
   state = {
-    text: undefined
+    text: undefined,
   };
 
   renderIcon = () => {
@@ -39,18 +46,22 @@ export default class TextInput extends React.Component<Props, State> {
     if (icon) {
       return (
         <View style={styles.iconContainer}>
-          <Icon name={icon} color={color || palette.darken(0.2).toString()} size={14} />
+          <Icon
+            name={icon}
+            color={color || palette.darken(0.2).toString()}
+            size={14}
+          />
         </View>
       );
     }
-  }
+  };
 
   renderErrorHint = () => {
     const { errorHint } = this.props;
     // if (errorHint) {
-    return (<ErrorHint>{errorHint}</ErrorHint>);
+    return <ErrorHint>{errorHint}</ErrorHint>;
     // }
-  }
+  };
 
   validate = () => {
     const { onValidate } = this.props;
@@ -58,10 +69,10 @@ export default class TextInput extends React.Component<Props, State> {
     const valid = onValidate && onValidate(text);
     return (
       <View style={styles.iconContainer}>
-        <Icon color={valid ? 'green' : 'transparent'} size={14} name="check" />
+        <Icon color={valid ? 'green' : 'transparent'} size={14} name='check' />
       </View>
     );
-  }
+  };
 
   onTextChange = (text: string) => {
     const { onChangeText } = this.props;
@@ -69,10 +80,19 @@ export default class TextInput extends React.Component<Props, State> {
     if (onChangeText) {
       onChangeText(text);
     }
-  }
+  };
 
   render() {
-    const { disabled, autoCorrect, label, style, containerStyles, padLeft, getRef, ...rest } = this.props;
+    const {
+      disabled,
+      autoCorrect,
+      label,
+      style,
+      containerStyles,
+      padLeft,
+      getRef,
+      ...rest,
+    } = this.props;
     return (
       <View style={styles.container}>
         {label && <Label>{label.toUpperCase()}</Label>}
@@ -83,7 +103,7 @@ export default class TextInput extends React.Component<Props, State> {
             ref={getRef}
             editable={!disabled}
             autoCorrect={autoCorrect}
-            underlineColorAndroid="transparent"
+            underlineColorAndroid='transparent'
             {...rest}
             style={[styles.input, style]}
             onChangeText={this.onTextChange}
@@ -107,10 +127,10 @@ const styles = StyleSheet.create({
   errorHintText: {
     color: 'red',
     fontSize: 9,
-    marginLeft: 20
+    marginLeft: 20,
   },
   label: {
-    marginBottom: 0
+    marginBottom: 0,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -127,6 +147,6 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     flex: 1,
-    paddingHorizontal: 10
-  }
+    paddingHorizontal: 10,
+  },
 });

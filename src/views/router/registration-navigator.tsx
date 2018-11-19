@@ -1,5 +1,5 @@
-import theme from "src/assets/styles/theme";
-import { createStackNavigator } from "react-navigation";
+import theme from 'src/assets/styles/theme';
+import { createStackNavigator } from 'react-navigation';
 import {
   Login,
   Welcome,
@@ -9,7 +9,7 @@ import {
   Register4,
   ProfileCamera,
   ProfileVideo,
-} from "../screens";
+} from '../screens';
 
 const RegistrationNavigator = createStackNavigator(
   {
@@ -22,55 +22,55 @@ const RegistrationNavigator = createStackNavigator(
     Login: {
       screen: Login,
       navigationOptions: {
-        title: "LOGIN",
+        title: 'LOGIN',
         ...theme.NavBar.transparent,
       },
     },
     Register1: {
       screen: Register1,
       navigationOptions: {
-        title: "CREATE ACCOUNT",
+        title: 'CREATE ACCOUNT',
         ...theme.NavBar.transparent,
       },
     },
     Register2: {
       screen: Register2,
       navigationOptions: {
-        title: "CREATE ACCOUNT",
+        title: 'CREATE ACCOUNT',
         ...theme.NavBar.transparent,
       },
     },
     Register3: {
       screen: Register3,
       navigationOptions: {
-        title: "CREATE ACCOUNT",
+        title: 'CREATE ACCOUNT',
         ...theme.NavBar.transparent,
       },
     },
     Register4: {
       screen: Register4,
       navigationOptions: {
-        title: "YOUR WONDERS",
+        title: 'YOUR WONDERS',
         ...theme.NavBar.transparent,
       },
     },
     ProfileCamera: {
       screen: ProfileCamera,
       navigationOptions: {
-        title: "Profile Selfie",
+        title: 'Profile Selfie',
         ...theme.NavBar.transparent,
       },
     },
     ProfileVideo: {
       screen: ProfileVideo,
       navigationOptions: {
-        title: "Vibe Video",
+        title: 'Vibe Video',
         ...theme.NavBar.transparent,
       },
     },
   },
   {
-    initialRouteName: "Welcome",
+    initialRouteName: 'Welcome',
   },
 );
 

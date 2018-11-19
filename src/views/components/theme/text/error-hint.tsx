@@ -5,9 +5,7 @@ import { TextProps, StyleSheet } from 'react-native';
 class ErrorHint extends React.Component<TextProps> {
   public render() {
     const { children, style } = this.props;
-    return (
-      <Text style={[styles.errorHintText, style]}>{children}</Text>
-    );
+    return <Text style={[styles.errorHintText, style]}>{children}</Text>;
   }
 }
 
@@ -20,6 +18,6 @@ const styles = StyleSheet.create({
   },
   errorHintText: {
     color: 'red',
-    fontSize: 9
+    fontSize: 9,
   },
 });

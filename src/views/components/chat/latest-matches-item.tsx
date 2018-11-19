@@ -14,8 +14,8 @@ interface LatestMatchesItemProps {
 class LatestMatchesItem extends React.Component<LatestMatchesItemProps> {
   static defaultProps = {
     chat: {
-      messages: []
-    }
+      messages: [],
+    },
   };
 
   render() {
@@ -41,6 +41,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   textContainer: {
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 });

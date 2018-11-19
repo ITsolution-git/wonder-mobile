@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import moment, { Moment } from 'moment';
-import { View, StyleSheet } from "react-native";
-import { Text } from "src/views/components/theme";
-import { CalendarItem } from "../modals/user-calendar.modal";
-import Wonder from "../theme/wonder/wonder";
+import { View, StyleSheet } from 'react-native';
+import { Text } from 'src/views/components/theme';
+import { CalendarItem } from '../modals/user-calendar.modal';
+import Wonder from '../theme/wonder/wonder';
 
 export interface AgendaDayItemProps {
   item: CalendarItem;
@@ -22,9 +22,7 @@ const AgendaDayItem: React.SFC<AgendaDayItemProps> = ({ item }) => {
   }
 
   return (
-    <View
-      style={styles.agendaItemContainer}
-    >
+    <View style={styles.agendaItemContainer}>
       {topic && <Wonder topic={topic} active={false} size={60} />}
       <View style={styles.agendaItemTextContainer}>
         <Text style={styles.titleText}>{title || 'Event'}</Text>
@@ -40,8 +38,8 @@ const styles = StyleSheet.create({
   agendaItemContainer: {
     flexDirection: 'row',
     marginVertical: 5,
-    width: "100%",
-    backgroundColor: "white",
+    width: '100%',
+    backgroundColor: 'white',
     borderRadius: 5,
     padding: 10,
     minHeight: 50,
@@ -49,18 +47,18 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: {
       width: 0,
-      height: 3
+      height: 3,
     },
     shadowColor: '#000',
-    shadowOpacity: 0.1
+    shadowOpacity: 0.1,
   },
   agendaItemTextContainer: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   titleText: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   timeText: {
-    fontSize: 11
-  }
+    fontSize: 11,
+  },
 });

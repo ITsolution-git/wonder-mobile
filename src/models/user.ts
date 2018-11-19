@@ -1,8 +1,8 @@
-import Gender from "./gender";
+import Gender from './gender';
 import DistanceUnit from './distance-unit';
-import ProfileImage from "./profile-image";
-import VibeVideo from "./vibe-video";
-import Topic from "./topic";
+import ProfileImage from './profile-image';
+import VibeVideo from './vibe-video';
+import Topic from './topic';
 
 /**
  * User Model

@@ -1,11 +1,10 @@
 import React from 'react';
-import { StyleSheet, } from 'react-native';
+import { StyleSheet } from 'react-native';
 import BaseButton, { BaseButtonProps } from './buttons/base-button';
 
 export default class ElevatedButton extends React.Component<BaseButtonProps> {
-
   static defaultProps = {
-    start: undefined
+    start: undefined,
   };
 
   render() {
@@ -19,7 +18,6 @@ export default class ElevatedButton extends React.Component<BaseButtonProps> {
         {...rest}
         style={[styles.container, style]}
         innerStyle={[styles.inner, innerStyle]}
-
       />
     );
   }
@@ -36,12 +34,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: {
       width: 0,
-      height: 3
+      height: 3,
     },
   },
   inner: {
     borderRadius: 3,
-    height: 44
+    height: 44,
     // paddingVertical: 20,
-  }
+  },
 });

@@ -11,7 +11,7 @@ export const getTopics = createAction(GET_TOPICS);
 export function* getTopicsSaga(action: Action) {
   try {
     const response = yield call(api, {
-      url: '/topics'
+      url: '/topics',
     });
     yield put(persistTopics(response.data));
   } catch (error) {

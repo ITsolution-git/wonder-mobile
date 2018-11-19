@@ -1,7 +1,12 @@
 import _ from 'lodash';
 import React from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { Text, PrimaryButton, TextInput, WonderPicker } from 'src/views/components/theme';
+import {
+  Text,
+  PrimaryButton,
+  TextInput,
+  WonderPicker,
+} from 'src/views/components/theme';
 import Screen from 'src/views/components/screen';
 
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
@@ -10,8 +15,8 @@ import { Dispatch } from 'redux';
 import { getTopics } from 'src/store/sagas/topics';
 
 import { updateUser } from 'src/store/sagas/user';
-import WonderPickerSectionList from "src/views/components/theme/wonder-picker/wonder-picker-sectionlist";
-import PickedWonders from "src/views/components/theme/wonder-picker/picked-wonders";
+import WonderPickerSectionList from 'src/views/components/theme/wonder-picker/wonder-picker-sectionlist';
+import PickedWonders from 'src/views/components/theme/wonder-picker/picked-wonders';
 
 import { selectCurrentUser } from 'src/store/selectors/user';
 import User from 'src/models/user';
@@ -34,7 +39,7 @@ interface State {
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),
-  topics: state.wonder.topics
+  topics: state.wonder.topics,
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
@@ -43,7 +48,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
 });
 
 const chosenItems = (arr: string[]) => {
-  const arr2 = ["", "", ""];
+  const arr2 = ['', '', ''];
   if (arr.length <= 3) {
     for (let i = 0; i < arr2.length; i++) {
       if (arr[i]) {
@@ -55,14 +60,13 @@ const chosenItems = (arr: string[]) => {
 };
 
 class ProfileWondersScreen extends React.Component<Props, State> {
-
   static defaultProps = {
-    topics: []
+    topics: [],
   };
 
   state = {
     search: '',
-    selected: this.props.currentUser.topics || []
+    selected: this.props.currentUser.topics || [],
   };
 
   componentWillMount() {
@@ -71,7 +75,7 @@ class ProfileWondersScreen extends React.Component<Props, State> {
 
   onSearchTextChange = (text: string) => {
     this.setState({ search: text.toLowerCase() });
-  }
+  };
 
   onChangeSelected = (topic: Topic) => {
     const limit = 3;
@@ -83,10 +87,10 @@ class ProfileWondersScreen extends React.Component<Props, State> {
       this.setState({ selected: [...selected, topic] });
     } else {
       this.setState({
-        selected: selected.filter((t: Topic) => t.name !== topic.name)
+        selected: selected.filter((t: Topic) => t.name !== topic.name),
       });
     }
-  }
+  };
 
   filterTopics = () => {
     const { search } = this.state;
@@ -98,17 +102,16 @@ class ProfileWondersScreen extends React.Component<Props, State> {
 
         return isInName || isInKeywords;
       });
-
     }
     return topics;
-  }
+  };
 
   renderPicker = () => {
     const filteredTopics = this.filterTopics();
     const { selected } = this.state;
     const { topics } = this.props;
     const quickDates = topics.filter(
-      (t) => t.name === "Coffee" || t.name === "Lunch" || t.name === "Dinner"
+      (t) => t.name === 'Coffee' || t.name === 'Lunch' || t.name === 'Dinner',
     );
 
     const groupedTopics = _.chunk(filteredTopics, 3);
@@ -126,13 +129,13 @@ class ProfileWondersScreen extends React.Component<Props, State> {
     }
     return (
       <View>
-        <Text style={{ textAlign: "center" }}>
+        <Text style={{ textAlign: 'center' }}>
           Sorry! Looks like we do not have a wonder that matches what you are
           looking for.
         </Text>
       </View>
     );
-  }
+  };
 
   renderPicks = () => {
     const { selected } = this.state;
@@ -144,7 +147,7 @@ class ProfileWondersScreen extends React.Component<Props, State> {
         selected={selected}
       />
     );
-  }
+  };
 
   validate = () => {
     const { onSave, currentUser, navigation } = this.props;
@@ -153,7 +156,7 @@ class ProfileWondersScreen extends React.Component<Props, State> {
       onSave({ topic_ids: selected.map((s: Topic) => s.id) });
       navigation.goBack();
     }
-  }
+  };
 
   render() {
     const { selected } = this.state;
@@ -165,23 +168,32 @@ class ProfileWondersScreen extends React.Component<Props, State> {
           </Text>
         </View> */}
         <View>{this.renderPicks()}</View>
-        <View style={{ paddingVertical: 15, width: '70%', alignSelf: 'center' }}>
+        <View
+          style={{ paddingVertical: 15, width: '70%', alignSelf: 'center' }}
+        >
           <TextInput
             color={theme.colors.primaryLight}
             containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
             autoCorrect={false}
-            autoCapitalize="none"
-            icon="search"
-            placeholder="Search"
+            autoCapitalize='none'
+            icon='search'
+            placeholder='Search'
             onChangeText={this.onSearchTextChange}
           />
         </View>
         <View flex={1}>
           {this.renderPicker()}
-          <View style={{ position: 'absolute', bottom: 10, width: '100%', zIndex: 10 }}>
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 10,
+              width: '100%',
+              zIndex: 10,
+            }}
+          >
             <PrimaryButton
               disabled={selected.length !== 3}
-              title="Save"
+              title='Save'
               onPress={this.validate}
             />
           </View>
@@ -191,7 +203,10 @@ class ProfileWondersScreen extends React.Component<Props, State> {
   }
 }
 
-export default connect(mapState, mapDispatch)(ProfileWondersScreen);
+export default connect(
+  mapState,
+  mapDispatch,
+)(ProfileWondersScreen);
 
 const styles = StyleSheet.create({
   welcome: {

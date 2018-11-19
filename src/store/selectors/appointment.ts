@@ -4,12 +4,12 @@ import { selectCurrentUser } from './user';
 import moment from 'moment-timezone';
 import {
   isAppointmentBeforeToday,
-  isAppointmentAfterToday
+  isAppointmentAfterToday,
 } from 'src/utils/appointment';
 import WonderAppState from 'src/models/wonder-app-state';
 import Appointment, {
   DecoratedAppointment,
-  AppointmentUser
+  AppointmentUser,
 } from 'src/models/appointment';
 import User from 'src/models/user';
 import Wonder from 'src/views/components/theme/wonder/wonder';
@@ -19,18 +19,18 @@ const allAttendances = (state: WonderAppState) => state.wonder.attendances;
 
 export const decorateAppointment = (
   appointment: Appointment,
-  me: User
+  me: User,
 ): DecoratedAppointment | undefined => {
   if (appointment) {
     const result: DecoratedAppointment = {
       ...appointment,
       me,
       match: appointment.users.find(
-        (user: AppointmentUser) => user.id !== me.id
+        (user: AppointmentUser) => user.id !== me.id,
       ),
       eventMoment: appointment.event_at
         ? moment(appointment.event_at)
-        : undefined
+        : undefined,
     };
 
     return result;
@@ -40,20 +40,19 @@ export const decorateAppointment = (
 // ONLY THIS ONE
 export const decorateAttendance = (
   appointment: any,
-  me: User
+  me: User,
 ): DecoratedAppointment | undefined => {
-
   if (appointment) {
     const result: any = {
       ...appointment.appointment,
       attendanceId: appointment.id,
       me,
       match: appointment.appointment.users.find(
-        (user: AppointmentUser) => user.id !== me.id
+        (user: AppointmentUser) => user.id !== me.id,
       ),
       eventMoment: appointment.appointment.event_at
         ? moment(appointment.event_at)
-        : undefined
+        : undefined,
     };
     return result;
   }
@@ -66,7 +65,7 @@ export const selectUpcomingAppointments = createSelector(
     return _.sortBy(appointments, 'event_at')
       .map((a: Appointment) => decorateAppointment(a, currentUser))
       .filter(isAppointmentAfterToday);
-  }
+  },
 );
 
 export const selectUpcomingAttendances = createSelector(
@@ -75,7 +74,7 @@ export const selectUpcomingAttendances = createSelector(
     return _.sortBy(appointments, 'departure_at')
       .map((a: any) => decorateAttendance(a, currentUser))
       .filter(isAppointmentAfterToday);
-  }
+  },
 );
 
 export const selectPastAppointments = createSelector(
@@ -84,5 +83,5 @@ export const selectPastAppointments = createSelector(
     return appointments
       .map((a: Appointment) => decorateAppointment(a, currentUser))
       .filter(isAppointmentBeforeToday);
-  }
+  },
 );

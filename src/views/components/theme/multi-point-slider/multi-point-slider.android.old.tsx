@@ -1,6 +1,6 @@
-import React from "react";
-import { View, Slider } from "react-native";
-import theme from "src/assets/styles/theme";
+import React from 'react';
+import { View, Slider } from 'react-native';
+import theme from 'src/assets/styles/theme';
 
 export interface MultiPointSliderValue {
   selectedMinimum: number;
@@ -60,7 +60,7 @@ class MultiPointSlider extends React.Component<
     const { min, max } = this.props;
     const { selectedMin, selectedMax } = this.state;
     return (
-      <View style={{ flex: 1, flexDirection: "row" }}>
+      <View style={{ flex: 1, flexDirection: 'row' }}>
         <Slider
           minimumValue={min}
           maximumValue={max}

@@ -14,27 +14,40 @@ interface StarRatingInputState {
   value: number;
 }
 
-class StarRatingInput extends React.Component<StarRatingInputProps, StarRatingInputState> {
+class StarRatingInput extends React.Component<
+  StarRatingInputProps,
+  StarRatingInputState
+> {
   static defaultProps = {
-    size: 25
+    size: 25,
   };
 
   state: StarRatingInputState = {
-    value: this.props.initialValue || 0
+    value: this.props.initialValue || 0,
   };
 
   onValueChange = (value: number) => {
     this.setState({ value });
-  }
+  };
 
   renderOption = (key: number) => {
     const { value } = this.state;
     return (
-      <TouchableOpacity style={styles.option} key={key} onPress={() => this.onValueChange(key)}>
-        <Icon name="star" color={value >= key ? theme.colors.primaryLight : theme.colors.textColor} size={25} />
+      <TouchableOpacity
+        style={styles.option}
+        key={key}
+        onPress={() => this.onValueChange(key)}
+      >
+        <Icon
+          name='star'
+          color={
+            value >= key ? theme.colors.primaryLight : theme.colors.textColor
+          }
+          size={25}
+        />
       </TouchableOpacity>
     );
-  }
+  };
 
   render() {
     const { size } = this.props;
@@ -50,9 +63,9 @@ export default StarRatingInput;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   option: {
-    padding: 5
-  }
+    padding: 5,
+  },
 });

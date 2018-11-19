@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Modal, DatePickerIOS, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Modal,
+  DatePickerIOS,
+  TouchableOpacity,
+} from 'react-native';
 import { Label, Text } from '..';
 import moment from 'moment-timezone';
 import theme from 'src/assets/styles/theme';
@@ -26,16 +32,15 @@ interface State {
 }
 
 export default class TimePicker extends React.Component<Props, State> {
-
   static defaultProps = {
-    displayFormat: 'h:mma'
+    displayFormat: 'h:mma',
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
       value: props.initialDate,
-      open: false
+      open: false,
     };
   }
 
@@ -47,37 +52,46 @@ export default class TimePicker extends React.Component<Props, State> {
       onChange({ hour: dateAsMoment.hour(), minute: dateAsMoment.minutes() });
     }
     this.setState({ open: false });
-  }
+  };
 
   private onChange = (date: Date) => {
     this.setState({ value: date });
-  }
+  };
 
   public render() {
-    const { label, displayFormat, errorHint, minDate, maxDate, onChange } = this.props;
+    const {
+      label,
+      displayFormat,
+      errorHint,
+      minDate,
+      maxDate,
+      onChange,
+    } = this.props;
     const { open, value } = this.state;
     return (
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.container}>
-          <Text>{value ? moment(value).format(displayFormat) : 'Select Time'}</Text>
+          <Text>
+            {value ? moment(value).format(displayFormat) : 'Select Time'}
+          </Text>
           <TouchableOpacity
             style={styles.iconBtn}
             onPress={() => this.setState({ open: true })}
           >
-            <Icon name="clock-o" color={theme.colors.white} />
+            <Icon name='clock-o' color={theme.colors.white} />
           </TouchableOpacity>
         </View>
         {<ErrorHint>{errorHint}</ErrorHint>}
         <FooterModal
-          closeText="Done"
-          animationType="slide"
+          closeText='Done'
+          animationType='slide'
           transparent
           visible={open}
           onClose={this.onClose}
         >
           <DatePickerIOS
-            mode="time"
+            mode='time'
             date={this.state.value || new Date()}
             onDateChange={this.onChange}
             minimumDate={minDate}
@@ -88,7 +102,6 @@ export default class TimePicker extends React.Component<Props, State> {
       </View>
     );
   }
-
 }
 
 const styles = StyleSheet.create({
@@ -97,7 +110,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   container: {
     flexDirection: 'row',
@@ -109,6 +122,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: theme.colors.textColor,
-    fontFamily: theme.fonts.primary
-  }
-})
+    fontFamily: theme.fonts.primary,
+  },
+});

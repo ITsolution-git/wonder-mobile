@@ -17,11 +17,11 @@ import { Response } from 'src/models/image-picker';
 import theme from 'src/assets/styles/theme';
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state)
+  currentUser: selectCurrentUser(state),
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onUpdateUser: (data: Partial<User>) => dispatch(updateUser(data))
+  onUpdateUser: (data: Partial<User>) => dispatch(updateUser(data)),
 });
 
 interface Props {
@@ -36,7 +36,7 @@ interface State {
 
 class ProfileMediaScreen extends React.Component<Props> {
   state = {
-    about: this.props.currentUser.about || ''
+    about: this.props.currentUser.about || '',
   };
 
   onSave = () => {
@@ -45,11 +45,11 @@ class ProfileMediaScreen extends React.Component<Props> {
 
     onUpdateUser({ about });
     navigation.goBack();
-  }
+  };
 
   onAboutChange = (text: string) => {
     this.setState({ about: text });
-  }
+  };
 
   render() {
     const { navigation } = this.props;
@@ -61,45 +61,54 @@ class ProfileMediaScreen extends React.Component<Props> {
           <Text
             allowFontScaling={false}
             numberOfLines={1}
-            style={{ marginTop: 10, color: theme.colors.textColor, textAlign: 'center' }}
+            style={{
+              marginTop: 10,
+              color: theme.colors.textColor,
+              textAlign: 'center',
+            }}
           >
             UPLOAD YOUR PHOTO'S &amp; VIBE VIDEO
           </Text>
           <KeyboardAvoidingView
-            behavior="position"
+            behavior='position'
             style={{ flex: 1 }}
             contentContainerStyle={{ flex: 1 }}
           >
             <View style={{ flex: 1, justifyContent: 'center' }}>
-
               <KeyboardDismissView>
-                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <View
+                  style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
                   <MediaGrid
                     width={Device.WIDTH - 80}
                     gutter={2}
-                    onNewPicture={(data: Response | null) => navigation.navigate('ProfileCamera', { data })}
-                    onNewVideo={(data: Response | null) => navigation.navigate('ProfileVideo', { data })}
+                    onNewPicture={(data: Response | null) =>
+                      navigation.navigate('ProfileCamera', { data })
+                    }
+                    onNewVideo={(data: Response | null) =>
+                      navigation.navigate('ProfileVideo', { data })
+                    }
                   />
                 </View>
                 <TextArea
-                  label="About Me"
-                  placeholder="Take this time to describe yourself, life experience, hobbies, and anything else that makes you wonderful..."
+                  label='About Me'
+                  placeholder='Take this time to describe yourself, life experience, hobbies, and anything else that makes you wonderful...'
                   maxLength={200}
                   defaultValue={about}
                   onChangeText={this.onAboutChange}
                   style={{ minHeight: 100 }}
                 />
-
               </KeyboardDismissView>
-
             </View>
-
           </KeyboardAvoidingView>
         </View>
-        <PrimaryButton rounded={false} title="DONE" onPress={this.onSave} />
-      </Screen >
+        <PrimaryButton rounded={false} title='DONE' onPress={this.onSave} />
+      </Screen>
     );
   }
 }
 
-export default connect(mapState, mapDispatch)(ProfileMediaScreen);
+export default connect(
+  mapState,
+  mapDispatch,
+)(ProfileMediaScreen);

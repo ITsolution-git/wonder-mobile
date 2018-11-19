@@ -1,9 +1,9 @@
 // author: NK
 
-import * as React from "react";
-import { NetInfo, ConnectionInfo } from "react-native";
-import { Client } from "bugsnag-react-native";
-import { BUGSNAG_TOKEN } from "@appConfig";
+import * as React from 'react';
+import { NetInfo, ConnectionInfo } from 'react-native';
+import { Client } from 'bugsnag-react-native';
+import { BUGSNAG_TOKEN } from '@appConfig';
 
 interface IAppLoaderProps {}
 
@@ -20,7 +20,7 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
       isOnline: false,
     };
 
-    this._bugsnag.notify(new Error("Test error #2 with source maps"));
+    this._bugsnag.notify(new Error('Test error #2 with source maps'));
   }
 
   componentDidMount() {
@@ -44,7 +44,7 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
 
   componentWillUnmount() {
     NetInfo.removeEventListener(
-      "connectionChange",
+      'connectionChange',
       this.handleConnectionChange,
     );
   }
@@ -55,10 +55,10 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
     const networkStatus = await NetInfo.getConnectionInfo();
 
     console.log(`networkStatus:`, networkStatus);
-    const isOnline = networkStatus.type !== "none";
+    const isOnline = networkStatus.type !== 'none';
 
     this.setState({ isOnline });
-    NetInfo.addEventListener("connectionChange", this.handleConnectionChange);
+    NetInfo.addEventListener('connectionChange', this.handleConnectionChange);
   };
 
   private handleConnectionChange = (
@@ -67,9 +67,9 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
     console.log(`connectionInfo:`, connectionInfo);
 
     const isOnline =
-      typeof connectionInfo === "string"
-        ? connectionInfo !== "none"
-        : connectionInfo.type !== "none";
+      typeof connectionInfo === 'string'
+        ? connectionInfo !== 'none'
+        : connectionInfo.type !== 'none';
 
     this.setState({ isOnline });
   };

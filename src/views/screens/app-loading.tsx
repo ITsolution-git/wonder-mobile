@@ -1,9 +1,9 @@
-import React from "react";
-import WonderAppState from "../../models/wonder-app-state";
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
-import { updateUser } from "src/store/sagas/user";
-import { selectCurrentUser } from "src/store/selectors/user";
+import React from 'react';
+import WonderAppState from '../../models/wonder-app-state';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
+import { updateUser } from 'src/store/sagas/user';
+import { selectCurrentUser } from 'src/store/selectors/user';
 
 const mapState = (state: WonderAppState) => ({
   token: state.user.auth.token,
@@ -28,10 +28,10 @@ interface UserPushNotificationOptions {
 class AppLoadingScreen extends React.Component<Props> {
   componentDidMount() {
     if (this.props.token) {
-      this.props.navigation.navigate("Main");
+      this.props.navigation.navigate('Main');
       return;
     }
-    this.props.navigation.navigate("onboarding");
+    this.props.navigation.navigate('onboarding');
   }
 
   render() {

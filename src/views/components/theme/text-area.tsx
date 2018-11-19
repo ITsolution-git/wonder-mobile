@@ -19,7 +19,7 @@ export default class TextArea extends React.Component<Props> {
           placeholder={placeholder}
           onChangeText={onChangeText}
           numberOfLines={4}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
           {...rest}
         />
       </View>
@@ -28,16 +28,14 @@ export default class TextArea extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  container: {
-
-  },
+  container: {},
   input: {
-    textAlignVertical: "top",
+    textAlignVertical: 'top',
     maxHeight: 150,
     borderRadius: 5,
     fontFamily: theme.fonts.primary,
     borderWidth: 1,
     borderColor: 'rgb(223,223,231)',
-    padding: 10
-  }
+    padding: 10,
+  },
 });

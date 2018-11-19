@@ -15,25 +15,21 @@ class PricingIndicator extends React.Component<Props> {
         key={i}
         size={10}
         color={i <= rating ? theme.colors.primary : theme.colors.textColor}
-        name="usd"
+        name='usd'
       />
     ));
-  }
+  };
 
   render() {
-    return (
-      <View style={styles.container}>
-        {this.renderPricing()}
-      </View>
-    );
+    return <View style={styles.container}>{this.renderPricing()}</View>;
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });
 
 export default PricingIndicator;

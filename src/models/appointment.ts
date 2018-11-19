@@ -1,6 +1,6 @@
-import User from "./user";
-import Topic from "./topic";
-import { Moment } from "moment-timezone";
+import User from './user';
+import Topic from './topic';
+import { Moment } from 'moment-timezone';
 
 export interface AppointmentUser extends Partial<User> {
   id: number;

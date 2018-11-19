@@ -1,6 +1,6 @@
 enum DistanceUnit {
   kilometers = 'km',
-  miles = 'mi'
+  miles = 'mi',
 }
 
 export default DistanceUnit;

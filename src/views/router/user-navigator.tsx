@@ -1,11 +1,11 @@
-import React from "react";
-import { Platform } from "react-native";
+import React from 'react';
+import { Platform } from 'react-native';
 import {
   createStackNavigator,
   createMaterialTopTabNavigator,
   NavigationScreenProp,
   NavigationRoute,
-} from "react-navigation";
+} from 'react-navigation';
 
 import {
   AppointmentView,
@@ -19,11 +19,11 @@ import {
   ProfileCamera,
   ProfileVideo,
   Feedback,
-} from "../screens";
-import { INITIAL_PROFILE_SCREEN } from "@appConfig";
+} from '../screens';
+import { INITIAL_PROFILE_SCREEN } from '@appConfig';
 
-import TabIcon from "src/views/components/tabs/secondary-tab-icon";
-import theme from "src/assets/styles/theme";
+import TabIcon from 'src/views/components/tabs/secondary-tab-icon';
+import theme from 'src/assets/styles/theme';
 
 // import SecondaryTabIcon from 'src/views/components/tab/secondary-tab-icon';
 
@@ -51,7 +51,7 @@ const ProfileNavigator = createStackNavigator(
     ProfileEdit: {
       screen: ProfileEdit,
       navigationOptions: {
-        title: "Profile",
+        title: 'Profile',
         ...theme.NavBar.transparent,
       },
     },
@@ -64,14 +64,14 @@ const ProfileNavigator = createStackNavigator(
     ProfileWonders: {
       screen: ProfileWonders,
       navigationOptions: {
-        title: "Pick Your Wonders",
+        title: 'Pick Your Wonders',
         ...theme.NavBar.transparent,
       },
     },
     ProfilePreferences: {
       screen: ProfilePreferences,
       navigationOptions: {
-        title: "Preferences",
+        title: 'Preferences',
         ...theme.NavBar.transparent,
         // header: null,
       },
@@ -79,21 +79,21 @@ const ProfileNavigator = createStackNavigator(
     ProfileCamera: {
       screen: ProfileCamera,
       navigationOptions: {
-        title: "Profile Selfie",
+        title: 'Profile Selfie',
         ...theme.NavBar.transparent,
       },
     },
     ProfileVideo: {
       screen: ProfileVideo,
       navigationOptions: {
-        title: "Vibe Video",
+        title: 'Vibe Video',
         ...theme.NavBar.transparent,
       },
     },
     Feedback: {
       screen: Feedback,
       navigationOptions: {
-        title: "Contact Us",
+        title: 'Contact Us',
         ...theme.NavBar.transparent,
       },
     },
@@ -146,11 +146,11 @@ const UserNavigator = createMaterialTopTabNavigator(
   },
   {
     swipeEnabled: false,
-    tabBarPosition: "top",
+    tabBarPosition: 'top',
     tabBarOptions: {
       allowFontScaling: false,
       style: {
-        backgroundColor: "#FFF",
+        backgroundColor: '#FFF',
         elevation: 0,
       },
       indicatorStyle: {

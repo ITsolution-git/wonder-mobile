@@ -1,8 +1,8 @@
-import React from "react";
-import { View, Text, SectionList, StyleSheet } from "react-native";
-import theme from "src/assets/styles/theme";
-import Topic from "src/models/topic";
-import WonderPickerItem from "src/views/components/theme/wonder-picker/wonder-picker-item";
+import React from 'react';
+import { View, Text, SectionList, StyleSheet } from 'react-native';
+import theme from 'src/assets/styles/theme';
+import Topic from 'src/models/topic';
+import WonderPickerItem from 'src/views/components/theme/wonder-picker/wonder-picker-item';
 
 interface Props {
   selected: Topic[];
@@ -27,11 +27,13 @@ const WonderPickerSectionList = (props: Props) => {
   const renderRow = ({ item }: { item: any }) => {
     if (item.length < 3) {
       return (
-        <View
-          style={styles.lessThanThree}
-        >
+        <View style={styles.lessThanThree}>
           {item.map((i) => {
-            return <View key={i.name} style={styles.wonderMargin}>{renderWonder(i)}</View>;
+            return (
+              <View key={i.name} style={styles.wonderMargin}>
+                {renderWonder(i)}
+              </View>
+            );
           })}
         </View>
       );
@@ -46,8 +48,8 @@ const WonderPickerSectionList = (props: Props) => {
         <Text style={styles.sectionHeader}>{title}</Text>
       )}
       sections={[
-        { title: "QUICK DATES", data: props.groupedQuickDates },
-        { title: "", data: props.groupedTopics }
+        { title: 'QUICK DATES', data: props.groupedQuickDates },
+        { title: '', data: props.groupedTopics },
       ]}
       keyExtractor={(item, index) => item + index}
       renderSectionFooter={() => <View style={styles.sectionFooter} />}
@@ -61,28 +63,28 @@ export default WonderPickerSectionList;
 const styles = StyleSheet.create({
   row: {
     padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   sectionHeader: {
-    textAlign: "center",
+    textAlign: 'center',
     margin: 4,
-    color: theme.colors.textColor
+    color: theme.colors.textColor,
   },
   sectionFooter: {
-    alignSelf: "center",
+    alignSelf: 'center',
     borderBottomColor: theme.colors.primaryLight,
     borderBottomWidth: 2,
-    width: "80%",
-    padding: 10
+    width: '80%',
+    padding: 10,
   },
   footer: { height: 80 },
   lessThanThree: {
     padding: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 15
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 15,
   },
-  wonderMargin: { marginRight: 20 }
+  wonderMargin: { marginRight: 20 },
 });

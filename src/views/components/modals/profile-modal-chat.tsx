@@ -7,30 +7,33 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
-  Platform
+  Platform,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { IconButton } from "../../components/theme";
-import VideoPlayer from "react-native-video-player";
+import { IconButton } from '../../components/theme';
+import VideoPlayer from 'react-native-video-player';
 import theme from '../../../assets/styles/theme';
 import Topic from '../../../models/topic';
-import Wonder from "../../components/theme/wonder/wonder";
+import Wonder from '../../components/theme/wonder/wonder';
 import WonderImage from '../../components/theme/wonder-image';
 import Color from 'color';
-import {
-  DecoratedConversation,
-} from "src/models/conversation";
+import { DecoratedConversation } from 'src/models/conversation';
 const { height } = Dimensions.get('window');
 
-const gradient = [lighten(theme.colors.primaryLight, 0.5), lighten(theme.colors.primary, 0.5)];
+const gradient = [
+  lighten(theme.colors.primaryLight, 0.5),
+  lighten(theme.colors.primary, 0.5),
+];
 
 function lighten(color: string, value: number) {
-  return Color(color).fade(value).toString();
+  return Color(color)
+    .fade(value)
+    .toString();
 }
 
 interface Props {
   currentUser: {
-    topics: Topic[]
+    topics: Topic[];
   };
   conversation: DecoratedConversation;
   visible: boolean;
@@ -43,7 +46,8 @@ interface Props {
 }
 
 const ProfileModalChat = (props: Props) => {
-  const { currentUser,
+  const {
+    currentUser,
     conversation,
     visible,
     onRequestClose,
@@ -57,8 +61,10 @@ const ProfileModalChat = (props: Props) => {
   const renderDistance = () => {
     return (
       <Text allowFontScaling={false} style={styles.distanceText}>
-        {conversation.partner.distance && _.get(conversation.partner, 'partner.distance', 0).toFixed(0)} miles
-        </Text>
+        {conversation.partner.distance &&
+          _.get(conversation.partner, 'partner.distance', 0).toFixed(0)}{' '}
+        miles
+      </Text>
     );
   };
 
@@ -68,11 +74,13 @@ const ProfileModalChat = (props: Props) => {
     const userTopics = currentUser.topics;
 
     return (
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: 'row' }}>
         {candidate &&
           candidateTopics.map((x: Topic) => {
             if (userTopics) {
-              const active: boolean = !!userTopics.find((i: Topic) => i.name === x.name);
+              const active: boolean = !!userTopics.find(
+                (i: Topic) => i.name === x.name,
+              );
               return (
                 <View style={{ marginRight: 5 }} key={x.name}>
                   <Wonder
@@ -96,58 +104,65 @@ const ProfileModalChat = (props: Props) => {
       visible={visible}
       onRequestClose={onRequestClose}
     >
-      <LinearGradient
-        colors={gradient}
-        style={styles.modalContainer}
-      >
-        <View
-          style={styles.modalInnerContainer}
-        >
+      <LinearGradient colors={gradient} style={styles.modalContainer}>
+        <View style={styles.modalInnerContainer}>
           <LinearGradient
             colors={['rgba(0,0,0,0.5)', 'transparent']}
             style={styles.topGradient}
           >
-            <View style={styles.iconContainer} >
-              {partner.video ? <View>
-                {showVideo ? <IconButton
-                  size={35}
-                  icon={"camera"}
-                  onPress={toggleVideo}
-                  primary={theme.colors.primaryLight}
-                  secondary="transparent"
-                /> : <IconButton
-                    size={35}
-                    icon={"video-camera"}
-                    onPress={toggleVideo}
-                    primary={theme.colors.primaryLight}
-                    secondary="transparent"
-                  />
-                }
-              </View> : <View />}
+            <View style={styles.iconContainer}>
+              {partner.video ? (
+                <View>
+                  {showVideo ? (
+                    <IconButton
+                      size={35}
+                      icon={'camera'}
+                      onPress={toggleVideo}
+                      primary={theme.colors.primaryLight}
+                      secondary='transparent'
+                    />
+                  ) : (
+                    <IconButton
+                      size={35}
+                      icon={'video-camera'}
+                      onPress={toggleVideo}
+                      primary={theme.colors.primaryLight}
+                      secondary='transparent'
+                    />
+                  )}
+                </View>
+              ) : (
+                <View />
+              )}
               <IconButton
                 size={35}
-                icon={"close"}
+                icon={'close'}
                 onPress={openProfileModal}
                 primary={'#fff'}
-                secondary="transparent"
+                secondary='transparent'
               />
             </View>
-
           </LinearGradient>
           <View style={styles.scrollContainer}>
-            <ScrollView >
-              {partner.video && showVideo ? <View style={styles.containerHeight}>
-                <VideoPlayer
-                  customStyles={{ videoWrapper: styles.videoStyles }}
-                  videoHeight={Platform.OS === 'ios' ? height / 3 * 2 * 4.74 : height * 2.58}
-                  pauseOnPress={true}
-                  disableFullscreen={true}
-                  autoplay={true}
-                  video={{
-                    uri: `${partner.video}`
-                  }}
-                />
-              </View> :
+            <ScrollView>
+              {partner.video && showVideo ? (
+                <View style={styles.containerHeight}>
+                  <VideoPlayer
+                    customStyles={{ videoWrapper: styles.videoStyles }}
+                    videoHeight={
+                      Platform.OS === 'ios'
+                        ? (height / 3) * 2 * 4.74
+                        : height * 2.58
+                    }
+                    pauseOnPress={true}
+                    disableFullscreen={true}
+                    autoplay={true}
+                    video={{
+                      uri: `${partner.video}`,
+                    }}
+                  />
+                </View>
+              ) : (
                 <View style={styles.imageContainer}>
                   {partner.images.map((i, index) => {
                     if (index === 0) {
@@ -163,7 +178,10 @@ const ProfileModalChat = (props: Props) => {
                               style={[styles.imageTopGradient]}
                             >
                               <View>
-                                <Text allowFontScaling={false} style={styles.firstNameText}>
+                                <Text
+                                  allowFontScaling={false}
+                                  style={styles.firstNameText}
+                                >
                                   {partner.first_name}, {partner.age}
                                 </Text>
                                 <Text style={{ marginLeft: 5 }}>
@@ -205,7 +223,8 @@ const ProfileModalChat = (props: Props) => {
                       );
                     }
                   })}
-                </View>}
+                </View>
+              )}
             </ScrollView>
           </View>
         </View>
@@ -219,14 +238,16 @@ export default ProfileModalChat;
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   modalInnerContainer: {
-    position: 'relative', height: height / 3 * 2,
-    borderRadius: 10, backgroundColor: '#f1f1f1',
+    position: 'relative',
+    height: (height / 3) * 2,
+    borderRadius: 10,
+    backgroundColor: '#f1f1f1',
     marginRight: 15,
     marginLeft: 15,
-    marginBottom: 15
+    marginBottom: 15,
   },
   topGradient: {
     position: 'absolute',
@@ -237,17 +258,25 @@ const styles = StyleSheet.create({
     padding: 5,
     zIndex: 999,
     borderTopRightRadius: 10,
-    borderTopLeftRadius: 10
+    borderTopLeftRadius: 10,
   },
   iconContainer: {
     alignSelf: 'stretch',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   scrollContainer: { borderRadius: 10, overflow: 'hidden' },
-  containerHeight: { height: height / 3 * 2, zIndex: 1, justifyContent: 'flex-end' },
+  containerHeight: {
+    height: (height / 3) * 2,
+    zIndex: 1,
+    justifyContent: 'flex-end',
+  },
   imageContainer: { borderRadius: 10, overflow: 'hidden' },
-  videoStyles: { backgroundColor: 'black', borderRadius: 10, overflow: 'hidden' },
+  videoStyles: {
+    backgroundColor: 'black',
+    borderRadius: 10,
+    overflow: 'hidden',
+  },
   imageTopGradient: {
     padding: 10,
     zIndex: 999,
@@ -257,14 +286,24 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginLeft: 5,
     marginBottom: 2,
-    fontWeight: '800'
+    fontWeight: '800',
   },
-  regularImageStyles: { height: height / 3 * 2, zIndex: 1 },
-  topicsContainer: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
+  regularImageStyles: { height: (height / 3) * 2, zIndex: 1 },
+  topicsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 4,
+  },
   schoolText: { color: '#fff', marginLeft: 5, fontSize: 12 },
   distanceText: { color: '#fff', fontSize: 13, marginLeft: 2 },
-  detailsChevron: { justifyContent: "flex-end" },
-  occupationText: { marginLeft: 5, fontSize: 16, fontWeight: 'bold', marginTop: 10, color: '#333' },
+  detailsChevron: { justifyContent: 'flex-end' },
+  occupationText: {
+    marginLeft: 5,
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 10,
+    color: '#333',
+  },
   genericText: { marginLeft: 5, fontSize: 12, lineHeight: 18, color: '#333' },
-  infoContainer: { backgroundColor: '#fff', padding: 10 }
+  infoContainer: { backgroundColor: '#fff', padding: 10 },
 });

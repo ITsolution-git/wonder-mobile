@@ -16,7 +16,7 @@ interface Props {
 
 class AppointmentList extends React.Component<Props> {
   static defaultProps = {
-    isLoading: false
+    isLoading: false,
   };
 
   keyExtractor = (item: any, index: number) => item.id.toString();
@@ -27,19 +27,20 @@ class AppointmentList extends React.Component<Props> {
     return (
       <SwipeRow
         rightOpenValue={-75}
-        right={(
+        right={
           <Button danger onPress={() => onDelete && onDelete(item)}>
-            <Icon name="trash" size={36} color="#FFF" />
-          </Button>
-        )}
-        body={<AppointmentItem
-          callNumber={onPressCallNumber}
-          item={item}
-          onPress={onPress}
-        />}
+            <Icon name='trash' size={36} color='#FFF' />
+          </Button>}
+        body={
+          <AppointmentItem
+            callNumber={onPressCallNumber}
+            item={item}
+            onPress={onPress}
+          />
+        }
       />
     );
-  }
+  };
 
   render() {
     const { data, onRefresh, isLoading } = this.props;

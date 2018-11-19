@@ -1,15 +1,15 @@
 // author: NK
 
-import * as React from "react";
+import * as React from 'react';
 import {
   TouchableWithoutFeedback,
   StyleSheet,
   View,
   ViewStyle,
   StyleProp,
-} from "react-native";
-import * as Animatable from "react-native-animatable";
-import { colors } from "@assets";
+} from 'react-native';
+import * as Animatable from 'react-native-animatable';
+import { colors } from '@assets';
 
 const HIT_SLOP = {
   top: 10,
@@ -20,8 +20,8 @@ const HIT_SLOP = {
 
 const localStyles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    overflow: "visible",
+    justifyContent: 'center',
+    overflow: 'visible',
     // borderRadius: 5,
     // shadowColor: colors.lightPurple,
     // shadowOffset: {
@@ -79,9 +79,9 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
     } = this.props;
 
     return {
-      position: "absolute",
+      position: 'absolute',
       left: 0,
-      justifyContent: "center",
+      justifyContent: 'center',
       width: width * 2,
       height: trackHeight,
       backgroundColor: this.isActive()
@@ -117,7 +117,7 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
   private localOnValueChange = (): void => {
     const { onValueChange } = this.props;
 
-    console.log("local on value change. value is currently:", this.props.value);
+    console.log('local on value change. value is currently:', this.props.value);
 
     if (onValueChange) {
       onValueChange();
@@ -135,7 +135,7 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
           onPress={this.localOnValueChange}
         >
           <Animatable.View
-            transition={["translateX", "backgroundColor"]}
+            transition={['translateX', 'backgroundColor']}
             style={this.getSwitchStyle()}
           />
         </TouchableWithoutFeedback>

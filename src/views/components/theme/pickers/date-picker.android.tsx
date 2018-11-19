@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Modal, DatePickerAndroid, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Modal,
+  DatePickerAndroid,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import { Label, Text } from '..';
 import moment from 'moment-timezone';
 import theme from 'src/assets/styles/theme';
@@ -26,32 +33,37 @@ interface State {
 }
 
 export default class DatePicker extends React.Component<Props, State> {
-
   static defaultProps = {
-    displayFormat: 'MM-DD-YYYY'
+    displayFormat: 'MM-DD-YYYY',
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
       value: props.initialDate || new Date(),
-      open: false
+      open: false,
     };
   }
 
   public render() {
-    const { label, displayFormat, errorHint, minDate, maxDate, onChange } = this.props;
+    const {
+      label,
+      displayFormat,
+      errorHint,
+      minDate,
+      maxDate,
+      onChange,
+    } = this.props;
     const { open, value } = this.state;
     return (
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.container}>
-          <Text style={{textAlign: 'center'}}>{moment(value).format(displayFormat)}</Text>
-          <TouchableOpacity
-            style={styles.iconBtn}
-            onPress={this.openModal}
-          >
-            <Icon name="calendar" color={theme.colors.white} />
+          <Text style={{ textAlign: 'center' }}>
+            {moment(value).format(displayFormat)}
+          </Text>
+          <TouchableOpacity style={styles.iconBtn} onPress={this.openModal}>
+            <Icon name='calendar' color={theme.colors.white} />
           </TouchableOpacity>
         </View>
         {<ErrorHint>{errorHint}</ErrorHint>}
@@ -67,7 +79,7 @@ export default class DatePicker extends React.Component<Props, State> {
       const { action, year, month, day } = await DatePickerAndroid.open({
         minDate,
         maxDate,
-        date: value
+        date: value,
       });
       if (action !== DatePickerAndroid.dismissedAction) {
         // Selected year, month (0-11), day
@@ -78,7 +90,7 @@ export default class DatePicker extends React.Component<Props, State> {
     } catch ({ code, message }) {
       console.warn('Cannot open date picker', message);
     }
-  }
+  };
 
   onChange = (date: Date) => {
     const { onChange } = this.props;
@@ -86,7 +98,7 @@ export default class DatePicker extends React.Component<Props, State> {
     if (onChange) {
       onChange(date);
     }
-  }
+  };
 }
 
 const styles = StyleSheet.create({
@@ -95,7 +107,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   container: {
     flexDirection: 'row',
@@ -107,6 +119,6 @@ const styles = StyleSheet.create({
   },
   text: {
     color: theme.colors.textColor,
-    fontFamily: theme.fonts.primary
-  }
-})
+    fontFamily: theme.fonts.primary,
+  },
+});
