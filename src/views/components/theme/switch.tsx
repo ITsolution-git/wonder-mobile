@@ -11,17 +11,28 @@ import {
 import * as Animatable from "react-native-animatable";
 import { colors } from "@assets";
 
+const HIT_SLOP = {
+  top: 10,
+  bottom: 10,
+  left: 10,
+  right: 10,
+};
+
 const localStyles = StyleSheet.create({
   container: {
-    borderRadius: 5,
-    shadowColor: colors.lightPurple,
-    shadowOffset: {
-      width: 0,
-      height: 6,
-    },
-    elevation: 2,
-    shadowRadius: 3,
-    shadowOpacity: 0.3,
+    justifyContent: "center",
+    // borderRadius: 5,
+    // shadowColor: colors.lightPurple,
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 6,
+    // },
+    // elevation: 2,
+    // shadowRadius: 3,
+    // shadowOpacity: 0.3,
+  },
+  containerForPrefs: {
+    left: -30,
   },
 });
 
@@ -38,6 +49,7 @@ interface ISwitchProps {
   switchStyle?: ViewStyle;
   activeSwitchColor?: string;
   inactiveSwitchColor?: string;
+  containerStyle?: ViewStyle;
 }
 
 export default class Switch extends React.PureComponent<ISwitchProps> {
@@ -51,6 +63,7 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
     switchStyle: localStyles.container,
     disabled: false,
     value: false,
+    containerStyle: localStyles.containerForPrefs,
   };
 
   private isActive = (): boolean => !!this.props.value;
@@ -65,6 +78,8 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
     } = this.props;
 
     return {
+      position: "absolute",
+      left: 0,
       justifyContent: "center",
       width: width * 2,
       height: trackHeight,
@@ -90,8 +105,10 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
     return {
       width,
       height,
-      transform: [{ translateX }],
+      zIndex: 100,
       backgroundColor,
+      borderRadius: 5,
+      transform: [{ translateX }],
       ...switchStyle,
     };
   };
@@ -107,11 +124,12 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
   };
 
   render() {
-    const { onValueChange, disabled } = this.props;
+    const { onValueChange, disabled, height, containerStyle } = this.props;
 
     return (
-      <View style={this.getContainerStyle()}>
+      <View style={[localStyles.container, containerStyle]}>
         <TouchableWithoutFeedback
+          hitSlop={HIT_SLOP}
           disabled={disabled}
           onPress={this.localOnValueChange}
         >
@@ -120,6 +138,7 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
             style={this.getSwitchStyle()}
           />
         </TouchableWithoutFeedback>
+        <View style={this.getContainerStyle()} />
       </View>
     );
   }

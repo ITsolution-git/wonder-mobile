@@ -350,25 +350,8 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
                 onValueChange={this.onNumberChange("distance_of_interest_max")}
                 style={{ width: "100%" }}
                 minimumTrackTintColor={colors.lightPeach}
-                trackStyle={{
-                  backgroundColor: colors.lightGray,
-                  height: 2,
-                  //   width: "100%",
-                }}
-                thumbStyle={{
-                  width: 30,
-                  height: 10,
-                  borderRadius: 5,
-                  backgroundColor: colors.lightPeach,
-                  //   shadowColor: 'purple',
-                  //   shadowOffset: {
-                  //     width: 0,
-                  //     height: 6,
-                  //   },
-                  //   elevation: 2,
-                  //   shadowRadius: 3,
-                  //   shadowOpacity: 0.3,
-                }}
+                trackStyle={styles.track}
+                thumbStyle={styles.thumb}
                 value={distance_of_interest_max}
                 minimumValue={1}
                 maximumValue={50}
@@ -417,5 +400,15 @@ const styles = StyleSheet.create({
   },
   heading: {
     marginTop: 15,
+  },
+  thumb: {
+    width: 30,
+    height: 10,
+    borderRadius: 5,
+    backgroundColor: colors.lightPeach,
+  },
+  track: {
+    backgroundColor: colors.lightGray,
+    height: 2,
   },
 });

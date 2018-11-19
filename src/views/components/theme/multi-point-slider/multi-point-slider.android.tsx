@@ -67,6 +67,9 @@ class MultiPointSlider extends React.Component<
           thumbTintColor={theme.colors.primary}
           minimumTrackTintColor={theme.colors.primaryLight}
           value={selectedMax}
+          // selectedMinimum={selectedMin}
+          // selectedMaximum={selectedMax}
+          // style={{ flex: 1, height: 70 }}
           onValueChange={this.onValueChange}
         />
       </View>
