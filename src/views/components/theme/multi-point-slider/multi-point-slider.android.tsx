@@ -1,6 +1,6 @@
-import React from 'react';
-import { View, Slider } from 'react-native';
-import theme from 'src/assets/styles/theme';
+import React from "react";
+import { View, Slider } from "react-native";
+import theme from "src/assets/styles/theme";
 
 export interface MultiPointSliderValue {
   selectedMinimum: number;
@@ -20,8 +20,14 @@ interface MultiPointSliderState {
   selectedMax: number;
 }
 
-class MultiPointSlider extends React.Component<MultiPointSliderProps, MultiPointSliderState> {
-  static getDerivedStateFromProps(props: MultiPointSliderProps, state: MultiPointSliderState) {
+class MultiPointSlider extends React.Component<
+  MultiPointSliderProps,
+  MultiPointSliderState
+> {
+  static getDerivedStateFromProps(
+    props: MultiPointSliderProps,
+    state: MultiPointSliderState,
+  ) {
     const { selectedMin, selectedMax } = state;
     const { min, max, initialMaxValue, initialMinValue } = props;
     const newState: Partial<MultiPointSliderState> = {};
@@ -42,28 +48,25 @@ class MultiPointSlider extends React.Component<MultiPointSliderProps, MultiPoint
 
   state = {
     selectedMin: this.props.initialMinValue || this.props.min,
-    selectedMax: this.props.initialMaxValue || this.props.max
+    selectedMax: this.props.initialMaxValue || this.props.max,
   };
 
   onValueChange = (value: number) => {
     const { onValueChange } = this.props;
     onValueChange({ selectedMax: value, selectedMin: value });
-  }
+  };
 
   render() {
     const { min, max } = this.props;
     const { selectedMin, selectedMax } = this.state;
     return (
-      <View style={{ flex: 1, flexDirection: 'row' }}>
+      <View style={{ flex: 1, flexDirection: "row" }}>
         <Slider
           minimumValue={min}
           maximumValue={max}
           thumbTintColor={theme.colors.primary}
           minimumTrackTintColor={theme.colors.primaryLight}
           value={selectedMax}
-          // selectedMinimum={selectedMin}
-          // selectedMaximum={selectedMax}
-          // style={{ flex: 1, height: 70 }}
           onValueChange={this.onValueChange}
         />
       </View>

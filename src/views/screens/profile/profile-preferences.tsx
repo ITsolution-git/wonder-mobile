@@ -5,14 +5,16 @@ import {
   Text,
   Toggle,
   PrimaryButton,
+  Switch,
 } from "src/views/components/theme";
 import {
   View,
   StyleSheet,
   ScrollView,
-  Slider,
+  //   Slider,
   RefreshControl,
 } from "react-native";
+import Slider from "react-native-slider";
 import theme from "src/assets/styles/theme";
 
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
@@ -26,6 +28,7 @@ import MultiPointSlider, {
 import WonderAppState from "src/models/wonder-app-state";
 import User from "src/models/user";
 import DistanceUnit from "src/models/distance-unit";
+import { colors } from "@assets";
 
 const mapState = (state: WonderAppState) => ({
   profile: state.user.profile,
@@ -64,7 +67,7 @@ interface State {
   geocoding_requested?: boolean;
 }
 
-class ProfileNotificationsScreen extends React.Component<Props, State> {
+class ProfilePreferencesScreen extends React.Component<Props, State> {
   static defaultProps = {
     profile: {},
   };
@@ -104,19 +107,20 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
   };
 
   onBooleanChange = (key: string) => {
-    return (value: boolean) => {
+    const value = this.state[key];
+
+    return () => {
       this.setState({
-        [key]: value,
+        [key]: !value,
       });
     };
   };
 
-  onChangeUnit = (key: string) => {
-    return (value: boolean) => {
-      this.setState({
-        [key]: value ? DistanceUnit.miles : DistanceUnit.kilometers,
-      });
-    };
+  onChangeDistanceUnit = () => {
+    const { distance_unit } = this.state;
+
+    const nextUnit = distance_unit === "km" ? "mi" : "km";
+    this.setState({ distance_unit: nextUnit });
   };
 
   onMultipointChange = (minKey: string, maxKey: string) => {
@@ -217,34 +221,34 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
             </View>
             <View style={styles.row}>
               <Text>New Matches</Text>
-              <Toggle
-                value={apn_new_matches}
+              <Switch
+                value={!!apn_new_matches}
                 onValueChange={this.onBooleanChange("apn_new_matches")}
               />
             </View>
 
             <View style={styles.row}>
               <Text>Messages</Text>
-              <Toggle
-                value={apn_new_messages}
+              <Switch
+                value={!!apn_new_messages}
                 onValueChange={this.onBooleanChange("apn_new_messages")}
               />
             </View>
 
             <View style={styles.row}>
               <Text>Activities</Text>
-              <Toggle
+              <Switch
                 disabled
-                // value={true}
+                // value={!!true}
                 // onValueChange={this.onBooleanChange('apn_activities')}
               />
             </View>
 
             <View style={styles.row}>
               <Text>Products &amp; Services</Text>
-              <Toggle
+              <Switch
                 disabled
-                // value={true}
+                // value={!!true}
                 // onValueChange={this.onBooleanChange('apn_activities')}
               />
             </View>
@@ -254,15 +258,15 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
             </View>
             {/* <View style={styles.row}>
               <Text>My Location</Text>
-              <Toggle
-                value={show_location}
+              <Switch
+                value={!!show_location}
                 onValueChange={this.onBooleanChange('show_location')}
               />
             </View> */}
 
             <View style={styles.row}>
               <Text>Military Time</Text>
-              <Toggle
+              <Switch
                 value={military_time}
                 onValueChange={this.onBooleanChange("military_time")}
               />
@@ -270,9 +274,9 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
 
             <View style={styles.row}>
               <Text>Units ({distance_unit})</Text>
-              <Toggle
+              <Switch
                 value={distance_unit === DistanceUnit.miles}
-                onValueChange={this.onChangeUnit("distance_unit")}
+                onValueChange={this.onChangeDistanceUnit}
               />
             </View>
 
@@ -281,7 +285,7 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
             </View>
             <View style={styles.row}>
               <Text>Women</Text>
-              <Toggle
+              <Switch
                 value={female_interest}
                 onValueChange={this.onBooleanChange("female_interest")}
               />
@@ -289,7 +293,7 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
 
             <View style={styles.row}>
               <Text>Men</Text>
-              <Toggle
+              <Switch
                 value={male_interest}
                 onValueChange={this.onBooleanChange("male_interest")}
               />
@@ -297,11 +301,11 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
 
             <View style={styles.row}>
               <Text>Activity Partner</Text>
-              <Toggle />
+              <Switch />
             </View>
 
             <View style={styles.heading}>
-              <SubHeader>Age Range ({age_of_interest_max})</SubHeader>
+              <SubHeader>Age Range</SubHeader>
             </View>
             <View style={styles.row}>
               <MultiPointSlider
@@ -344,8 +348,27 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
             <View style={styles.row}>
               <Slider
                 onValueChange={this.onNumberChange("distance_of_interest_max")}
-                minimumTrackTintColor={theme.colors.primary}
                 style={{ width: "100%" }}
+                minimumTrackTintColor={colors.lightPeach}
+                trackStyle={{
+                  backgroundColor: colors.lightGray,
+                  height: 2,
+                  //   width: "100%",
+                }}
+                thumbStyle={{
+                  width: 30,
+                  height: 10,
+                  borderRadius: 5,
+                  backgroundColor: colors.lightPeach,
+                  //   shadowColor: 'purple',
+                  //   shadowOffset: {
+                  //     width: 0,
+                  //     height: 6,
+                  //   },
+                  //   elevation: 2,
+                  //   shadowRadius: 3,
+                  //   shadowOpacity: 0.3,
+                }}
                 value={distance_of_interest_max}
                 minimumValue={1}
                 maximumValue={50}
@@ -355,7 +378,7 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
 
             <View style={styles.row}>
               <Text>Ghosters</Text>
-              <Toggle
+              <Switch
                 value={show_ghosters}
                 onValueChange={this.onBooleanChange("show_ghosters")}
               />
@@ -373,7 +396,7 @@ class ProfileNotificationsScreen extends React.Component<Props, State> {
 export default connect(
   mapState,
   mapDispatch,
-)(ProfileNotificationsScreen);
+)(ProfilePreferencesScreen);
 
 const styles = StyleSheet.create({
   row: {
