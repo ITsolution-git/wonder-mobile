@@ -21,6 +21,7 @@ const HIT_SLOP = {
 const localStyles = StyleSheet.create({
   container: {
     justifyContent: "center",
+    overflow: "visible",
     // borderRadius: 5,
     // shadowColor: colors.lightPurple,
     // shadowOffset: {

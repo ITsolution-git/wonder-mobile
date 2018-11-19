@@ -1,6 +1,7 @@
-import { Dimensions } from "react-native";
+import { Dimensions, Platform } from "react-native";
 import Color from "color";
 
+export const IOS = Platform.OS === "ios";
 export const colors = {
   white: "#FFF",
   black: "#000",

@@ -28,7 +28,7 @@ import MultiPointSlider, {
 import WonderAppState from "src/models/wonder-app-state";
 import User from "src/models/user";
 import DistanceUnit from "src/models/distance-unit";
-import { colors } from "@assets";
+import { colors, IOS } from "@assets";
 
 const mapState = (state: WonderAppState) => ({
   profile: state.user.profile,
@@ -82,7 +82,7 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
     isRefreshing: false,
     distance_of_interest_max: profile.distance_of_interest_max || 0,
     age_of_interest_min: profile.age_of_interest_min || 18,
-    age_of_interest_max: profile.age_of_interest_max || 24,
+    age_of_interest_max: profile.age_of_interest_max || 32,
     male_interest: profile.male_interest,
     female_interest: profile.female_interest,
     available: profile.available,
@@ -123,13 +123,11 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
     this.setState({ distance_unit: nextUnit });
   };
 
-  onMultipointChange = (minKey: string, maxKey: string) => {
-    return (value: MultiPointSliderValue) => {
-      this.setState({
-        [minKey]: value.selectedMinimum,
-        [maxKey]: value.selectedMaximum,
-      });
-    };
+  onChangeAgeRange = (
+    age_of_interest_min: number,
+    age_of_interest_max: number,
+  ) => {
+    this.setState({ age_of_interest_min, age_of_interest_max });
   };
 
   save = () => {
@@ -203,6 +201,10 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_message_super_likes,
       geocoding_requested,
     } = this.state;
+
+    const ageRangeText = IOS
+      ? ""
+      : `: ${age_of_interest_min} - ${age_of_interest_max}`;
 
     return (
       <Screen>
@@ -305,7 +307,7 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
             </View>
 
             <View style={styles.heading}>
-              <SubHeader>Age Range</SubHeader>
+              <SubHeader>{`Age Range${ageRangeText}`}</SubHeader>
             </View>
             <View style={styles.row}>
               <MultiPointSlider
@@ -313,31 +315,10 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
                 max={80}
                 initialMinValue={age_of_interest_min}
                 initialMaxValue={age_of_interest_max}
-                onValueChange={this.onMultipointChange(
-                  "age_of_interest_min",
-                  "age_of_interest_max",
-                )}
+                onValueChange={this.onChangeAgeRange}
               />
-              {/* <Slider
-                onValueChange={this.onNumberChange('age_of_interest_max')}
-                minimumTrackTintColor={theme.colors.primary}
-                style={{ width: '100%' }}
-                minimumValue={18}
-                maximumValue={80}
-                value={age_of_interest_max}
-                step={1}
-              /> */}
-              {/* <RangeSlider
-              minValue={0}
-              maxValue={100}
-              handleColor={theme.colors.primary}
-              tintColor={theme.colors.textColor}
-              tintColorBetweenHandles={theme.colors.primaryLight}
-              selectedMinimum={18}
-              selectedMaximum={24}
-              style={{ flex: 1, height: 70 }}
-              onChange={(data) => { console.log(data); }}
-            /> */}
+              {}
+              {}
             </View>
 
             <View style={styles.heading}>
