@@ -1,7 +1,8 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 // import RangeSlider from "react-native-range-slider";
-import MultiSlider from "@ptomasroos/react-native-multi-slider";
+// import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import MultiSlider from "react-native-multi-slider";
 import theme from "src/assets/styles/theme";
 import { Text } from "src/views/components/theme";
 import { width as WIDTH } from "@assets";
