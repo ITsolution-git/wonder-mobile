@@ -32,6 +32,7 @@ import WonderAppState from 'src/models/wonder-app-state';
 import Coordinate from 'src/models/coordinate';
 import User from 'src/models/user';
 import Activity from 'src/models/activity';
+import Conversation from 'src/models/conversation';
 import ActivityDetails from 'src/models/activity-details';
 
 import theme from 'src/assets/styles/theme';
