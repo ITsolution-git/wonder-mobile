@@ -8,16 +8,26 @@ interface Props {
 }
 
 class PricingIndicator extends React.Component<Props> {
+
   renderPricing = () => {
     const { rating } = this.props;
-    return [1, 2, 3, 4, 5].map((i: number) => (
-      <Icon
-        key={i}
-        size={10}
-        color={i <= rating ? theme.colors.primary : theme.colors.textColor}
-        name='usd'
-      />
-    ));
+    const arr = [];
+    for (let i = 0; i < rating; i++) {
+      if (i <= rating) {
+        arr.push(i);
+      }
+    }
+    if (arr.length) {
+      return arr.map((i: number) => (
+        <Icon
+          key={i}
+          size={10}
+          color={theme.colors.primary}
+          name='usd'
+        />
+      ));
+    }
+    return;
   }
 
   render() {

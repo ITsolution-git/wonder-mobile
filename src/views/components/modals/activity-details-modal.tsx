@@ -1,16 +1,57 @@
 import React from 'react';
-import { Modal, View, ModalProps, StyleSheet, Image } from 'react-native';
-import { Title, Text, PrimaryButton, SmallText, SubTitle } from '../theme';
+import _ from 'lodash';
+import { Modal, View, ModalProps, StyleSheet, Image, Platform, Linking, Alert } from 'react-native';
+import { Title, Text, PrimaryButton, SmallText, SubTitle, TextButton } from '../theme';
 
 import PricingIndicator from '../pricing-indicator';
 import RatingIndicator from '../rating-indicator';
 import ActivityDetails from 'src/models/activity-details';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
+import theme from '../../../assets/styles/theme';
+import Color from 'color';
+import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
+
+const gradient = [
+  lighten(theme.colors.primaryLight, 0.5),
+  lighten(theme.colors.primary, 0.5)
+];
+
+function lighten(color: string, value: number) {
+  return Color(color)
+    .fade(value)
+    .toString();
+}
+
+function distance(lat1: any, lon1: any, lat2: any, lon2: any, unit: String) {
+  if ((lat1 === lat2) && (lon1 === lon2)) {
+    return 0;
+  } else {
+    const radlat1 = Math.PI * lat1 / 180;
+    const radlat2 = Math.PI * lat2 / 180;
+    const theta = lon1 - lon2;
+    const radtheta = Math.PI * theta / 180;
+    let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    if (dist > 1) {
+      dist = 1;
+    }
+    dist = Math.acos(dist);
+    dist = dist * 180 / Math.PI;
+    dist = dist * 60 * 1.1515;
+    if (unit === 'K') { dist = dist * 1.609344; }
+    if (unit === 'N') { dist = dist * 0.8684; }
+    return dist;
+  }
+}
 
 interface ActivityDetailsModalProps extends ModalProps {
   details: ActivityDetails | null;
   onCancel: Function;
   onConfirm: TouchableOpacityOnPress;
+  userPosition: {
+    lat: Number;
+    lng: Number;
+  };
 }
 
 class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
@@ -24,8 +65,42 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
     }
   }
 
+  renderStoreHours = () => {
+    const { details } = this.props;
+    const date = moment();
+    const dow = date.day();
+
+    const hours = _.get(details, 'hours[0].open', null);
+
+    if (hours && hours.length) {
+      const currentBusinessDay = hours.filter((d: any) => d.day === dow);
+      return (
+        <SmallText>
+          {
+            moment(currentBusinessDay[0].start, 'HH:mm').format('hh:mm a')
+            + '-' +
+            moment(currentBusinessDay[0].end, 'HH:mm').format('hh:mm a')
+          }
+        </SmallText>
+      );
+    }
+
+  }
+
+  callNumber = (url: string) => {
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (!supported) {
+          Alert.alert("Sorry! This number can't be opened from the app");
+        } else {
+          return Linking.openURL(url);
+        }
+      });
+    // .catch((err) => console.error('An error occurred', err));
+  }
+
   renderDetails = () => {
-    const { details, onConfirm } = this.props;
+    const { details, onConfirm, userPosition } = this.props;
     if (details) {
       const {
         name,
@@ -39,27 +114,46 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
       } = details;
 
       return (
-        <View style={styles.modal}>
+        <LinearGradient colors={gradient} style={styles.modal}>
           <View style={styles.container}>
             {this.renderHeaderImage(images)}
             <View style={styles.body}>
               <View style={styles.row}>
                 <View>
-                  <Title>{name}</Title>
-                  <SmallText>{location.join(' ')}</SmallText>
-                  <PricingIndicator rating={price_level} />
+                  <Title style={{ color: '#000' }}>{name}</Title>
+                  <SmallText style={{ marginBottom: 3 }}>{location.join(' ')}</SmallText>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      width: '50%',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    {this.renderStoreHours()}
+                    <PricingIndicator rating={price_level} />
+                  </View>
+                  {phone !== undefined &&
+                    <TextButton
+                      text={phone}
+                      style={styles.phoneText}
+                      onPress={() => this.callNumber(`tel:${phone}`)}
+                    />}
                 </View>
                 <View style={{ alignItems: 'flex-end' }}>
+                  <Text>
+                    {distance(userPosition.lat, userPosition.lng, details.latitude, details.longitude, 'N')
+                      .toFixed(0) + 'm'}
+                  </Text>
                   <RatingIndicator rating={rating} />
                   <SmallText>({review_count} Reviews)</SmallText>
                 </View>
               </View>
             </View>
-            <View style={{ paddingHorizontal: 10, marginVertical: 10 }}>
+            <View style={{ paddingHorizontal: 10, marginVertical: 10, alignItems: 'center' }}>
               <PrimaryButton title='Invite' onPress={onConfirm} />
             </View>
           </View>
-        </View>
+        </LinearGradient>
       );
     }
   }
@@ -67,7 +161,7 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
     const { onConfirm, details, ...rest } = this.props;
 
     return (
-      <Modal animationType='slide' visible={!!details} transparent {...rest}>
+      <Modal animationType='fade' visible={!!details} transparent {...rest}>
         {this.renderDetails()}
       </Modal>
     );
@@ -79,7 +173,8 @@ export default ActivityDetailsModal;
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)'
   },
   container: {
     borderRadius: 10,
@@ -107,5 +202,9 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between'
-  }
+  },
+  phoneText: {
+    fontSize: 12,
+    color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
+  },
 });
