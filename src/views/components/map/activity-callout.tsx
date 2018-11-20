@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Image, WebView } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  WebView
+} from 'react-native';
 import { Text } from 'src/views/components/theme';
 
 import PricingIndicator from 'src/views/components/pricing-indicator';

@@ -1,5 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Modal, DatePickerAndroid, TouchableOpacity, Alert } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Modal,
+  DatePickerAndroid,
+  TouchableOpacity,
+  Alert
+} from 'react-native';
 import { Label, Text } from '..';
 import moment from 'moment-timezone';
 import theme from 'src/assets/styles/theme';
@@ -26,7 +33,6 @@ interface State {
 }
 
 export default class DatePicker extends React.Component<Props, State> {
-
   static defaultProps = {
     displayFormat: 'MM-DD-YYYY'
   };
@@ -40,18 +46,24 @@ export default class DatePicker extends React.Component<Props, State> {
   }
 
   public render() {
-    const { label, displayFormat, errorHint, minDate, maxDate, onChange } = this.props;
+    const {
+      label,
+      displayFormat,
+      errorHint,
+      minDate,
+      maxDate,
+      onChange
+    } = this.props;
     const { open, value } = this.state;
     return (
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.container}>
-          <Text style={{textAlign: 'center'}}>{moment(value).format(displayFormat)}</Text>
-          <TouchableOpacity
-            style={styles.iconBtn}
-            onPress={this.openModal}
-          >
-            <Icon name="calendar" color={theme.colors.white} />
+          <Text style={{ textAlign: 'center' }}>
+            {moment(value).format(displayFormat)}
+          </Text>
+          <TouchableOpacity style={styles.iconBtn} onPress={this.openModal}>
+            <Icon name='calendar' color={theme.colors.white} />
           </TouchableOpacity>
         </View>
         {<ErrorHint>{errorHint}</ErrorHint>}
@@ -103,10 +115,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 4,
     borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.5),
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
   },
   text: {
     color: theme.colors.textColor,
     fontFamily: theme.fonts.primary
   }
-})
+});

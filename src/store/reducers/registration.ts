@@ -36,14 +36,25 @@ const defaultState: RegistrationState = {
   topic_ids: []
 };
 
-export const persistRegistrationInfo = createAction('PERSIST_REGISTRATION_INFO');
+export const persistRegistrationInfo = createAction(
+  'PERSIST_REGISTRATION_INFO'
+);
 export const resetRegistration = createAction('RESET_REGISTRATION');
 
-export default handleActions({
-  PERSIST_REGISTRATION_INFO: (state: RegistrationState, action: Action<any>): RegistrationState => ({
-    ...state,
-    ...action.payload
-  }),
-  LOGOUT_USER: () => defaultState,
-  RESET_REGISTRATION: (state: RegistrationState, action: Action<any>): RegistrationState => defaultState
-}, defaultState);
+export default handleActions(
+  {
+    PERSIST_REGISTRATION_INFO: (
+      state: RegistrationState,
+      action: Action<any>
+    ): RegistrationState => ({
+      ...state,
+      ...action.payload
+    }),
+    LOGOUT_USER: () => defaultState,
+    RESET_REGISTRATION: (
+      state: RegistrationState,
+      action: Action<any>
+    ): RegistrationState => defaultState
+  },
+  defaultState
+);

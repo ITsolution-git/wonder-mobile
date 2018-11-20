@@ -12,19 +12,19 @@ export const MockAppointments = [
       id: 1,
       first_name: "John",
       last_name: "Lee",
-      location: "12th"
+      location: "12th",
     },
     users: [
       {
         id: 1,
         first_name: "Jane",
         last_name: "Doe",
-        location: "12th"
-      }
+        location: "12th",
+      },
     ],
     state: "confirmed",
     invited_at: "12-12-2018",
-    confirmed_at: "12-12-2018"
+    confirmed_at: "12-12-2018",
   },
   {
     id: 0,
@@ -39,18 +39,18 @@ export const MockAppointments = [
       id: 1,
       first_name: "Paul",
       last_name: "Doe",
-      location: "12th"
+      location: "12th",
     },
     users: [
       {
         id: 1,
         first_name: "Sarah",
         last_name: "Ericson",
-        location: "12th"
-      }
+        location: "12th",
+      },
     ],
     state: "created",
     invited_at: "12-12-2018",
-    confirmed_at: "12-12-2018"
-  }
+    confirmed_at: "12-12-2018",
+  },
 ];

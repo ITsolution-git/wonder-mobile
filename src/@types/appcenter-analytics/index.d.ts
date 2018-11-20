@@ -9,14 +9,24 @@ declare module 'appcenter-analytics' {
   export class AppCenterAnalyticsTransmissionTarget {
     constructor(targetToken: string);
 
-    static trackEvent(eventName: string, properties?: AppCenterAnalyticsEventProperties): Promise<string>;
+    static trackEvent(
+      eventName: string,
+      properties?: AppCenterAnalyticsEventProperties
+    ): Promise<string>;
   }
 
   export default class AppCenterAnalytics {
-    bindingType: 'MSAnalytics' | 'com.microsoft.appcenter.AppCenterAnalytics.Analytics'
+    bindingType:
+      | 'MSAnalytics'
+      | 'com.microsoft.appcenter.AppCenterAnalytics.Analytics';
     static setEnabled(enabled: boolean): Promise<void>;
     static isEnabled(): Promise<boolean>;
-    static trackEvent(eventName: string, properties?: AppCenterAnalyticsEventProperties): Promise<string>;
-    static getTransmissionTarget(targetToken: string): Promise<AppCenterAnalyticsTransmissionTarget>;
+    static trackEvent(
+      eventName: string,
+      properties?: AppCenterAnalyticsEventProperties
+    ): Promise<string>;
+    static getTransmissionTarget(
+      targetToken: string
+    ): Promise<AppCenterAnalyticsTransmissionTarget>;
   }
 }

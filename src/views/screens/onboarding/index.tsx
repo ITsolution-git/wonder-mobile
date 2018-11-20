@@ -17,7 +17,6 @@ interface Props {
 const mapState = (state: WonderAppState) => ({});
 const mapDispatch = (dispatch: Dispatch) => ({});
 class Onboarding extends React.Component<Props> {
-
   render() {
     const { navigation } = this.props;
 
@@ -27,30 +26,42 @@ class Onboarding extends React.Component<Props> {
           onComplete={() => navigation.navigate('Register')}
           onSkip={() => navigation.navigate('Register')}
         >
-          <SwipeView.Slide
-            backgroundImage={Assets.ONBOARDING_1}
-          >
+          <SwipeView.Slide backgroundImage={Assets.ONBOARDING_1}>
             <View flex={1} />
             <View style={styles.halfCircleFooter}>
               <Text style={styles.body}>
-                Welcome to <Image source={Assets.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} />{'\n'}
-                We make it easy to connect you with people that enjoy the activities that you do.</Text>
+                Welcome to{' '}
+                <Image
+                  source={Assets.Logo.DARK}
+                  resizeMode='contain'
+                  style={{ width: 100, height: 24 }}
+                />
+                {'\n'}
+                We make it easy to connect you with people that enjoy the
+                activities that you do.
+              </Text>
             </View>
           </SwipeView.Slide>
-          <SwipeView.Slide
-            backgroundImage={Assets.ONBOARDING_2}
-          >
+          <SwipeView.Slide backgroundImage={Assets.ONBOARDING_2}>
             <View flex={1} />
             <View style={styles.halfCircleFooter}>
-              <Text style={styles.body}>{'Browse, match, and chat\nwith people nearby.'}</Text>
+              <Text style={styles.body}>
+                {'Browse, match, and chat\nwith people nearby.'}
+              </Text>
             </View>
           </SwipeView.Slide>
-          <SwipeView.Slide
-            backgroundImage={Assets.ONBOARDING_3}
-          >
+          <SwipeView.Slide backgroundImage={Assets.ONBOARDING_3}>
             <View flex={1} />
             <View style={styles.halfCircleFooter}>
-              <Text style={styles.body}>View and schedule activities{'\n'}with your <Image source={Assets.Logo.DARK} resizeMode="contain" style={{ width: 100, height: 24 }} /> matches!</Text>
+              <Text style={styles.body}>
+                View and schedule activities{'\n'}with your{' '}
+                <Image
+                  source={Assets.Logo.DARK}
+                  resizeMode='contain'
+                  style={{ width: 100, height: 24 }}
+                />{' '}
+                matches!
+              </Text>
             </View>
           </SwipeView.Slide>
         </SwipeView>
@@ -59,19 +70,22 @@ class Onboarding extends React.Component<Props> {
   }
 }
 
-export default connect(mapState, mapDispatch)(Onboarding);
+export default connect(
+  mapState,
+  mapDispatch
+)(Onboarding);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-    marginBottom: 5,
+    marginBottom: 5
   },
   body: {
     textAlign: 'center',

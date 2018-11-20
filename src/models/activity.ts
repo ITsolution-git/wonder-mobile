@@ -1,4 +1,4 @@
-import Topic from "./topic";
+import Topic from './topic';
 
 export default interface Activity {
   id: string;

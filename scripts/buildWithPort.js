@@ -11,7 +11,7 @@ const buildWithPort = () => {
 
   rl.question(
     "Please specify the port number and iPhone simulator device you'd like to build for, separated by a comma. Eg: 8082,iPhone X\n>> ",
-    portAndPhone => {
+    (portAndPhone) => {
       let port = 8081;
       let sim = "iPhone X";
 

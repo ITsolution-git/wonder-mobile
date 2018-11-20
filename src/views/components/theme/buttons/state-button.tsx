@@ -1,6 +1,6 @@
-import React from "react";
-import { View, Text, TouchableHighlight, StyleSheet } from "react-native";
-import theme from "src/assets/styles/theme";
+import React from 'react';
+import { View, Text, TouchableHighlight, StyleSheet } from 'react-native';
+import theme from 'src/assets/styles/theme';
 
 // this component is a button that can hold an active and an inactive state
 // The background and text colors change as the state that is passed to it changes
@@ -21,12 +21,12 @@ export const StateButton = (props: StateButtonProps) => {
       style={[
         styles.btnContainer,
         {
-          backgroundColor: props.active ? theme.colors.primary : "#fff",
-          borderColor: props.active ? "#fff" : theme.colors.primary
+          backgroundColor: props.active ? theme.colors.primary : '#fff',
+          borderColor: props.active ? '#fff' : theme.colors.primary
         }
       ]}
     >
-      <Text style={{ color: props.active ? "#fff" : theme.colors.primary }}>
+      <Text style={{ color: props.active ? '#fff' : theme.colors.primary }}>
         {props.text}
       </Text>
     </TouchableHighlight>
@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     width: 80,
     borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 4
   }
 });

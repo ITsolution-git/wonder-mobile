@@ -21,12 +21,7 @@ class LatestMatches extends React.Component<LatestMatchesProps> {
 
   renderItem = ({ item: chat }: { item: Conversation }) => {
     const { onPressChat } = this.props;
-    return (
-      <LatestMatchesItem
-        chat={chat}
-        onPress={() => onPressChat(chat)}
-      />
-    );
+    return <LatestMatchesItem chat={chat} onPress={() => onPressChat(chat)} />;
   }
 
   renderEmpty = () => {
@@ -41,7 +36,9 @@ class LatestMatches extends React.Component<LatestMatchesProps> {
     const { chats, onRefresh } = this.props;
     if (chats && chats.length) {
       return (
-        <ScrollView style={{ borderBottomWidth: 1, borderBottomColor: '#e6e6ec' }}>
+        <ScrollView
+          style={{ borderBottomWidth: 1, borderBottomColor: '#e6e6ec' }}
+        >
           <FlatList
             refreshing={false}
             onRefresh={onRefresh}
@@ -50,7 +47,6 @@ class LatestMatches extends React.Component<LatestMatchesProps> {
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
             horizontal={true}
-
           />
         </ScrollView>
       );

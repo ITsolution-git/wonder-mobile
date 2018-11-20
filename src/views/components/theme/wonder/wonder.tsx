@@ -1,11 +1,11 @@
-import _ from "lodash";
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Text } from "src/views/components/theme";
+import _ from 'lodash';
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Text } from 'src/views/components/theme';
 
-import theme from "src/assets/styles/theme";
-import WonderImage from "../wonder-image";
-import Topic from "src/models/topic";
+import theme from 'src/assets/styles/theme';
+import WonderImage from '../wonder-image';
+import Topic from 'src/models/topic';
 
 interface WonderProps {
   topic: Topic;
@@ -13,7 +13,12 @@ interface WonderProps {
   size?: number;
   labelStyles?: any;
 }
-const Wonder: React.SFC<WonderProps> = ({ labelStyles, topic, active, size = 80 }) => {
+const Wonder: React.SFC<WonderProps> = ({
+  labelStyles,
+  topic,
+  active,
+  size = 80
+}) => {
   const imageSize = (size / 2) * 0.75;
   const containerStyles = {
     height: size,
@@ -54,8 +59,8 @@ export default Wonder;
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   selectedContainer: {
     borderWidth: 2,

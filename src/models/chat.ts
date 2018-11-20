@@ -1,4 +1,4 @@
-import User from "./user";
+import User from './user';
 export interface ChatUser extends User {
   first_name: string;
 }
@@ -8,21 +8,21 @@ interface Chat {
   newOutgoingMessage: {
     message: {
       text: string;
-    }
+    };
     recipient_id: number;
   };
   conversationsLib: string[];
   lastReadMessage: {
     last_message: {
       aasm_state: string;
-      id: number
-    }
+      id: number;
+    };
   };
   ghostMessage: {
     ghostMessage: string;
     partner: {
       id: number;
-    }
+    };
   };
 }
 

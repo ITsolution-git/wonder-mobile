@@ -148,11 +148,11 @@ class ChatListScreen extends React.Component<Props> {
   goToChat = (chat: Chat) => {
     const { onGetConversation } = this.props;
     onGetConversation(chat.partner.id, {});
-  };
+  }
 
   openSearchModal = () => {
     this.setState({ isSearchModalOpen: !this.state.isSearchModalOpen });
-  };
+  }
 
   handleResults = (results: Conversation[]) => {
     const { conversations } = this.props;
@@ -161,11 +161,11 @@ class ChatListScreen extends React.Component<Props> {
     } else {
       this.setState({ results });
     }
-  };
+  }
 
   handleChangeText = (text: string) => {
     this.props.onSearchChange(text);
-  };
+  }
 
   componentWillUnmount() {
     if (this.appChat) {
@@ -180,7 +180,7 @@ class ChatListScreen extends React.Component<Props> {
       [{ text: 'OK' }],
       { cancelable: false }
     );
-  };
+  }
 
   renderSearchbar = () => {
     const { conversations } = this.props;
@@ -196,7 +196,7 @@ class ChatListScreen extends React.Component<Props> {
         />
       );
     }
-  };
+  }
 
   renderSearchButton() {
     const { conversations } = this.props;
@@ -205,7 +205,7 @@ class ChatListScreen extends React.Component<Props> {
         <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0 }}>
           <PrimaryButton
             rounded={false}
-            title="Search"
+            title='Search'
             onPress={this.openSearchModal}
           />
         </View>
@@ -222,7 +222,7 @@ class ChatListScreen extends React.Component<Props> {
       chat
     } = this.props;
     const filteredConvos = conversations.filter(
-      c => c.partner !== null && !c.last_message
+      (c) => c.partner !== null && !c.last_message
     );
 
     return (

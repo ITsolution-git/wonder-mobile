@@ -19,10 +19,14 @@ export function* getPartnersSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
 
-    const { data }: { data: Partner[] } = yield call(api, {
-      method: 'GET',
-      url: '/partners'
-    }, state.user);
+    const { data }: { data: Partner[] } = yield call(
+      api,
+      {
+        method: 'GET',
+        url: '/partners'
+      },
+      state.user
+    );
 
     // yield persistPar
   } catch (error) {
@@ -40,17 +44,24 @@ export const GET_PARTNER_ACTIVITIES = 'GET_PARTNER_ACTIVITIES';
 export const getPartnerActivities = createAction(GET_PARTNER_ACTIVITIES);
 export function* getPartnerActivitiesSaga(action: Action<any>) {
   try {
-    const { id, coordinate }: { id: number, coordinate?: Coordinate } = action.payload;
+    const {
+      id,
+      coordinate
+    }: { id: number; coordinate?: Coordinate } = action.payload;
     const state: WonderAppState = yield select();
 
-    const { data }: { data: Activity[] } = yield call(api, {
-      method: 'GET',
-      url: `/partners/${id}/activities`,
-      params: {
-        lat: _.get(coordinate, 'lat'),
-        lng: _.get(coordinate, 'lng')
-      }
-    }, state.user);
+    const { data }: { data: Activity[] } = yield call(
+      api,
+      {
+        method: 'GET',
+        url: `/partners/${id}/activities`,
+        params: {
+          lat: _.get(coordinate, 'lat'),
+          lng: _.get(coordinate, 'lng')
+        }
+      },
+      state.user
+    );
 
     yield put(persistActivities(data));
     // yield put(persistUser(data));
@@ -71,10 +82,14 @@ export function* getActivityDetailsSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
 
-    const { data }: { data: ActivityDetails } = yield call(api, {
-      method: 'GET',
-      url: `/activities/${action.payload.id}`
-    }, state.user);
+    const { data }: { data: ActivityDetails } = yield call(
+      api,
+      {
+        method: 'GET',
+        url: `/activities/${action.payload.id}`
+      },
+      state.user
+    );
 
     yield put(persistActivity(data));
     // yield put(persistUser(data));
@@ -93,14 +108,17 @@ export const BLOCK_USER = 'BLOCK_USER';
 export const blockUser = createAction(BLOCK_USER);
 
 export function* blockUserSaga(action: Action<any>) {
-
   try {
     const state: WonderAppState = yield select();
 
-    const { data }: { data: ActivityDetails } = yield call(api, {
-      method: 'POST',
-      url: `/partners/${action.payload.id}/blocks?message=cow+goes-moo`
-    }, state.user);
+    const { data }: { data: ActivityDetails } = yield call(
+      api,
+      {
+        method: 'POST',
+        url: `/partners/${action.payload.id}/blocks?message=cow+goes-moo`
+      },
+      state.user
+    );
 
     // yield put(persistActivity(data));
     // yield put(persistUser(data));

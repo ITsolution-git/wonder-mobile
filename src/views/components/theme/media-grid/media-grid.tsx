@@ -1,6 +1,12 @@
 import _ from 'lodash';
 import React from 'react';
-import { StyleSheet, View, Image, ImageSourcePropType, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Image,
+  ImageSourcePropType,
+  TouchableOpacity
+} from 'react-native';
 import MediaGridItem from './media-grid-item';
 
 import { connect } from 'react-redux';
@@ -28,23 +34,29 @@ interface Props {
 class MediaGrid extends React.Component<Props> {
   static defaultProps = {
     gutter: 5,
-    width: 200,
+    width: 200
   };
 
   calcGridSpace = (span: number) => {
     const { gutter, width } = this.props;
-    const base = ((width / 3) - (2 * gutter)) * span;
+    const base = (width / 3 - 2 * gutter) * span;
 
     let result = base;
     if (span > 1) {
-      result += (span * gutter);
+      result += span * gutter;
     }
 
     return result;
   }
 
   render() {
-    const { featured, gutter, onNewPicture, onNewVideo, currentUser } = this.props;
+    const {
+      featured,
+      gutter,
+      onNewPicture,
+      onNewVideo,
+      currentUser
+    } = this.props;
 
     return (
       <View style={styles.container}>
@@ -100,7 +112,6 @@ class MediaGrid extends React.Component<Props> {
             />
           </View>
         </View>
-
       </View>
     );
   }
@@ -114,17 +125,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   column: {
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
-  container: {
-
-  },
+  container: {},
   featuredContainer: {
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     width: 154,
     height: 154
-  },
-
+  }
 });

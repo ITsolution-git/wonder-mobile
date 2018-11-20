@@ -1,8 +1,8 @@
-import _ from "lodash";
-import React from "react";
-import { Switch } from "react-native";
-import SwitchValueChange from "src/models/switch-value-change";
-import { colors } from "@assets";
+import _ from 'lodash';
+import React from 'react';
+import { Switch } from 'react-native';
+import SwitchValueChange from 'src/models/switch-value-change';
+import { colors } from '@assets';
 
 interface Props {
   disabled?: boolean;
@@ -14,7 +14,7 @@ interface Props {
 class Toggle extends React.Component<Props> {
   static defaultProps = {
     onValueChange: _.noop,
-    value: false,
+    value: false
   };
 
   onChangeValue = (value: boolean) => {
@@ -22,7 +22,7 @@ class Toggle extends React.Component<Props> {
     if (onValueChange) {
       onValueChange(value);
     }
-  };
+  }
 
   render() {
     const { disabled, value } = this.props;
@@ -37,7 +37,7 @@ class Toggle extends React.Component<Props> {
         onTintColor={colors.lightPeach}
         onValueChange={this.onChangeValue}
         value={value}
-        trackColor={disabledState ? "white" : colors.lightPeach}
+        trackColor={disabledState ? 'white' : colors.lightPeach}
       />
     );
   }

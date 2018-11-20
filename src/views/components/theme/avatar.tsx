@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, StyleProp, ImageStyle, ViewStyle } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  StyleProp,
+  ImageStyle,
+  ViewStyle
+} from 'react-native';
 import { WonderImage } from '../theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import theme from '../../../assets/styles/theme';
@@ -41,7 +47,7 @@ class Avatar extends React.Component<AvatarProps> {
     xmd: 74,
     md: 96,
     lg: 128,
-    xl: 160,
+    xl: 160
   };
 
   getDimensions = () => {
@@ -55,7 +61,7 @@ class Avatar extends React.Component<AvatarProps> {
     return {
       height: length,
       width: length,
-      borderRadius: circle ? (length / 2) : (rounded ? 5 : 0),
+      borderRadius: circle ? length / 2 : rounded ? 5 : 0,
       borderWidth: bordered ? 3 : 0
     };
   }
@@ -67,32 +73,39 @@ class Avatar extends React.Component<AvatarProps> {
       if (circle && chat) {
         return (
           <View>
-            {uri ? <WonderImage
-              style={[{
-                ...this.getContainerStyles(),
-                width: this.getDimensions(),
-                height: this.getDimensions(),
-
-              }, style]}
-              uri={uri}
-            /> :
+            {uri ? (
+              <WonderImage
+                style={[
+                  {
+                    ...this.getContainerStyles(),
+                    width: this.getDimensions(),
+                    height: this.getDimensions()
+                  },
+                  style
+                ]}
+                uri={uri}
+              />
+            ) : (
               <Icon
-                color="#BBB"
-                name="user"
+                color='#BBB'
+                name='user'
                 size={this.getDimensions() * 0.4}
               />
-            }
+            )}
           </View>
         );
       } else {
         return (
           <WonderImage
-            style={[{
-              ...this.getContainerStyles(),
-              width: this.getDimensions(),
-              height: this.getDimensions(),
-
-            }, style, { margin: 2 }]}
+            style={[
+              {
+                ...this.getContainerStyles(),
+                width: this.getDimensions(),
+                height: this.getDimensions()
+              },
+              style,
+              { margin: 2 }
+            ]}
             uri={uri}
           />
         );
@@ -103,7 +116,13 @@ class Avatar extends React.Component<AvatarProps> {
   render() {
     const { containerStyle } = this.props;
     return (
-      <View style={[styles.avatarContainer, this.getContainerStyles(), containerStyle]}>
+      <View
+        style={[
+          styles.avatarContainer,
+          this.getContainerStyles(),
+          containerStyle
+        ]}
+      >
         {this.renderImage()}
       </View>
     );

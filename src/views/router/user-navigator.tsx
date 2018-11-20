@@ -1,11 +1,11 @@
-import React from "react";
-import { Platform } from "react-native";
+import React from 'react';
+import { Platform } from 'react-native';
 import {
   createStackNavigator,
   createMaterialTopTabNavigator,
   NavigationScreenProp,
-  NavigationRoute,
-} from "react-navigation";
+  NavigationRoute
+} from 'react-navigation';
 
 import {
   AppointmentView,
@@ -18,27 +18,27 @@ import {
   PastAppointments,
   ProfileCamera,
   ProfileVideo,
-  Feedback,
-} from "../screens";
-import { INITIAL_PROFILE_SCREEN } from "@appConfig";
+  Feedback
+} from '../screens';
+import { INITIAL_PROFILE_SCREEN } from '@appConfig';
 
-import TabIcon from "src/views/components/tabs/secondary-tab-icon";
-import theme from "src/assets/styles/theme";
+import TabIcon from 'src/views/components/tabs/secondary-tab-icon';
+import theme from 'src/assets/styles/theme';
 
 // import SecondaryTabIcon from 'src/views/components/tab/secondary-tab-icon';
 
 function hideTabsForNestedRoutes({
-  navigation,
+  navigation
 }: {
   navigation: NavigationScreenProp<NavigationRoute>;
 }) {
   if (navigation.state.index >= 1) {
     return {
-      tabBarVisible: false,
+      tabBarVisible: false
     };
   }
   return {
-    tabBarVisible: true,
+    tabBarVisible: true
   };
 }
 
@@ -46,120 +46,120 @@ function hideTabsForNestedRoutes({
 const ProfileNavigator = createStackNavigator(
   {
     ProfileView: {
-      screen: ProfileView,
+      screen: ProfileView
     },
     ProfileEdit: {
       screen: ProfileEdit,
       navigationOptions: {
-        title: "Profile",
-        ...theme.NavBar.transparent,
-      },
+        title: 'Profile',
+        ...theme.NavBar.transparent
+      }
     },
     ProfileMedia: {
       screen: ProfileMedia,
       navigationOptions: {
-        header: null,
-      },
+        header: null
+      }
     },
     ProfileWonders: {
       screen: ProfileWonders,
       navigationOptions: {
-        title: "Pick Your Wonders",
-        ...theme.NavBar.transparent,
-      },
+        title: 'Pick Your Wonders',
+        ...theme.NavBar.transparent
+      }
     },
     ProfilePreferences: {
       screen: ProfilePreferences,
       navigationOptions: {
-        title: "Preferences",
-        ...theme.NavBar.transparent,
+        title: 'Preferences',
+        ...theme.NavBar.transparent
         // header: null,
-      },
+      }
     },
     ProfileCamera: {
       screen: ProfileCamera,
       navigationOptions: {
-        title: "Profile Selfie",
-        ...theme.NavBar.transparent,
-      },
+        title: 'Profile Selfie',
+        ...theme.NavBar.transparent
+      }
     },
     ProfileVideo: {
       screen: ProfileVideo,
       navigationOptions: {
-        title: "Vibe Video",
-        ...theme.NavBar.transparent,
-      },
+        title: 'Vibe Video',
+        ...theme.NavBar.transparent
+      }
     },
     Feedback: {
       screen: Feedback,
       navigationOptions: {
-        title: "Contact Us",
-        ...theme.NavBar.transparent,
-      },
-    },
+        title: 'Contact Us',
+        ...theme.NavBar.transparent
+      }
+    }
   },
   {
-    initialRouteName: INITIAL_PROFILE_SCREEN,
-  },
+    initialRouteName: INITIAL_PROFILE_SCREEN
+  }
 );
 
 const UpcomingAppointmentsNavigator = createStackNavigator({
   UpcomingAppointments: {
     screen: UpcomingAppointments,
-    navigationOptions: { header: null },
+    navigationOptions: { header: null }
   },
   UpcomingAppointmentView: {
     screen: AppointmentView,
     navigationOptions: {
-      ...theme.NavBar.transparent,
-    },
-  },
+      ...theme.NavBar.transparent
+    }
+  }
 });
 
 const PastAppointmentsNavigator = createStackNavigator({
   PastAppointments: {
     screen: PastAppointments,
-    navigationOptions: { header: null },
+    navigationOptions: { header: null }
   },
   PastAppointmentView: {
     screen: AppointmentView,
     navigationOptions: {
-      ...theme.NavBar.transparent,
-    },
-  },
+      ...theme.NavBar.transparent
+    }
+  }
 });
 
 const UserNavigator = createMaterialTopTabNavigator(
   {
     Profile: {
       screen: ProfileNavigator,
-      navigationOptions: hideTabsForNestedRoutes,
+      navigationOptions: hideTabsForNestedRoutes
     },
     Past: {
       screen: PastAppointmentsNavigator,
-      navigationOptions: hideTabsForNestedRoutes,
+      navigationOptions: hideTabsForNestedRoutes
     },
     Upcoming: {
       screen: UpcomingAppointmentsNavigator,
-      navigationOptions: hideTabsForNestedRoutes,
-    },
+      navigationOptions: hideTabsForNestedRoutes
+    }
   },
   {
     swipeEnabled: false,
-    tabBarPosition: "top",
+    tabBarPosition: 'top',
     tabBarOptions: {
       allowFontScaling: false,
       style: {
-        backgroundColor: "#FFF",
-        elevation: 0,
+        backgroundColor: '#FFF',
+        elevation: 0
       },
       indicatorStyle: {
-        backgroundColor: theme.colors.primary,
+        backgroundColor: theme.colors.primary
       },
       activeTintColor: theme.colors.primary,
-      inactiveTintColor: theme.colors.textColor,
-    },
-  },
+      inactiveTintColor: theme.colors.textColor
+    }
+  }
 );
 
 export default UserNavigator;

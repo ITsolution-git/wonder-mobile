@@ -1,9 +1,9 @@
 // author: NK
 
-import * as React from "react";
-import { NetInfo, ConnectionInfo } from "react-native";
-import { Client } from "bugsnag-react-native";
-import { BUGSNAG_TOKEN } from "@appConfig";
+import * as React from 'react';
+import { NetInfo, ConnectionInfo } from 'react-native';
+import { Client } from 'bugsnag-react-native';
+import { BUGSNAG_TOKEN } from '@appConfig';
 
 interface IAppLoaderProps {}
 
@@ -17,10 +17,10 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
   constructor(props: IAppLoaderProps) {
     super(props);
     this.state = {
-      isOnline: false,
+      isOnline: false
     };
 
-    this._bugsnag.notify(new Error("Test error #2 with source maps"));
+    this._bugsnag.notify(new Error('Test error #2 with source maps'));
   }
 
   componentDidMount() {
@@ -44,8 +44,8 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
 
   componentWillUnmount() {
     NetInfo.removeEventListener(
-      "connectionChange",
-      this.handleConnectionChange,
+      'connectionChange',
+      this.handleConnectionChange
     );
   }
 
@@ -55,24 +55,24 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
     const networkStatus = await NetInfo.getConnectionInfo();
 
     console.log(`networkStatus:`, networkStatus);
-    const isOnline = networkStatus.type !== "none";
+    const isOnline = networkStatus.type !== 'none';
 
     this.setState({ isOnline });
-    NetInfo.addEventListener("connectionChange", this.handleConnectionChange);
-  };
+    NetInfo.addEventListener('connectionChange', this.handleConnectionChange);
+  }
 
   private handleConnectionChange = (
-    connectionInfo: ConnectionInfo | string,
+    connectionInfo: ConnectionInfo | string
   ): void => {
     console.log(`connectionInfo:`, connectionInfo);
 
     const isOnline =
-      typeof connectionInfo === "string"
-        ? connectionInfo !== "none"
-        : connectionInfo.type !== "none";
+      typeof connectionInfo === 'string'
+        ? connectionInfo !== 'none'
+        : connectionInfo.type !== 'none';
 
     this.setState({ isOnline });
-  };
+  }
 
   public render() {
     return null;

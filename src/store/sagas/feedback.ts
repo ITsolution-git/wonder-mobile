@@ -20,27 +20,32 @@ export function* submitFeedbackSaga(action: Action<any>) {
     formData.append('support_message[body]', body);
     formData.append('support_message[file]', file);
 
-    const response: AxiosResponse = yield call(api, {
-      method: 'POST',
-      url: '/support_messages',
-      contentType: false,
-      processData: false,
-      data: formData
-    }, state.user);
+    const response: AxiosResponse = yield call(
+      api,
+      {
+        method: 'POST',
+        url: '/support_messages',
+        contentType: false,
+        processData: false,
+        data: formData
+      },
+      state.user
+    );
 
     if (response.status === 201) {
       Alert.alert('Submitted!', 'Thanks for submitting feedback!');
     }
   } catch (error) {
-
     if (error.response) {
       console.log(error.response);
-      Alert.alert(`HTTP ${error.response.status}`, JSON.stringify(error.response.data));
+      Alert.alert(
+        `HTTP ${error.response.status}`,
+        JSON.stringify(error.response.data)
+      );
     } else {
       console.warn(error);
     }
   } finally {
-
   }
 }
 

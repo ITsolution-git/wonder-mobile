@@ -27,7 +27,11 @@ export default class WonderPickerItem extends React.Component<Props> {
         style={[styles.btn, selected && styles.selectedBtn]}
         onPress={() => onPress && onPress(topic)}
       >
-        <Wonder labelStyles={{ color: '#000' }} topic={topic} active={selected} />
+        <Wonder
+          labelStyles={{ color: '#000' }}
+          topic={topic}
+          active={selected}
+        />
       </TouchableOpacity>
     );
   }
@@ -46,12 +50,12 @@ const styles = StyleSheet.create({
       height: 0
     },
     shadowRadius: 5,
-    backgroundColor: '#FFF',
+    backgroundColor: '#FFF'
   },
   selectedBtn: {
     borderWidth: 2,
     borderColor: theme.colors.primaryLight,
     shadowColor: theme.colors.primary,
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.5
   }
 });

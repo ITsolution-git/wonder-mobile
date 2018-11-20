@@ -1,6 +1,11 @@
 import _ from 'lodash';
 import React from 'react';
-import { View, StyleSheet, TextInput as Input, TextInputProps } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TextInput as Input,
+  TextInputProps
+} from 'react-native';
 import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Color from 'color';
@@ -35,7 +40,10 @@ interface State {
   text?: string;
 }
 
-export default class RoundedTextInput extends React.Component<RoundedTextInputProps, State> {
+export default class RoundedTextInput extends React.Component<
+  RoundedTextInputProps,
+  State
+> {
   innerRef: any = null;
 
   static defaultProps = {
@@ -53,7 +61,11 @@ export default class RoundedTextInput extends React.Component<RoundedTextInputPr
     if (icon) {
       return (
         <View style={styles.iconContainer}>
-          <Icon name={icon} color={color || palette.darken(0.2).toString()} size={14} />
+          <Icon
+            name={icon}
+            color={color || palette.darken(0.2).toString()}
+            size={14}
+          />
         </View>
       );
     }
@@ -62,7 +74,7 @@ export default class RoundedTextInput extends React.Component<RoundedTextInputPr
   renderErrorHint = () => {
     const { errorHint } = this.props;
     // if (errorHint) {
-    return (<ErrorHint style={{ marginLeft: 20 }}>{errorHint}</ErrorHint>);
+    return <ErrorHint style={{ marginLeft: 20 }}>{errorHint}</ErrorHint>;
     // }
   }
 
@@ -72,7 +84,11 @@ export default class RoundedTextInput extends React.Component<RoundedTextInputPr
     const valid = onValidate && onValidate(text);
     return (
       <View style={styles.iconContainer}>
-        <Icon color={valid ? 'green' : styles.container.backgroundColor} size={14} name="check" />
+        <Icon
+          color={valid ? 'green' : styles.container.backgroundColor}
+          size={14}
+          name='check'
+        />
       </View>
     );
   }
@@ -110,7 +126,7 @@ export default class RoundedTextInput extends React.Component<RoundedTextInputPr
     const input = (
       <Input
         ref={getRef}
-        underlineColorAndroid="transparent"
+        underlineColorAndroid='transparent'
         placeholderTextColor={color}
         secureTextEntry={passwordProps.secureTextEntry}
         autoCapitalize={passwordProps.autoCapitalize}

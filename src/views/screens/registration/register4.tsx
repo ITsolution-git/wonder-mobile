@@ -1,27 +1,27 @@
-import _ from "lodash";
-import React from "react";
-import { View, StyleSheet, SectionList } from "react-native";
+import _ from 'lodash';
+import React from 'react';
+import { View, StyleSheet, SectionList } from 'react-native';
 import {
   Text,
   PrimaryButton,
   TextInput,
   WonderPicker
-} from "src/views/components/theme";
-import Screen from "src/views/components/screen";
+} from 'src/views/components/theme';
+import Screen from 'src/views/components/screen';
 
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import { getTopics } from "../../../store/sagas/topics";
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { getTopics } from '../../../store/sagas/topics';
 
-import { persistRegistrationInfo } from "../../../store/reducers/registration";
-import { registerUser } from "../../../store/sagas/user";
-import theme from "../../../assets/styles/theme";
-import Topic from "../../../models/topic";
-import WonderAppState from "../../../models/wonder-app-state";
-import WonderPickerItem from "src/views/components/theme/wonder-picker/wonder-picker-item";
-import WonderPickerSectionList from "src/views/components/theme/wonder-picker/wonder-picker-sectionlist";
-import PickedWonders from "src/views/components/theme/wonder-picker/picked-wonders";
+import { persistRegistrationInfo } from '../../../store/reducers/registration';
+import { registerUser } from '../../../store/sagas/user';
+import theme from '../../../assets/styles/theme';
+import Topic from '../../../models/topic';
+import WonderAppState from '../../../models/wonder-app-state';
+import WonderPickerItem from 'src/views/components/theme/wonder-picker/wonder-picker-item';
+import WonderPickerSectionList from 'src/views/components/theme/wonder-picker/wonder-picker-sectionlist';
+import PickedWonders from 'src/views/components/theme/wonder-picker/picked-wonders';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -47,7 +47,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
 });
 
 const chosenItems = (arr: string[]) => {
-  const arr2 = ["", "", ""];
+  const arr2 = ['', '', ''];
   if (arr.length <= 3) {
     for (let i = 0; i < arr2.length; i++) {
       if (arr[i]) {
@@ -64,7 +64,7 @@ class Register4 extends React.Component<Props, State> {
   };
 
   state = {
-    search: "",
+    search: '',
     selected: []
   };
 
@@ -110,7 +110,7 @@ class Register4 extends React.Component<Props, State> {
     const { selected } = this.state;
     const { topics } = this.props;
     const quickDates = topics.filter(
-      (t) => t.name === "Coffee" || t.name === "Lunch" || t.name === "Dinner"
+      (t) => t.name === 'Coffee' || t.name === 'Lunch' || t.name === 'Dinner'
     );
 
     const groupedTopics = _.chunk(filteredTopics, 3);
@@ -128,7 +128,7 @@ class Register4 extends React.Component<Props, State> {
     }
     return (
       <View>
-        <Text style={{ textAlign: "center" }}>
+        <Text style={{ textAlign: 'center' }}>
           Sorry! Looks like we do not have a wonder that matches what you are
           looking for.
         </Text>
@@ -180,8 +180,8 @@ class Register4 extends React.Component<Props, State> {
     return (
       <Screen horizontalPadding={10}>
         <View style={{ paddingVertical: 15 }}>
-          <Text style={{ textAlign: "center" }}>
-            Please select 3{" "}
+          <Text style={{ textAlign: 'center' }}>
+            Please select 3{' '}
             <Text style={{ color: theme.colors.primary }}>Wonders</Text> to help
             us find people &amp; activities in your area.
           </Text>
@@ -192,9 +192,9 @@ class Register4 extends React.Component<Props, State> {
             color={theme.colors.primaryLight}
             containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
             autoCorrect={false}
-            autoCapitalize="none"
-            icon="search"
-            placeholder="Search"
+            autoCapitalize='none'
+            icon='search'
+            placeholder='Search'
             onChangeText={this.onSearchTextChange}
           />
         </View>
@@ -203,7 +203,7 @@ class Register4 extends React.Component<Props, State> {
           <View style={styles.fixedButton}>
             <PrimaryButton
               disabled={selected.length !== 3}
-              title="Next"
+              title='Next'
               onPress={this.validate}
             />
           </View>
@@ -221,29 +221,29 @@ export default connect(
 const styles = StyleSheet.create({
   welcome: {
     fontSize: 14,
-    textAlign: "center",
+    textAlign: 'center',
     margin: 10
   },
   instructions: {
-    textAlign: "center",
-    color: "#333333",
+    textAlign: 'center',
+    color: '#333333',
     marginBottom: 5
   },
   row: {
     padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   inputContainer: {
     paddingVertical: 15,
-    width: "80%",
-    alignSelf: "center"
+    width: '80%',
+    alignSelf: 'center'
   },
   fixedButton: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 10,
-    width: "100%",
+    width: '100%',
     zIndex: 10
   }
 });

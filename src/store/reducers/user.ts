@@ -13,47 +13,55 @@ export const initialState: UserState = {
   },
   auth: {
     token: null,
-    uid: null,
+    uid: null
   }
 };
 
-export const addProfileImage = createAction("ADD_PROFILE_IMAGE");
-export const addProfileVideo = createAction("ADD_PROFILE_VIDEO");
-export const removeProfileImage = createAction("REMOVE_PROFILE_IMAGE");
+export const addProfileImage = createAction('ADD_PROFILE_IMAGE');
+export const addProfileVideo = createAction('ADD_PROFILE_VIDEO');
+export const removeProfileImage = createAction('REMOVE_PROFILE_IMAGE');
 
-export default handleActions({
-  ADD_PROFILE_IMAGE: (state: UserState, action) => {
-    return {
-      ...state,
-      profile: {
-        ...state.profile,
-        images: [...state.profile.images || [], {
-          id: Math.floor(1000 + Math.random() * 9000)
-          , url: action.payload.uri, position: 2
-        }]
-      },
-    };
-  }
-  ,
-  ADD_PROFILE_VIDEO: (state: UserState, action) => {
-    return {
-      ...state,
-      profile: {
-        ...state.profile,
-        video: action.payload.uri
-      }
-    };
-  },
-  PERSIST_AUTH: (state: UserState, action) => ({
-    ...state,
-    auth: {
-      token: action.payload.token || initialState.auth.token,
-      uid: (action.payload.payload && action.payload.payload.sub) || initialState.auth.uid
+export default handleActions(
+  {
+    ADD_PROFILE_IMAGE: (state: UserState, action) => {
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          images: [
+            ...(state.profile.images || []),
+            {
+              id: Math.floor(1000 + Math.random() * 9000),
+              url: action.payload.uri,
+              position: 2
+            }
+          ]
+        }
+      };
     },
-  }),
-  PERSIST_USER: (state: UserState, action) => ({
-    ...state,
-    profile: action.payload || initialState.profile
-  }),
-  LOGOUT_USER: () => initialState
-}, initialState);
+    ADD_PROFILE_VIDEO: (state: UserState, action) => {
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          video: action.payload.uri
+        }
+      };
+    },
+    PERSIST_AUTH: (state: UserState, action) => ({
+      ...state,
+      auth: {
+        token: action.payload.token || initialState.auth.token,
+        uid:
+          (action.payload.payload && action.payload.payload.sub) ||
+          initialState.auth.uid
+      }
+    }),
+    PERSIST_USER: (state: UserState, action) => ({
+      ...state,
+      profile: action.payload || initialState.profile
+    }),
+    LOGOUT_USER: () => initialState
+  },
+  initialState
+);

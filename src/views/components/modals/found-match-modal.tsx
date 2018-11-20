@@ -12,7 +12,9 @@ import Proposal from 'src/models/proposal';
 import User from 'src/models/user';
 
 function lighten(color: string, value: number) {
-  return Color(color).fade(value).toString();
+  return Color(color)
+    .fade(value)
+    .toString();
 }
 
 interface FoundMatchModalProps extends ModalProps {
@@ -21,8 +23,14 @@ interface FoundMatchModalProps extends ModalProps {
   onSuccess: Function;
 }
 
-const textGradient = [theme.colors.cottonCandyBlue, theme.colors.cottonCandyPink];
-const gradient = [lighten(theme.colors.primaryLight, 0.1), lighten(theme.colors.primary, 0.1)];
+const textGradient = [
+  theme.colors.cottonCandyBlue,
+  theme.colors.cottonCandyPink
+];
+const gradient = [
+  lighten(theme.colors.primaryLight, 0.1),
+  lighten(theme.colors.primary, 0.1)
+];
 class FoundMatchModal extends React.Component<FoundMatchModalProps> {
   static defaultProps = {
     visible: false
@@ -49,23 +57,30 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
 
     if (proposal && proposal.candidate) {
       return (
-        <LinearGradient
-          style={styles.container}
-          colors={gradient}
-        >
+        <LinearGradient style={styles.container} colors={gradient}>
           <View style={styles.textContainer} flex={3}>
-            <Text style={[styles.txt]}>{proposal.candidate.first_name} thinks</Text>
+            <Text style={[styles.txt]}>
+              {proposal.candidate.first_name} thinks
+            </Text>
             {/* <LinearGradient colors={text}> */}
-            <Text style={[styles.txt, styles.wonderfulTxt]}>YOU'RE WONDERFUL</Text>
+            <Text style={[styles.txt, styles.wonderfulTxt]}>
+              YOU'RE WONDERFUL
+            </Text>
             {/* </LinearGradient> */}
-            <Text style={[styles.txt]}>Tell {proposal.candidate.first_name} you think they are wonderful too!</Text>
+            <Text style={[styles.txt]}>
+              Tell {proposal.candidate.first_name} you think they are wonderful
+              too!
+            </Text>
             <View style={styles.row}>
               <Avatar
                 size={AvatarSize.md}
                 uri={this.getCurrentUserImage()}
                 circle
               />
-              <Image source={Images.LogoIcon} style={{ width: 50, height: 50 }} />
+              <Image
+                source={Images.LogoIcon}
+                style={{ width: 50, height: 50 }}
+              />
               <Avatar
                 size={AvatarSize.md}
                 uri={this.getCandidateImage()}
@@ -75,14 +90,11 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
           </View>
           <View flex={1}>
             <PrimaryButton
-              title="Send Message"
+              title='Send Message'
               onPress={() => onSuccess(proposal)}
             />
             <View style={styles.spacer} />
-            <OutlineButton
-              title="Keep Wonder&apos;N"
-              onPress={onRequestClose}
-            />
+            <OutlineButton title="Keep Wonder'N" onPress={onRequestClose} />
           </View>
         </LinearGradient>
       );
@@ -91,11 +103,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
   }
   render() {
     return (
-      <Modal
-        animationType="fade"
-        transparent
-        {...this.props}
-      >
+      <Modal animationType='fade' transparent {...this.props}>
         {this.renderModalContent()}
       </Modal>
     );

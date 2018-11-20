@@ -141,7 +141,7 @@ export const logoutUser = createAction(LOGOUT_USER);
 export function* logoutUserSaga(action: Action<any>) {
   try {
     // try to clean push token, but do not blocks user from logout
-    const { id, token }: { id: number, token: string } = action.payload;
+    const { id, token }: { id: number; token: string } = action.payload;
 
     const authHeader = {
       auth: {
@@ -163,8 +163,7 @@ export function* logoutUserSaga(action: Action<any>) {
       },
       authHeader
     );
-  } catch (error) {
-  }
+  } catch (error) {}
 
   yield put(persistAuth({}));
   yield put(persistUser({}));

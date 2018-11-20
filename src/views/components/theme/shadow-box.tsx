@@ -1,18 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-interface Props {
-
-}
+interface Props {}
 
 export default class ShadowBox extends React.Component<Props> {
   render() {
-    return (
-      <View style={styles.container}>
-        {this.props.children}
-      </View>
-    );
+    return <View style={styles.container}>{this.props.children}</View>;
   }
 }
 
@@ -28,6 +22,6 @@ const styles = StyleSheet.create({
       height: 5
     },
     shadowColor: '#383838',
-    shadowOpacity: 0.4,
+    shadowOpacity: 0.4
   }
 });

@@ -1,8 +1,8 @@
-import React from "react";
-import { View, TouchableHighlight, StyleSheet } from "react-native";
-import theme from "src/assets/styles/theme";
-import Icon from "react-native-vector-icons/Entypo";
-import Candidate from "src/models/candidate";
+import React from 'react';
+import { View, TouchableHighlight, StyleSheet } from 'react-native';
+import theme from 'src/assets/styles/theme';
+import Icon from 'react-native-vector-icons/Entypo';
+import Candidate from 'src/models/candidate';
 
 interface Props {
   candidate: Candidate;
@@ -34,11 +34,11 @@ const MatchAvailableMedia = (props: Props) => {
         <TouchableHighlight
           style={styles.iconContainer}
           onPress={props.onPress}
-          underlayColor="transparent"
+          underlayColor='transparent'
         >
           <Icon
             size={20}
-            name={"video-camera"}
+            name={'video-camera'}
             color={theme.colors.textColor}
           />
         </TouchableHighlight>
@@ -50,13 +50,13 @@ const MatchAvailableMedia = (props: Props) => {
 export default MatchAvailableMedia;
 
 const styles = StyleSheet.create({
-  container: { alignSelf: "flex-end", padding: 10 },
-  center: { alignItems: "center" },
+  container: { alignSelf: 'flex-end', padding: 10 },
+  center: { alignItems: 'center' },
   photoIndex: {
     height: 9,
     width: 9,
     borderRadius: 4.5,
     margin: 3
   },
-  iconContainer: { alignItems: "center", margin: 4, padding: 10 }
+  iconContainer: { alignItems: 'center', margin: 4, padding: 10 }
 });

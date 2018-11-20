@@ -12,8 +12,9 @@ import ImageRotate from 'react-native-image-rotate';
 import { Options, Response } from 'src/models/image-picker';
 import ImageToolbar from 'src/views/components/camera/image-toolbar';
 import ProfileImage from 'src/models/profile-image';
-import { addProfileImage, removeProfileImage } from "src/store/reducers/user";
-const backgrounImageExtension = '?w=600&h=1200&auto=enhance,format&fit=crop&crop=entropy&q=60';
+import { addProfileImage, removeProfileImage } from 'src/store/reducers/user';
+const backgrounImageExtension =
+  '?w=600&h=1200&auto=enhance,format&fit=crop&crop=entropy&q=60';
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateImage: (data: Response) => dispatch(updateImage(data)),
@@ -32,7 +33,10 @@ interface ProfileCameraScreenState {
   data: Response | null;
 }
 
-class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, ProfileCameraScreenState> {
+class ProfileCameraScreen extends React.Component<
+  ProfileCameraScreenProps,
+  ProfileCameraScreenState
+> {
   state: ProfileCameraScreenState = {
     data: null
   };
@@ -87,14 +91,12 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
         }
       );
     }
-
   }
 
   onDeleteImage = () => {
     const { navigation, onDeleteImage } = this.props;
     const currentImage: ProfileImage = navigation.getParam('data');
     if (currentImage) {
-
       onDeleteImage(currentImage);
       this.props.onRemoveImage(currentImage);
       // Delete the image
@@ -109,7 +111,6 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
 
     let image = null;
     if (currentImage) {
-
       image = (
         <Image
           source={{ uri: currentImage.url + backgrounImageExtension }}
@@ -127,12 +128,10 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
     }
     if (image) {
       return (
-        <View flex={1} >
-          <View style={[styles.imgcontainer, { padding: 0 }]}>
-            {image}
-          </View>
+        <View flex={1}>
+          <View style={[styles.imgcontainer, { padding: 0 }]}>{image}</View>
           <ImageToolbar
-            mode="photo"
+            mode='photo'
             isNew={!currentImage || !!data}
             onRotate={this.onRotate}
             onRetake={this.getImage}
@@ -145,18 +144,17 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
     }
 
     return (
-      <View flex={1} >
+      <View flex={1}>
         <View style={styles.container}>
           <Text>
-            Take a selfie to express who you are.
-            Your profile images are displayed for other
-            people who match your interests
+            Take a selfie to express who you are. Your profile images are
+            displayed for other people who match your interests
           </Text>
         </View>
         <View>
           <PrimaryButton
             rounded={false}
-            title="SELECT IMAGE"
+            title='SELECT IMAGE'
             onPress={this.getImage}
           />
         </View>
@@ -165,15 +163,14 @@ class ProfileCameraScreen extends React.Component<ProfileCameraScreenProps, Prof
   }
 
   render() {
-    return (
-      <Screen>
-        {this.renderContent()}
-      </Screen>
-    );
+    return <Screen>{this.renderContent()}</Screen>;
   }
 }
 
-export default connect(null, mapDispatch)(ProfileCameraScreen);
+export default connect(
+  null,
+  mapDispatch
+)(ProfileCameraScreen);
 // export default ProfileCameraScreen;
 
 const styles = StyleSheet.create({

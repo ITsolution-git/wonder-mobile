@@ -5,7 +5,11 @@ import ProposalSwiper from 'src/views/components/proposal-swiper/proposal-swiper
 
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { getNewProposal, rateProposal, getNextProposal } from 'src/store/sagas/proposal';
+import {
+  getNewProposal,
+  rateProposal,
+  getNextProposal
+} from 'src/store/sagas/proposal';
 
 import FoundMatchModal from 'src/views/components/modals/found-match-modal';
 import { persistCurrentMatch } from 'src/store/reducers/wonder';
@@ -42,7 +46,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onClearCurrentMatch: () => dispatch(persistCurrentMatch({})),
   onRefreshConversations: () => dispatch(getConversations()),
   onGetConversation: (partnerId: number) =>
-    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
+    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
   // onGetNextProposal: () => dispatch(getNextProposal())
 });
 
@@ -133,11 +137,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      proposal,
-      currentMatch,
-      currentUser
-    } = this.props;
+    const { proposal, currentMatch, currentUser } = this.props;
 
     return (
       <Screen>

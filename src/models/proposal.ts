@@ -1,4 +1,4 @@
-import Candidate from "./candidate";
+import Candidate from './candidate';
 
 /**
  * A proposal is a user who is calculated to

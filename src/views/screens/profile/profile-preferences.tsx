@@ -1,42 +1,42 @@
-import React from "react";
-import Screen from "src/views/components/screen";
+import React from 'react';
+import Screen from 'src/views/components/screen';
 import {
   SubHeader,
   Text,
   Toggle,
   PrimaryButton,
-  Switch,
-} from "src/views/components/theme";
+  Switch
+} from 'src/views/components/theme';
 import {
   View,
   StyleSheet,
   ScrollView,
   //   Slider,
-  RefreshControl,
-} from "react-native";
-import Slider from "react-native-slider";
-import theme from "src/assets/styles/theme";
+  RefreshControl
+} from 'react-native';
+import Slider from 'react-native-slider';
+import theme from 'src/assets/styles/theme';
 
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import { connect } from "react-redux";
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import { connect } from 'react-redux';
 
-import { Dispatch } from "redux";
-import { updateUser, getUser } from "src/store/sagas/user";
+import { Dispatch } from 'redux';
+import { updateUser, getUser } from 'src/store/sagas/user';
 import MultiPointSlider, {
-  MultiPointSliderValue,
-} from "src/views/components/theme/multi-point-slider/multi-point-slider";
-import WonderAppState from "src/models/wonder-app-state";
-import User from "src/models/user";
-import DistanceUnit from "src/models/distance-unit";
-import { colors, IOS } from "@assets";
+  MultiPointSliderValue
+} from 'src/views/components/theme/multi-point-slider/multi-point-slider';
+import WonderAppState from 'src/models/wonder-app-state';
+import User from 'src/models/user';
+import DistanceUnit from 'src/models/distance-unit';
+import { colors, IOS } from '@assets';
 
 const mapState = (state: WonderAppState) => ({
-  profile: state.user.profile,
+  profile: state.user.profile
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onSave: (profile: Partial<User>) => dispatch(updateUser(profile)),
-  onRefresh: () => dispatch(getUser()),
+  onRefresh: () => dispatch(getUser())
 });
 
 interface Props {
@@ -69,7 +69,7 @@ interface State {
 
 class ProfilePreferencesScreen extends React.Component<Props, State> {
   static defaultProps = {
-    profile: {},
+    profile: {}
   };
 
   constructor(props: Props) {
@@ -95,40 +95,40 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
     apn_new_messages: profile.apn_new_messages,
     apn_message_likes: profile.apn_message_likes,
     apn_message_super_likes: profile.apn_message_super_likes,
-    geocoding_requested: profile.geocoding_requested,
-  });
+    geocoding_requested: profile.geocoding_requested
+  })
 
   onNumberChange = (key: string) => {
     return (value: number) => {
       this.setState({
-        [key]: value,
+        [key]: value
       });
     };
-  };
+  }
 
   onBooleanChange = (key: string) => {
     const value = this.state[key];
 
     return () => {
       this.setState({
-        [key]: !value,
+        [key]: !value
       });
     };
-  };
+  }
 
   onChangeDistanceUnit = () => {
     const { distance_unit } = this.state;
 
-    const nextUnit = distance_unit === "km" ? "mi" : "km";
+    const nextUnit = distance_unit === 'km' ? 'mi' : 'km';
     this.setState({ distance_unit: nextUnit });
-  };
+  }
 
   onChangeAgeRange = (
     age_of_interest_min: number,
-    age_of_interest_max: number,
+    age_of_interest_max: number
   ) => {
     this.setState({ age_of_interest_min, age_of_interest_max });
-  };
+  }
 
   save = () => {
     const { onSave, navigation } = this.props;
@@ -148,7 +148,7 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_new_messages,
       apn_message_likes,
       apn_message_super_likes,
-      geocoding_requested,
+      geocoding_requested
     } = this.state;
 
     onSave({
@@ -167,10 +167,10 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_new_messages,
       apn_message_likes,
       apn_message_super_likes,
-      geocoding_requested,
+      geocoding_requested
     });
     navigation.goBack();
-  };
+  }
 
   refresh = () => {
     const { onRefresh } = this.props;
@@ -178,7 +178,7 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
     this.setState({ isRefreshing: true }, () => {
       setTimeout(() => this.setState({ isRefreshing: false }), 1500);
     });
-  };
+  }
 
   render() {
     const { navigation } = this.props;
@@ -199,11 +199,11 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_new_messages,
       apn_message_likes,
       apn_message_super_likes,
-      geocoding_requested,
+      geocoding_requested
     } = this.state;
 
     const ageRangeText = IOS
-      ? ""
+      ? ''
       : `: ${age_of_interest_min} - ${age_of_interest_max}`;
 
     return (
@@ -225,7 +225,7 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
               <Text>New Matches</Text>
               <Switch
                 value={!!apn_new_matches}
-                onValueChange={this.onBooleanChange("apn_new_matches")}
+                onValueChange={this.onBooleanChange('apn_new_matches')}
               />
             </View>
 
@@ -233,7 +233,7 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
               <Text>Messages</Text>
               <Switch
                 value={!!apn_new_messages}
-                onValueChange={this.onBooleanChange("apn_new_messages")}
+                onValueChange={this.onBooleanChange('apn_new_messages')}
               />
             </View>
 
@@ -270,7 +270,7 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
               <Text>Military Time</Text>
               <Switch
                 value={military_time}
-                onValueChange={this.onBooleanChange("military_time")}
+                onValueChange={this.onBooleanChange('military_time')}
               />
             </View>
 
@@ -289,7 +289,7 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
               <Text>Women</Text>
               <Switch
                 value={female_interest}
-                onValueChange={this.onBooleanChange("female_interest")}
+                onValueChange={this.onBooleanChange('female_interest')}
               />
             </View>
 
@@ -297,7 +297,7 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
               <Text>Men</Text>
               <Switch
                 value={male_interest}
-                onValueChange={this.onBooleanChange("male_interest")}
+                onValueChange={this.onBooleanChange('male_interest')}
               />
             </View>
 
@@ -328,8 +328,8 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
             </View>
             <View style={styles.row}>
               <Slider
-                onValueChange={this.onNumberChange("distance_of_interest_max")}
-                style={{ width: "100%" }}
+                onValueChange={this.onNumberChange('distance_of_interest_max')}
+                style={{ width: '100%' }}
                 minimumTrackTintColor={colors.lightPeach}
                 trackStyle={styles.track}
                 thumbStyle={styles.thumb}
@@ -344,13 +344,13 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
               <Text>Ghosters</Text>
               <Switch
                 value={show_ghosters}
-                onValueChange={this.onBooleanChange("show_ghosters")}
+                onValueChange={this.onBooleanChange('show_ghosters')}
               />
             </View>
           </View>
         </ScrollView>
         <View>
-          <PrimaryButton rounded={false} title="Save" onPress={this.save} />
+          <PrimaryButton rounded={false} title='Save' onPress={this.save} />
         </View>
       </Screen>
     );
@@ -359,37 +359,37 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(ProfilePreferencesScreen);
 
 const styles = StyleSheet.create({
   row: {
     borderRadius: 5,
     padding: 10,
-    backgroundColor: "#FFF",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    backgroundColor: '#FFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     elevation: 3,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 5
     },
-    marginVertical: 5,
+    marginVertical: 5
   },
   heading: {
-    marginTop: 15,
+    marginTop: 15
   },
   thumb: {
     width: 30,
     height: 10,
     borderRadius: 5,
-    backgroundColor: colors.lightPeach,
+    backgroundColor: colors.lightPeach
   },
   track: {
     backgroundColor: colors.lightGray,
-    height: 2,
-  },
+    height: 2
+  }
 });

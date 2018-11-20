@@ -15,8 +15,10 @@ class RatingIndicator extends React.Component<Props> {
       <Icon
         key={i}
         size={10}
-        name="star"
-        color={i <= rating ? theme.colors.primaryLight : theme.colors.textColorLight}
+        name='star'
+        color={
+          i <= rating ? theme.colors.primaryLight : theme.colors.textColorLight
+        }
       />
     ));
   }

@@ -1,4 +1,4 @@
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator } from 'react-navigation';
 import {
   ChatList,
   ChatScreen,
@@ -6,8 +6,8 @@ import {
   AppointmentInvite,
   AppointmentConfirm,
   ActivitySchedule
-} from "../screens";
-import theme from "src/assets/styles/theme";
+} from '../screens';
+import theme from 'src/assets/styles/theme';
 
 const ChatNavigator = createStackNavigator(
   {
@@ -27,7 +27,7 @@ const ChatNavigator = createStackNavigator(
       screen: ActivityMap,
       navigationOptions: {
         // header: null
-        title: "FIND A WONDER",
+        title: 'FIND A WONDER',
         ...theme.NavBar.transparent
       }
     },
@@ -35,7 +35,7 @@ const ChatNavigator = createStackNavigator(
       screen: ActivitySchedule,
       navigationOptions: {
         // header: null
-        title: "Schedule Your Wonder",
+        title: 'Schedule Your Wonder',
         ...theme.NavBar.transparent
       }
     },
@@ -48,13 +48,13 @@ const ChatNavigator = createStackNavigator(
     AppointmentConfirm: {
       screen: AppointmentConfirm,
       navigationOptions: {
-        title: "Confirm Your Wonder",
+        title: 'Confirm Your Wonder',
         ...theme.NavBar.transparent
       }
     }
   },
   {
-    initialRouteName: "ChatList"
+    initialRouteName: 'ChatList'
   }
 );
 

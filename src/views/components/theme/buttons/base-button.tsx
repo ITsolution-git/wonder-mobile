@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle
+} from 'react-native';
 import { Text } from '..';
 import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -27,7 +33,10 @@ export interface BaseButtonProps {
   bold?: boolean;
 }
 
-export default class BaseButton extends React.Component<Partial<BaseButtonProps>, any> {
+export default class BaseButton extends React.Component<
+  Partial<BaseButtonProps>,
+  any
+> {
   static defaultProps = {
     rounded: false,
     iconColor: undefined,
@@ -43,7 +52,11 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
     if (icon) {
       return (
         <View style={styles.iconContainer}>
-          <Icon name={icon} color={iconColor || color || palette.darken(0.2).toString()} size={14} />
+          <Icon
+            name={icon}
+            color={iconColor || color || palette.darken(0.2).toString()}
+            size={14}
+          />
         </View>
       );
     }
@@ -89,7 +102,6 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
     }
 
     return (
-
       <TouchableOpacity
         disabled={disabled}
         onPress={onPress}
@@ -102,7 +114,13 @@ export default class BaseButton extends React.Component<Partial<BaseButtonProps>
         >
           {icon && this.renderIcon()}
           <View style={styles.txtContainer}>
-            <Text allowFontScaling={false} color={color} style={[styles.title, bold && { fontWeight: 'bold' }]}>{title}</Text>
+            <Text
+              allowFontScaling={false}
+              color={color}
+              style={[styles.title, bold && { fontWeight: 'bold' }]}
+            >
+              {title}
+            </Text>
           </View>
           {icon && <View flex={1} />}
         </ViewContainer>
@@ -118,14 +136,14 @@ const styles = StyleSheet.create({
     // padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   container: {
     flex: 0
   },
   txtContainer: {
     flex: 7,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   iconContainer: {
     width: 40,

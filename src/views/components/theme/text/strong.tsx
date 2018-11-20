@@ -7,7 +7,9 @@ export default class Strong extends React.Component<ThemeTextProps> {
   render() {
     const { children, style, ...rest } = this.props;
     return (
-      <Text style={[styles.text, style]} {...rest}>{children}</Text>
+      <Text style={[styles.text, style]} {...rest}>
+        {children}
+      </Text>
     );
   }
 }

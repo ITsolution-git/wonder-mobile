@@ -16,11 +16,14 @@ class GenderPickerOption extends React.Component<OptionProps> {
     const { option, selected, onPress } = this.props;
     return (
       <View style={styles.optionContainer}>
-        <TouchableOpacity
-          style={styles.optionBtn}
-          onPress={onPress}
-        >
-          <Icon name={option} color={selected ? theme.colors.primaryLight : theme.colors.textColor} size={48} />
+        <TouchableOpacity style={styles.optionBtn} onPress={onPress}>
+          <Icon
+            name={option}
+            color={
+              selected ? theme.colors.primaryLight : theme.colors.textColor
+            }
+            size={48}
+          />
         </TouchableOpacity>
       </View>
     );
@@ -98,4 +101,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 5
   }
-})
+});

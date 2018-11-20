@@ -1,20 +1,20 @@
-import React from "react";
-import _ from "lodash";
-import { connect } from "react-redux";
-import Screen from "src/views/components/screen";
-import { Text, Strong, PrimaryButton } from "src/views/components/theme";
-import { Dispatch } from "redux";
-import moment from "moment-timezone";
-import { View, StyleSheet } from "react-native";
-import WonderAppState from "src/models/wonder-app-state";
+import React from 'react';
+import _ from 'lodash';
+import { connect } from 'react-redux';
+import Screen from 'src/views/components/screen';
+import { Text, Strong, PrimaryButton } from 'src/views/components/theme';
+import { Dispatch } from 'redux';
+import moment from 'moment-timezone';
+import { View, StyleSheet } from 'react-native';
+import WonderAppState from 'src/models/wonder-app-state';
 import {
   AppointmentState,
   persistAppointmentData
-} from "src/store/reducers/appointment";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import { createAppointment } from "src/store/sagas/appointment";
-import Avatar, { AvatarSize } from "src/views/components/theme/avatar";
-import { Title } from "native-base";
+} from 'src/store/reducers/appointment';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import { createAppointment } from 'src/store/sagas/appointment';
+import Avatar, { AvatarSize } from 'src/views/components/theme/avatar';
+import { Title } from 'native-base';
 
 import { confirmAppointment } from 'src/store/sagas/appointment';
 import { DecoratedAppointment } from 'src/models/appointment';
@@ -38,10 +38,11 @@ interface AppointmentConfirmProps {
   onConfirmAppointment: (appointment: DecoratedAppointment) => void;
 }
 
-class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> {
+class AppointmentConfirmScreen extends React.Component<
+  AppointmentConfirmProps
+> {
   componentDidMount() {
     RNCalendarEvents.authorizationStatus().then((status) => {
-
       if (status !== 'authorized') {
         RNCalendarEvents.authorizeEventStore();
       }
@@ -68,16 +69,21 @@ class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> 
         <View flex={1}>
           <Title>{match.first_name}</Title>
           <View style={{ alignItems: 'center', marginTop: 15 }}>
-            <Avatar size={AvatarSize.md} circle uri={_.get(match, "images[0].url", null)} />
+            <Avatar
+              size={AvatarSize.md}
+              circle
+              uri={_.get(match, 'images[0].url', null)}
+            />
           </View>
           <View style={styles.body}>
             <Text style={{ fontSize: 18 }}>
-              Invite {match.first_name} to have a wonderful time at <Strong>{activity.name}</Strong> at{' '}
+              Invite {match.first_name} to have a wonderful time at{' '}
+              <Strong>{activity.name}</Strong> at{' '}
               {eventMoment.format('MMMM Do, [at] h:mma')}
             </Text>
           </View>
           <View style={styles.footer}>
-            <PrimaryButton title="Confirm Wonder" onPress={this.onComplete} />
+            <PrimaryButton title='Confirm Wonder' onPress={this.onComplete} />
           </View>
         </View>
       );
@@ -91,16 +97,24 @@ class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> 
       <View flex={1}>
         <Title>{match.first_name}</Title>
         <View style={{ alignItems: 'center', marginTop: 15 }}>
-          <Avatar size={AvatarSize.md} circle uri={_.get(match, "images[0].url", null)} />
+          <Avatar
+            size={AvatarSize.md}
+            circle
+            uri={_.get(match, 'images[0].url', null)}
+          />
         </View>
         <View style={styles.body}>
           <Text style={{ fontSize: 18 }}>
-            Invite {match.first_name} to have a wonderful time at <Strong>{name}</Strong> at{' '}
+            Invite {match.first_name} to have a wonderful time at{' '}
+            <Strong>{name}</Strong> at{' '}
             {eventMoment && eventMoment.format('MMMM Do, [at] h:mma')}
           </Text>
         </View>
         <View style={styles.footer}>
-          <PrimaryButton title="Confirm" onPress={() => this.handleConfirmAppointment(appointment)} />
+          <PrimaryButton
+            title='Confirm'
+            onPress={() => this.handleConfirmAppointment(appointment)}
+          />
         </View>
       </View>
     );
@@ -112,13 +126,18 @@ class AppointmentConfirmScreen extends React.Component<AppointmentConfirmProps> 
 
     return (
       <Screen>
-        {appointment ? this.renderConfirmContent(appointment) : this.renderContent()}
+        {appointment
+          ? this.renderConfirmContent(appointment)
+          : this.renderContent()}
       </Screen>
     );
   }
 }
 
-export default connect(mapState, mapDispatch)(AppointmentConfirmScreen);
+export default connect(
+  mapState,
+  mapDispatch
+)(AppointmentConfirmScreen);
 
 const styles = StyleSheet.create({
   body: {
