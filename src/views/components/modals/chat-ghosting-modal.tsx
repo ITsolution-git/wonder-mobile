@@ -28,7 +28,7 @@ class ChatGhostingModal extends React.Component<Props> {
   state = {
     ghostMessage: `Hi ${
       this.props.conversation.partner.first_name
-    }, Unfortunately I'm no longer interested but I hope you find someone wonder'ful! Good luck:)`
+      }, Unfortunately I'm no longer interested but I hope you find someone wonder'ful! Good luck:)`
   };
 
   onSendGhost = () => {
@@ -73,7 +73,7 @@ class ChatGhostingModal extends React.Component<Props> {
               innerStyle={{ minWidth: 120, backgroundColor: '#f1f1f1' }}
               title='Cancel'
               onPress={onCancel}
-              // style={{ minWidth: 100 }}
+            // style={{ minWidth: 100 }}
             />
             <PrimaryButton
               innerStyle={{ minWidth: 120 }}

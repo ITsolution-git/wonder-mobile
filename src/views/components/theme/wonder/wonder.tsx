@@ -24,7 +24,7 @@ const Wonder: React.SFC<WonderProps> = ({
     height: size,
     width: size,
     borderRadius: size / 2,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
   };
 
   const wonderStyles = [styles.container, containerStyles];
@@ -52,7 +52,7 @@ const Wonder: React.SFC<WonderProps> = ({
 
 Wonder.defaultProps = {
   active: false,
-  size: 80
+  size: 80,
 };
 
 export default Wonder;
@@ -69,10 +69,10 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 1 },
     shadowColor: theme.colors.primaryLight,
     shadowOpacity: 0.7,
-    shadowRadius: 3
+    shadowRadius: 3,
   },
   label: {
     fontSize: 6,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 });

@@ -60,7 +60,7 @@ const ProfileModalChat = (props: Props) => {
 
   const renderDistance = () => {
     return (
-      <Text allowFontScaling={false} style={styles.distanceText}>
+      <Text allowFontScaling={false} style={styles.distanceText}>;
         {conversation.partner.distance &&
           _.get(conversation.partner, 'partner.distance', 0).toFixed(0)}{' '}
         miles
@@ -122,18 +122,18 @@ const ProfileModalChat = (props: Props) => {
                       secondary='transparent'
                     />
                   ) : (
-                    <IconButton
-                      size={35}
-                      icon={'video-camera'}
-                      onPress={toggleVideo}
-                      primary={theme.colors.primaryLight}
-                      secondary='transparent'
-                    />
-                  )}
+                      <IconButton
+                        size={35}
+                        icon={'video-camera'}
+                        onPress={toggleVideo}
+                        primary={theme.colors.primaryLight}
+                        secondary='transparent'
+                      />
+                    )}
                 </View>
               ) : (
-                <View />
-              )}
+                  <View />
+                )}
               <IconButton
                 size={35}
                 icon={'close'}
@@ -163,74 +163,73 @@ const ProfileModalChat = (props: Props) => {
                   />
                 </View>
               ) : (
-                <View style={styles.imageContainer}>
-                  {partner.images.map((i, index) => {
-                    if (index === 0) {
-                      return (
-                        <View key={i.url}>
-                          <WonderImage
-                            background
-                            style={styles.containerHeight}
-                            uri={i.url}
-                          >
-                            <LinearGradient
-                              colors={['transparent', 'rgba(0,0,0,0.5)']}
-                              style={[styles.imageTopGradient]}
+                  <View style={styles.imageContainer}>
+                    {partner.images.map((i, index) => {
+                      if (index === 0) {
+                        return (
+                          <View key={i.url}>
+                            <WonderImage
+                              background
+                              style={styles.containerHeight}
+                              uri={i.url}
                             >
-                              <View>
-                                <Text
-                                  allowFontScaling={false}
-                                  style={styles.firstNameText}
-                                >
-                                  {partner.first_name}, {partner.age}
-                                </Text>
-                                <Text style={{ marginLeft: 5 }}>
-                                  {renderDistance()}
-                                </Text>
-                              </View>
-                            </LinearGradient>
-                          </WonderImage>
-                          <View style={styles.infoContainer}>
-                            {getTopics()}
-                            <Text
-                              allowFontScaling={false}
-                              style={styles.occupationText}
-                            >
-                              {!!partner.occupation && partner.occupation}
-                            </Text>
-                            <Text
-                              allowFontScaling={false}
-                              style={styles.genericText}
-                            >
-                              {!!partner.school && partner.school}
-                            </Text>
-                            <Text
-                              allowFontScaling={false}
-                              style={styles.genericText}
-                            >
-                              {!!partner.about && partner.about}
-                            </Text>
+                              <LinearGradient
+                                colors={['transparent', 'rgba(0,0,0,0.5)']}
+                                style={[styles.imageTopGradient]}
+                              >
+                                <View>
+                                  <Text
+                                    allowFontScaling={false}
+                                    style={styles.firstNameText}
+                                  >
+                                    {partner.first_name}, {partner.age}
+                                  </Text>
+                                  <Text style={{ marginLeft: 5 }}>
+                                    {renderDistance()}
+                                  </Text>
+                                </View>
+                              </LinearGradient>
+                            </WonderImage>
+                            <View style={styles.infoContainer}>
+                              {getTopics()}
+                              <Text
+                                allowFontScaling={false}
+                                style={styles.occupationText}
+                              >
+                                {!!partner.occupation && partner.occupation}
+                              </Text>
+                              <Text
+                                allowFontScaling={false}
+                                style={styles.genericText}
+                              >
+                                {!!partner.school && partner.school}
+                              </Text>
+                              <Text
+                                allowFontScaling={false}
+                                style={styles.genericText}
+                              >
+                                {!!partner.about && partner.about}
+                              </Text>
+                            </View>
                           </View>
-                        </View>
-                      );
-                    } else {
-                      return (
-                        <WonderImage
-                          key={i.url}
-                          style={styles.regularImageStyles}
-                          uri={i.url}
-                        />
-                      );
-                    }
-                  })}
-                </View>
-              )}
+                        );
+                      } else {
+                        return (
+                          <WonderImage
+                            key={i.url}
+                            style={styles.regularImageStyles}
+                            uri={i.url}
+                          />
+                        );
+                      }
+                    })}
+                  </View>
+                )}
             </ScrollView>
           </View>
         </View>
       </LinearGradient>
-    </Modal>
-  );
+    </Modal >);
 };
 
 export default ProfileModalChat;
@@ -238,7 +237,7 @@ export default ProfileModalChat;
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   modalInnerContainer: {
     position: 'relative',
@@ -247,7 +246,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1f1f1',
     marginRight: 15,
     marginLeft: 15,
-    marginBottom: 15
+    marginBottom: 15,
   },
   topGradient: {
     position: 'absolute',
@@ -258,12 +257,12 @@ const styles = StyleSheet.create({
     padding: 5,
     zIndex: 999,
     borderTopRightRadius: 10,
-    borderTopLeftRadius: 10
+    borderTopLeftRadius: 10,
   },
   iconContainer: {
     alignSelf: 'stretch',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   scrollContainer: { borderRadius: 10, overflow: 'hidden' },
   containerHeight: {
@@ -286,7 +285,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     marginLeft: 5,
     marginBottom: 2,
-    fontWeight: '800'
+    fontWeight: '800',
   },
   regularImageStyles: { height: (height / 3) * 2, zIndex: 1 },
   topicsContainer: {

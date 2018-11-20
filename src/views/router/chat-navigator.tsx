@@ -14,20 +14,20 @@ const ChatNavigator = createStackNavigator(
     ChatList: {
       screen: ChatList,
       navigationOptions: {
-        header: null
-      }
+        header: null,
+      },
     },
     Chat: {
       screen: ChatScreen,
       navigationOptions: {
-        ...theme.NavBar.transparent
-      }
+        ...theme.NavBar.transparent,
+      },
     },
     WonderMap: {
       screen: ActivityMap,
       navigationOptions: {
         // header: null
-        title: 'FIND A WONDER',
+        title: 'PICK A WONDER',
         ...theme.NavBar.transparent
       }
     },
@@ -42,8 +42,8 @@ const ChatNavigator = createStackNavigator(
     AppointmentInvite: {
       screen: AppointmentInvite,
       navigationOptions: {
-        ...theme.NavBar.transparent
-      }
+        ...theme.NavBar.transparent,
+      },
     },
     AppointmentConfirm: {
       screen: AppointmentConfirm,
