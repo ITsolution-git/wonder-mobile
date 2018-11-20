@@ -1,5 +1,5 @@
-import React from 'react';
-import _ from 'lodash';
+import React from "react";
+import _ from "lodash";
 import {
   View,
   Text,
@@ -7,20 +7,20 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
-  Platform
-} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+  Platform,
+} from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 import { IconButton } from "../../components/theme";
 import VideoPlayer from "react-native-video-player";
-import theme from '../../../assets/styles/theme';
-import Topic from '../../../models/topic';
+import theme from "../../../assets/styles/theme";
+import Topic from "../../../models/topic";
 import Wonder from "../../components/theme/wonder/wonder";
-import WonderImage from '../../components/theme/wonder-image';
-import Color from 'color';
+import WonderImage from "../../components/theme/wonder-image";
+import Color from "color";
 import {
   DecoratedConversation,
 } from "src/models/conversation";
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
 const gradient = [lighten(theme.colors.primaryLight, 0.5), lighten(theme.colors.primary, 0.5)];
 
@@ -30,7 +30,7 @@ function lighten(color: string, value: number) {
 
 interface Props {
   currentUser: {
-    topics: Topic[]
+    topics: Topic[],
   };
   conversation: DecoratedConversation;
   visible: boolean;
@@ -57,7 +57,7 @@ const ProfileModalChat = (props: Props) => {
   const renderDistance = () => {
     return (
       <Text allowFontScaling={false} style={styles.distanceText}>
-        {conversation.partner.distance && _.get(conversation.partner, 'partner.distance', 0).toFixed(0)} miles
+        {conversation.partner.distance && _.get(conversation.partner, "partner.distance", 0).toFixed(0)} miles
         </Text>
     );
   };
@@ -76,7 +76,7 @@ const ProfileModalChat = (props: Props) => {
               return (
                 <View style={{ marginRight: 5 }} key={x.name}>
                   <Wonder
-                    labelStyles={{ color: '#333' }}
+                    labelStyles={{ color: "#333" }}
                     topic={x}
                     size={60}
                     active={active}
@@ -92,7 +92,7 @@ const ProfileModalChat = (props: Props) => {
   return (
     <Modal
       transparent={true}
-      animationType='fade'
+      animationType="fade"
       visible={visible}
       onRequestClose={onRequestClose}
     >
@@ -104,7 +104,7 @@ const ProfileModalChat = (props: Props) => {
           style={styles.modalInnerContainer}
         >
           <LinearGradient
-            colors={['rgba(0,0,0,0.5)', 'transparent']}
+            colors={["rgba(0,0,0,0.5)", "transparent"]}
             style={styles.topGradient}
           >
             <View style={styles.iconContainer} >
@@ -128,7 +128,7 @@ const ProfileModalChat = (props: Props) => {
                 size={35}
                 icon={"close"}
                 onPress={openProfileModal}
-                primary={'#fff'}
+                primary={"#fff"}
                 secondary="transparent"
               />
             </View>
@@ -139,12 +139,12 @@ const ProfileModalChat = (props: Props) => {
               {partner.video && showVideo ? <View style={styles.containerHeight}>
                 <VideoPlayer
                   customStyles={{ videoWrapper: styles.videoStyles }}
-                  videoHeight={Platform.OS === 'ios' ? height / 3 * 2 * 4.74 : height * 2.58}
+                  videoHeight={Platform.OS === "ios" ? height / 3 * 2 * 4.74 : height * 2.58}
                   pauseOnPress={true}
                   disableFullscreen={true}
                   autoplay={true}
                   video={{
-                    uri: `${partner.video}`
+                    uri: `${partner.video}`,
                   }}
                 />
               </View> :
@@ -159,7 +159,7 @@ const ProfileModalChat = (props: Props) => {
                             uri={i.url}
                           >
                             <LinearGradient
-                              colors={['transparent', 'rgba(0,0,0,0.5)']}
+                              colors={["transparent", "rgba(0,0,0,0.5)"]}
                               style={[styles.imageTopGradient]}
                             >
                               <View>
@@ -219,17 +219,17 @@ export default ProfileModalChat;
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end",
   },
   modalInnerContainer: {
-    position: 'relative', height: height / 3 * 2,
-    borderRadius: 10, backgroundColor: '#f1f1f1',
+    position: "relative", height: height / 3 * 2,
+    borderRadius: 10, backgroundColor: "#f1f1f1",
     marginRight: 15,
     marginLeft: 15,
-    marginBottom: 15
+    marginBottom: 15,
   },
   topGradient: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
@@ -237,34 +237,34 @@ const styles = StyleSheet.create({
     padding: 5,
     zIndex: 999,
     borderTopRightRadius: 10,
-    borderTopLeftRadius: 10
+    borderTopLeftRadius: 10,
   },
   iconContainer: {
-    alignSelf: 'stretch',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    alignSelf: "stretch",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  scrollContainer: { borderRadius: 10, overflow: 'hidden' },
-  containerHeight: { height: height / 3 * 2, zIndex: 1, justifyContent: 'flex-end' },
-  imageContainer: { borderRadius: 10, overflow: 'hidden' },
-  videoStyles: { backgroundColor: 'black', borderRadius: 10, overflow: 'hidden' },
+  scrollContainer: { borderRadius: 10, overflow: "hidden" },
+  containerHeight: { height: height / 3 * 2, zIndex: 1, justifyContent: "flex-end" },
+  imageContainer: { borderRadius: 10, overflow: "hidden" },
+  videoStyles: { backgroundColor: "black", borderRadius: 10, overflow: "hidden" },
   imageTopGradient: {
     padding: 10,
     zIndex: 999,
   },
   firstNameText: {
     fontSize: 26,
-    color: '#fff',
+    color: "#fff",
     marginLeft: 5,
     marginBottom: 2,
-    fontWeight: '800'
+    fontWeight: "800",
   },
   regularImageStyles: { height: height / 3 * 2, zIndex: 1 },
-  topicsContainer: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 },
-  schoolText: { color: '#fff', marginLeft: 5, fontSize: 12 },
-  distanceText: { color: '#fff', fontSize: 13, marginLeft: 2 },
+  topicsContainer: { flexDirection: "row", justifyContent: "space-between", marginTop: 4 },
+  schoolText: { color: "#fff", marginLeft: 5, fontSize: 12 },
+  distanceText: { color: "#fff", fontSize: 13, marginLeft: 2 },
   detailsChevron: { justifyContent: "flex-end" },
-  occupationText: { marginLeft: 5, fontSize: 16, fontWeight: 'bold', marginTop: 10, color: '#333' },
-  genericText: { marginLeft: 5, fontSize: 12, lineHeight: 18, color: '#333' },
-  infoContainer: { backgroundColor: '#fff', padding: 10 }
+  occupationText: { marginLeft: 5, fontSize: 16, fontWeight: "bold", marginTop: 10, color: "#333" },
+  genericText: { marginLeft: 5, fontSize: 12, lineHeight: 18, color: "#333" },
+  infoContainer: { backgroundColor: "#fff", padding: 10 },
 });

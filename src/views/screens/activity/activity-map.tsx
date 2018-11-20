@@ -9,7 +9,7 @@ import { connect } from "react-redux";
 
 import {
   getPartnerActivities,
-  getActivityDetails
+  getActivityDetails,
 } from "src/store/sagas/partner";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import ActivityDetailsModal from "src/views/components/modals/activity-details-modal";
@@ -19,11 +19,15 @@ import {
   GeolocationReturnType,
   Alert,
   PermissionsAndroid,
-  Platform
+  Platform,
+  Text,
+  Image,
+  View,
+  StyleSheet,
 } from "react-native";
 import {
   persistAppointmentData,
-  AppointmentState
+  AppointmentState,
 } from "src/store/reducers/appointment";
 import askForDeviceLocation from "src/services/gps";
 
@@ -34,10 +38,15 @@ import User from "src/models/user";
 import Activity from "src/models/activity";
 import ActivityDetails from "src/models/activity-details";
 
+import theme from "src/assets/styles/theme";
+
+const Logo = require("src/assets/images/icons/LogoIcon.png");
+
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),
   activities: state.chat.activities,
-  details: state.chat.activity
+  details: state.chat.activity,
+  conversation: state.chat.conversation,
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
@@ -46,7 +55,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onGetActivity: (id: string) => dispatch(getActivityDetails({ id })),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
-  clearActivity: () => dispatch(persistActivity(null))
+  clearActivity: () => dispatch(persistActivity(null)),
 });
 
 interface Props {
@@ -68,8 +77,8 @@ class ActivityMapScreen extends React.Component<Props, State> {
   state: State = {
     position: {
       lat: 0,
-      lng: 0
-    }
+      lng: 0,
+    },
   };
 
   componentWillMount() {
@@ -90,8 +99,8 @@ class ActivityMapScreen extends React.Component<Props, State> {
     this.setState({
       position: {
         lng: coords.longitude,
-        lat: coords.latitude
-      }
+        lat: coords.latitude,
+      },
     });
 
     onGetActivities(partnerId, coords);
@@ -102,7 +111,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
       details,
       navigation,
       clearActivity,
-      onUpdateAppointment
+      onUpdateAppointment,
     } = this.props;
     clearActivity();
     onUpdateAppointment({ activity: details });
@@ -115,16 +124,24 @@ class ActivityMapScreen extends React.Component<Props, State> {
   // }
 
   renderMarker = (activity: Activity) => {
-    const { onGetActivity, onUpdateAppointment } = this.props;
+    const { onGetActivity, onUpdateAppointment, currentUser, conversation } = this.props;
     const { id, name, latitude, longitude, topic } = activity;
+    const usersTopics = currentUser.topics.map((t) => t.name);
+    const matchTopics = conversation.partner.topics.map((t) => t.name);
+    console.log(activity, this.props.details)
     return (
       <MarkerContainer
         key={`${id} - ${name}`}
         coordinate={{ latitude, longitude }}
-      // onPress={() => onGetActivity(id)}
       >
-        <Marker title={topic.name} icon={topic.icon} />
+        <View
+          style={usersTopics.includes(topic.name) && matchTopics.includes(topic.name)
+            ? styles.active : null}
+        >
+          <Marker title={topic.name} icon={topic.icon} />
+        </View>
         <Callout
+          tooltip={true}
           onPress={() => {
             onGetActivity(id);
             onUpdateAppointment({ topic: activity.topic });
@@ -137,22 +154,49 @@ class ActivityMapScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const { activities, details, clearActivity } = this.props;
+    const { activities, details, clearActivity, conversation, currentUser } = this.props;
     const { position } = this.state;
+
     return (
       <Screen>
         <MapView
-          showsUserLocation
-          showsMyLocationButton
+          // showsUserLocation
+          // showsMyLocationButton
+          mapType="mutedStandard"
           rotateEnabled={false}
           style={{ flex: 1 }}
           region={{
             latitude: position.lat,
             longitude: position.lng,
             latitudeDelta: 0.1,
-            longitudeDelta: 0.1
+            longitudeDelta: 0.1,
           }}
         >
+
+          <MarkerContainer
+            coordinate={{
+              latitude: Number(conversation.partner.latitude),
+              longitude: Number(conversation.partner.longitude),
+            }}
+          >
+            <Image
+              style={{ height: 40, width: 40 }}
+              resizeMode="contain"
+              source={require("src/assets/images/icons/MapMatchIcon.png")} />
+          </MarkerContainer>
+
+          <MarkerContainer
+            coordinate={{
+              latitude: Number(this.state.position.lat),
+              longitude: Number(this.state.position.lng),
+            }}
+          >
+            <Image
+              style={{ height: 40, width: 40 }}
+              resizeMode="contain"
+              source={require("src/assets/images/icons/WonderMapIcon.png")} />
+          </MarkerContainer>
+
           {activities.map(this.renderMarker)}
         </MapView>
         <ActivityDetailsModal
@@ -166,7 +210,21 @@ class ActivityMapScreen extends React.Component<Props, State> {
   }
 }
 
+const styles = StyleSheet.create({
+  active: {
+    height: 34,
+    width: 34,
+    borderWidth: 2,
+    borderColor: theme.colors.primary,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 17,
+  },
+})
+
 export default connect(
   mapState,
-  mapDispatch
+  mapDispatch,
 )(ActivityMapScreen);
+
+// location: "90024"
