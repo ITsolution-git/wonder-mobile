@@ -193,6 +193,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
           {activities.map(this.renderMarker)}
         </MapView>
         <ActivityDetailsModal
+          userPosition={position}
           onRequestClose={() => clearActivity()}
           details={details}
           onCancel={clearActivity}
