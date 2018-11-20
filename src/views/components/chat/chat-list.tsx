@@ -32,9 +32,7 @@ class ChatList extends React.Component<ChatListProps> {
   }
 
   renderEmpty = () => {
-    return (
-      <View />
-    );
+    return <View />;
   }
 
   render() {

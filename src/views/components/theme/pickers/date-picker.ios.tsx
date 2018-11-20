@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Modal, DatePickerIOS, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Modal,
+  DatePickerIOS,
+  TouchableOpacity
+} from 'react-native';
 import { Label, Text } from '..';
 import moment from 'moment-timezone';
 import theme from 'src/assets/styles/theme';
@@ -26,7 +32,6 @@ interface State {
 }
 
 export default class DatePicker extends React.Component<Props, State> {
-
   static defaultProps = {
     displayFormat: 'MM-DD-YYYY'
   };
@@ -40,30 +45,39 @@ export default class DatePicker extends React.Component<Props, State> {
   }
 
   public render() {
-    const { label, displayFormat, errorHint, minDate, maxDate, onChange } = this.props;
+    const {
+      label,
+      displayFormat,
+      errorHint,
+      minDate,
+      maxDate,
+      onChange
+    } = this.props;
     const { open, value } = this.state;
     return (
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.container}>
-          <Text style={{textAlign: 'center'}}>{moment(value).format(displayFormat)}</Text>
+          <Text style={{ textAlign: 'center' }}>
+            {moment(value).format(displayFormat)}
+          </Text>
           <TouchableOpacity
             style={styles.iconBtn}
             onPress={() => this.setState({ open: true })}
           >
-            <Icon name="calendar" color={theme.colors.white} />
+            <Icon name='calendar' color={theme.colors.white} />
           </TouchableOpacity>
         </View>
         {<ErrorHint>{errorHint}</ErrorHint>}
         <FooterModal
-          closeText="Done"
-          animationType="slide"
+          closeText='Done'
+          animationType='slide'
           transparent
           visible={open}
           onClose={() => this.setState({ open: false })}
         >
           <DatePickerIOS
-            mode="date"
+            mode='date'
             date={this.state.value}
             onDateChange={this.onChange}
             minimumDate={minDate}
@@ -97,10 +111,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 4,
     borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.5),
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
   },
   text: {
     color: theme.colors.textColor,
     fontFamily: theme.fonts.primary
   }
-})
+});

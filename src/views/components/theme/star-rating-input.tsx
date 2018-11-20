@@ -14,7 +14,10 @@ interface StarRatingInputState {
   value: number;
 }
 
-class StarRatingInput extends React.Component<StarRatingInputProps, StarRatingInputState> {
+class StarRatingInput extends React.Component<
+  StarRatingInputProps,
+  StarRatingInputState
+> {
   static defaultProps = {
     size: 25
   };
@@ -30,8 +33,18 @@ class StarRatingInput extends React.Component<StarRatingInputProps, StarRatingIn
   renderOption = (key: number) => {
     const { value } = this.state;
     return (
-      <TouchableOpacity style={styles.option} key={key} onPress={() => this.onValueChange(key)}>
-        <Icon name="star" color={value >= key ? theme.colors.primaryLight : theme.colors.textColor} size={25} />
+      <TouchableOpacity
+        style={styles.option}
+        key={key}
+        onPress={() => this.onValueChange(key)}
+      >
+        <Icon
+          name='star'
+          color={
+            value >= key ? theme.colors.primaryLight : theme.colors.textColor
+          }
+          size={25}
+        />
       </TouchableOpacity>
     );
   }

@@ -42,7 +42,6 @@ export const decorateAttendance = (
   appointment: any,
   me: User
 ): DecoratedAppointment | undefined => {
-
   if (appointment) {
     const result: any = {
       ...appointment.appointment,

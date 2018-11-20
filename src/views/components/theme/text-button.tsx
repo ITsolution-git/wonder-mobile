@@ -1,5 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, StyleProp, TextStyle, ViewStyle } from "react-native";
+import {
+  TouchableOpacity,
+  StyleSheet,
+  StyleProp,
+  TextStyle,
+  ViewStyle
+} from 'react-native';
 import { Text } from '.';
 import { ThemeTextProps } from './text/text';
 
@@ -16,14 +22,19 @@ export default class TextButton extends React.Component<Props> {
     const { btnStyle, text, onPress, style, align, color, size } = this.props;
     return (
       <TouchableOpacity onPress={onPress} style={btnStyle}>
-        <Text align={align} color={color} size={size} style={[styles.txt, style]}>{text}</Text>
+        <Text
+          align={align}
+          color={color}
+          size={size}
+          style={[styles.txt, style]}
+        >
+          {text}
+        </Text>
       </TouchableOpacity>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  txt: {
-
-  }
+  txt: {}
 });

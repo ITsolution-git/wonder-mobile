@@ -1,5 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, DatePickerAndroid, TouchableOpacity, TimePickerAndroid } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  DatePickerAndroid,
+  TouchableOpacity,
+  TimePickerAndroid
+} from 'react-native';
 import { Label, Text } from '..';
 import moment from 'moment-timezone';
 import theme from 'src/assets/styles/theme';
@@ -26,7 +32,6 @@ interface State {
 }
 
 export default class DatePicker extends React.Component<Props, State> {
-
   static defaultProps = {
     displayFormat: 'h:mma',
     is24Hour: false
@@ -42,19 +47,27 @@ export default class DatePicker extends React.Component<Props, State> {
   }
 
   public render() {
-    const { label, displayFormat, errorHint, minDate, maxDate, onChange } = this.props;
+    const {
+      label,
+      displayFormat,
+      errorHint,
+      minDate,
+      maxDate,
+      onChange
+    } = this.props;
     const { open, hour, minute } = this.state;
 
     return (
       <View>
         {label && <Label>{label}</Label>}
         <View style={styles.container}>
-          <Text>{hour && minute ? moment(`${hour}:${minute}`, 'HH:mm').format(displayFormat) : 'Select Time'}</Text>
-          <TouchableOpacity
-            style={styles.iconBtn}
-            onPress={this.openModal}
-          >
-            <Icon name="clock-o" color={theme.colors.white} />
+          <Text>
+            {hour && minute
+              ? moment(`${hour}:${minute}`, 'HH:mm').format(displayFormat)
+              : 'Select Time'}
+          </Text>
+          <TouchableOpacity style={styles.iconBtn} onPress={this.openModal}>
+            <Icon name='clock-o' color={theme.colors.white} />
           </TouchableOpacity>
         </View>
         {<ErrorHint>{errorHint}</ErrorHint>}
@@ -83,7 +96,7 @@ export default class DatePicker extends React.Component<Props, State> {
     }
   }
 
-  onChange = ({ hour, minute }: { hour: number, minute: number }) => {
+  onChange = ({ hour, minute }: { hour: number; minute: number }) => {
     const { onChange } = this.props;
     this.setState({ hour, minute });
     if (onChange) {
@@ -106,10 +119,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 4,
     borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.5),
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
   },
   text: {
     color: theme.colors.textColor,
     fontFamily: theme.fonts.primary
   }
-})
+});

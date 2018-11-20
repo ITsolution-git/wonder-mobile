@@ -1,11 +1,11 @@
-import React from "react";
-import { Text as NativeText, TextProps, StyleSheet } from "react-native";
-import Theme from "src/assets/styles/theme";
+import React from 'react';
+import { Text as NativeText, TextProps, StyleSheet } from 'react-native';
+import Theme from 'src/assets/styles/theme';
 
 export interface ThemeTextProps extends TextProps {
   color?: string;
   size?: number;
-  align?: "left" | "center" | "right";
+  align?: 'left' | 'center' | 'right';
 }
 
 export default class Text extends React.Component<ThemeTextProps, any> {
@@ -13,7 +13,7 @@ export default class Text extends React.Component<ThemeTextProps, any> {
     style: {},
     color: Theme.colors.textColor,
     fontSize: 14,
-    align: "left",
+    align: 'left'
   };
 
   render() {
@@ -25,7 +25,7 @@ export default class Text extends React.Component<ThemeTextProps, any> {
         style={[
           styles.text,
           { color, fontSize: size, textAlign: align },
-          style,
+          style
         ]}
       >
         {children}
@@ -37,6 +37,6 @@ export default class Text extends React.Component<ThemeTextProps, any> {
 const styles = StyleSheet.create({
   text: {
     color: Theme.colors.textColor,
-    fontFamily: Theme.fonts.primary,
-  },
+    fontFamily: Theme.fonts.primary
+  }
 });

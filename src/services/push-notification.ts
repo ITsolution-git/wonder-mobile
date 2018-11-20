@@ -82,9 +82,13 @@ class PushNotificationService {
     };
   }
 
-  private handleAndroidNotifications = (payload: AndroidNotificationPayload) => {
+  private handleAndroidNotifications = (
+    payload: AndroidNotificationPayload
+  ) => {
     const { partner_id, appointment, type } = payload;
-    const parsedAppointment: Appointment = appointment ? JSON.parse(appointment) : null;
+    const parsedAppointment: Appointment = appointment
+      ? JSON.parse(appointment)
+      : null;
     return {
       type,
       partnerId: partner_id,
@@ -107,7 +111,9 @@ class PushNotificationService {
       return error;
     }
 
-    return this.token.os === 'ios' ? this.handleIosNotifications(data) : this.handleAndroidNotifications(notification);
+    return this.token.os === 'ios'
+      ? this.handleIosNotifications(data)
+      : this.handleAndroidNotifications(notification);
   }
 
   private handleNotificationReceived = (
@@ -118,7 +124,9 @@ class PushNotificationService {
       const payload = this.parseNotification(notification);
       const { type, partnerId, appointment } = payload;
       if (
-        (type === 'upcoming_date' || type === 'confirm_date' || type === 'invite_date') &&
+        (type === 'upcoming_date' ||
+          type === 'confirm_date' ||
+          type === 'invite_date') &&
         appointment
       ) {
         this.resetToDate('UpcomingAppointmentView', appointment, false);

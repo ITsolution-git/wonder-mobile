@@ -16,10 +16,14 @@ export function* getNewProposalSaga() {
   try {
     const state: WonderAppState = yield select();
 
-    const response = yield call(api, {
-      method: 'GET',
-      url: '/proposals/new'
-    }, state.user);
+    const response = yield call(
+      api,
+      {
+        method: 'GET',
+        url: '/proposals/new'
+      },
+      state.user
+    );
 
     yield put(persistProposal(response.data));
   } catch (error) {
@@ -37,16 +41,20 @@ export function* watchGetNewProposal() {
   yield takeEvery(GET_NEW_PROPOSAL, getNewProposalSaga);
 }
 // THIS SAGA IS NOT YET BEING USED
-const GET_NEXT_PROPOSAL = "GET_NEXT_PROPOSAL";
+const GET_NEXT_PROPOSAL = 'GET_NEXT_PROPOSAL';
 export const getNextProposal = createAction(GET_NEXT_PROPOSAL);
 
 export function* getNextProposalSaga() {
   try {
     const state: WonderAppState = yield select();
-    const newProp = yield call(api, {
-      method: 'GET',
-      url: '/proposables?limit=5'
-    }, state.user);
+    const newProp = yield call(
+      api,
+      {
+        method: 'GET',
+        url: '/proposables?limit=5'
+      },
+      state.user
+    );
     console.log('PROPOSABLES: ', newProp);
     yield put(persistPropsalImages(newProp.data));
   } catch (e) {
@@ -70,16 +78,20 @@ export function* rateProposalSaga(action: Action<any>) {
 
     const state: WonderAppState = yield select();
 
-    const { data }: { data: Proposal } = yield call(api, {
-      url: '/proposals',
-      method: 'POST',
-      data: {
-        proposal: {
-          candidate_id: proposal.candidate.id,
-          liked
+    const { data }: { data: Proposal } = yield call(
+      api,
+      {
+        url: '/proposals',
+        method: 'POST',
+        data: {
+          proposal: {
+            candidate_id: proposal.candidate.id,
+            liked
+          }
         }
-      }
-    }, state.user);
+      },
+      state.user
+    );
 
     if (data.has_match) {
       // TODO: We are matched, show the modal

@@ -1,8 +1,8 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import theme from "../../../../assets/styles/theme";
-import Topic from "../../../../models/topic";
-import WonderPickerItem from "../../../components/theme/wonder-picker/wonder-picker-item";
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import theme from '../../../../assets/styles/theme';
+import Topic from '../../../../models/topic';
+import WonderPickerItem from '../../../components/theme/wonder-picker/wonder-picker-item';
 
 interface Props {
   choices: string[];
@@ -12,9 +12,7 @@ interface Props {
 
 const PickedWonders = (props: Props) => {
   return (
-    <View
-      style={styles.row}
-    >
+    <View style={styles.row}>
       {props.choices.map((topic, i) => {
         if (topic) {
           return (
@@ -30,10 +28,7 @@ const PickedWonders = (props: Props) => {
           );
         } else {
           return (
-            <View
-              key={i}
-              style={styles.placeholder}
-            >
+            <View key={i} style={styles.placeholder}>
               <Text style={{ color: theme.colors.textColor }}>+</Text>
             </View>
           );
@@ -48,24 +43,24 @@ export default PickedWonders;
 const styles = StyleSheet.create({
   row: {
     padding: 10,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
   placeholder: {
     height: 80,
     width: 80,
     borderRadius: 40,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     elevation: 3,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.3,
     shadowOffset: {
       width: 0,
       height: 0
     },
     shadowRadius: 5,
-    backgroundColor: "#FFF"
+    backgroundColor: '#FFF'
   }
 });

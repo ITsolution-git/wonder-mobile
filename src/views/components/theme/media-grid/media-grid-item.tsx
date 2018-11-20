@@ -1,5 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, ImageBackground, Image, TouchableOpacity, StyleProp, Text } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ImageBackground,
+  Image,
+  TouchableOpacity,
+  StyleProp,
+  Text
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import WonderImage from '../wonder-image';
@@ -20,7 +28,6 @@ interface Props {
 }
 
 export default class MediaGridItem extends React.Component<Props> {
-
   state: any = {
     isActive: true
   };
@@ -56,7 +63,12 @@ export default class MediaGridItem extends React.Component<Props> {
         />
       );
     } else if (source) {
-      return <WonderImage style={{ width: size, height: size, borderRadius: 10 }} uri={source.url} />;
+      return (
+        <WonderImage
+          style={{ width: size, height: size, borderRadius: 10 }}
+          uri={source.url}
+        />
+      );
     }
     return null;
   }
@@ -86,15 +98,19 @@ export default class MediaGridItem extends React.Component<Props> {
           >
             <Icon
               name={video ? 'video-camera' : 'plus'}
-              size={video ? 22 : size ? (size / 5) : 16}
+              size={video ? 22 : size ? size / 5 : 16}
               color={video ? theme.colors.textColor : '#fff'}
             />
-            {video &&
-              <Text allowFontScaling={false} style={{ fontSize: 9, color: theme.colors.textColor }}>
-                Upload vibe {"\n"} video clip
-            </Text>}
+            {video && (
+              <Text
+                allowFontScaling={false}
+                style={{ fontSize: 9, color: theme.colors.textColor }}
+              >
+                Upload vibe {'\n'} video clip
+              </Text>
+            )}
           </LinearGradient>
-        </TouchableOpacity >
+        </TouchableOpacity>
       );
     }
     return (
@@ -107,7 +123,7 @@ export default class MediaGridItem extends React.Component<Props> {
         >
           {this.renderMediaContent()}
         </LinearGradient>
-      </TouchableOpacity >
+      </TouchableOpacity>
     );
   }
 }
@@ -117,6 +133,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: '#DDD',
+    backgroundColor: '#DDD'
   }
 });

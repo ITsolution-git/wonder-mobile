@@ -14,7 +14,6 @@ interface ActivityDetailsModalProps extends ModalProps {
 }
 
 class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
-
   renderHeaderImage = (images: string[]) => {
     if (images && images.length && images[0]) {
       return (
@@ -51,16 +50,13 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
                   <PricingIndicator rating={price_level} />
                 </View>
                 <View style={{ alignItems: 'flex-end' }}>
-                  <RatingIndicator
-                    rating={rating}
-                  />
+                  <RatingIndicator rating={rating} />
                   <SmallText>({review_count} Reviews)</SmallText>
                 </View>
               </View>
-
             </View>
             <View style={{ paddingHorizontal: 10, marginVertical: 10 }}>
-              <PrimaryButton title="Invite" onPress={onConfirm} />
+              <PrimaryButton title='Invite' onPress={onConfirm} />
             </View>
           </View>
         </View>
@@ -71,12 +67,7 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
     const { onConfirm, details, ...rest } = this.props;
 
     return (
-      <Modal
-        animationType="slide"
-        visible={!!details}
-        transparent
-        {...rest}
-      >
+      <Modal animationType='slide' visible={!!details} transparent {...rest}>
         {this.renderDetails()}
       </Modal>
     );

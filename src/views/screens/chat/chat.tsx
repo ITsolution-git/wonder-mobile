@@ -110,8 +110,8 @@ class ChatScreen extends React.Component<Props> {
   static navigationOptions = ({
     navigation,
   }: {
-      navigation: NavigationScreenProp<any, NavigationParams>;
-    }) => {
+    navigation: NavigationScreenProp<any, NavigationParams>;
+  }) => {
     return {
       title: navigation.getParam("title", "Chat"),
       headerRight: (
@@ -125,7 +125,7 @@ class ChatScreen extends React.Component<Props> {
                   width: 40,
                 }}
               >
-                <Icon name="ellipsis-v" size={20} color="#9292ad" />
+                <Icon name='ellipsis-v' size={20} color='#9292ad' />
               </View>
             </MenuTrigger>
             <MenuOptions>
@@ -279,7 +279,7 @@ class ChatScreen extends React.Component<Props> {
     return (
       <Send {...props}>
         <View style={{ marginRight: 12, marginBottom: 15 }}>
-          <Icon name="paper-plane" size={20} color="#9292ad" />
+          <Icon name='paper-plane' size={20} color='#9292ad' />
         </View>
       </Send>
     );
@@ -289,7 +289,7 @@ class ChatScreen extends React.Component<Props> {
     return (
       <TouchableOpacity onPress={this.getImage}>
         <View style={{ marginLeft: 12, marginBottom: 15 }}>
-          <Icon name="plus" size={20} color="#9292ad" />
+          <Icon name='plus' size={20} color='#9292ad' />
         </View>
       </TouchableOpacity>
     );
@@ -371,8 +371,13 @@ class ChatScreen extends React.Component<Props> {
       <View style={styles.footerContainer}>
         <View style={styles.actionBtnContainer} flexDirection={"row"}>
           <ChatActionButton
+<<<<<<< HEAD
             bold={Platform.OS === "ios" ? false : true}
             title="Schedule Wonder"
+=======
+            bold={Platform.OS === 'ios' ? false : true}
+            title='Schedule Wonder'
+>>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
             onPress={this.scheduleWonder}
           />
           <TouchableOpacity

@@ -1,22 +1,30 @@
-import React from "react";
-import Screen from "src/views/components/screen";
-import MapView, { Marker as MarkerContainer, Callout } from "react-native-maps";
-import Marker from "src/views/components/map/marker";
-import ActivityCallout from "src/views/components/map/activity-callout";
+import React from 'react';
+import Screen from 'src/views/components/screen';
+import MapView, { Marker as MarkerContainer, Callout } from 'react-native-maps';
+import Marker from 'src/views/components/map/marker';
+import ActivityCallout from 'src/views/components/map/activity-callout';
 
-import { Dispatch } from "redux";
-import { connect } from "react-redux";
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
 import {
   getPartnerActivities,
+<<<<<<< HEAD
   getActivityDetails,
 } from "src/store/sagas/partner";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import ActivityDetailsModal from "src/views/components/modals/activity-details-modal";
+=======
+  getActivityDetails
+} from 'src/store/sagas/partner';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import ActivityDetailsModal from 'src/views/components/modals/activity-details-modal';
+>>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 
-import { persistActivity } from "src/store/reducers/chat";
+import { persistActivity } from 'src/store/reducers/chat';
 import {
   GeolocationReturnType,
+<<<<<<< HEAD
   Image,
   View,
   StyleSheet,
@@ -36,6 +44,24 @@ import Conversation from "src/models/conversation";
 
 import Activity from "src/models/activity";
 import ActivityDetails from "src/models/activity-details";
+=======
+  Alert,
+  PermissionsAndroid,
+  Platform
+} from 'react-native';
+import {
+  persistAppointmentData,
+  AppointmentState
+} from 'src/store/reducers/appointment';
+import askForDeviceLocation from 'src/services/gps';
+
+import { selectCurrentUser } from 'src/store/selectors/user';
+import WonderAppState from 'src/models/wonder-app-state';
+import Coordinate from 'src/models/coordinate';
+import User from 'src/models/user';
+import Activity from 'src/models/activity';
+import ActivityDetails from 'src/models/activity-details';
+>>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 
 import theme from "src/assets/styles/theme";
 
@@ -81,7 +107,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
 
   componentWillMount() {
     const { navigation, onGetActivities, clearActivity } = this.props;
-    const partnerId: number = navigation.getParam("id", 0);
+    const partnerId: number = navigation.getParam('id', 0);
     onGetActivities(partnerId);
     clearActivity();
   }
@@ -92,7 +118,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
 
   updatePosition = (position: GeolocationReturnType) => {
     const { navigation, onGetActivities, clearActivity } = this.props;
-    const partnerId: number = navigation.getParam("id", 0);
+    const partnerId: number = navigation.getParam('id', 0);
     const { coords } = position;
     this.setState({
       position: {
@@ -113,7 +139,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
     } = this.props;
     clearActivity();
     onUpdateAppointment({ activity: details });
-    navigation.navigate("WonderSchedule");
+    navigation.navigate('WonderSchedule');
   }
 
   renderMarker = (activity: Activity) => {
@@ -127,6 +153,10 @@ class ActivityMapScreen extends React.Component<Props, State> {
       <MarkerContainer
         key={`${id} - ${name}`}
         coordinate={{ latitude, longitude }}
+<<<<<<< HEAD
+=======
+        // onPress={() => onGetActivity(id)}
+>>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
       >
         <View
           style={usersTopics.includes(topic.name) && matchTopics.includes(topic.name)

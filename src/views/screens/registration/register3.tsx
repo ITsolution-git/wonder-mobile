@@ -3,13 +3,16 @@ import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { PrimaryButton, TextArea } from 'src/views/components/theme';
 import ShadowBox from 'src/views/components/theme/shadow-box';
 import Screen from 'src/views/components/screen';
-import { MediaGrid, MediaGridItem } from 'src/views/components/theme/media-grid';
+import {
+  MediaGrid,
+  MediaGridItem
+} from 'src/views/components/theme/media-grid';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import validator from "validator";
+import validator from 'validator';
 import { connect } from 'react-redux';
-import { Dispatch } from "redux";
-import WonderAppState from "../../../models/wonder-app-state";
-import { persistRegistrationInfo } from "../../../store/reducers/registration";
+import { Dispatch } from 'redux';
+import WonderAppState from '../../../models/wonder-app-state';
+import { persistRegistrationInfo } from '../../../store/reducers/registration';
 import { Device } from 'src/assets/styles/theme';
 import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view';
 import { loginUser } from 'src/store/sagas/user';
@@ -41,7 +44,6 @@ const mapDispatch = (dispatch: Dispatch) => ({
 });
 
 class Register3 extends React.Component<Props, State> {
-
   state: State = {
     images: [],
     video: [],
@@ -67,7 +69,10 @@ class Register3 extends React.Component<Props, State> {
     const { about } = this.state;
 
     onSave({ about });
-    this.props.onLogin({ email: this.props.registration.email, password: this.props.registration.password });
+    this.props.onLogin({
+      email: this.props.registration.email,
+      password: this.props.registration.password
+    });
     // navigation.navigate('Register4');
   }
 
@@ -77,7 +82,7 @@ class Register3 extends React.Component<Props, State> {
     return (
       <Screen horizontalPadding={20}>
         <KeyboardAvoidingView
-          behavior="position"
+          behavior='position'
           style={{ flex: 1 }}
           contentContainerStyle={{ flex: 1 }}
         >
@@ -91,33 +96,36 @@ class Register3 extends React.Component<Props, State> {
               />
             </View>
             <TextArea
-              label="About Me"
+              label='About Me'
               onChangeText={this.onAboutChangeText('about')}
               // tslint:disable-next-line
-              placeholder='Take this time to describe yourself, life experience, hobbies, and anything else that makes you wonderful...'
+              placeholder="Take this time to describe yourself, life experience, hobbies, and anything else that makes you wonderful..."
               maxLength={200}
             />
           </KeyboardDismissView>
         </KeyboardAvoidingView>
         <View style={{ marginVertical: 10 }}>
-          <PrimaryButton title="Finish" onPress={this.validate} />
+          <PrimaryButton title='Finish' onPress={this.validate} />
         </View>
       </Screen>
     );
   }
 }
 
-export default connect(mapState, mapDispatch)(Register3);
+export default connect(
+  mapState,
+  mapDispatch
+)(Register3);
 
 const styles = StyleSheet.create({
   welcome: {
     fontSize: 14,
     textAlign: 'center',
-    margin: 10,
+    margin: 10
   },
   instructions: {
     textAlign: 'center',
     color: '#333333',
-    marginBottom: 5,
-  },
+    marginBottom: 5
+  }
 });

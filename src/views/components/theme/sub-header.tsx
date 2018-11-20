@@ -10,9 +10,7 @@ interface Props {
 class SubHeader extends React.Component<Props> {
   render() {
     const { children, style } = this.props;
-    return (
-      <Text style={[styles.header, style]}>{children}</Text>
-    );
+    return <Text style={[styles.header, style]}>{children}</Text>;
   }
 }
 
@@ -23,6 +21,5 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 });
-
 
 export default SubHeader;

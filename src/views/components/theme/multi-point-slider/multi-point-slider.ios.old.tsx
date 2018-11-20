@@ -1,16 +1,16 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
-import MultiSlider from "react-native-multi-slider";
-import theme from "src/assets/styles/theme";
-import { Text } from "src/views/components/theme";
-import { width as WIDTH } from "@assets";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import MultiSlider from 'react-native-multi-slider';
+import theme from 'src/assets/styles/theme';
+import { Text } from 'src/views/components/theme';
+import { width as WIDTH } from '@assets';
 
 const localStyles = StyleSheet.create({
-  container: { flex: 1, flexDirection: "row" },
-  sliderContainer: { height: 70, width: "100%" },
+  container: { flex: 1, flexDirection: 'row' },
+  sliderContainer: { height: 70, width: '100%' },
   track: {
     backgroundColor: theme.colors.lightGray,
-    width: "100%",
+    width: '100%'
   },
   marker: {
     width: 30,
@@ -20,48 +20,48 @@ const localStyles = StyleSheet.create({
     shadowColor: theme.colors.black,
     shadowOffset: {
       width: 0,
-      height: 0,
+      height: 0
     },
     elevation: 0,
     shadowRadius: 0,
     shadowOpacity: 0,
-    borderWidth: 0,
+    borderWidth: 0
   },
   selected: {
-    backgroundColor: theme.colors.lightPeach,
+    backgroundColor: theme.colors.lightPeach
   },
   sliderValueText: {
-    position: "absolute",
+    position: 'absolute',
     bottom: -20,
-    alignSelf: "center",
+    alignSelf: 'center'
   },
   triangle: {
-    position: "absolute",
+    position: 'absolute',
     top: -10,
     height: 0,
     width: 0,
     backgroundColor: theme.colors.lightPeach,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     borderTopWidth: 0,
     borderRightWidth: 5,
     borderBottomWidth: 10,
     borderLeftWidth: 5,
-    borderTopColor: "transparent",
-    borderRightColor: "transparent",
+    borderTopColor: 'transparent',
+    borderRightColor: 'transparent',
     borderBottomColor: theme.colors.peach,
-    borderLeftColor: "transparent",
+    borderLeftColor: 'transparent'
   },
   sliderValueContainer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: -40,
     paddingVertical: 2.5,
     // paddingHorizontal: 15,
     width: 35,
     borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: theme.colors.lightPeach,
-  },
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.colors.lightPeach
+  }
 });
 
 export interface MultiPointSliderValue {
@@ -88,7 +88,7 @@ class MultiPointSlider extends React.Component<
 > {
   static getDerivedStateFromProps(
     props: MultiPointSliderProps,
-    state: MultiPointSliderState,
+    state: MultiPointSliderState
   ) {
     const { selectedMin, selectedMax } = state;
     const { min, max, initialMaxValue, initialMinValue } = props;
@@ -110,7 +110,7 @@ class MultiPointSlider extends React.Component<
 
   state = {
     selectedMin: this.props.initialMinValue || this.props.min,
-    selectedMax: this.props.initialMaxValue || this.props.max,
+    selectedMax: this.props.initialMaxValue || this.props.max
   };
 
   //   private renderCustomMarkerLeft = (): React.ReactNode => {
@@ -127,7 +127,7 @@ class MultiPointSlider extends React.Component<
     const [selectedMin, selectedMax] = vals;
 
     this.setState({ selectedMin, selectedMax });
-  };
+  }
 
   private renderValue1 = (): React.ReactNode => {
     const { selectedMin } = this.state;
@@ -146,7 +146,7 @@ class MultiPointSlider extends React.Component<
     //     <Text color={theme.colors.white} size={14}>{`${selectedMin}`}</Text>
     //   </View>
     // );
-  };
+  }
 
   private renderValue2 = (): React.ReactNode => {
     const { selectedMax } = this.state;
@@ -155,7 +155,7 @@ class MultiPointSlider extends React.Component<
         {`${selectedMax}`}
       </Text>
     );
-  };
+  }
 
   render() {
     const { min, max, onValueChange } = this.props;

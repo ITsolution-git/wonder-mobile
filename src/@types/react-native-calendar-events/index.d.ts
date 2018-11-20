@@ -1,13 +1,29 @@
 declare module 'react-native-calendar-events' {
-  export type RNCalendarEventPermissionLevel = 'denied' | 'restricted' | 'authorized' | 'undetermined';
-  export type RNCalendarEventOccurrence = 'daily' | 'weekly' | 'monthly' | 'yearly';
+  export type RNCalendarEventPermissionLevel =
+    | 'denied'
+    | 'restricted'
+    | 'authorized'
+    | 'undetermined';
+  export type RNCalendarEventOccurrence =
+    | 'daily'
+    | 'weekly'
+    | 'monthly'
+    | 'yearly';
 
   export default class RNCalendarEvents {
     static authorizationStatus(): Promise<RNCalendarEventPermissionLevel>;
     static authorizeEventStore(): Promise<RNCalendarEventPermissionLevel>;
-    static fetchAllEvents(startDate: Date, endDate: Date, calendars?: RNCalendarCalendar[]): Promise<any>;
+    static fetchAllEvents(
+      startDate: Date,
+      endDate: Date,
+      calendars?: RNCalendarCalendar[]
+    ): Promise<any>;
     static findCalendars(): Promise<RNCalendarCalendar[]>;
-    static saveEvent(title: string, details: Partial<RNCalendarEvent>, options: any): Promise<string>;
+    static saveEvent(
+      title: string,
+      details: Partial<RNCalendarEvent>,
+      options: any
+    ): Promise<string>;
     static findEventById(id: string): Promise<RNCalendarEvent | null>;
   }
 

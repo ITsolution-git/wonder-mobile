@@ -1,19 +1,25 @@
-import React from "react";
-import { View, StyleSheet, TouchableOpacity, Image, WebView } from "react-native";
-import { Text } from "src/views/components/theme";
+import React from 'react';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  WebView
+} from 'react-native';
+import { Text } from 'src/views/components/theme';
 
-import PricingIndicator from "src/views/components/pricing-indicator";
-import Activity from "src/models/activity";
-import Wonder from "../../components/theme/wonder/wonder";
-import api, { BASE_URL } from "src/services/api";
-import SvgUri from "react-native-svg-uri";
+import PricingIndicator from 'src/views/components/pricing-indicator';
+import Activity from 'src/models/activity';
+import Wonder from '../../components/theme/wonder/wonder';
+import api, { BASE_URL } from 'src/services/api';
+import SvgUri from 'react-native-svg-uri';
 
 interface Props {
   activity: Activity;
   userPosition: {
     lat: String,
     lng: String,
-  }
+  };
   // onPress: TouchableOpacityOnPress;
 }
 
@@ -32,8 +38,8 @@ function distance(lat1: any, lon1: any, lat2: any, lon2: any, unit: String) {
     dist = Math.acos(dist);
     dist = dist * 180 / Math.PI;
     dist = dist * 60 * 1.1515;
-    if (unit === "K") { dist = dist * 1.609344 }
-    if (unit === "N") { dist = dist * 0.8684 }
+    if (unit === 'K') { dist = dist * 1.609344; }
+    if (unit === 'N') { dist = dist * 0.8684; }
     return dist;
   }
 }
@@ -60,7 +66,7 @@ class ActivityCallout extends React.Component<Props> {
         <View flex={3} style={styles.containerRight}>
           <View style={{ flex: 4, padding: 4 }}>
             <Text style={styles.title}>{activity.name}</Text>
-            <Text style={styles.address}>{activity.location.join("\n")}</Text>
+            <Text style={styles.address}>{activity.location.join('\n')}</Text>
             <PricingIndicator rating={activity.price_level} />
           </View>
           <View
@@ -74,8 +80,8 @@ class ActivityCallout extends React.Component<Props> {
             <Text
               style={styles.address}
             >
-              {distance(userPosition.lat, userPosition.lng, activity.latitude, activity.longitude, "N")
-                .toFixed(0) + "m"}
+              {distance(userPosition.lat, userPosition.lng, activity.latitude, activity.longitude, 'N')
+                .toFixed(0) + 'm'}
             </Text>
           </View>
         </View>
@@ -90,20 +96,20 @@ const styles = StyleSheet.create({
   container: {
     height: 110,
     width: 300,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 0,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     borderTopLeftRadius: 6, borderBottomLeftRadius: 6,
   },
-  imageContainer: { borderTopLeftRadius: 6, borderBottomLeftRadius: 6, overflow: "hidden" },
-  containerRight: { flexDirection: "row", backgroundColor: "#fff", borderRadius: 6 },
+  imageContainer: { borderTopLeftRadius: 6, borderBottomLeftRadius: 6, overflow: 'hidden' },
+  containerRight: { flexDirection: 'row', backgroundColor: '#fff', borderRadius: 6 },
   body: {
     paddingHorizontal: 10,
   },
   title: {
     fontSize: 12,
-    fontWeight: "bold",
-    color: "#333",
+    fontWeight: 'bold',
+    color: '#333',
     lineHeight: 14,
     marginBottom: 3,
   },
@@ -116,8 +122,8 @@ const styles = StyleSheet.create({
   rightContainer: {
     flex: 1,
     padding: 4,
-    alignItems: "center",
-    justifyContent: "space-between",
+    alignItems: 'center',
+    justifyContent: 'space-between',
     borderTopRightRadius: 6,
     borderBottomRightRadius: 6,
   },

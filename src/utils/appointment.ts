@@ -1,14 +1,14 @@
-import Appointment from "../models/appointment";
-import moment from "moment-timezone";
+import Appointment from '../models/appointment';
+import moment from 'moment-timezone';
 
 export const isAppointmentBeforeToday = (
-  appointment?: Appointment,
+  appointment?: Appointment
 ): boolean => {
   if (appointment && appointment.event_at) {
     const now = moment();
     // const eventAt = moment(appointment.event_at);
     // const eventAt = moment(appointment.event_at);
-    const eventEnd = moment(appointment.event_at).add(2, "hours");
+    const eventEnd = moment(appointment.event_at).add(2, 'hours');
     return eventEnd.isBefore(now);
   }
   return false;
@@ -18,7 +18,7 @@ export const isAppointmentAfterToday = (appointment?: Appointment): boolean => {
   if (appointment && appointment.event_at) {
     const now = moment();
     // const eventAt = moment(appointment.event_at);
-    const eventEnd = moment(appointment.event_at).add(2, "hours");
+    const eventEnd = moment(appointment.event_at).add(2, 'hours');
     return now.isBefore(eventEnd);
   }
   return false;

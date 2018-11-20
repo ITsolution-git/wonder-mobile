@@ -1,20 +1,20 @@
-import React from "react";
-import { connect } from "react-redux";
-import Screen from "src/views/components/screen";
-import { Text, Strong, PrimaryButton } from "src/views/components/theme";
-import { Dispatch } from "redux";
-import { Calendar } from "react-native-calendars";
-import moment from "moment-timezone";
-import CalendarDate, { DATE_STRING_FORMAT } from "src/models/calendar-date";
-import theme from "src/assets/styles/theme";
-import { View, StyleSheet } from "react-native";
-import WonderAppState from "src/models/wonder-app-state";
+import React from 'react';
+import { connect } from 'react-redux';
+import Screen from 'src/views/components/screen';
+import { Text, Strong, PrimaryButton } from 'src/views/components/theme';
+import { Dispatch } from 'redux';
+import { Calendar } from 'react-native-calendars';
+import moment from 'moment-timezone';
+import CalendarDate, { DATE_STRING_FORMAT } from 'src/models/calendar-date';
+import theme from 'src/assets/styles/theme';
+import { View, StyleSheet } from 'react-native';
+import WonderAppState from 'src/models/wonder-app-state';
 import {
   AppointmentState,
   persistAppointmentData
-} from "src/store/reducers/appointment";
-import TimePicker from "src/views/components/theme/pickers/time-picker";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
+} from 'src/store/reducers/appointment';
+import TimePicker from 'src/views/components/theme/pickers/time-picker';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 
 const mapState = (state: WonderAppState) => ({
   appointment: state.appointment
@@ -39,9 +39,9 @@ interface State {
 class AppointmentInviteScreen extends React.Component<
   AppointmentInviteProps,
   State
-  > {
+> {
   static navigationOptions = ({ navigation }) => ({
-    title: "Invite to Wonder"
+    title: 'Invite to Wonder'
   })
 
   private init = (): CalendarDate => {
@@ -58,11 +58,11 @@ class AppointmentInviteScreen extends React.Component<
   state: State = {
     selected: this.init(),
     selectedTime: moment()
-      .add(15, "minutes")
+      .add(15, 'minutes')
       .toDate()
   };
 
-  today = () => moment().startOf("day");
+  today = () => moment().startOf('day');
 
   onDateChange = (date: any) => {
     const selected: CalendarDate = date as CalendarDate;
@@ -86,7 +86,7 @@ class AppointmentInviteScreen extends React.Component<
     // const dateTime = result.format('YYYY-MM-DD[T]HH:mm:ssZ');
 
     onUpdateAppointment({ eventAt: result.toDate() });
-    navigation.navigate("AppointmentConfirm", { appointment: null });
+    navigation.navigate('AppointmentConfirm', { appointment: null });
   }
 
   renderTitle = () => {
@@ -94,7 +94,7 @@ class AppointmentInviteScreen extends React.Component<
     if (activity) {
       return (
         <View style={styles.header}>
-          <Strong style={{ textAlign: "center" }}>{activity.name}</Strong>
+          <Strong style={{ textAlign: 'center' }}>{activity.name}</Strong>
         </View>
       );
     }
@@ -121,7 +121,7 @@ class AppointmentInviteScreen extends React.Component<
           current={selected.dateString}
           minDate={this.today().format(DATE_STRING_FORMAT)}
           maxDate={this.today()
-            .add(1, "month")
+            .add(1, 'month')
             .format(DATE_STRING_FORMAT)}
           onDayPress={this.onDateChange}
           monthFormat="MMMM '('yyyy')'" // http://arshaw.com/xdate/#Formatting
@@ -139,19 +139,19 @@ class AppointmentInviteScreen extends React.Component<
         />
         <View flex={1} style={{ paddingHorizontal: 20 }}>
           <TimePicker
-            label="Select a time"
+            label='Select a time'
             minDate={moment()
-              .add(15, "minutes")
+              .add(15, 'minutes')
               .toDate()}
             initialDate={moment()
-              .add(15, "minutes")
+              .add(15, 'minutes')
               .toDate()}
             onChange={this.onTimeChange}
           />
         </View>
-        <View flex={1} style={{ justifyContent: "flex-end", margin: 10 }}>
+        <View flex={1} style={{ justifyContent: 'flex-end', margin: 10 }}>
           <PrimaryButton
-            title={this.getCombinedMoment().format("MMMM Do [@] h:mma")}
+            title={this.getCombinedMoment().format('MMMM Do [@] h:mma')}
             onPress={this.onComplete}
           />
         </View>

@@ -1,8 +1,8 @@
-import _ from "lodash";
-import React from "react";
+import _ from 'lodash';
+import React from 'react';
 import { connect } from 'react-redux';
-import { DeckSwiper } from "native-base";
-import { Text, Title, WonderImage, SubTitle, IconButton } from "../theme";
+import { DeckSwiper } from 'native-base';
+import { Text, Title, WonderImage, SubTitle, IconButton } from '../theme';
 import {
   View,
   StyleSheet,
@@ -11,27 +11,27 @@ import {
   Animated,
   Image,
   Alert
-} from "react-native";
+} from 'react-native';
 
-import moment from "moment-timezone";
-import Icon from "react-native-vector-icons/Entypo";
-import Topic from "src/models/topic";
-import Images from "src/assets/images";
+import moment from 'moment-timezone';
+import Icon from 'react-native-vector-icons/Entypo';
+import Topic from 'src/models/topic';
+import Images from 'src/assets/images';
 import FastImage from 'react-native-fast-image';
-import LinearGradient from "react-native-linear-gradient";
-import Wonder from "../theme/wonder/wonder";
-import Proposal from "src/models/proposal";
-import User from "src/models/user";
-import ProfileImage from "src/models/profile-image";
-import Candidate from "src/models/candidate";
+import LinearGradient from 'react-native-linear-gradient';
+import Wonder from '../theme/wonder/wonder';
+import Proposal from 'src/models/proposal';
+import User from 'src/models/user';
+import ProfileImage from 'src/models/profile-image';
+import Candidate from 'src/models/candidate';
 import WonderAppState from 'src/models/wonder-app-state';
-import googleMaps, { GoogleGeoLocation } from "../../../services/google-maps";
-import MatchAvailableMedia from "../../components/proposal-swiper/match-available-media";
-import VibeVideoModal from "../modals/vibe-video-modal";
-import { cadetblue } from "color-name";
+import googleMaps, { GoogleGeoLocation } from '../../../services/google-maps';
+import MatchAvailableMedia from '../../components/proposal-swiper/match-available-media';
+import VibeVideoModal from '../modals/vibe-video-modal';
+import { cadetblue } from 'color-name';
 
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 
 interface Props {
   proposal: Proposal | null;
@@ -62,13 +62,13 @@ const mapState = (state: WonderAppState) => ({
 class CardDetailsOverlay extends React.Component<
   CardDetailsOverlayProps,
   CardDetailsOverlayState
-  > {
+> {
   state = {
     contentHeight: 0,
     showDetails: false,
     imageCount: 0,
     showVideoPlayer: false,
-    location: "",
+    location: '',
     animation: new Animated.Value(0)
   };
 
@@ -94,10 +94,14 @@ class CardDetailsOverlay extends React.Component<
 
   renderDistance = () => {
     const { candidate } = this.props;
-    const distance = candidate.distance && _.get(candidate, 'distance', 0).toFixed(0);
+    const distance =
+      candidate.distance && _.get(candidate, 'distance', 0).toFixed(0);
     return (
-      <Text allowFontScaling={false} style={{ fontSize: 14, marginBottom: 5, color: '#fff' }}>
-        {distance <= 1 ? "< 1 mile" : distance + ' miles'}
+      <Text
+        allowFontScaling={false}
+        style={{ fontSize: 14, marginBottom: 5, color: '#fff' }}
+      >
+        {distance <= 1 ? '< 1 mile' : distance + ' miles'}
       </Text>
     );
   }
@@ -121,11 +125,13 @@ class CardDetailsOverlay extends React.Component<
     const userTopics = currentUser.topics;
 
     return (
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: 'row' }}>
         {candidate &&
           candidateTopics.map((x: Topic) => {
             if (userTopics) {
-              const active: boolean = !!userTopics.find((i: Topic) => i.name === x.name);
+              const active: boolean = !!userTopics.find(
+                (i: Topic) => i.name === x.name
+              );
               return (
                 <View key={x.name} style={{ marginRight: 4 }}>
                   <Wonder topic={x} size={60} active={active} />
@@ -153,9 +159,7 @@ class CardDetailsOverlay extends React.Component<
     Alert.alert(
       'Coming Soon',
       'Check back soon for Wonder Premium!',
-      [
-        { text: 'Ok' },
-      ],
+      [{ text: 'Ok' }],
       { cancelable: false }
     );
   }
@@ -166,12 +170,12 @@ class CardDetailsOverlay extends React.Component<
 
     const details = (
       <React.Fragment>
-        <Text color="#FFF">
+        <Text color='#FFF'>
           {candidate.occupation}
-          {"\n"}
+          {'\n'}
           {candidate.school}
         </Text>
-        {!!candidate.about && <Text color="#FFF">{candidate.about}</Text>}
+        {!!candidate.about && <Text color='#FFF'>{candidate.about}</Text>}
       </React.Fragment>
     );
 
@@ -180,7 +184,6 @@ class CardDetailsOverlay extends React.Component<
         style={styles.cardOverlayContainer}
         onPress={this.getNextPhoto}
       >
-
         <WonderImage
           background
           uri={_.get(candidate, `images[${imageCount}].url`, Images.WELCOME)}
@@ -193,16 +196,16 @@ class CardDetailsOverlay extends React.Component<
           />
           <LinearGradient
             style={styles.textContainer}
-            colors={["transparent", "rgb(0,0,0)"]}
+            colors={['transparent', 'rgb(0,0,0)']}
             start={{ x: 0, y: 0 }}
             end={{ x: 0, y: 1 }}
           >
             <View flex={1}>
-              <Title style={{ fontSize: 24, fontWeight: 'bold' }} color="#FFF">
+              <Title style={{ fontSize: 24, fontWeight: 'bold' }} color='#FFF'>
                 {[
                   candidate.first_name,
-                  moment().diff(candidate.birthdate, "years")
-                ].join(", ")}
+                  moment().diff(candidate.birthdate, 'years')
+                ].join(', ')}
               </Title>
               {this.renderDistance()}
               <View style={{ paddingBottom: 6 }}>{this.getTopics()}</View>
@@ -210,7 +213,7 @@ class CardDetailsOverlay extends React.Component<
                 {details}
               </Animated.View>
               <View
-                style={{ position: "absolute", bottom: -deviceHeight }}
+                style={{ position: 'absolute', bottom: -deviceHeight }}
                 onLayout={(event: any) =>
                   this.setState({
                     contentHeight: event.nativeEvent.layout.height
@@ -220,19 +223,28 @@ class CardDetailsOverlay extends React.Component<
                 {details}
               </View>
             </View>
-            <View style={{ justifyContent: 'space-between', alignItems: 'center', paddingBottom: 15, paddingTop: 15 }}>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingBottom: 15,
+                paddingTop: 15
+              }}
+            >
               <View>
                 <TouchableWithoutFeedback onPress={this.showAlert}>
-                  <Image source={Images.LogoIcon} style={{ width: 40, height: 40 }} />
+                  <Image
+                    source={Images.LogoIcon}
+                    style={{ width: 40, height: 40 }}
+                  />
                 </TouchableWithoutFeedback>
               </View>
               <Icon
-                name={showDetails ? "chevron-thin-down" : "chevron-thin-up"}
-                color={"#fff"}
+                name={showDetails ? 'chevron-thin-down' : 'chevron-thin-up'}
+                color={'#fff'}
                 size={20}
                 onPress={this.toggleDetails}
               />
-
             </View>
           </LinearGradient>
           <VibeVideoModal
@@ -241,7 +253,6 @@ class CardDetailsOverlay extends React.Component<
             videoUrl={candidate.video}
           />
         </WonderImage>
-
       </TouchableWithoutFeedback>
     );
   }
@@ -253,16 +264,16 @@ class ProposalSwiper extends React.Component<Props> {
       return (
         <View style={styles.noImageContainer}>
           <WonderImage
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: '100%', height: '100%' }}
             uri={images[0].url}
-            resizeMode="cover"
+            resizeMode='cover'
           />
         </View>
       );
     } else {
       return (
         <View style={styles.noImageContainer}>
-          <Icon name="user" color="#CCC" size={100} />
+          <Icon name='user' color='#CCC' size={100} />
         </View>
       );
     }
@@ -271,12 +282,10 @@ class ProposalSwiper extends React.Component<Props> {
   renderCard = () => {
     const { stateProposal } = this.props;
     return (
-      (
-        <CardDetailsOverlay
-          candidate={stateProposal.candidate}
-          currentUser={this.props.currentUser}
-        />
-      )
+      <CardDetailsOverlay
+        candidate={stateProposal.candidate}
+        currentUser={this.props.currentUser}
+      />
     );
   }
 
@@ -312,37 +321,37 @@ export default connect(mapState)(ProposalSwiper);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: "column",
-    backgroundColor: "#eee",
-    justifyContent: "space-between",
-    height: Dimensions.get("window").height - 60,
-    width: Dimensions.get("window").width,
+    flexDirection: 'column',
+    backgroundColor: '#eee',
+    justifyContent: 'space-between',
+    height: Dimensions.get('window').height - 60,
+    width: Dimensions.get('window').width
   },
   textContainer: {
     padding: 15,
-    flexDirection: "row"
+    flexDirection: 'row'
   },
   noMatchesContainer: {
     padding: 20,
     flex: 1,
-    backgroundColor: "#EEE",
-    justifyContent: "center"
+    backgroundColor: '#EEE',
+    justifyContent: 'center'
   },
   titleText: {
     fontSize: 24
   },
   messageText: {
-    textAlign: "center"
+    textAlign: 'center'
   },
   noImageContainer: {
     flex: 1,
     height: 300,
-    backgroundColor: "#EEE",
-    justifyContent: "center",
-    alignItems: "center"
+    backgroundColor: '#EEE',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   cardOverlayContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     bottom: 0,
     left: 0,

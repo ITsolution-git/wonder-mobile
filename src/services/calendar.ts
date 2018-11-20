@@ -1,5 +1,4 @@
-import RNCalendarEvents,
-{
+import RNCalendarEvents, {
   RNCalendarCalendar,
   RNCalendarEvent,
   RNCalendarEventPermissionLevel

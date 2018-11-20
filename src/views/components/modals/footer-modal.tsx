@@ -10,9 +10,15 @@ interface Props extends ModalProps {
 }
 
 class FooterModal extends React.Component<Props> {
-
   public render() {
-    const { closeText, children, visible, animationType, transparent, onClose } = this.props;
+    const {
+      closeText,
+      children,
+      visible,
+      animationType,
+      transparent,
+      onClose
+    } = this.props;
     return (
       <Modal
         animationType={animationType}

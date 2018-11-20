@@ -12,7 +12,7 @@ import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
 import { Response, Options } from 'src/models/image-picker';
 import ImageToolbar from '../../components/camera/image-toolbar';
-import { addProfileVideo } from "src/store/reducers/user";
+import { addProfileVideo } from 'src/store/reducers/user';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -32,7 +32,7 @@ class ProfileVideoScreen extends React.Component<Props, State> {
   timer = 0;
 
   state: State = {
-    data: null,
+    data: null
   };
 
   onDelete = () => {
@@ -81,37 +81,24 @@ class ProfileVideoScreen extends React.Component<Props, State> {
     let video = null;
     if (currentVideo) {
       video = (
-        <VideoPlayer
-          video={currentVideo}
-          videoHeight={1}
-          videoWidth={1}
-        />
+        <VideoPlayer video={currentVideo} videoHeight={1} videoWidth={1} />
       );
     }
     if (data) {
-      video = (
-        <VideoPlayer
-          video={data}
-          videoHeight={1}
-          videoWidth={1}
-        />
-      );
+      video = <VideoPlayer video={data} videoHeight={1} videoWidth={1} />;
     }
     if (video) {
       return (
-        <View flex={1} >
-          <View style={[styles.imgcontainer, { padding: 0 }]}>
-            {video}
-          </View>
+        <View flex={1}>
+          <View style={[styles.imgcontainer, { padding: 0 }]}>{video}</View>
           <ImageToolbar
-            mode="video"
+            mode='video'
             isNew={!currentVideo || !!data}
             onRetake={this.getVideo}
             onCancel={this.onClear}
             onDelete={this.onDelete}
             onSave={this.onSave}
           />
-
         </View>
       );
     }
@@ -119,12 +106,13 @@ class ProfileVideoScreen extends React.Component<Props, State> {
       <View flex={1}>
         <View style={styles.container}>
           <Text>
-            Create a 15 second Vibe Video for others to see. Show them who you are!
+            Create a 15 second Vibe Video for others to see. Show them who you
+            are!
           </Text>
         </View>
         <PrimaryButton
           rounded={false}
-          title="Open Camera"
+          title='Open Camera'
           onPress={this.getVideo}
         />
       </View>
@@ -132,15 +120,14 @@ class ProfileVideoScreen extends React.Component<Props, State> {
   }
 
   render() {
-    return (
-      <Screen>
-        {this.renderContent()}
-      </Screen>
-    );
+    return <Screen>{this.renderContent()}</Screen>;
   }
 }
 
-export default connect(null, mapDispatch)(ProfileVideoScreen);
+export default connect(
+  null,
+  mapDispatch
+)(ProfileVideoScreen);
 
 const styles = StyleSheet.create({
   imgcontainer: {

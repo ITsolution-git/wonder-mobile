@@ -24,7 +24,10 @@ import { DecoratedAppointment } from 'src/models/appointment';
 import WonderAppState from 'src/models/wonder-app-state';
 import theme from 'src/assets/styles/theme';
 import { getConversation } from 'src/store/sagas/conversations';
-import { cancelAppointment, declineAppointment } from 'src/store/sagas/appointment';
+import {
+  cancelAppointment,
+  declineAppointment
+} from 'src/store/sagas/appointment';
 import { isAppointmentBeforeToday } from 'src/utils/appointment';
 import { callPhoneNumber } from 'src/services/communication';
 import UserService from 'src/services/uber';
@@ -51,8 +54,10 @@ const mapState = (state: WonderAppState) => ({
 const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
     dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
-  onCancelAppointment: (data: DecoratedAppointment) => dispatch(cancelAppointment(data)),
-  onDeclineAppointment: (data: DecoratedAppointment) => dispatch(declineAppointment(data))
+  onCancelAppointment: (data: DecoratedAppointment) =>
+    dispatch(cancelAppointment(data)),
+  onDeclineAppointment: (data: DecoratedAppointment) =>
+    dispatch(declineAppointment(data))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -97,13 +102,15 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   }
 
   onCall = async (url?: string | null) => {
-    Linking.canOpenURL(url).then((supported) => {
-      if (!supported) {
-        Alert.alert("Sorry! This number can't be opened from the app");
-      } else {
-        return Linking.openURL(url);
-      }
-    }).catch((err) => console.error('An error occurred', err));
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (!supported) {
+          Alert.alert("Sorry! This number can't be opened from the app");
+        } else {
+          return Linking.openURL(url);
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
   }
 
   onServicePress = (url: string) => {
@@ -160,9 +167,15 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   renderConfirmationButton = (appointment: DecoratedAppointment) => {
     const { state, owner, me } = appointment;
     const isOwner = owner.id === me.id;
-    if ((isOwner && state === 'negotiating') || (!isOwner && state === 'invited')) {
+    if (
+      (isOwner && state === 'negotiating') ||
+      (!isOwner && state === 'invited')
+    ) {
       return (
-        <PrimaryButton title='Confirm' onPress={() => this.handleConfirmation(appointment)} />
+        <PrimaryButton
+          title='Confirm'
+          onPress={() => this.handleConfirmation(appointment)}
+        />
       );
     } else {
       const label = state === 'confirmed' ? 'Confirmed' : 'Confirm';
@@ -190,7 +203,10 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       'Are you sure you want to decline?',
       [
         { text: 'Cancel' },
-        { text: 'YES', onPress: () => this.props.onDeclineAppointment(appointment) },
+        {
+          text: 'YES',
+          onPress: () => this.props.onDeclineAppointment(appointment)
+        }
       ],
       { cancelable: false }
     );
@@ -207,7 +223,10 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       'Are you sure you want to cancel?',
       [
         { text: 'Cancel' },
-        { text: 'YES', onPress: () => this.props.onCancelAppointment(appointment) },
+        {
+          text: 'YES',
+          onPress: () => this.props.onCancelAppointment(appointment)
+        }
       ],
       { cancelable: false }
     );
@@ -231,19 +250,22 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           <View style={styles.header}>
             <Avatar
               circle
-              size="xl"
+              size='xl'
               uri={_.get(appointment, 'match.images[0].url', null)}
             />
           </View>
 
           <View style={{ marginTop: 15 }}>
-            <Title align="center">
-              {_.get(appointment, 'topic.name', null)} with {appointment.match.first_name}{' '}
+            <Title align='center'>
+              {_.get(appointment, 'topic.name', null)} with{' '}
+              {appointment.match.first_name}{' '}
             </Title>
 
-            <SubTitle align="center">{appointment.name} - {appointment.location}</SubTitle>
+            <SubTitle align='center'>
+              {appointment.name} - {appointment.location}
+            </SubTitle>
             {appointment.eventMoment && (
-              <Text align="center">
+              <Text align='center'>
                 {appointment.eventMoment.format('MMMM Do, [at] h:mma')}
               </Text>
             )}
@@ -259,20 +281,23 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         </View>
 
         <View>
-          {
-            isPast
-              ? <PrimaryButton title="Leave Review" onPress={this.openReviewModal} />
-              : this.renderConfirmationButton(appointment)
-          }
+          {isPast ? (
+            <PrimaryButton
+              title='Leave Review'
+              onPress={this.openReviewModal}
+            />
+          ) : (
+            this.renderConfirmationButton(appointment)
+          )}
           <View style={[styles.row, styles.buttonRow]}>
             {!isPast && (
               <View style={styles.col}>
                 <IconButton
                   size={50}
                   iconSize={44}
-                  icon="car"
+                  icon='car'
                   primary={theme.colors.primaryLight}
-                  secondary="transparent"
+                  secondary='transparent'
                   onPress={this.onUber}
                 />
                 <Text style={styles.btnLabel}>Catch a Ride</Text>
@@ -283,9 +308,9 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 <IconButton
                   size={50}
                   iconSize={44}
-                  icon="shopping-cart"
+                  icon='shopping-cart'
                   primary={theme.colors.primaryLight}
-                  secondary="transparent"
+                  secondary='transparent'
                   onPress={this.onAmazon}
                 />
                 <Text style={styles.btnLabel}>Shop Amazon</Text>
@@ -296,9 +321,9 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 <IconButton
                   size={50}
                   iconSize={44}
-                  icon="gift"
+                  icon='gift'
                   primary={theme.colors.primaryLight}
-                  secondary="transparent"
+                  secondary='transparent'
                   onPress={() => this.onServicePress('1-800-Flowers')}
                 />
                 <Text style={styles.btnLabel}>Send Flowers</Text>
@@ -308,9 +333,9 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               <IconButton
                 size={50}
                 iconSize={44}
-                icon="comments"
+                icon='comments'
                 primary={theme.colors.primaryLight}
-                secondary="transparent"
+                secondary='transparent'
                 onPress={this.goToChat}
               />
               <Text style={styles.btnLabel}>Chat</Text>
@@ -325,11 +350,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           >
             {!isPast && (
               <View style={styles.col}>
-                <SecondaryButton title="Cancel" onPress={this.cancel} />
+                <SecondaryButton title='Cancel' onPress={this.cancel} />
               </View>
             )}
             <View style={styles.col}>
-              <SecondaryButton title="Decline" onPress={this.decline} />
+              <SecondaryButton title='Decline' onPress={this.decline} />
             </View>
           </View>
         </View>
@@ -373,5 +398,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
     marginLeft: 10
-  },
+  }
 });

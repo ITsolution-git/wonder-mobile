@@ -1,7 +1,7 @@
 // By Lat/Long GET https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=AIzaSyDaOXn2lSkZaJyXZSz0xglhT74yc_F2p4U
 // By Zip code GET https://maps.googleapis.com/maps/api/geocode/json?address=60134&key=AIzaSyDaOXn2lSkZaJyXZSz0xglhT74yc_F2p4U
 // Google Maps Key AIzaSyDaOXn2lSkZaJyXZSz0xglhT74yc_F2p4U
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 export interface GeoCoordinate {
   lat: number;
@@ -25,7 +25,7 @@ export interface GoogleGeoLocation {
 }
 
 const googleApi = axios.create({
-  baseURL: "https://maps.googleapis.com/maps/api"
+  baseURL: 'https://maps.googleapis.com/maps/api'
 });
 
 function parseGoogleGeocodeResponse(google: any) {
@@ -42,15 +42,15 @@ function parseGoogleGeocodeResponse(google: any) {
   if (google && google.length) {
     const location = google.reduce(
       (result: GoogleGeoLocation, item: GoogleGeocodeItem) => {
-        if (item.types.indexOf("postal_code") !== -1) {
+        if (item.types.indexOf('postal_code') !== -1) {
           result.zipcode = item.long_name;
-        } else if (item.types.indexOf("route") !== -1) {
+        } else if (item.types.indexOf('route') !== -1) {
           result.street = item.long_name;
-        } else if (item.types.indexOf("locality") !== -1) {
+        } else if (item.types.indexOf('locality') !== -1) {
           result.city = item.long_name;
-        } else if (item.types.indexOf("administrative_area_level_1") !== -1) {
+        } else if (item.types.indexOf('administrative_area_level_1') !== -1) {
           result.state = item.short_name;
-        } else if (item.types.indexOf("postal_code_suffix") !== -1) {
+        } else if (item.types.indexOf('postal_code_suffix') !== -1) {
           result.zipcode_suffix = item.long_name;
         }
         return result;
@@ -77,20 +77,20 @@ class GoogleMapsService {
 
   private query = async (config: AxiosRequestConfig) => {
     return googleApi(config);
-  };
+  }
 
   geocodeByZipCode = async (zipcode?: string) => {
     try {
       if (zipcode && zipcode.length >= 5) {
         const response: AxiosResponse = await this.query({
-          url: "/geocode/json",
+          url: '/geocode/json',
           params: {
             key: this.apiKey,
             address: zipcode
           }
         });
 
-        if (response.data.status === "OK") {
+        if (response.data.status === 'OK') {
           const { results } = response.data;
           return parseGoogleGeocodeResponse(results[0].address_components);
         }
@@ -99,7 +99,7 @@ class GoogleMapsService {
       console.warn(error);
     }
     return undefined;
-  };
+  }
 
   geocodeByLatLng = async (coordinate: GeoCoordinate) => {
     try {
@@ -107,14 +107,14 @@ class GoogleMapsService {
         const { lat, lng } = coordinate;
 
         const response: AxiosResponse = await this.query({
-          url: "/geocode/json",
+          url: '/geocode/json',
           params: {
             key: this.apiKey,
             latlng: `${lat},${lng}`
           }
         });
 
-        if (response.data.status === "OK") {
+        if (response.data.status === 'OK') {
           const { results } = response.data;
           return parseGoogleGeocodeResponse(results[0]);
         }
@@ -123,7 +123,7 @@ class GoogleMapsService {
       console.warn(error);
     }
     return undefined;
-  };
+  }
 }
 
-export default new GoogleMapsService("AIzaSyDaOXn2lSkZaJyXZSz0xglhT74yc_F2p4U");
+export default new GoogleMapsService('AIzaSyDaOXn2lSkZaJyXZSz0xglhT74yc_F2p4U');

@@ -1,28 +1,32 @@
-import { select, call, put, takeEvery } from "redux-saga/effects";
-import { createAction, Action } from "redux-actions";
-import api from "src/services/api";
+import { select, call, put, takeEvery } from 'redux-saga/effects';
+import { createAction, Action } from 'redux-actions';
+import api from 'src/services/api';
 
-import { persistActivities, persistActivity } from "src/store/reducers/chat";
+import { persistActivities, persistActivity } from 'src/store/reducers/chat';
 
-import _ from "lodash";
-import WonderAppState from "../../models/wonder-app-state";
-import Partner from "../../models/partner";
-import Coordinate from "../../models/coordinate";
-import Activity from "../../models/activity";
-import ActivityDetails from "../../models/activity-details";
-import { handleAxiosError } from "./utils";
-import { createElement } from "react";
+import _ from 'lodash';
+import WonderAppState from '../../models/wonder-app-state';
+import Partner from '../../models/partner';
+import Coordinate from '../../models/coordinate';
+import Activity from '../../models/activity';
+import ActivityDetails from '../../models/activity-details';
+import { handleAxiosError } from './utils';
+import { createElement } from 'react';
 
-export const GET_PARTNERS = "GET_PARTNERS";
+export const GET_PARTNERS = 'GET_PARTNERS';
 export const getPartners = createAction(GET_PARTNERS);
 export function* getPartnersSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
 
-    const { data }: { data: Partner[] } = yield call(api, {
-      method: "GET",
-      url: "/partners",
-    }, state.user);
+    const { data }: { data: Partner[] } = yield call(
+      api,
+      {
+        method: 'GET',
+        url: '/partners'
+      },
+      state.user
+    );
 
     // yield persistPar
   } catch (error) {
@@ -36,21 +40,39 @@ export function* watchGetPartners() {
   yield takeEvery(GET_PARTNERS, getPartnersSaga);
 }
 
-export const GET_PARTNER_ACTIVITIES = "GET_PARTNER_ACTIVITIES";
+export const GET_PARTNER_ACTIVITIES = 'GET_PARTNER_ACTIVITIES';
 export const getPartnerActivities = createAction(GET_PARTNER_ACTIVITIES);
 export function* getPartnerActivitiesSaga(action: Action<any>) {
   try {
-    const { id, coordinate }: { id: number, coordinate?: Coordinate } = action.payload;
+    const {
+      id,
+      coordinate
+    }: { id: number; coordinate?: Coordinate } = action.payload;
     const state: WonderAppState = yield select();
 
+<<<<<<< HEAD
     const { data }: { data: Activity[] } = yield call(api, {
-      method: "GET",
+      method: 'GET',
       url: `/partners/${id}/activities`,
       params: {
-        lat: _.get(coordinate, "lat"),
-        lng: _.get(coordinate, "lng"),
+        lat: _.get(coordinate, 'lat'),
+        lng: _.get(coordinate, 'lng'),
       },
     }, state.user);
+=======
+    const { data }: { data: Activity[] } = yield call(
+      api,
+      {
+        method: 'GET',
+        url: `/partners/${id}/activities`,
+        params: {
+          lat: _.get(coordinate, 'lat'),
+          lng: _.get(coordinate, 'lng')
+        }
+      },
+      state.user
+    );
+>>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 
     yield put(persistActivities(data));
     // yield put(persistUser(data));
@@ -65,16 +87,27 @@ export function* watchGetPartnerActivities() {
   yield takeEvery(GET_PARTNER_ACTIVITIES, getPartnerActivitiesSaga);
 }
 
-const GET_ACTIVITY_DETAILS = "GET_ACTIVITY_DETAILS";
+const GET_ACTIVITY_DETAILS = 'GET_ACTIVITY_DETAILS';
 export const getActivityDetails = createAction(GET_ACTIVITY_DETAILS);
 export function* getActivityDetailsSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
 
+<<<<<<< HEAD
     const { data }: { data: ActivityDetails } = yield call(api, {
-      method: "GET",
+      method: 'GET',
       url: `/activities/${action.payload.id}`,
     }, state.user);
+=======
+    const { data }: { data: ActivityDetails } = yield call(
+      api,
+      {
+        method: 'GET',
+        url: `/activities/${action.payload.id}`
+      },
+      state.user
+    );
+>>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 
     yield put(persistActivity(data));
     // yield put(persistUser(data));
@@ -89,18 +122,28 @@ export function* watchGetActivityDetails() {
   yield takeEvery(GET_ACTIVITY_DETAILS, getActivityDetailsSaga);
 }
 
-export const BLOCK_USER = "BLOCK_USER";
+export const BLOCK_USER = 'BLOCK_USER';
 export const blockUser = createAction(BLOCK_USER);
 
 export function* blockUserSaga(action: Action<any>) {
-
   try {
     const state: WonderAppState = yield select();
 
+<<<<<<< HEAD
     const { data }: { data: ActivityDetails } = yield call(api, {
-      method: "POST",
+      method: 'POST',
       url: `/partners/${action.payload.id}/blocks?message=cow+goes-moo`,
     }, state.user);
+=======
+    const { data }: { data: ActivityDetails } = yield call(
+      api,
+      {
+        method: 'POST',
+        url: `/partners/${action.payload.id}/blocks?message=cow+goes-moo`
+      },
+      state.user
+    );
+>>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 
     // yield put(persistActivity(data));
     // yield put(persistUser(data));

@@ -22,33 +22,46 @@ const ImageToolbar: React.SFC<ImageToolbarProps> = ({
   onSave,
   onCancel
 }) => {
-
   const options: Element[] = [];
 
   options.push(
     <IconButton
       icon={isNew ? 'times' : 'trash'}
-      primary="#FFF"
-      secondary="transparent"
+      primary='#FFF'
+      secondary='transparent'
       onPress={isNew ? onCancel : onDelete}
     />
   );
 
   if (isNew && onRotate) {
-    options.push(<IconButton icon="refresh" primary="#FFF" secondary="transparent" onPress={onRotate} />);
+    options.push(
+      <IconButton
+        icon='refresh'
+        primary='#FFF'
+        secondary='transparent'
+        onPress={onRotate}
+      />
+    );
   }
 
   options.push(
     <IconButton
-      icon={mode === 'photo' ? "camera" : 'video-camera'}
-      primary="#FFF"
-      secondary="transparent"
+      icon={mode === 'photo' ? 'camera' : 'video-camera'}
+      primary='#FFF'
+      secondary='transparent'
       onPress={onRetake}
     />
   );
 
   if (isNew) {
-    options.push(<IconButton icon="check" primary="#FFF" secondary="transparent" onPress={onSave} />);
+    options.push(
+      <IconButton
+        icon='check'
+        primary='#FFF'
+        secondary='transparent'
+        onPress={onSave}
+      />
+    );
   }
 
   return (

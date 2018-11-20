@@ -16,15 +16,11 @@ class Marker extends React.Component<Props> {
     if (icon) {
       return <WonderImage uri={icon} />;
     }
-    return <Icon name="map-marker" size={12} color={theme.colors.textColor} />;
+    return <Icon name='map-marker' size={12} color={theme.colors.textColor} />;
   }
   render() {
     const { title } = this.props;
-    return (
-      <View style={styles.container}>
-        {this.renderIcon()}
-      </View>
-    );
+    return <View style={styles.container}>{this.renderIcon()}</View>;
   }
 }
 

@@ -1,13 +1,13 @@
-import React from "react";
-import { View, Modal, Dimensions, StyleSheet } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import VideoPlayer from "react-native-video-player";
-import { IconButton } from "src/views/components/theme";
-import theme from "src/assets/styles/theme";
-import { BASE_URL } from "src/services/api";
+import React from 'react';
+import { View, Modal, Dimensions, StyleSheet } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import VideoPlayer from 'react-native-video-player';
+import { IconButton } from 'src/views/components/theme';
+import theme from 'src/assets/styles/theme';
+import { BASE_URL } from 'src/services/api';
 
-const deviceHeight = Dimensions.get("window").height;
-const deviceWidth = Dimensions.get("window").width;
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
 
 interface Props {
   visible: boolean;
@@ -18,7 +18,7 @@ interface Props {
 const VibeVideoModal = (props: Props) => {
   return (
     <Modal
-      animationType="slide"
+      animationType='slide'
       transparent={false}
       visible={props.visible}
       onRequestClose={props.onRequestClose}
@@ -41,16 +41,16 @@ const VibeVideoModal = (props: Props) => {
         />
         <LinearGradient
           style={styles.gradientStyles}
-          colors={["rgb(0,0,0)", "transparent"]}
+          colors={['rgb(0,0,0)', 'transparent']}
           start={{ x: 0, y: 0 }}
           end={{ x: 0, y: 1 }}
         >
           <IconButton
             size={54}
-            icon={"close"}
+            icon={'close'}
             onPress={props.onRequestClose}
             primary={theme.colors.primaryLight}
-            secondary="transparent"
+            secondary='transparent'
           />
         </LinearGradient>
       </View>
@@ -63,10 +63,10 @@ export default VibeVideoModal;
 const styles = StyleSheet.create({
   container: { flex: 1 },
   gradientStyles: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     height: 80,
-    alignItems: "flex-end",
-    width: "100%"
+    alignItems: 'flex-end',
+    width: '100%'
   }
 });

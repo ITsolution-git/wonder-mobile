@@ -1,18 +1,21 @@
-import React from "react";
-import { View, Linking, Alert } from "react-native";
-import { TextInput } from "src/views/components/theme";
-import Screen from "src/views/components/screen";
-import { AppointmentList } from "src/views/components/appointment-list";
-import { connect } from "react-redux";
-import theme from "src/assets/styles/theme";
-import { Dispatch } from "redux";
-import { getAppointments } from "src/store/sagas/appointment";
-import moment from "moment-timezone";
-import { selectUpcomingAppointments, selectUpcomingAttendances } from "src/store/selectors/appointment";
-import { deleteAttendance, getAttendances } from "src/store/sagas/attendance";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import WonderAppState from "src/models/wonder-app-state";
-import { DecoratedAppointment } from "src/models/appointment";
+import React from 'react';
+import { View, Linking, Alert } from 'react-native';
+import { TextInput } from 'src/views/components/theme';
+import Screen from 'src/views/components/screen';
+import { AppointmentList } from 'src/views/components/appointment-list';
+import { connect } from 'react-redux';
+import theme from 'src/assets/styles/theme';
+import { Dispatch } from 'redux';
+import { getAppointments } from 'src/store/sagas/appointment';
+import moment from 'moment-timezone';
+import {
+  selectUpcomingAppointments,
+  selectUpcomingAttendances
+} from 'src/store/selectors/appointment';
+import { deleteAttendance, getAttendances } from 'src/store/sagas/attendance';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import WonderAppState from 'src/models/wonder-app-state';
+import { DecoratedAppointment } from 'src/models/appointment';
 
 interface State {
   search: string;
@@ -26,7 +29,8 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onRefreshAppointments: () => dispatch(getAppointments()),
-  onDeleteAttendance: (data: DecoratedAppointment) => dispatch(deleteAttendance(data)),
+  onDeleteAttendance: (data: DecoratedAppointment) =>
+    dispatch(deleteAttendance(data)),
   onRefreshAttendances: () => dispatch(getAttendances())
 });
 
@@ -41,9 +45,9 @@ interface UpcomingAppointmentsProps {
 
 class UpcomingAppointmentsScreen extends React.Component<
   UpcomingAppointmentsProps
-  > {
+> {
   state: State = {
-    search: ""
+    search: ''
   };
   componentDidMount() {
     this.props.onRefreshAppointments();
@@ -51,7 +55,7 @@ class UpcomingAppointmentsScreen extends React.Component<
   }
 
   goToAppointment = (appointment: DecoratedAppointment) => {
-    this.props.navigation.navigate("UpcomingAppointmentView", { appointment });
+    this.props.navigation.navigate('UpcomingAppointmentView', { appointment });
   }
 
   onSearchTextChange = (text: string) => {
@@ -70,7 +74,7 @@ class UpcomingAppointmentsScreen extends React.Component<
           appointment.match.first_name.toLowerCase().indexOf(search) >= 0;
         const date =
           moment(appointment.event_at)
-            .format("LLLL")
+            .format('LLLL')
             .toLowerCase()
             .indexOf(search) >= 0;
 
@@ -82,7 +86,12 @@ class UpcomingAppointmentsScreen extends React.Component<
   }
 
   renderList = () => {
-    const { appointments, onRefreshAppointments, attendances, onRefreshAttendances } = this.props;
+    const {
+      appointments,
+      onRefreshAppointments,
+      attendances,
+      onRefreshAttendances
+    } = this.props;
     const filteredAppointments = this.filterAppointments();
     if (filteredAppointments.length) {
       return (
@@ -98,33 +107,34 @@ class UpcomingAppointmentsScreen extends React.Component<
   }
 
   callNumber = (url: string) => {
-    Linking.canOpenURL(url).then((supported) => {
-      if (!supported) {
-        Alert.alert("Sorry! This number can't be opened from the app");
-      } else {
-        return Linking.openURL(url);
-      }
-    }).catch((err) => console.error('An error occurred', err));
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (!supported) {
+          Alert.alert("Sorry! This number can't be opened from the app");
+        } else {
+          return Linking.openURL(url);
+        }
+      })
+      .catch((err) => console.error('An error occurred', err));
   }
 
   render() {
-
     return (
       <Screen>
         <View
           style={{
             paddingVertical: 15,
-            width: "80%",
-            alignSelf: "center"
+            width: '80%',
+            alignSelf: 'center'
           }}
         >
           <TextInput
             color={theme.colors.primaryLight}
             containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
             autoCorrect={false}
-            autoCapitalize="none"
-            icon="search"
-            placeholder="Name, Date or Location"
+            autoCapitalize='none'
+            icon='search'
+            placeholder='Name, Date or Location'
             onChangeText={this.onSearchTextChange}
           />
         </View>
