@@ -20,7 +20,7 @@ export { default as ProfileVideo } from './profile/profile-video';
 
 // Profile Sub Tabs
 export {
-  default as UpcomingAppointments,
+  default as UpcomingAppointments
 } from './profile/upcoming-appointments';
 export { default as PastAppointments } from './profile/past-appointments';
 
@@ -39,5 +39,5 @@ export { default as Feedback } from './system/feedback';
 export { default as AppointmentView } from './appointment/appointment-view';
 export { default as AppointmentInvite } from './appointment/appointment-invite';
 export {
-  default as AppointmentConfirm,
+  default as AppointmentConfirm
 } from './appointment/appointment-confirm';

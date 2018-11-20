@@ -16,6 +16,6 @@ export default class Strong extends React.Component<ThemeTextProps> {
 
 const styles = StyleSheet.create({
   text: {
-    color: theme.colors.primary,
-  },
+    color: theme.colors.primary
+  }
 });

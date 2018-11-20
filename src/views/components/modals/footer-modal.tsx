@@ -17,7 +17,7 @@ class FooterModal extends React.Component<Props> {
       visible,
       animationType,
       transparent,
-      onClose,
+      onClose
     } = this.props;
     return (
       <Modal
@@ -48,6 +48,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
+    justifyContent: 'flex-end'
+  }
 });

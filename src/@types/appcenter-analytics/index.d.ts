@@ -11,7 +11,7 @@ declare module 'appcenter-analytics' {
 
     static trackEvent(
       eventName: string,
-      properties?: AppCenterAnalyticsEventProperties,
+      properties?: AppCenterAnalyticsEventProperties
     ): Promise<string>;
   }
 
@@ -23,10 +23,10 @@ declare module 'appcenter-analytics' {
     static isEnabled(): Promise<boolean>;
     static trackEvent(
       eventName: string,
-      properties?: AppCenterAnalyticsEventProperties,
+      properties?: AppCenterAnalyticsEventProperties
     ): Promise<string>;
     static getTransmissionTarget(
-      targetToken: string,
+      targetToken: string
     ): Promise<AppCenterAnalyticsTransmissionTarget>;
   }
 }

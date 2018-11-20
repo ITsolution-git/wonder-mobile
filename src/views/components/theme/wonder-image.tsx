@@ -17,7 +17,7 @@ interface Props extends Omit<ImageProps, 'source'> {
 
 class WonderImage extends React.PureComponent<Props> {
   static defaultProps = {
-    background: false,
+    background: false
   };
 
   render() {
@@ -47,7 +47,7 @@ class WonderImage extends React.PureComponent<Props> {
                 uri !== 7
                   ? `${uri}?w=${style.width}&h=${style.height}${imageExtension}`
                   : `https://wonderapp.imgix.net/female-silhouette.jpg`,
-              priority: FastImage.priority.high,
+              priority: FastImage.priority.high
             }}
           >
             {children}

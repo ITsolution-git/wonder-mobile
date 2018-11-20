@@ -14,7 +14,7 @@ interface UberRideParams {
 function formatUberRideParams(params: UberRideParams) {
   const result = [];
   result.push(
-    'dropoff[formatted_address]=' + encodeURIComponent(params.formattedAddress),
+    'dropoff[formatted_address]=' + encodeURIComponent(params.formattedAddress)
   );
   result.push('dropoff[latitude]=' + params.latitude);
   result.push('dropoff[longitude]=' + params.longitude);
@@ -34,7 +34,7 @@ const scheduleUber = async (params: UberRideParams): Promise<void> => {
       '&client_id=',
       clientId,
       '&pickup=my_location',
-      `&${formatUberRideParams(params)}`,
+      `&${formatUberRideParams(params)}`
     ].join('');
 
     const supported = await Linking.canOpenURL(url);
@@ -47,7 +47,7 @@ const scheduleUber = async (params: UberRideParams): Promise<void> => {
 };
 
 const UberService = {
-  scheduleUber,
+  scheduleUber
 };
 
 export default UberService;

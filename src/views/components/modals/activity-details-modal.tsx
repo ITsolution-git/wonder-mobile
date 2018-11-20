@@ -22,7 +22,7 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
         </View>
       );
     }
-  };
+  }
 
   renderDetails = () => {
     const { details, onConfirm } = this.props;
@@ -35,7 +35,7 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
         review_count,
         price_level,
         images,
-        phone,
+        phone
       } = details;
 
       return (
@@ -62,7 +62,7 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
         </View>
       );
     }
-  };
+  }
   render() {
     const { onConfirm, details, ...rest } = this.props;
 
@@ -79,7 +79,7 @@ export default ActivityDetailsModal;
 const styles = StyleSheet.create({
   modal: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   container: {
     borderRadius: 10,
@@ -90,22 +90,22 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 0,
+      height: 0
     },
     shadowOpacity: 0.4,
-    elevation: 5,
+    elevation: 5
   },
   headerImage: {
     width: '100%',
     height: 150,
     borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    borderTopLeftRadius: 10
   },
   body: {
-    padding: 10,
+    padding: 10
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
+    justifyContent: 'space-between'
+  }
 });

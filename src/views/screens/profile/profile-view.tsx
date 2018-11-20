@@ -12,7 +12,7 @@ import {
   AlertOptions,
   Linking,
   TouchableHighlight,
-  ScrollView,
+  ScrollView
 } from 'react-native';
 import Screen from 'src/views/components/screen';
 import ElevatedButton from 'src/views/components/theme/elevated-button';
@@ -20,7 +20,7 @@ import {
   PrimaryButton,
   Text,
   SecondaryButton as Button,
-  Title,
+  Title
 } from 'src/views/components/theme';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 
@@ -51,7 +51,7 @@ const { height } = Dimensions.get('window');
 
 const gradient = [
   lighten(theme.colors.primaryLight, 0.5),
-  lighten(theme.colors.primary, 0.5),
+  lighten(theme.colors.primary, 0.5)
 ];
 
 function lighten(color: string, value: number) {
@@ -75,25 +75,25 @@ interface Props {
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),
-  auth: selectAuth(state),
+  auth: selectAuth(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onLogout: (id: number, token: string) => dispatch(logoutUser({ id, token })),
   onRefreshProfile: () => dispatch(getUser()),
-  deactivateUsersAccount: () => dispatch(deactivateAccount()),
+  deactivateUsersAccount: () => dispatch(deactivateAccount())
 });
 
 class ProfileViewScreen extends React.Component<Props> {
   static navigationOptions = {
-    header: null,
+    header: null
   };
 
   state = {
     profileModalOpen: false,
     showVideo: false,
     contentHeight: 0,
-    showDetails: false,
+    showDetails: false
   };
 
   componentDidMount() {
@@ -107,7 +107,7 @@ class ProfileViewScreen extends React.Component<Props> {
   goTo = (key: string, params?: any) => {
     const { navigation } = this.props;
     return () => navigation.navigate(key);
-  };
+  }
 
   getProfileImage = () => {
     const { currentUser } = this.props;
@@ -116,21 +116,21 @@ class ProfileViewScreen extends React.Component<Props> {
       return currentUser.images[0].url;
     }
     return null;
-  };
+  }
   deactivateAccount = () => {
     const { currentUser } = this.props;
 
     const options = [
       { text: 'Cancel' },
-      { text: 'Yes', onPress: this.props.deactivateUsersAccount },
+      { text: 'Yes', onPress: this.props.deactivateUsersAccount }
     ];
 
     Alert.alert(
       'Confirm Deactivate Account',
       'Are you sure you want to deactivate your account?',
-      options,
+      options
     );
-  };
+  }
 
   showFaq = (url) => {
     Linking.canOpenURL(url).then((supported) => {
@@ -140,21 +140,21 @@ class ProfileViewScreen extends React.Component<Props> {
         Alert.alert('Sorry! This link cannot be opened on your device');
       }
     });
-  };
+  }
 
   promptLogout = () => {
     const { onLogout, auth } = this.props;
     const options = [
       { text: 'Cancel', onPress: _.noop },
-      { text: 'Yes, Logout', onPress: () => onLogout(auth.uid, auth.token) },
+      { text: 'Yes, Logout', onPress: () => onLogout(auth.uid, auth.token) }
     ];
 
     Alert.alert('Confirm Logout', 'Are you sure you want to logout?', options);
-  };
+  }
 
   openProfileModal = () => {
     this.setState({ profileModalOpen: !this.state.profileModalOpen });
-  };
+  }
 
   getTopics = () => {
     const { currentUser, conversation } = this.props;
@@ -168,7 +168,7 @@ class ProfileViewScreen extends React.Component<Props> {
           candidateTopics.map((x: Topic) => {
             if (userTopics) {
               const active: boolean = !!userTopics.find(
-                (i: Topic) => i.name === x.name,
+                (i: Topic) => i.name === x.name
               );
               return (
                 <Wonder key={x.name} topic={x} size={60} active={active} />
@@ -177,7 +177,7 @@ class ProfileViewScreen extends React.Component<Props> {
           })}
       </View>
     );
-  };
+  }
 
   render() {
     const { currentUser, onLogout } = this.props;
@@ -336,7 +336,7 @@ class ProfileViewScreen extends React.Component<Props> {
                         disableFullscreen={true}
                         autoplay={true}
                         video={{
-                          uri: `${currentUser.video}`,
+                          uri: `${currentUser.video}`
                         }}
                       />
                     </View>
@@ -426,7 +426,7 @@ class ProfileViewScreen extends React.Component<Props> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(ProfileViewScreen);
 
 const styles = StyleSheet.create({
@@ -434,19 +434,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 5,
+    marginBottom: 5
   },
   col: {
     flex: 1,
-    padding: 5,
+    padding: 5
   },
   heading: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   modalInnerContainer: {
     position: 'relative',
@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1f1f1',
     marginRight: 15,
     marginLeft: 15,
-    marginBottom: 15,
+    marginBottom: 15
   },
   topGradient: {
     position: 'absolute',
@@ -466,41 +466,41 @@ const styles = StyleSheet.create({
     padding: 5,
     zIndex: 999,
     borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    borderTopLeftRadius: 10
   },
   iconContainer: {
     alignSelf: 'stretch',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   scrollContainer: { borderRadius: 10, overflow: 'hidden' },
   containerHeight: {
     height: (height / 3) * 2,
     zIndex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   imageContainer: { borderRadius: 10, overflow: 'hidden' },
   videoStyles: {
     backgroundColor: 'black',
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   imageTopGradient: {
     padding: 10,
-    zIndex: 999,
+    zIndex: 999
   },
   firstNameText: {
     fontSize: 26,
     color: '#fff',
     marginLeft: 5,
     marginBottom: 2,
-    fontWeight: '800',
+    fontWeight: '800'
   },
   regularImageStyles: { height: (height / 3) * 2, zIndex: 1 },
   topicsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 4,
+    marginTop: 4
   },
   schoolText: { color: '#fff', marginLeft: 5, fontSize: 12 },
   distanceText: { color: '#fff', fontSize: 13, marginLeft: 2 },
@@ -510,8 +510,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 10,
-    color: '#333',
+    color: '#333'
   },
   genericText: { marginLeft: 5, fontSize: 12, lineHeight: 18, color: '#333' },
-  infoContainer: { backgroundColor: '#fff', padding: 10 },
+  infoContainer: { backgroundColor: '#fff', padding: 10 }
 });

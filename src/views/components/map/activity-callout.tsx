@@ -4,7 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
-  WebView,
+  WebView
 } from 'react-native';
 import { Text } from 'src/views/components/theme';
 
@@ -26,7 +26,7 @@ class ActivityCallout extends React.Component<Props> {
         </View>
       );
     }
-  };
+  }
   render() {
     const { activity } = this.props;
     return (
@@ -51,15 +51,15 @@ const styles = StyleSheet.create({
     flex: 1,
     width: 250,
     maxHeight: 100,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   body: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 10
   },
   title: {
-    fontSize: 12,
+    fontSize: 12
   },
   address: {
-    fontSize: 11,
-  },
+    fontSize: 11
+  }
 });

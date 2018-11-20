@@ -16,7 +16,7 @@ interface Props {
 export default class WonderPickerItem extends React.Component<Props> {
   static defaultProps = {
     selected: false,
-    onPress: _.noop,
+    onPress: _.noop
   };
 
   render() {
@@ -47,15 +47,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: {
       width: 0,
-      height: 0,
+      height: 0
     },
     shadowRadius: 5,
-    backgroundColor: '#FFF',
+    backgroundColor: '#FFF'
   },
   selectedBtn: {
     borderWidth: 2,
     borderColor: theme.colors.primaryLight,
     shadowColor: theme.colors.primary,
-    shadowOpacity: 0.5,
-  },
+    shadowOpacity: 0.5
+  }
 });

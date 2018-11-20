@@ -6,7 +6,7 @@ import {
   Image,
   TouchableOpacity,
   StyleProp,
-  Text,
+  Text
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -29,7 +29,7 @@ interface Props {
 
 export default class MediaGridItem extends React.Component<Props> {
   state: any = {
-    isActive: true,
+    isActive: true
   };
 
   static defaultProps = {
@@ -39,7 +39,7 @@ export default class MediaGridItem extends React.Component<Props> {
     size: 75,
     gutter: 0,
     video: false,
-    isFocused: true,
+    isFocused: true
   };
 
   renderContainerStyles = () => {
@@ -47,9 +47,9 @@ export default class MediaGridItem extends React.Component<Props> {
     return {
       width: size,
       height: size,
-      margin: gutter,
+      margin: gutter
     };
-  };
+  }
 
   renderMediaContent = () => {
     const { source, videoSource, video, size } = this.props;
@@ -71,7 +71,7 @@ export default class MediaGridItem extends React.Component<Props> {
       );
     }
     return null;
-  };
+  }
 
   onPress = () => {
     const { source, videoSource, onPress } = this.props;
@@ -81,7 +81,7 @@ export default class MediaGridItem extends React.Component<Props> {
     } else if (videoSource) {
       onPress({ uri: `${BASE_URL}/${videoSource}` });
     }
-  };
+  }
 
   render() {
     const { source, onPress, size, video, videoSource } = this.props;
@@ -133,6 +133,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-    backgroundColor: '#DDD',
-  },
+    backgroundColor: '#DDD'
+  }
 });

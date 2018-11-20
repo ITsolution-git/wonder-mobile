@@ -6,7 +6,7 @@ import {
   ModalProps,
   StyleSheet,
   Platform,
-  ScrollView,
+  ScrollView
 } from 'react-native';
 import {
   Text,
@@ -16,7 +16,7 @@ import {
   Strong,
   Label,
   PrimaryButton,
-  TextButton,
+  TextButton
 } from '../theme';
 
 import Avatar from '../theme/avatar';
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     justifyContent: 'center',
-    padding: 20,
+    padding: 20
   },
   container: {
     borderRadius: 10,
@@ -152,31 +152,31 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: {
       width: 0,
-      height: 0,
+      height: 0
     },
-    shadowRadius: 5,
+    shadowRadius: 5
   },
   header: {
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   footer: {
     borderBottomRightRadius: 10,
     borderBottomLeftRadius: 10,
     alignItems: 'center',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   userAvatarContainer: {
-    marginTop: 15,
+    marginTop: 15
   },
   body: {},
   label: {
-    textAlign: 'center',
+    textAlign: 'center'
   },
   row: {
     width: '100%',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });

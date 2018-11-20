@@ -10,7 +10,7 @@ import { Alert } from 'react-native';
 import { Toast } from 'native-base';
 import {
   resetRegistration,
-  persistRegistrationInfo,
+  persistRegistrationInfo
 } from '../reducers/registration';
 import WonderAppState from '../../models/wonder-app-state';
 import User from '../../models/user';
@@ -35,9 +35,9 @@ export function* deactivateAccountSaga(action: Action<any>) {
       api,
       {
         method: 'DELETE',
-        url: `/users/${auth.uid}`,
+        url: `/users/${auth.uid}`
       },
-      state.user,
+      state.user
     );
   } catch (error) {
     handleAxiosError(error);
@@ -59,8 +59,8 @@ export function* registerUserSaga(action: Action<any>) {
       method: 'POST',
       url: '/users',
       data: {
-        user: state.registration,
-      },
+        user: state.registration
+      }
     });
 
     yield put(persistRegistrationInfo(data));
@@ -90,8 +90,8 @@ export function* forgotPasswordSaga(action: Action<any>) {
         method: 'POST',
         url: '/password_resets',
         data: {
-          email: forgotEmail,
-        },
+          email: forgotEmail
+        }
       });
       Toast.show({ text: `Email sent to ${forgotEmail}` });
     }
@@ -117,9 +117,9 @@ export function* loginUserSaga(action: Action<UserCredentials>) {
         data: {
           auth: {
             email,
-            password,
-          },
-        },
+            password
+          }
+        }
       });
 
       yield put(persistAuth(response.data));
@@ -145,8 +145,8 @@ export function* logoutUserSaga(action: Action<any>) {
 
     const authHeader = {
       auth: {
-        token,
-      },
+        token
+      }
     };
 
     yield call(
@@ -157,11 +157,11 @@ export function* logoutUserSaga(action: Action<any>) {
         data: {
           user: {
             push_device_id: '',
-            push_device_type: '',
-          },
-        },
+            push_device_type: ''
+          }
+        }
       },
-      authHeader,
+      authHeader
     );
   } catch (error) {}
 
@@ -187,17 +187,17 @@ export function* getUserSaga(action: Action<any>) {
       const uid = id;
       const authHeader = {
         auth: {
-          token: auth_token.token,
-        },
+          token: auth_token.token
+        }
       };
 
       const { data }: { data: User } = yield call(
         api,
         {
           method: 'GET',
-          url: `/users/${uid}`,
+          url: `/users/${uid}`
         },
-        authHeader,
+        authHeader
       );
       yield put(persistUser(data));
     } else {
@@ -205,9 +205,9 @@ export function* getUserSaga(action: Action<any>) {
         api,
         {
           method: 'GET',
-          url: `/users/${auth.uid}`,
+          url: `/users/${auth.uid}`
         },
-        state.user,
+        state.user
       );
       yield put(persistUser(data));
     }
@@ -236,10 +236,10 @@ export function* updateUserSaga(action: Action<any>) {
         method: 'PUT',
         url: `/users/${auth.uid}`,
         data: {
-          user: profile,
-        },
+          user: profile
+        }
       },
-      state.user,
+      state.user
     );
 
     yield put(persistUser(data));
@@ -265,7 +265,7 @@ export function* updateImageSaga(action: Action<any>) {
     const photo = {
       uri: profile.uri,
       type: 'image/jpeg',
-      name: Date.now() + '.jpg',
+      name: Date.now() + '.jpg'
     };
     body.append('image', photo);
 
@@ -273,17 +273,17 @@ export function* updateImageSaga(action: Action<any>) {
     if (!state.user.auth.token) {
       const authHeader = {
         auth: {
-          token: auth_token.token,
-        },
+          token: auth_token.token
+        }
       };
       const { data }: { data: any } = yield call(
         api,
         {
           method: 'POST',
           url: `/users/${id}/images`,
-          data: body,
+          data: body
         },
-        authHeader,
+        authHeader
       );
     } else {
       const { data }: { data: any } = yield call(
@@ -291,9 +291,9 @@ export function* updateImageSaga(action: Action<any>) {
         {
           method: 'POST',
           url: `/users/${auth.uid}/images`,
-          data: body,
+          data: body
         },
-        state.user,
+        state.user
       );
     }
 
@@ -321,9 +321,9 @@ export function* deleteProfileImageSaga(action: Action<any>) {
         api,
         {
           method: 'DELETE',
-          url: `/users/${auth.uid}/images/${asset.id}`,
+          url: `/users/${auth.uid}/images/${asset.id}`
         },
-        state.user,
+        state.user
       );
 
       yield put(getUser());
@@ -349,9 +349,9 @@ export function* deleteProfileVideoSaga(action: Action<any>) {
       api,
       {
         method: 'DELETE',
-        url: `/users/${auth.uid}/video`,
+        url: `/users/${auth.uid}/video`
       },
-      state.user,
+      state.user
     );
 
     yield put(getUser());
@@ -378,24 +378,24 @@ export function* updateVideoSaga(action: Action<any>) {
     const video = {
       uri: profile.uri,
       type: 'video/mp4',
-      name: Date.now() + '.mp4',
+      name: Date.now() + '.mp4'
     };
     body.append('video', video);
 
     if (!state.user.auth.token) {
       const authHeader = {
         auth: {
-          token: auth_token.token,
-        },
+          token: auth_token.token
+        }
       };
       const { data }: { data: any } = yield call(
         api,
         {
           method: 'POST',
           url: `/users/${id}/video`,
-          data: body,
+          data: body
         },
-        authHeader,
+        authHeader
       );
     } else {
       const { data }: { data: any } = yield call(
@@ -403,9 +403,9 @@ export function* updateVideoSaga(action: Action<any>) {
         {
           method: 'POST',
           url: `/users/${auth.uid}/video`,
-          data: body,
+          data: body
         },
-        state.user,
+        state.user
       );
     }
     yield put(getUser());

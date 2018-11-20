@@ -33,7 +33,7 @@ export default class SwipeView extends React.Component<
   }
 
   state: SwipeViewState = {
-    currentIndex: 0,
+    currentIndex: 0
   };
 
   list: ScrollView | null = null;
@@ -45,7 +45,7 @@ export default class SwipeView extends React.Component<
       this.list.scrollTo({ x: DEVICE_WIDTH * idx });
       this.setState({ currentIndex: idx });
     }
-  };
+  }
 
   renderBody = (body: string) => {
     if (body) {
@@ -55,7 +55,7 @@ export default class SwipeView extends React.Component<
         </View>
       );
     }
-  };
+  }
 
   renderDots = () => {
     const { currentIndex } = this.state;
@@ -83,14 +83,14 @@ export default class SwipeView extends React.Component<
         </TouchableOpacity>
       </View>
     );
-  };
+  }
 
   onScroll = (e: any) => {
     const { contentOffset } = e.nativeEvent;
     if (contentOffset.x % DEVICE_WIDTH === 0) {
       this.goTo(contentOffset.x / DEVICE_WIDTH);
     }
-  };
+  }
 
   renderFooter = () => {
     const actions = [];
@@ -98,7 +98,7 @@ export default class SwipeView extends React.Component<
     if (!config.showControls) {
       actions.push(<View />);
     }
-  };
+  }
 
   render() {
     const { children } = this.props;

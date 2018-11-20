@@ -7,14 +7,14 @@ import { persistAppointments } from '../reducers/wonder';
 import {
   AppointmentState,
   persistAppointmentData,
-  resetAppointment,
+  resetAppointment
 } from '../reducers/appointment';
 import WonderAppState from '../../models/wonder-app-state';
 import Appointment, { DecoratedAppointment } from '../../models/appointment';
 import { handleAxiosError } from './utils';
 import RNCalendarEvents, {
   RNCalendarEvent,
-  RNCalendarCalendar,
+  RNCalendarCalendar
 } from 'react-native-calendar-events';
 import moment from 'moment';
 import { getAttendances } from './attendance';
@@ -29,9 +29,9 @@ export function* getAppointmentsSaga(action: Action<any>) {
       api,
       {
         method: 'GET',
-        url: '/appointments',
+        url: '/appointments'
       },
-      state.user,
+      state.user
     );
     yield put(persistAppointments(data));
   } catch (error) {
@@ -56,8 +56,8 @@ const serializeAppointment = (appt: AppointmentState): any => {
         longitude: appt.activity.longitude,
         event_at: appt.eventAt,
         topic_id: appt.topic.id,
-        phone: appt.activity.phone,
-      },
+        phone: appt.activity.phone
+      }
     };
   }
 };
@@ -79,7 +79,7 @@ export function* createAppointmentSaga(action: Action<any>) {
         const primaryCalendar:
           | RNCalendarCalendar
           | undefined = calendars.filter(
-          (c: RNCalendarCalendar) => c.allowsModifications,
+          (c: RNCalendarCalendar) => c.allowsModifications
         );
         // calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
         if (primaryCalendar[0]) {
@@ -90,18 +90,18 @@ export function* createAppointmentSaga(action: Action<any>) {
             startDate: eventAt,
             endDate: moment(eventAt)
               .add(1, 'hour')
-              .toDate(),
+              .toDate()
           };
           const eventId = yield call(
             [RNCalendarEvents, 'saveEvent'],
             title,
             details,
-            undefined,
+            undefined
           );
           if (eventId) {
             body.attendance = {
               device_calendar_event_id: eventId,
-              device_calendar_name: primaryCalendar.id,
+              device_calendar_name: primaryCalendar.id
             };
           }
         }
@@ -112,9 +112,9 @@ export function* createAppointmentSaga(action: Action<any>) {
         {
           method: 'POST',
           url: '/appointments',
-          data: body,
+          data: body
         },
-        state.user,
+        state.user
       );
     }
 
@@ -140,7 +140,7 @@ export function* confirmAppointmentSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
     const {
-      appointment,
+      appointment
     }: { appointment: DecoratedAppointment } = action.payload;
 
     const { event_at, match, topic, location, id } = appointment;
@@ -153,7 +153,7 @@ export function* confirmAppointmentSaga(action: Action<any>) {
         const primaryCalendar:
           | RNCalendarCalendar
           | undefined = calendars.filter(
-          (c: RNCalendarCalendar) => c.allowsModifications,
+          (c: RNCalendarCalendar) => c.allowsModifications
         );
         // calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
         if (primaryCalendar) {
@@ -164,13 +164,13 @@ export function* confirmAppointmentSaga(action: Action<any>) {
             startDate: event_at,
             endDate: moment(event_at)
               .add(1, 'hour')
-              .toDate(),
+              .toDate()
           };
           yield call(
             [RNCalendarEvents, 'saveEvent'],
             title,
             details,
-            undefined,
+            undefined
           );
         }
       }
@@ -179,9 +179,9 @@ export function* confirmAppointmentSaga(action: Action<any>) {
       api,
       {
         method: 'POST',
-        url: `/appointments/${id}/confirm`,
+        url: `/appointments/${id}/confirm`
       },
-      state.user,
+      state.user
     );
 
     yield put(resetAppointment());
@@ -214,8 +214,8 @@ export function* cancelAppointmentSaga(action: Action<any>) {
         latitude: action.payload.latitude,
         longitude: action.payload.longitude,
         event_at: action.payload.event_at,
-        topic_id: action.payload.topic.id,
-      },
+        topic_id: action.payload.topic.id
+      }
     };
 
     const { data }: { data: Appointment[] } = yield call(
@@ -223,9 +223,9 @@ export function* cancelAppointmentSaga(action: Action<any>) {
       {
         method: 'POST',
         url: `/appointments/${action.payload.id}/cancel`,
-        data: info,
+        data: info
       },
-      state.user,
+      state.user
     );
 
     Alert.alert(
@@ -234,7 +234,7 @@ export function* cancelAppointmentSaga(action: Action<any>) {
         action.payload.match.first_name
       } has been canceled`,
       [{ text: 'OK' }],
-      { cancelable: false },
+      { cancelable: false }
     );
 
     yield put(getAttendances());
@@ -261,8 +261,8 @@ export function* declineAppointmentSaga(action: Action<any>) {
         latitude: action.payload.latitude,
         longitude: action.payload.longitude,
         event_at: action.payload.event_at,
-        topic_id: action.payload.topic.id,
-      },
+        topic_id: action.payload.topic.id
+      }
     };
 
     const { data }: { data: Appointment[] } = yield call(
@@ -270,9 +270,9 @@ export function* declineAppointmentSaga(action: Action<any>) {
       {
         method: 'POST',
         url: `/appointments/${action.payload.id}/decline`,
-        data: info,
+        data: info
       },
-      state.user,
+      state.user
     );
 
     Alert.alert(
@@ -281,7 +281,7 @@ export function* declineAppointmentSaga(action: Action<any>) {
         action.payload.match.first_name
       } has been declined`,
       [{ text: 'OK' }],
-      { cancelable: false },
+      { cancelable: false }
     );
     yield put(getAttendances());
   } catch (error) {

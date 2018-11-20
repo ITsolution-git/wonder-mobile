@@ -17,7 +17,7 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
   constructor(props: IAppLoaderProps) {
     super(props);
     this.state = {
-      isOnline: false,
+      isOnline: false
     };
 
     this._bugsnag.notify(new Error('Test error #2 with source maps'));
@@ -45,7 +45,7 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
   componentWillUnmount() {
     NetInfo.removeEventListener(
       'connectionChange',
-      this.handleConnectionChange,
+      this.handleConnectionChange
     );
   }
 
@@ -59,10 +59,10 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
 
     this.setState({ isOnline });
     NetInfo.addEventListener('connectionChange', this.handleConnectionChange);
-  };
+  }
 
   private handleConnectionChange = (
-    connectionInfo: ConnectionInfo | string,
+    connectionInfo: ConnectionInfo | string
   ): void => {
     console.log(`connectionInfo:`, connectionInfo);
 
@@ -72,7 +72,7 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
         : connectionInfo.type !== 'none';
 
     this.setState({ isOnline });
-  };
+  }
 
   public render() {
     return null;

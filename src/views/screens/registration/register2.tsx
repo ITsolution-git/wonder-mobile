@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
   KeyboardAvoidingView,
-  Platform,
+  Platform
 } from 'react-native';
 import {
   TextInput,
@@ -12,7 +12,7 @@ import {
   GenderPicker,
   PrimaryButton,
   DatePicker,
-  Title,
+  Title
 } from 'src/views/components/theme';
 import Screen from 'src/views/components/screen';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
@@ -24,7 +24,7 @@ import WonderAppState from '../../../models/wonder-app-state';
 import { Dispatch } from 'redux';
 import {
   persistRegistrationInfo,
-  RegistrationState,
+  RegistrationState
 } from '../../../store/reducers/registration';
 import googleMaps, { GoogleGeoLocation } from '../../../services/google-maps';
 import theme from 'src/assets/styles/theme';
@@ -59,10 +59,10 @@ interface State {
 }
 
 const mapState = (state: WonderAppState) => ({
-  registration: state.registration,
+  registration: state.registration
 });
 const mapDispatch = (dispatch: Dispatch) => ({
-  onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
+  onSave: (data: State) => dispatch(persistRegistrationInfo(data))
 });
 
 class Register2 extends React.Component<Props, State> {
@@ -79,20 +79,20 @@ class Register2 extends React.Component<Props, State> {
     geolocation: null,
     errors: {},
     male_interest: false,
-    female_interest: true,
+    female_interest: true
   };
 
   lookupZipcode = async () => {
     const { zipcode } = this.state;
     if (!validator.isEmpty(zipcode) && validator.isPostalCode(zipcode, 'US')) {
       const geolocation: GoogleGeoLocation = await googleMaps.geocodeByZipCode(
-        zipcode,
+        zipcode
       );
       this.setState({ geolocation });
     } else {
       this.setState({ geolocation: null });
     }
-  };
+  }
 
   formattedGeo = () => {
     const { geolocation } = this.state;
@@ -100,7 +100,7 @@ class Register2 extends React.Component<Props, State> {
       return ` (${geolocation.city}, ${geolocation.state})`;
     }
     return '';
-  };
+  }
 
   setGenderPreference = (gender: string) => {
     if (gender === 'male') {
@@ -108,7 +108,7 @@ class Register2 extends React.Component<Props, State> {
     } else if (gender === 'female') {
       this.setState({ female_interest: !this.state.female_interest });
     }
-  };
+  }
 
   public render() {
     const { errors, birthdate } = this.state;
@@ -195,7 +195,7 @@ class Register2 extends React.Component<Props, State> {
 
   private onDateChange = (date: Date) => {
     this.setState({ birthdate: date });
-  };
+  }
 
   private onChangeText = (key: string) => {
     const { errors } = this.state;
@@ -204,11 +204,11 @@ class Register2 extends React.Component<Props, State> {
         [key]: text,
         errors: {
           ...errors,
-          [key]: undefined,
-        },
+          [key]: undefined
+        }
       });
     };
-  };
+  }
 
   private validate = () => {
     const errors: StateErrors = {};
@@ -221,7 +221,7 @@ class Register2 extends React.Component<Props, State> {
       birthdate,
       zipcode,
       male_interest,
-      female_interest,
+      female_interest
     } = this.state;
 
     if (GenderPicker.Genders.indexOf(gender) < 0) {
@@ -252,41 +252,41 @@ class Register2 extends React.Component<Props, State> {
       occupation,
       birthdate: birthdate.toISOString().split('T')[0],
       male_interest,
-      female_interest,
+      female_interest
     });
 
     navigation.navigate('Register4');
-  };
+  }
 }
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(Register2);
 
 const styles = StyleSheet.create({
   welcome: {
     fontSize: 14,
     textAlign: 'center',
-    margin: 10,
+    margin: 10
   },
   instructions: {
     textAlign: 'center',
     color: '#333333',
-    marginBottom: 5,
+    marginBottom: 5
   },
   genderBtns: {
     paddingBottom: 4,
     borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.5),
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
   },
   genderBtnsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-around'
   },
   title: {
     color: theme.colors.primary,
     textAlign: 'center',
-    fontWeight: 'bold',
-  },
+    fontWeight: 'bold'
+  }
 });

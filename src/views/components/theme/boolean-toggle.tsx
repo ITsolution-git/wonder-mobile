@@ -19,11 +19,11 @@ class BooleanToggle extends React.Component<
 > {
   static defaultProps = {
     yesLabel: 'Yes',
-    noLabel: 'No',
+    noLabel: 'No'
   };
 
   state = {
-    value: this.props.initialValue || true,
+    value: this.props.initialValue || true
   };
 
   setNo = () => {
@@ -33,7 +33,7 @@ class BooleanToggle extends React.Component<
     if (onValueChange) {
       onValueChange(false);
     }
-  };
+  }
 
   setYes = () => {
     const { onValueChange } = this.props;
@@ -41,11 +41,11 @@ class BooleanToggle extends React.Component<
     if (onValueChange) {
       onValueChange(true);
     }
-  };
+  }
 
   renderLabel = ({
     label,
-    selected,
+    selected
   }: {
     label?: string;
     selected: boolean;
@@ -54,7 +54,7 @@ class BooleanToggle extends React.Component<
       const Wrapper = selected ? Strong : Text;
       return <Wrapper style={[styles.optionText]}>{label}</Wrapper>;
     }
-  };
+  }
 
   render() {
     const { noLabel, yesLabel } = this.props;
@@ -76,9 +76,9 @@ export default BooleanToggle;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   optionText: {
-    padding: 10,
-  },
+    padding: 10
+  }
 });

@@ -11,11 +11,11 @@ function lighten(color: string, value: number) {
 
 const enabledColors = [
   theme.colors.cottonCandyBlue,
-  theme.colors.cottonCandyPink,
+  theme.colors.cottonCandyPink
 ];
 const disabledColors = [
   lighten(theme.colors.cottonCandyBlue, 0.1),
-  lighten(theme.colors.cottonCandyPink, 0.1),
+  lighten(theme.colors.cottonCandyPink, 0.1)
 ];
 export default class OutlineButton extends React.Component<BaseButtonProps> {
   render() {
@@ -29,7 +29,7 @@ export default class OutlineButton extends React.Component<BaseButtonProps> {
         style={{
           backgroundColor: 'transparent',
           borderWidth: 1,
-          borderColor: '#FFF',
+          borderColor: '#FFF'
         }}
         {...this.props}
       />

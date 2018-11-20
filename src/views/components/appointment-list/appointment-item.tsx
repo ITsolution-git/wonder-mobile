@@ -35,7 +35,7 @@ class AppointmentItem extends React.Component<Props> {
         {name} with {match.first_name}
       </Title>
     );
-  };
+  }
 
   render() {
     const { item, onPress, callNumber } = this.props;
@@ -82,8 +82,8 @@ class AppointmentItem extends React.Component<Props> {
             style={[
               styles.status,
               {
-                color: item.state === 'confirmed' ? 'green' : 'red',
-              },
+                color: item.state === 'confirmed' ? 'green' : 'red'
+              }
             ]}
           >
             {item.state === 'invited' ? 'unconfirmed' : item.state}
@@ -101,27 +101,27 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   imageContainer: {
     paddingRight: 15,
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   contentContainer: {
     flex: 2,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   locationRow: { flexDirection: 'row' },
   locationText: { marginLeft: 10 },
   phoneText: {
     fontSize: 10,
     color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
-    marginLeft: 10,
+    marginLeft: 10
   },
   status: {
     fontSize: 10,
-    alignSelf: 'flex-end',
-  },
+    alignSelf: 'flex-end'
+  }
 });

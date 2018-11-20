@@ -4,7 +4,7 @@ import {
   StyleSheet,
   StyleProp,
   TextStyle,
-  ViewStyle,
+  ViewStyle
 } from 'react-native';
 import { Text } from '.';
 import { ThemeTextProps } from './text/text';
@@ -36,5 +36,5 @@ export default class TextButton extends React.Component<Props> {
 }
 
 const styles = StyleSheet.create({
-  txt: {},
+  txt: {}
 });

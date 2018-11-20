@@ -5,7 +5,7 @@ import ShadowBox from 'src/views/components/theme/shadow-box';
 import Screen from 'src/views/components/screen';
 import {
   MediaGrid,
-  MediaGridItem,
+  MediaGridItem
 } from 'src/views/components/theme/media-grid';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import validator from 'validator';
@@ -36,11 +36,11 @@ interface StateErrors {
 }
 
 const mapState = (state: WonderAppState) => ({
-  registration: state.registration,
+  registration: state.registration
 });
 const mapDispatch = (dispatch: Dispatch) => ({
   onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
-  onLogin: (data) => dispatch(loginUser(data)),
+  onLogin: (data) => dispatch(loginUser(data))
 });
 
 class Register3 extends React.Component<Props, State> {
@@ -48,7 +48,7 @@ class Register3 extends React.Component<Props, State> {
     images: [],
     video: [],
     about: '',
-    errors: {},
+    errors: {}
   };
 
   private onAboutChangeText = (key: string) => {
@@ -58,11 +58,11 @@ class Register3 extends React.Component<Props, State> {
         about: text,
         errors: {
           ...errors,
-          [key]: undefined,
-        },
+          [key]: undefined
+        }
       });
     };
-  };
+  }
 
   private validate = () => {
     const { onSave, navigation } = this.props;
@@ -71,10 +71,10 @@ class Register3 extends React.Component<Props, State> {
     onSave({ about });
     this.props.onLogin({
       email: this.props.registration.email,
-      password: this.props.registration.password,
+      password: this.props.registration.password
     });
     // navigation.navigate('Register4');
-  };
+  }
 
   render() {
     const { navigation } = this.props;
@@ -114,18 +114,18 @@ class Register3 extends React.Component<Props, State> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(Register3);
 
 const styles = StyleSheet.create({
   welcome: {
     fontSize: 14,
     textAlign: 'center',
-    margin: 10,
+    margin: 10
   },
   instructions: {
     textAlign: 'center',
     color: '#333333',
-    marginBottom: 5,
-  },
+    marginBottom: 5
+  }
 });

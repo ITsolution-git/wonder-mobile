@@ -10,7 +10,7 @@ import { getAppointments } from 'src/store/sagas/appointment';
 import moment from 'moment-timezone';
 import {
   selectUpcomingAppointments,
-  selectUpcomingAttendances,
+  selectUpcomingAttendances
 } from 'src/store/selectors/appointment';
 import { deleteAttendance, getAttendances } from 'src/store/sagas/attendance';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
@@ -23,7 +23,7 @@ interface State {
 
 const mapState = (state: WonderAppState) => ({
   appointments: selectUpcomingAppointments(state),
-  attendances: selectUpcomingAttendances(state),
+  attendances: selectUpcomingAttendances(state)
   // selectUpcomingAttendances(state)
 });
 
@@ -31,7 +31,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onRefreshAppointments: () => dispatch(getAppointments()),
   onDeleteAttendance: (data: DecoratedAppointment) =>
     dispatch(deleteAttendance(data)),
-  onRefreshAttendances: () => dispatch(getAttendances()),
+  onRefreshAttendances: () => dispatch(getAttendances())
 });
 
 interface UpcomingAppointmentsProps {
@@ -47,7 +47,7 @@ class UpcomingAppointmentsScreen extends React.Component<
   UpcomingAppointmentsProps
 > {
   state: State = {
-    search: '',
+    search: ''
   };
   componentDidMount() {
     this.props.onRefreshAppointments();
@@ -56,11 +56,11 @@ class UpcomingAppointmentsScreen extends React.Component<
 
   goToAppointment = (appointment: DecoratedAppointment) => {
     this.props.navigation.navigate('UpcomingAppointmentView', { appointment });
-  };
+  }
 
   onSearchTextChange = (text: string) => {
     this.setState({ search: text.toLowerCase() });
-  };
+  }
 
   filterAppointments = () => {
     const { search } = this.state;
@@ -83,14 +83,14 @@ class UpcomingAppointmentsScreen extends React.Component<
     }
 
     return appointments;
-  };
+  }
 
   renderList = () => {
     const {
       appointments,
       onRefreshAppointments,
       attendances,
-      onRefreshAttendances,
+      onRefreshAttendances
     } = this.props;
     const filteredAppointments = this.filterAppointments();
     if (filteredAppointments.length) {
@@ -104,7 +104,7 @@ class UpcomingAppointmentsScreen extends React.Component<
         />
       );
     }
-  };
+  }
 
   callNumber = (url: string) => {
     Linking.canOpenURL(url)
@@ -116,7 +116,7 @@ class UpcomingAppointmentsScreen extends React.Component<
         }
       })
       .catch((err) => console.error('An error occurred', err));
-  };
+  }
 
   render() {
     return (
@@ -125,7 +125,7 @@ class UpcomingAppointmentsScreen extends React.Component<
           style={{
             paddingVertical: 15,
             width: '80%',
-            alignSelf: 'center',
+            alignSelf: 'center'
           }}
         >
           <TextInput
@@ -146,5 +146,5 @@ class UpcomingAppointmentsScreen extends React.Component<
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(UpcomingAppointmentsScreen);

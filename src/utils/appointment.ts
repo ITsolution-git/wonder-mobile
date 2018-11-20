@@ -2,7 +2,7 @@ import Appointment from '../models/appointment';
 import moment from 'moment-timezone';
 
 export const isAppointmentBeforeToday = (
-  appointment?: Appointment,
+  appointment?: Appointment
 ): boolean => {
   if (appointment && appointment.event_at) {
     const now = moment();

@@ -27,9 +27,9 @@ export function* submitFeedbackSaga(action: Action<any>) {
         url: '/support_messages',
         contentType: false,
         processData: false,
-        data: formData,
+        data: formData
       },
-      state.user,
+      state.user
     );
 
     if (response.status === 201) {
@@ -40,7 +40,7 @@ export function* submitFeedbackSaga(action: Action<any>) {
       console.log(error.response);
       Alert.alert(
         `HTTP ${error.response.status}`,
-        JSON.stringify(error.response.data),
+        JSON.stringify(error.response.data)
       );
     } else {
       console.warn(error);

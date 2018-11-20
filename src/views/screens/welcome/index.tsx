@@ -5,7 +5,7 @@ import {
   Image,
   Alert,
   Linking,
-  TouchableOpacity,
+  TouchableOpacity
 } from 'react-native';
 import { Text, Button, PrimaryButton } from 'src/views/components/theme';
 import theme from 'src/assets/styles/theme';
@@ -29,13 +29,13 @@ export default class Welcome extends React.Component<Props> {
         } else {
           Alert.alert(
             'login successful with permissions: ' +
-              result.grantedPermissions.toString(),
+              result.grantedPermissions.toString()
           );
         }
       },
       (error) => {
         Alert.alert('login failed with error: ' + error);
-      },
+      }
     );
   }
 
@@ -47,7 +47,7 @@ export default class Welcome extends React.Component<Props> {
         Alert.alert('Sorry! This link cannot be opened on your device');
       }
     });
-  };
+  }
 
   render() {
     const { navigation } = this.props;
@@ -71,7 +71,7 @@ export default class Welcome extends React.Component<Props> {
               innerStyle={{
                 minHeight: 44,
                 paddingTop: 14,
-                paddingBottom: 14,
+                paddingBottom: 14
               }}
             />
             <TouchableOpacity
@@ -120,14 +120,14 @@ export default class Welcome extends React.Component<Props> {
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   body: {
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 20,
+    padding: 20
   },
   facebookLoginButton: {
     backgroundColor: '#FFF',
@@ -140,40 +140,40 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 5
     },
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 1,
+    elevation: 1
   },
   legalContainer: {
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   legalText: {
     fontSize: 12,
     color: theme.colors.textColorLight,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   legalTextBtn: {
     fontWeight: 'bold',
     color: theme.colors.textColorLight,
-    fontSize: 12,
+    fontSize: 12
   },
   middleContainer: {
     marginTop: 25,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   boldText: { fontWeight: 'bold' },
   buttonLogo: {
     width: 20,
     height: 20,
-    marginLeft: 10,
+    marginLeft: 10
   },
   loginText: {
     textAlign: 'center',
     flex: 1,
     color: '#3D90F0',
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 });

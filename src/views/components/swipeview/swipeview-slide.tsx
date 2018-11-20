@@ -4,7 +4,7 @@ import {
   View,
   Button,
   ImageBackground,
-  ImageSourcePropType,
+  ImageSourcePropType
 } from 'react-native';
 import { Text } from '../theme';
 import styles, { DEVICE_WIDTH } from './styles';
@@ -26,7 +26,7 @@ export default class SwipeViewSlide extends React.Component<Props> {
         </View>
       );
     }
-  };
+  }
 
   render() {
     const { containerStyle, children, title, backgroundImage } = this.props;

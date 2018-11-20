@@ -25,14 +25,14 @@ interface ChatListItemProps {
 const mapDispatch = (dispatch: Dispatch) => ({
   onDeleteConversation: (data: object) => dispatch(deleteConversation(data)),
   onGhostContact: (data: object) => dispatch(ghostContact(data)),
-  onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data)),
+  onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data))
 });
 
 class ChatListItem extends React.Component<ChatListItemProps> {
   static defaultProps = {
     chat: {
-      messages: [],
-    },
+      messages: []
+    }
   };
 
   renderRecentMessage = () => {
@@ -58,7 +58,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
             chat.last_message.sender_id !== currentUser.id
               ? { color: 'black' }
               : null,
-            { fontSize: 14 },
+            { fontSize: 14 }
           ]}
         >
           {chat.last_message.body == null ? '' : chat.last_message.body}
@@ -66,7 +66,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
       );
     }
     return <SmallText>No Messages</SmallText>;
-  };
+  }
 
   renderGreenDot() {
     const { chat } = this.props;
@@ -101,23 +101,23 @@ class ChatListItem extends React.Component<ChatListItemProps> {
     this.props.onSendGhostMessage({
       ghostMessage: '',
       conversation_id: chat.id,
-      partner: chat.partner,
+      partner: chat.partner
     });
-  };
+  }
 
   showAlert = () => {
     Alert.alert(
       'Confirm',
       'Are you sure you want to remove this conversation?',
       [{ text: 'Cancel' }, { text: 'YES', onPress: this.deleteConversation }],
-      { cancelable: false },
+      { cancelable: false }
     );
-  };
+  }
 
   render() {
     const config = {
       velocityThreshold: 0.3,
-      directionalOffsetThreshold: 80,
+      directionalOffsetThreshold: 80
     };
     const { chat, onPress, currentUser } = this.props;
 
@@ -180,29 +180,29 @@ class ChatListItem extends React.Component<ChatListItemProps> {
 
 export default connect(
   null,
-  mapDispatch,
+  mapDispatch
 )(ChatListItem);
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 4,
+    padding: 4
   },
   textContainer: {
     justifyContent: 'center',
-    paddingLeft: 20,
+    paddingLeft: 20
   },
   swipeContainer: {
     borderBottomWidth: 1,
     height: 98,
-    borderBottomColor: '#e6e6ec',
+    borderBottomColor: '#e6e6ec'
   },
   avatarOuterContainer: {
     height: 86,
     width: 86,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   unreadMessage: {
     height: 88,
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderRadius: 44,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
-  oldText: { color: '#eb4d4b', fontSize: 14 },
+  oldText: { color: '#eb4d4b', fontSize: 14 }
 });

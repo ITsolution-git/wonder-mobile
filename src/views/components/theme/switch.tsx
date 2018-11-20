@@ -6,7 +6,7 @@ import {
   StyleSheet,
   View,
   ViewStyle,
-  StyleProp,
+  StyleProp
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { colors } from '@assets';
@@ -15,13 +15,13 @@ const HIT_SLOP = {
   top: 10,
   bottom: 10,
   left: 10,
-  right: 10,
+  right: 10
 };
 
 const localStyles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    overflow: 'visible',
+    overflow: 'visible'
     // borderRadius: 5,
     // shadowColor: colors.lightPurple,
     // shadowOffset: {
@@ -33,8 +33,8 @@ const localStyles = StyleSheet.create({
     // shadowOpacity: 0.3,
   },
   containerForPrefs: {
-    left: -30,
-  },
+    left: -30
+  }
 });
 
 interface ISwitchProps {
@@ -64,7 +64,7 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
     switchStyle: localStyles.container,
     disabled: false,
     value: false,
-    containerStyle: localStyles.containerForPrefs,
+    containerStyle: localStyles.containerForPrefs
   };
 
   private isActive = (): boolean => !!this.props.value;
@@ -75,7 +75,7 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
       trackHeight,
       activeTrackColor,
       inactiveTrackColor,
-      trackColor,
+      trackColor
     } = this.props;
 
     return {
@@ -86,9 +86,9 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
       height: trackHeight,
       backgroundColor: this.isActive()
         ? activeTrackColor || trackColor
-        : inactiveTrackColor || trackColor,
+        : inactiveTrackColor || trackColor
     };
-  };
+  }
 
   private getSwitchStyle = (): ViewStyle => {
     const {
@@ -96,7 +96,7 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
       height,
       switchStyle,
       activeSwitchColor,
-      inactiveSwitchColor,
+      inactiveSwitchColor
     } = this.props;
     const translateX = this.isActive() ? width : 0;
     const backgroundColor = this.isActive()
@@ -110,9 +110,9 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
       backgroundColor,
       borderRadius: 5,
       transform: [{ translateX }],
-      ...switchStyle,
+      ...switchStyle
     };
-  };
+  }
 
   private localOnValueChange = (): void => {
     const { onValueChange } = this.props;
@@ -122,7 +122,7 @@ export default class Switch extends React.PureComponent<ISwitchProps> {
     if (onValueChange) {
       onValueChange();
     }
-  };
+  }
 
   render() {
     const { onValueChange, disabled, height, containerStyle } = this.props;

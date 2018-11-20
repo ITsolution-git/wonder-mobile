@@ -20,7 +20,7 @@ const ImageToolbar: React.SFC<ImageToolbarProps> = ({
   onDelete,
   onRetake,
   onSave,
-  onCancel,
+  onCancel
 }) => {
   const options: Element[] = [];
 
@@ -30,7 +30,7 @@ const ImageToolbar: React.SFC<ImageToolbarProps> = ({
       primary='#FFF'
       secondary='transparent'
       onPress={isNew ? onCancel : onDelete}
-    />,
+    />
   );
 
   if (isNew && onRotate) {
@@ -40,7 +40,7 @@ const ImageToolbar: React.SFC<ImageToolbarProps> = ({
         primary='#FFF'
         secondary='transparent'
         onPress={onRotate}
-      />,
+      />
     );
   }
 
@@ -50,7 +50,7 @@ const ImageToolbar: React.SFC<ImageToolbarProps> = ({
       primary='#FFF'
       secondary='transparent'
       onPress={onRetake}
-    />,
+    />
   );
 
   if (isNew) {
@@ -60,7 +60,7 @@ const ImageToolbar: React.SFC<ImageToolbarProps> = ({
         primary='#FFF'
         secondary='transparent'
         onPress={onSave}
-      />,
+      />
     );
   }
 
@@ -83,11 +83,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#000',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-around'
   },
   footerCol: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });

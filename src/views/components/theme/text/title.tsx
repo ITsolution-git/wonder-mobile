@@ -15,6 +15,6 @@ export default class Title extends React.Component<ThemeTextProps> {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 16,
-  },
+    fontSize: 16
+  }
 });

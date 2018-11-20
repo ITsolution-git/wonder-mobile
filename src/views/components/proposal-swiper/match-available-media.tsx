@@ -24,8 +24,8 @@ const MatchAvailableMedia = (props: Props) => {
                 backgroundColor:
                   i === props.currentImageIndex
                     ? theme.colors.primary
-                    : theme.colors.textColorLight,
-              },
+                    : theme.colors.textColorLight
+              }
             ]}
           />
         ))}
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     height: 9,
     width: 9,
     borderRadius: 4.5,
-    margin: 3,
+    margin: 3
   },
-  iconContainer: { alignItems: 'center', margin: 4, padding: 10 },
+  iconContainer: { alignItems: 'center', margin: 4, padding: 10 }
 });

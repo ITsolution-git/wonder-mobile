@@ -23,23 +23,23 @@ export const colors = {
   lightPurple: '#cbc2fa',
   peach: '#ffdf95',
   lightGray: '#e5e3e3',
-  iron: '#cbc9cb',
+  iron: '#cbc9cb'
 };
 
 const transparentNavigationStyles = {
   headerStyle: {
     backgroundColor: colors.white,
     borderBottomWidth: 0,
-    elevation: 0,
+    elevation: 0
   },
   headerTintColor: colors.textColor,
   headerTitleStyle: {
     fontSize: 14,
     fontFamily: 'Poppins',
     fontWeight: 'normal',
-    color: colors.textColor,
+    color: colors.textColor
   },
-  headerBackTitle: null,
+  headerBackTitle: null
 };
 
 export const { width, height, scale, fontScale } = Dimensions.get('window');
@@ -48,20 +48,20 @@ export const Device = {
   WIDTH: width,
   HEIGHT: height,
   SCALE: scale,
-  FONT_SCALE: fontScale,
+  FONT_SCALE: fontScale
 };
 
 export default {
   colors,
   NavBar: {
-    transparent: transparentNavigationStyles,
+    transparent: transparentNavigationStyles
   },
   fonts: {
-    primary: 'Poppins',
+    primary: 'Poppins'
   },
   borders: {
     radius: 15,
     color: colors.textColor,
-    width: 2,
-  },
+    width: 2
+  }
 };

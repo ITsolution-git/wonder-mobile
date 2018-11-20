@@ -11,18 +11,18 @@ import { View, StyleSheet } from 'react-native';
 import WonderAppState from 'src/models/wonder-app-state';
 import {
   AppointmentState,
-  persistAppointmentData,
+  persistAppointmentData
 } from 'src/store/reducers/appointment';
 import TimePicker from 'src/views/components/theme/pickers/time-picker';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 
 const mapState = (state: WonderAppState) => ({
-  appointment: state.appointment,
+  appointment: state.appointment
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateAppointment: (data: AppointmentState) =>
-    dispatch(persistAppointmentData(data)),
+    dispatch(persistAppointmentData(data))
 });
 
 interface AppointmentInviteProps {
@@ -41,8 +41,8 @@ class AppointmentInviteScreen extends React.Component<
   State
 > {
   static navigationOptions = ({ navigation }) => ({
-    title: 'Invite to Wonder',
-  });
+    title: 'Invite to Wonder'
+  })
 
   private init = (): CalendarDate => {
     const now = moment();
@@ -51,15 +51,15 @@ class AppointmentInviteScreen extends React.Component<
       month: now.month() + 1,
       year: now.year(),
       timestamp: now.utc().valueOf(),
-      dateString: now.format(DATE_STRING_FORMAT),
+      dateString: now.format(DATE_STRING_FORMAT)
     };
-  };
+  }
 
   state: State = {
     selected: this.init(),
     selectedTime: moment()
       .add(15, 'minutes')
-      .toDate(),
+      .toDate()
   };
 
   today = () => moment().startOf('day');
@@ -67,18 +67,18 @@ class AppointmentInviteScreen extends React.Component<
   onDateChange = (date: any) => {
     const selected: CalendarDate = date as CalendarDate;
     this.setState({ selected });
-  };
+  }
 
   onTimeChange = (selectedTime: Date) => {
     this.setState({ selectedTime });
-  };
+  }
 
   getMarkedDates = () => ({
     [this.state.selected.dateString]: {
       selected: true,
-      selectedDotColor: theme.colors.primaryLight,
-    },
-  });
+      selectedDotColor: theme.colors.primaryLight
+    }
+  })
 
   onComplete = () => {
     const { onUpdateAppointment, navigation } = this.props;
@@ -87,7 +87,7 @@ class AppointmentInviteScreen extends React.Component<
 
     onUpdateAppointment({ eventAt: result.toDate() });
     navigation.navigate('AppointmentConfirm', { appointment: null });
-  };
+  }
 
   renderTitle = () => {
     const { activity } = this.props.appointment;
@@ -98,7 +98,7 @@ class AppointmentInviteScreen extends React.Component<
         </View>
       );
     }
-  };
+  }
 
   getCombinedMoment = () => {
     const { selected, selectedTime } = this.state;
@@ -110,7 +110,7 @@ class AppointmentInviteScreen extends React.Component<
       .minutes(timeMoment.minutes())
       .seconds(0);
     return dateMoment;
-  };
+  }
 
   render() {
     const { selected } = this.state;
@@ -162,11 +162,11 @@ class AppointmentInviteScreen extends React.Component<
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(AppointmentInviteScreen);
 
 const styles = StyleSheet.create({
   header: {
-    padding: 10,
-  },
+    padding: 10
+  }
 });

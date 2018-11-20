@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 
 import {
   getPartnerActivities,
-  getActivityDetails,
+  getActivityDetails
 } from 'src/store/sagas/partner';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import ActivityDetailsModal from 'src/views/components/modals/activity-details-modal';
@@ -19,11 +19,11 @@ import {
   GeolocationReturnType,
   Alert,
   PermissionsAndroid,
-  Platform,
+  Platform
 } from 'react-native';
 import {
   persistAppointmentData,
-  AppointmentState,
+  AppointmentState
 } from 'src/store/reducers/appointment';
 import askForDeviceLocation from 'src/services/gps';
 
@@ -37,7 +37,7 @@ import ActivityDetails from 'src/models/activity-details';
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),
   activities: state.chat.activities,
-  details: state.chat.activity,
+  details: state.chat.activity
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
@@ -46,7 +46,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onGetActivity: (id: string) => dispatch(getActivityDetails({ id })),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
-  clearActivity: () => dispatch(persistActivity(null)),
+  clearActivity: () => dispatch(persistActivity(null))
 });
 
 interface Props {
@@ -68,8 +68,8 @@ class ActivityMapScreen extends React.Component<Props, State> {
   state: State = {
     position: {
       lat: 0,
-      lng: 0,
-    },
+      lng: 0
+    }
   };
 
   componentWillMount() {
@@ -90,24 +90,24 @@ class ActivityMapScreen extends React.Component<Props, State> {
     this.setState({
       position: {
         lng: coords.longitude,
-        lat: coords.latitude,
-      },
+        lat: coords.latitude
+      }
     });
 
     onGetActivities(partnerId, coords);
-  };
+  }
 
   onInviteMatch = () => {
     const {
       details,
       navigation,
       clearActivity,
-      onUpdateAppointment,
+      onUpdateAppointment
     } = this.props;
     clearActivity();
     onUpdateAppointment({ activity: details });
     navigation.navigate('WonderSchedule');
-  };
+  }
 
   // {
   //   "lat": 41.887528,
@@ -134,7 +134,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
         </Callout>
       </MarkerContainer>
     );
-  };
+  }
 
   render() {
     const { activities, details, clearActivity } = this.props;
@@ -150,7 +150,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
             latitude: position.lat,
             longitude: position.lng,
             latitudeDelta: 0.1,
-            longitudeDelta: 0.1,
+            longitudeDelta: 0.1
           }}
         >
           {activities.map(this.renderMarker)}
@@ -168,5 +168,5 @@ class ActivityMapScreen extends React.Component<Props, State> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(ActivityMapScreen);

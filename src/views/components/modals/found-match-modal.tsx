@@ -25,15 +25,15 @@ interface FoundMatchModalProps extends ModalProps {
 
 const textGradient = [
   theme.colors.cottonCandyBlue,
-  theme.colors.cottonCandyPink,
+  theme.colors.cottonCandyPink
 ];
 const gradient = [
   lighten(theme.colors.primaryLight, 0.1),
-  lighten(theme.colors.primary, 0.1),
+  lighten(theme.colors.primary, 0.1)
 ];
 class FoundMatchModal extends React.Component<FoundMatchModalProps> {
   static defaultProps = {
-    visible: false,
+    visible: false
   };
 
   getCandidateImage = () => {
@@ -42,7 +42,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
       return candidate.images[0].url;
     }
     return null;
-  };
+  }
 
   getCurrentUserImage = () => {
     const { currentUser } = this.props;
@@ -50,7 +50,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
       return currentUser.images[0].url;
     }
     return null;
-  };
+  }
 
   renderModalContent = () => {
     const { proposal, onRequestClose, onSuccess } = this.props;
@@ -100,7 +100,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
       );
     }
     return null;
-  };
+  }
   render() {
     return (
       <Modal animationType='fade' transparent {...this.props}>
@@ -117,23 +117,23 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 20,
     paddingHorizontal: 20,
-    flex: 1,
+    flex: 1
   },
   textContainer: {
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   wonderfulTxt: {
-    fontSize: 24,
+    fontSize: 24
   },
   txt: {
     textAlign: 'center',
-    color: '#FFF',
+    color: '#FFF'
   },
   row: {
     marginTop: 15,
     paddingHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });

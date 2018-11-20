@@ -7,7 +7,7 @@ import { selectCurrentUser } from 'src/store/selectors/user';
 import WonderAppState from 'src/models/wonder-app-state';
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state),
+  currentUser: selectCurrentUser(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({});
@@ -20,5 +20,5 @@ class ActivityInviteScreen extends React.Component {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(ActivityInviteScreen);

@@ -9,7 +9,7 @@ import { View, StyleSheet } from 'react-native';
 import WonderAppState from 'src/models/wonder-app-state';
 import {
   AppointmentState,
-  persistAppointmentData,
+  persistAppointmentData
 } from 'src/store/reducers/appointment';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { createAppointment } from 'src/store/sagas/appointment';
@@ -22,13 +22,13 @@ import { DecoratedAppointment } from 'src/models/appointment';
 import RNCalendarEvents from 'react-native-calendar-events';
 
 const mapState = (state: WonderAppState) => ({
-  appointment: state.appointment,
+  appointment: state.appointment
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onConfirm: () => dispatch(createAppointment()),
   onConfirmAppointment: (appointment: DecoratedAppointment) =>
-    dispatch(confirmAppointment({ appointment })),
+    dispatch(confirmAppointment({ appointment }))
 });
 
 interface AppointmentConfirmProps {
@@ -51,13 +51,13 @@ class AppointmentConfirmScreen extends React.Component<
   onComplete = () => {
     const { onConfirm } = this.props;
     onConfirm();
-  };
+  }
 
   handleConfirmAppointment = (appointment: DecoratedAppointment) => {
     const { onConfirmAppointment, navigation } = this.props;
     onConfirmAppointment(appointment);
     // navigation.setParams({ appointment: null });
-  };
+  }
 
   renderContent = () => {
     const { appointment } = this.props;
@@ -88,7 +88,7 @@ class AppointmentConfirmScreen extends React.Component<
         </View>
       );
     }
-  };
+  }
 
   renderConfirmContent = (appointment: DecoratedAppointment) => {
     const { match, eventMoment, name } = appointment;
@@ -118,7 +118,7 @@ class AppointmentConfirmScreen extends React.Component<
         </View>
       </View>
     );
-  };
+  }
 
   render() {
     const { navigation } = this.props;
@@ -136,17 +136,17 @@ class AppointmentConfirmScreen extends React.Component<
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(AppointmentConfirmScreen);
 
 const styles = StyleSheet.create({
   body: {
     flex: 1,
     marginTop: 15,
-    paddingHorizontal: 20,
+    paddingHorizontal: 20
   },
   footer: {
     marginBottom: 10,
-    paddingHorizontal: 20,
-  },
+    paddingHorizontal: 20
+  }
 });

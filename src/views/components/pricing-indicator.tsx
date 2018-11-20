@@ -18,7 +18,7 @@ class PricingIndicator extends React.Component<Props> {
         name='usd'
       />
     ));
-  };
+  }
 
   render() {
     return <View style={styles.container}>{this.renderPricing()}</View>;
@@ -28,8 +28,8 @@ class PricingIndicator extends React.Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
 
 export default PricingIndicator;

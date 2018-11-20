@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   placeholder: {
     height: 80,
@@ -58,9 +58,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: {
       width: 0,
-      height: 0,
+      height: 0
     },
     shadowRadius: 5,
-    backgroundColor: '#FFF',
-  },
+    backgroundColor: '#FFF'
+  }
 });

@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 14,
     // fontWeight: 'bold',
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });
 
 export default SubHeader;

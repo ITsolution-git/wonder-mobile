@@ -12,15 +12,15 @@ const wonderApi = axios.create({
   // timeout: 1000,
   headers: {
     "Accept": 'application/json',
-    'Content-Type': 'application/json',
-  },
+    'Content-Type': 'application/json'
+  }
 });
 
 const api = (opts: AxiosRequestConfig, userState?: UserState) => {
   if (userState && userState.auth && userState.auth.token) {
     opts.headers = {
       ...opts.headers,
-      Authorization: `Bearer ${userState.auth.token}`,
+      Authorization: `Bearer ${userState.auth.token}`
     };
   }
 

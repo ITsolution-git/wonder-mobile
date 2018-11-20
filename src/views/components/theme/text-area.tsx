@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.primary,
     borderWidth: 1,
     borderColor: 'rgb(223,223,231)',
-    padding: 10,
-  },
+    padding: 10
+  }
 });

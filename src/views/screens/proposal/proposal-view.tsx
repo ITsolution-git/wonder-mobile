@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import {
   getNewProposal,
   rateProposal,
-  getNextProposal,
+  getNextProposal
 } from 'src/store/sagas/proposal';
 
 import FoundMatchModal from 'src/views/components/modals/found-match-modal';
@@ -21,7 +21,7 @@ import User from 'src/models/user';
 import { updateUser } from '../../../store/sagas/user';
 import {
   getConversations,
-  getConversation,
+  getConversation
 } from 'src/store/sagas/conversations';
 
 import PushNotificationService from '../../../services/push-notification';
@@ -30,7 +30,7 @@ import { RNPushNotificationToken } from '../../../services/push-notification';
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),
   proposal: state.wonder.proposal,
-  currentMatch: state.wonder.currentMatch,
+  currentMatch: state.wonder.currentMatch
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
@@ -46,7 +46,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onClearCurrentMatch: () => dispatch(persistCurrentMatch({})),
   onRefreshConversations: () => dispatch(getConversations()),
   onGetConversation: (partnerId: number) =>
-    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
+    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
   // onGetNextProposal: () => dispatch(getNextProposal())
 });
 
@@ -67,7 +67,7 @@ interface Props {
     data: {
       push_device_id: string;
       push_device_type: string;
-    },
+    }
   ) => void;
 }
 
@@ -79,7 +79,7 @@ interface State {
 class ProposalViewScreen extends React.Component<Props, State> {
   state: State = {
     candidate: null,
-    isModalOpen: false,
+    isModalOpen: false
   };
 
   componentWillMount() {
@@ -98,7 +98,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
       if (newDeviceId) {
         updatePushToken({
           push_device_id: token.token,
-          push_device_type: token.os === 'ios' ? 'apns' : 'fcm',
+          push_device_type: token.os === 'ios' ? 'apns' : 'fcm'
         });
       }
     };
@@ -108,33 +108,33 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   setCandidate = (candidate?: Candidate | null) => {
     this.setState({ candidate });
-  };
+  }
 
   clearCandidate = () => {
     this.setState({ candidate: null });
-  };
+  }
 
   clearCurrentMatch = () => {
     this.props.onClearCurrentMatch();
     this.props.onRefreshConversations();
-  };
+  }
 
   goToChat = () => {
     const { onGetConversation, currentMatch } = this.props;
     this.props.onClearCurrentMatch();
     this.props.onRefreshConversations();
     onGetConversation(currentMatch.candidate.id);
-  };
+  }
 
   swipeRight = () => {
     const { proposal } = this.props;
     this.props.onRightSwipe(proposal);
-  };
+  }
 
   swipeLeft = () => {
     const { proposal } = this.props;
     this.props.onLeftSwipe(proposal);
-  };
+  }
 
   render() {
     const { proposal, currentMatch, currentUser } = this.props;
@@ -163,5 +163,5 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(ProposalViewScreen);

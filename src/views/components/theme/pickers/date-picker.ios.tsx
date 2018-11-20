@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Modal,
   DatePickerIOS,
-  TouchableOpacity,
+  TouchableOpacity
 } from 'react-native';
 import { Label, Text } from '..';
 import moment from 'moment-timezone';
@@ -33,14 +33,14 @@ interface State {
 
 export default class DatePicker extends React.Component<Props, State> {
   static defaultProps = {
-    displayFormat: 'MM-DD-YYYY',
+    displayFormat: 'MM-DD-YYYY'
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
       value: props.initialDate || new Date(),
-      open: false,
+      open: false
     };
   }
 
@@ -51,7 +51,7 @@ export default class DatePicker extends React.Component<Props, State> {
       errorHint,
       minDate,
       maxDate,
-      onChange,
+      onChange
     } = this.props;
     const { open, value } = this.state;
     return (
@@ -94,7 +94,7 @@ export default class DatePicker extends React.Component<Props, State> {
     if (onChange) {
       onChange(date);
     }
-  };
+  }
 }
 
 const styles = StyleSheet.create({
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 10,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   container: {
     flexDirection: 'row',
@@ -111,10 +111,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 4,
     borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.5),
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
   },
   text: {
     color: theme.colors.textColor,
-    fontFamily: theme.fonts.primary,
-  },
+    fontFamily: theme.fonts.primary
+  }
 });

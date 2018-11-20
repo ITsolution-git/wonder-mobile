@@ -20,9 +20,9 @@ export function* getNewProposalSaga() {
       api,
       {
         method: 'GET',
-        url: '/proposals/new',
+        url: '/proposals/new'
       },
-      state.user,
+      state.user
     );
 
     yield put(persistProposal(response.data));
@@ -51,9 +51,9 @@ export function* getNextProposalSaga() {
       api,
       {
         method: 'GET',
-        url: '/proposables?limit=5',
+        url: '/proposables?limit=5'
       },
-      state.user,
+      state.user
     );
     console.log('PROPOSABLES: ', newProp);
     yield put(persistPropsalImages(newProp.data));
@@ -86,11 +86,11 @@ export function* rateProposalSaga(action: Action<any>) {
         data: {
           proposal: {
             candidate_id: proposal.candidate.id,
-            liked,
-          },
-        },
+            liked
+          }
+        }
       },
-      state.user,
+      state.user
     );
 
     if (data.has_match) {

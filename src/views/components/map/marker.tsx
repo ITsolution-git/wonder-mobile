@@ -17,7 +17,7 @@ class Marker extends React.Component<Props> {
       return <WonderImage uri={icon} />;
     }
     return <Icon name='map-marker' size={12} color={theme.colors.textColor} />;
-  };
+  }
   render() {
     const { title } = this.props;
     return <View style={styles.container}>{this.renderIcon()}</View>;
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     width: 28,
     backgroundColor: '#FFF',
     justifyContent: 'center',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
 
 export default Marker;

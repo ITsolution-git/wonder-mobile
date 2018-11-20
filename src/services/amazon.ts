@@ -17,7 +17,7 @@ const search = async (query: string): Promise<void> => {
 };
 
 const AmazonService = {
-  search,
+  search
 };
 
 export default AmazonService;

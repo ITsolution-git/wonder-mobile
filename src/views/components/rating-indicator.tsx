@@ -21,7 +21,7 @@ class RatingIndicator extends React.Component<Props> {
         }
       />
     ));
-  };
+  }
 
   render() {
     const { containerStyle } = this.props;
@@ -36,8 +36,8 @@ class RatingIndicator extends React.Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
 
 export default RatingIndicator;

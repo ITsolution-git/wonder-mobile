@@ -19,9 +19,9 @@ const styles = StyleSheet.create({
     elevation: 3,
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 5
     },
     shadowColor: '#383838',
-    shadowOpacity: 0.4,
-  },
+    shadowOpacity: 0.4
+  }
 });

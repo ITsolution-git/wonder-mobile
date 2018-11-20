@@ -19,16 +19,16 @@ class StarRatingInput extends React.Component<
   StarRatingInputState
 > {
   static defaultProps = {
-    size: 25,
+    size: 25
   };
 
   state: StarRatingInputState = {
-    value: this.props.initialValue || 0,
+    value: this.props.initialValue || 0
   };
 
   onValueChange = (value: number) => {
     this.setState({ value });
-  };
+  }
 
   renderOption = (key: number) => {
     const { value } = this.state;
@@ -47,7 +47,7 @@ class StarRatingInput extends React.Component<
         />
       </TouchableOpacity>
     );
-  };
+  }
 
   render() {
     const { size } = this.props;
@@ -63,9 +63,9 @@ export default StarRatingInput;
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   option: {
-    padding: 5,
-  },
+    padding: 5
+  }
 });

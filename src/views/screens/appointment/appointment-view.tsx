@@ -10,7 +10,7 @@ import {
   PrimaryButton,
   IconButton,
   TextButton,
-  SecondaryButton,
+  SecondaryButton
 } from 'src/views/components/theme';
 import { View, StyleSheet, Alert, Linking, Platform } from 'react-native';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
@@ -26,7 +26,7 @@ import theme from 'src/assets/styles/theme';
 import { getConversation } from 'src/store/sagas/conversations';
 import {
   cancelAppointment,
-  declineAppointment,
+  declineAppointment
 } from 'src/store/sagas/appointment';
 import { isAppointmentBeforeToday } from 'src/utils/appointment';
 import { callPhoneNumber } from 'src/services/communication';
@@ -48,7 +48,7 @@ interface AppointmentViewState {
 }
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state),
+  currentUser: selectCurrentUser(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
@@ -57,22 +57,22 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onCancelAppointment: (data: DecoratedAppointment) =>
     dispatch(cancelAppointment(data)),
   onDeclineAppointment: (data: DecoratedAppointment) =>
-    dispatch(declineAppointment(data)),
+    dispatch(declineAppointment(data))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   static navigationOptions = ({ navigation }) => {
     const appointment: DecoratedAppointment = navigation.getParam(
       'appointment',
-      {},
+      {}
     );
     return {
-      title: appointment.match.first_name,
+      title: appointment.match.first_name
     };
-  };
+  }
 
   state: AppointmentViewState = {
-    isModalOpen: false,
+    isModalOpen: false
   };
 
   componentDidMount() {
@@ -88,18 +88,18 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
       'appointment',
-      {},
+      {}
     );
     return isAppointmentBeforeToday(appointment);
-  };
+  }
 
   openReviewModal = () => {
     this.setState({ isModalOpen: true });
-  };
+  }
 
   closeReviewModal = () => {
     this.setState({ isModalOpen: false });
-  };
+  }
 
   onCall = async (url?: string | null) => {
     Linking.canOpenURL(url)
@@ -111,32 +111,32 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         }
       })
       .catch((err) => console.error('An error occurred', err));
-  };
+  }
 
   onServicePress = (url: string) => {
     Alert.alert('Third Party', `This would go to ${url}`);
-  };
+  }
 
   onUber = async () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
       'appointment',
-      {},
+      {}
     );
     const { location, longitude, latitude } = appointment;
 
     await UserService.scheduleUber({
       formattedAddress: location,
       longitude,
-      latitude,
+      latitude
     });
-  };
+  }
 
   onAmazon = async () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
       'appointment',
-      {},
+      {}
     );
     const { topic } = appointment;
 
@@ -145,24 +145,24 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     } else {
       Toast.show({ text: 'Unable to launch amazon, missing topic' });
     }
-  };
+  }
 
   goToChat = () => {
     const { navigation, onGetConversation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
       'appointment',
-      {},
+      {}
     );
 
     onGetConversation(appointment.match.id);
-  };
+  }
 
   handleConfirmation = (appointment: DecoratedAppointment) => {
     const { navigation } = this.props;
     navigation.navigate('AppointmentConfirm', {
-      appointment,
+      appointment
     });
-  };
+  }
 
   renderConfirmationButton = (appointment: DecoratedAppointment) => {
     const { state, owner, me } = appointment;
@@ -190,13 +190,13 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         />
       );
     }
-  };
+  }
 
   decline = () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
       'appointment',
-      {},
+      {}
     );
     Alert.alert(
       'Confirm Decline',
@@ -205,18 +205,18 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         { text: 'Cancel' },
         {
           text: 'YES',
-          onPress: () => this.props.onDeclineAppointment(appointment),
-        },
+          onPress: () => this.props.onDeclineAppointment(appointment)
+        }
       ],
-      { cancelable: false },
+      { cancelable: false }
     );
-  };
+  }
 
   cancel = () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
       'appointment',
-      {},
+      {}
     );
     Alert.alert(
       'Confirm Cancel',
@@ -225,18 +225,18 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         { text: 'Cancel' },
         {
           text: 'YES',
-          onPress: () => this.props.onCancelAppointment(appointment),
-        },
+          onPress: () => this.props.onCancelAppointment(appointment)
+        }
       ],
-      { cancelable: false },
+      { cancelable: false }
     );
-  };
+  }
 
   render() {
     const { navigation, currentUser } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
       'appointment',
-      {},
+      {}
     );
     const isPast = this.isPastAppointment();
 
@@ -345,7 +345,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           <View
             style={[
               styles.row,
-              { marginVertical: 15, justifyContent: 'space-between' },
+              { marginVertical: 15, justifyContent: 'space-between' }
             ]}
           >
             {!isPast && (
@@ -372,31 +372,31 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(AppointmentViewScreen);
 
 const styles = StyleSheet.create({
   header: {
-    alignItems: 'center',
+    alignItems: 'center'
   },
   buttonRow: {
-    marginVertical: 15,
+    marginVertical: 15
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'space-around'
   },
   col: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   btnLabel: {
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 12
   },
   phoneText: {
     fontSize: 14,
     color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
-    marginLeft: 10,
-  },
+    marginLeft: 10
+  }
 });

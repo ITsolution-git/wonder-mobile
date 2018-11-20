@@ -2,7 +2,7 @@ import {
   handleActions,
   createAction,
   Action,
-  ActionFunctionAny,
+  ActionFunctionAny
 } from 'redux-actions';
 
 export interface UserPayload {
@@ -11,7 +11,7 @@ export interface UserPayload {
 
 export const PERSIST_USER = 'PERSIST_USER';
 export const persistUser: ActionFunctionAny<Action<UserPayload>> = createAction(
-  PERSIST_USER,
+  PERSIST_USER
 );
 
 export const PERSIST_AUTH = 'PERSIST_AUTH';

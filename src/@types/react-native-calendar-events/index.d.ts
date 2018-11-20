@@ -16,13 +16,13 @@ declare module 'react-native-calendar-events' {
     static fetchAllEvents(
       startDate: Date,
       endDate: Date,
-      calendars?: RNCalendarCalendar[],
+      calendars?: RNCalendarCalendar[]
     ): Promise<any>;
     static findCalendars(): Promise<RNCalendarCalendar[]>;
     static saveEvent(
       title: string,
       details: Partial<RNCalendarEvent>,
-      options: any,
+      options: any
     ): Promise<string>;
     static findEventById(id: string): Promise<RNCalendarEvent | null>;
   }

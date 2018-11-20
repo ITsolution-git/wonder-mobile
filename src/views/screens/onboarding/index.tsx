@@ -72,25 +72,25 @@ class Onboarding extends React.Component<Props> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(Onboarding);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
-    marginBottom: 5,
+    marginBottom: 5
   },
   body: {
     textAlign: 'center',
     color: '#000',
-    lineHeight: 24,
+    lineHeight: 24
   },
   halfCircleFooter: {
     width: '100%',
@@ -99,6 +99,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.8)',
     height: DEVICE_HEIGHT * 0.4,
     paddingTop: 55,
-    paddingHorizontal: 25,
-  },
+    paddingHorizontal: 25
+  }
 });

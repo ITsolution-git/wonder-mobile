@@ -14,10 +14,10 @@ export default ErrorHint;
 const styles = StyleSheet.create({
   errorHintContainer: {
     borderColor: 'red',
-    borderWidth: 2,
+    borderWidth: 2
   },
   errorHintText: {
     color: 'red',
-    fontSize: 9,
-  },
+    fontSize: 9
+  }
 });

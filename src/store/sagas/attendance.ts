@@ -17,9 +17,9 @@ export function* getAttendancesSaga(action: Action<any>) {
       api,
       {
         method: 'GET',
-        url: '/attendances',
+        url: '/attendances'
       },
-      state.user,
+      state.user
     );
 
     yield put(persistAttendances(data));
@@ -42,9 +42,9 @@ export function* deleteAttendanceSaga(action: Action<any>) {
       api,
       {
         method: 'DELETE',
-        url: `/attendances/${action.payload.attendanceId}`,
+        url: `/attendances/${action.payload.attendanceId}`
       },
-      state.user,
+      state.user
     );
 
     yield put(getAttendances());

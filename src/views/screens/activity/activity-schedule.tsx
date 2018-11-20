@@ -5,21 +5,21 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import RNCalendarEvents, {
-  RNCalendarEvent,
+  RNCalendarEvent
 } from 'react-native-calendar-events';
 import Screen from 'src/views/components/screen';
 import {
   Text,
   PrimaryButton,
   IconButton,
-  TextButton,
+  TextButton
 } from 'src/views/components/theme';
 import moment from 'moment';
 import TimePicker from 'src/views/components/theme/pickers/time-picker';
 import WonderAppState from 'src/models/wonder-app-state';
 import {
   AppointmentState,
-  persistAppointmentData,
+  persistAppointmentData
 } from 'src/store/reducers/appointment';
 import { NavigationParams, NavigationScreenProp } from 'react-navigation';
 import Avatar from 'src/views/components/theme/avatar';
@@ -29,7 +29,7 @@ import User from 'src/models/user';
 import { selectCurrentUser } from 'src/store/selectors/user';
 import Attendance from 'src/models/attendance';
 import UserCalendarModal, {
-  CalendarItemMap,
+  CalendarItemMap
 } from 'src/views/components/modals/user-calendar.modal';
 import theme from 'src/assets/styles/theme';
 
@@ -61,27 +61,27 @@ const mapState = (state: WonderAppState): StateProps => ({
   appointment: state.appointment,
   currentUser: selectCurrentUser(state),
   conversation: getDecoratedConversation(state),
-  attendances: state.wonder.attendances,
+  attendances: state.wonder.attendances
   // appointments: selectUpcomingAppointments(state)
 });
 
 const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   // getAllDates:dispatch(getAllDatesSaga)  <------ not written yet but for future reference
   onUpdateAppointment: (data: AppointmentState) =>
-    dispatch(persistAppointmentData(data)),
+    dispatch(persistAppointmentData(data))
 });
 class ActivityScheduleScreen extends React.Component<Props, State> {
   state: State = {
     isCalendarOpen: true,
     selectedDate: undefined,
     selectedTime: undefined,
-    agendaItems: {},
+    agendaItems: {}
   };
 
   componentWillMount() {
     if (this.props.appointment.match) {
       Analytics.trackEvent('ActivityScheduleScreen', {
-        match: this.props.appointment.match.id || '',
+        match: this.props.appointment.match.id || ''
       });
     }
 
@@ -107,7 +107,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         .format('YYYY-MM-DD');
     });
     return [today.format('YYYY-MM-DD'), ...otherDates];
-  };
+  }
 
   schedule = () => {
     const { onUpdateAppointment, navigation } = this.props;
@@ -125,7 +125,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
       onUpdateAppointment({ eventAt: dateMoment.toDate() });
       navigation.navigate('AppointmentConfirm', { appointment: null });
     }
-  };
+  }
 
   /**
    * Reads the native calendar events from today to a month from now and loads them into state
@@ -148,7 +148,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         // Fetch all events from native calendar
         const events = await RNCalendarEvents.fetchAllEvents(
           today.utc().toDate(),
-          nextMonth.utc().toDate(),
+          nextMonth.utc().toDate()
         );
 
         const agendaItems: any = events.reduce(
@@ -159,7 +159,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
               title,
               location,
               id,
-              calendarId,
+              calendarId
             } = event;
 
             //
@@ -173,7 +173,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
             let topic;
             if (id) {
               const found = attendances.find(
-                (a: Attendance) => id === a.device_calendar_event_id,
+                (a: Attendance) => id === a.device_calendar_event_id
               );
               if (found) {
                 topic = found.appointment.topic;
@@ -188,30 +188,30 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
               end: endDate,
               id,
               calendarId,
-              topic,
+              topic
             });
 
             return result;
           },
-          {} as CalendarItemMap,
+          {} as CalendarItemMap
         );
 
         this.setState({
-          agendaItems: { ...this.state.agendaItems, ...agendaItems },
+          agendaItems: { ...this.state.agendaItems, ...agendaItems }
         });
       }
     } catch (error) {
       Alert.alert('DEV ERROR', error.message);
     }
-  };
+  }
 
   onDateChange = (dateString: string) => {
     this.setState({ selectedDate: dateString });
-  };
+  }
 
   selectTime = (selectedTime: { hour: number; minute: number }) => {
     this.setState({ selectedTime });
-  };
+  }
 
   renderHeader = () => {
     const { navigation, conversation } = this.props;
@@ -219,7 +219,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     const { first_name, last_name, images = [] } = _.get(
       conversation,
       'partner',
-      {} as User,
+      {} as User
     );
 
     const dateTime = moment(selectedDate, 'YYYY-MM-DD');
@@ -234,7 +234,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         style={{
           alignItems: 'center',
           justifyContent: 'space-around',
-          paddingBottom: 15,
+          paddingBottom: 15
         }}
       >
         <Avatar circle uri={_.get(images[0], 'url', null)} />
@@ -254,14 +254,14 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         )}
       </View>
     );
-  };
+  }
 
   render() {
     const {
       selectedDate,
       selectedTime,
       agendaItems,
-      isCalendarOpen,
+      isCalendarOpen
     } = this.state;
     const disabled = !!selectedDate && !selectedTime;
     const missingDate = !selectedDate;
@@ -273,7 +273,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
             paddingHorizontal: 20,
             paddingVertical: 15,
             flex: 1,
-            justifyContent: 'flex-end',
+            justifyContent: 'flex-end'
           }}
         >
           <TimePicker label='Select a time' onChange={this.selectTime} />
@@ -281,13 +281,13 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
             style={{
               width: '100%',
               justifyContent: 'center',
-              alignItems: 'center',
+              alignItems: 'center'
             }}
           >
             <View
               style={{
                 margin: 10,
-                width: '50%',
+                width: '50%'
               }}
             >
               <PrimaryButton
@@ -311,20 +311,20 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(ActivityScheduleScreen);
 
 const styles = StyleSheet.create({
   dateTimeContainer: {
-    marginTop: 50,
+    marginTop: 50
   },
   dateTimeLabel: {
-    textAlign: 'center',
+    textAlign: 'center'
   },
   calendarButtonText: {
     textAlign: 'center',
     fontSize: 24,
     color: theme.colors.primary,
-    fontWeight: 'bold',
-  },
+    fontWeight: 'bold'
+  }
 });

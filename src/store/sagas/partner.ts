@@ -23,9 +23,9 @@ export function* getPartnersSaga(action: Action<any>) {
       api,
       {
         method: 'GET',
-        url: '/partners',
+        url: '/partners'
       },
-      state.user,
+      state.user
     );
 
     // yield persistPar
@@ -46,7 +46,7 @@ export function* getPartnerActivitiesSaga(action: Action<any>) {
   try {
     const {
       id,
-      coordinate,
+      coordinate
     }: { id: number; coordinate?: Coordinate } = action.payload;
     const state: WonderAppState = yield select();
 
@@ -57,10 +57,10 @@ export function* getPartnerActivitiesSaga(action: Action<any>) {
         url: `/partners/${id}/activities`,
         params: {
           lat: _.get(coordinate, 'lat'),
-          lng: _.get(coordinate, 'lng'),
-        },
+          lng: _.get(coordinate, 'lng')
+        }
       },
-      state.user,
+      state.user
     );
 
     yield put(persistActivities(data));
@@ -86,9 +86,9 @@ export function* getActivityDetailsSaga(action: Action<any>) {
       api,
       {
         method: 'GET',
-        url: `/activities/${action.payload.id}`,
+        url: `/activities/${action.payload.id}`
       },
-      state.user,
+      state.user
     );
 
     yield put(persistActivity(data));
@@ -115,9 +115,9 @@ export function* blockUserSaga(action: Action<any>) {
       api,
       {
         method: 'POST',
-        url: `/partners/${action.payload.id}/blocks?message=cow+goes-moo`,
+        url: `/partners/${action.payload.id}/blocks?message=cow+goes-moo`
       },
-      state.user,
+      state.user
     );
 
     // yield put(persistActivity(data));

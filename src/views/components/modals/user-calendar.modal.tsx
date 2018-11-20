@@ -37,12 +37,12 @@ class UserCalendarModal extends React.Component<
   UserCalendarModalState
 > {
   state: UserCalendarModalState = {
-    selectedDate: undefined,
+    selectedDate: undefined
   };
 
   selectDay = ({ dateString }: { dateString: string }) => {
     this.setState({ selectedDate: dateString });
-  };
+  }
 
   onClose = () => {
     const { selectedDate } = this.state;
@@ -51,7 +51,7 @@ class UserCalendarModal extends React.Component<
       onDateChange(selectedDate);
       onRequestClose();
     }
-  };
+  }
 
   buttonTitle = () => {
     const { selectedDate } = this.state;
@@ -60,7 +60,7 @@ class UserCalendarModal extends React.Component<
       return `Pick ${moment(selectedDate, 'YYYY-MM-DD').format('MMM Do')}`;
     }
     return 'Select Date';
-  };
+  }
 
   render() {
     const today = moment();
@@ -129,7 +129,7 @@ class UserCalendarModal extends React.Component<
             agendaDayTextColor: theme.colors.textColor,
             agendaDayNumColor: theme.colors.textColor,
             agendaTodayColor: theme.colors.textColor,
-            agendaKnobColor: theme.colors.primary,
+            agendaKnobColor: theme.colors.primary
           }}
         />
         <View style={styles.btnFooter}>
@@ -150,32 +150,32 @@ const styles = StyleSheet.create({
   emptyDataContainer: {
     paddingTop: 15,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   agendaDayContainer: {
     marginVertical: 5,
     width: 60,
     height: 60,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   agendaDayDay: {
-    fontSize: 9,
+    fontSize: 9
   },
   agendaDayDate: {
-    fontSize: 16,
+    fontSize: 16
   },
   modalHeader: {
     paddingTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   btnFooter: {
     position: 'absolute',
     bottom: 15,
     width: '100%',
     flexDirection: 'row',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });

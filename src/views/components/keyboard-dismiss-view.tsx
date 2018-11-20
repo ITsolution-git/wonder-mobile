@@ -4,7 +4,7 @@ import {
   TouchableWithoutFeedback,
   View,
   StyleProp,
-  ViewStyle,
+  ViewStyle
 } from 'react-native';
 
 interface Props {

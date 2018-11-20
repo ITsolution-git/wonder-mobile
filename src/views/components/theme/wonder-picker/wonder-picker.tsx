@@ -20,13 +20,13 @@ interface State {
 
 export default class WonderPicker extends React.Component<Props, State> {
   static defaultProps = {
-    topics: [],
+    topics: []
   };
 
   constructor(props: Props) {
     super(props);
     this.state = {
-      selected: props.initialValue || [],
+      selected: props.initialValue || []
     };
   }
 
@@ -39,19 +39,19 @@ export default class WonderPicker extends React.Component<Props, State> {
     ) {
       this.setState(
         {
-          selected: [...selected, topic],
+          selected: [...selected, topic]
         },
-        this.update,
+        this.update
       );
     } else {
       this.setState(
         {
-          selected: selected.filter((t: Topic) => t.name !== topic.name),
+          selected: selected.filter((t: Topic) => t.name !== topic.name)
         },
-        this.update,
+        this.update
       );
     }
-  };
+  }
 
   update = () => {
     const { selected } = this.state;
@@ -59,11 +59,11 @@ export default class WonderPicker extends React.Component<Props, State> {
     if (onChangeSelected) {
       onChangeSelected(selected);
     }
-  };
+  }
 
   renderRow = ({ item }: { item: any }) => {
     return <View style={styles.row}>{item.map(this.renderWonder)}</View>;
-  };
+  }
 
   renderWonder = (topic: Topic) => {
     const { selected } = this.state;
@@ -75,7 +75,7 @@ export default class WonderPicker extends React.Component<Props, State> {
         onPress={this.onChange}
       />
     );
-  };
+  }
 
   keyExtractor = (item: any, index: any) => index.toString();
 
@@ -102,6 +102,6 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });

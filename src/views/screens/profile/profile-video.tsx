@@ -25,25 +25,25 @@ interface State {
 const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateVideo: (data: any) => dispatch(updateVideo(data)),
   onDeleteVideo: () => dispatch(deleteProfileVideo()),
-  onAddVideo: (data) => dispatch(addProfileVideo(data)),
+  onAddVideo: (data) => dispatch(addProfileVideo(data))
 });
 
 class ProfileVideoScreen extends React.Component<Props, State> {
   timer = 0;
 
   state: State = {
-    data: null,
+    data: null
   };
 
   onDelete = () => {
     const { navigation, onDeleteVideo } = this.props;
     onDeleteVideo();
     navigation.goBack();
-  };
+  }
 
   onClear = () => {
     this.setState({ data: null });
-  };
+  }
 
   onSave = () => {
     const { data } = this.state;
@@ -53,12 +53,12 @@ class ProfileVideoScreen extends React.Component<Props, State> {
       onUpdateVideo(data);
       navigation.goBack();
     }
-  };
+  }
 
   getVideo = () => {
     const options: Options = {
       mediaType: 'video',
-      durationLimit: 15,
+      durationLimit: 15
     };
 
     ImagePicker.launchCamera(options, (res: Response) => {
@@ -70,7 +70,7 @@ class ProfileVideoScreen extends React.Component<Props, State> {
         this.setState({ data: res });
       }
     });
-  };
+  }
 
   renderContent = () => {
     const { navigation } = this.props;
@@ -117,7 +117,7 @@ class ProfileVideoScreen extends React.Component<Props, State> {
         />
       </View>
     );
-  };
+  }
 
   render() {
     return <Screen>{this.renderContent()}</Screen>;
@@ -126,24 +126,24 @@ class ProfileVideoScreen extends React.Component<Props, State> {
 
 export default connect(
   null,
-  mapDispatch,
+  mapDispatch
 )(ProfileVideoScreen);
 
 const styles = StyleSheet.create({
   imgcontainer: {
     flex: 1,
     flexDirection: 'column',
-    padding: 20,
+    padding: 20
   },
   container: {
     flex: 1,
     flexDirection: 'column',
-    padding: 20,
+    padding: 20
   },
   preview: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   capture: {
     backgroundColor: theme.colors.primary,
@@ -154,16 +154,16 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     alignSelf: 'center',
-    margin: 20,
+    margin: 20
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-around'
   },
   footerCol: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });

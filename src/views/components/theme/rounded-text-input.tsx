@@ -4,7 +4,7 @@ import {
   View,
   StyleSheet,
   TextInput as Input,
-  TextInputProps,
+  TextInputProps
 } from 'react-native';
 import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -49,11 +49,11 @@ export default class RoundedTextInput extends React.Component<
   static defaultProps = {
     padLeft: false,
     start: undefined,
-    getRef: _.noop,
+    getRef: _.noop
   };
 
   state = {
-    text: undefined,
+    text: undefined
   };
 
   renderIcon = () => {
@@ -69,14 +69,14 @@ export default class RoundedTextInput extends React.Component<
         </View>
       );
     }
-  };
+  }
 
   renderErrorHint = () => {
     const { errorHint } = this.props;
     // if (errorHint) {
     return <ErrorHint style={{ marginLeft: 20 }}>{errorHint}</ErrorHint>;
     // }
-  };
+  }
 
   validate = () => {
     const { onValidate } = this.props;
@@ -91,7 +91,7 @@ export default class RoundedTextInput extends React.Component<
         />
       </View>
     );
-  };
+  }
 
   onTextChange = (text: string) => {
     const { onChangeText } = this.props;
@@ -99,7 +99,7 @@ export default class RoundedTextInput extends React.Component<
     if (onChangeText) {
       onChangeText(text);
     }
-  };
+  }
 
   render() {
     const {
@@ -113,7 +113,7 @@ export default class RoundedTextInput extends React.Component<
       colors,
       padLeft,
       getRef,
-      ...rest,
+      ...rest
     } = this.props;
 
     const passwordProps: PasswordProps = {};
@@ -172,25 +172,25 @@ export default class RoundedTextInput extends React.Component<
 
 const styles = StyleSheet.create({
   label: {
-    marginBottom: 10,
+    marginBottom: 10
   },
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 30,
     width: '100%',
-    backgroundColor: palette.toString(),
+    backgroundColor: palette.toString()
   },
   iconContainer: {
     flex: 1,
     paddingHorizontal: 10,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   input: {
     fontFamily: theme.fonts.primary,
     flex: 10,
     color: theme.colors.black,
-    height: 44,
-  },
+    height: 44
+  }
 });

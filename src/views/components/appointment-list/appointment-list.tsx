@@ -16,7 +16,7 @@ interface Props {
 
 class AppointmentList extends React.Component<Props> {
   static defaultProps = {
-    isLoading: false,
+    isLoading: false
   };
 
   keyExtractor = (item: any, index: number) => item.id.toString();
@@ -40,7 +40,7 @@ class AppointmentList extends React.Component<Props> {
         }
       />
     );
-  };
+  }
 
   render() {
     const { data, onRefresh, isLoading } = this.props;

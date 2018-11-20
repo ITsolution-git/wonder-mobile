@@ -17,11 +17,11 @@ import { Response } from 'src/models/image-picker';
 import theme from 'src/assets/styles/theme';
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state),
+  currentUser: selectCurrentUser(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onUpdateUser: (data: Partial<User>) => dispatch(updateUser(data)),
+  onUpdateUser: (data: Partial<User>) => dispatch(updateUser(data))
 });
 
 interface Props {
@@ -36,7 +36,7 @@ interface State {
 
 class ProfileMediaScreen extends React.Component<Props> {
   state = {
-    about: this.props.currentUser.about || '',
+    about: this.props.currentUser.about || ''
   };
 
   onSave = () => {
@@ -45,11 +45,11 @@ class ProfileMediaScreen extends React.Component<Props> {
 
     onUpdateUser({ about });
     navigation.goBack();
-  };
+  }
 
   onAboutChange = (text: string) => {
     this.setState({ about: text });
-  };
+  }
 
   render() {
     const { navigation } = this.props;
@@ -64,7 +64,7 @@ class ProfileMediaScreen extends React.Component<Props> {
             style={{
               marginTop: 10,
               color: theme.colors.textColor,
-              textAlign: 'center',
+              textAlign: 'center'
             }}
           >
             UPLOAD YOUR PHOTO'S &amp; VIBE VIDEO
@@ -110,5 +110,5 @@ class ProfileMediaScreen extends React.Component<Props> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(ProfileMediaScreen);

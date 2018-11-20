@@ -49,7 +49,7 @@ const WonderPickerSectionList = (props: Props) => {
       )}
       sections={[
         { title: 'QUICK DATES', data: props.groupedQuickDates },
-        { title: '', data: props.groupedTopics },
+        { title: '', data: props.groupedTopics }
       ]}
       keyExtractor={(item, index) => item + index}
       renderSectionFooter={() => <View style={styles.sectionFooter} />}
@@ -65,26 +65,26 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   sectionHeader: {
     textAlign: 'center',
     margin: 4,
-    color: theme.colors.textColor,
+    color: theme.colors.textColor
   },
   sectionFooter: {
     alignSelf: 'center',
     borderBottomColor: theme.colors.primaryLight,
     borderBottomWidth: 2,
     width: '80%',
-    padding: 10,
+    padding: 10
   },
   footer: { height: 80 },
   lessThanThree: {
     padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    marginRight: 15,
+    marginRight: 15
   },
-  wonderMargin: { marginRight: 20 },
+  wonderMargin: { marginRight: 20 }
 });

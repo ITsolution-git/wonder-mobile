@@ -54,23 +54,23 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     padding: 20,
-    marginTop: 60,
+    marginTop: 60
   },
   descriptionText: {
     fontSize: 15,
     color: theme.colors.textColor,
-    textAlign: 'left',
+    textAlign: 'left'
   },
   largeText: {
     fontSize: 26,
     color: theme.colors.textColor,
-    textAlign: 'left',
+    textAlign: 'left'
   },
   actionText: {
     fontSize: 15,
     color: theme.colors.textColor,
     textAlign: 'center',
     marginTop: 20,
-    marginBottom: 30,
-  },
+    marginBottom: 30
+  }
 });

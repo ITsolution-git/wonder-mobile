@@ -15,6 +15,6 @@ export default class SubTitle extends React.Component<ThemeTextProps> {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 12,
-  },
+    fontSize: 12
+  }
 });

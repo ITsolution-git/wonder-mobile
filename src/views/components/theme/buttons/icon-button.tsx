@@ -3,7 +3,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   StyleProp,
-  ViewStyle,
+  ViewStyle
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import theme from 'src/assets/styles/theme';
@@ -26,7 +26,7 @@ class IconButton extends React.Component<IconButtonProps> {
     secondary: theme.colors.primaryLight,
     size: 45,
     disabled: false,
-    iconSize: undefined,
+    iconSize: undefined
   };
 
   render() {
@@ -38,11 +38,11 @@ class IconButton extends React.Component<IconButtonProps> {
       circle,
       onPress,
       disabled,
-      iconSize,
+      iconSize
     } = this.props;
 
     const btnStyle: StyleProp<ViewStyle> = {
-      backgroundColor: secondary,
+      backgroundColor: secondary
     };
 
     let computedIconSize = 18;
@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
     flex: 0,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });

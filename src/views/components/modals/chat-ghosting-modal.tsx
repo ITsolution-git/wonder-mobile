@@ -6,7 +6,7 @@ import {
   ModalProps,
   StyleSheet,
   Platform,
-  Dimensions,
+  Dimensions
 } from 'react-native';
 import { IconButton, TextArea, Title, SecondaryButton } from '../theme';
 import { Text, PrimaryButton, OutlineButton } from 'src/views/components/theme';
@@ -22,20 +22,20 @@ interface Props extends ModalProps {
 
 class ChatGhostingModal extends React.Component<Props> {
   static defaultProps = {
-    onRequestClose: _.noop,
+    onRequestClose: _.noop
   };
 
   state = {
     ghostMessage: `Hi ${
       this.props.conversation.partner.first_name
-    }, Unfortunately I'm no longer interested but I hope you find someone wonder'ful! Good luck:)`,
+    }, Unfortunately I'm no longer interested but I hope you find someone wonder'ful! Good luck:)`
   };
 
   onSendGhost = () => {
     if (this.props.onSuccess) {
       this.props.onSuccess(this.state.ghostMessage);
     }
-  };
+  }
 
   renderContent = () => {
     const { onCancel } = this.props;
@@ -85,7 +85,7 @@ class ChatGhostingModal extends React.Component<Props> {
         </View>
       </LinearGradient>
     );
-  };
+  }
 
   render() {
     const { onCancel, onSuccess, onRequestClose, ...rest } = this.props;
@@ -103,40 +103,40 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     justifyContent: 'space-around',
-    padding: 20,
+    padding: 20
   },
   modalButton: {
     maxWidth: 100,
-    backgroundColor: '#aaa',
+    backgroundColor: '#aaa'
   },
   header: {
     marginTop: Platform.select({ ios: 20, android: 0 }),
     height: 44,
     backgroundColor: '#FFF',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   container: {
     flex: 1,
     flexDirection: 'column',
     backgroundColor: '#EEE',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   textContainer: {
     padding: 20,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   footer: {
     paddingVertical: 10,
     flexDirection: 'row',
     backgroundColor: '#000',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   footerCol: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   title: { fontSize: 22, marginTop: 7 },
   margin: { marginTop: 5 },
@@ -148,8 +148,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     width: '100%',
-    justifyContent: 'space-around',
+    justifyContent: 'space-around'
   },
   secondInner: { minWidth: 130, backgroundColor: '#f1f1f1' },
-  secondOuter: { marginRight: 5, height: 44, justifyContent: 'center' },
+  secondOuter: { marginRight: 5, height: 44, justifyContent: 'center' }
 });

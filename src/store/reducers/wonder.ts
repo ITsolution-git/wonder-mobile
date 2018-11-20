@@ -22,7 +22,7 @@ const defaultState: WonderState = {
   currentMatch: {},
   appointments: [],
   attendances: [],
-  proposalImages: [],
+  proposalImages: []
 };
 
 export const persistTopics = createAction('PERSIST_TOPICS');
@@ -36,33 +36,33 @@ export default handleActions(
   {
     PERSIST_PROPOSAL_IMAGES: (state: WonderState, action: Action<any>) => ({
       ...state,
-      proposalImages: action.payload || defaultState.proposalImages,
+      proposalImages: action.payload || defaultState.proposalImages
     }),
 
     PERSIST_CURRENT_MATCH: (state: WonderState, action: Action<any>) => ({
       ...state,
-      currentMatch: action.payload || defaultState.currentMatch,
+      currentMatch: action.payload || defaultState.currentMatch
     }),
     PERSIST_TOPICS: (state: WonderState, action: Action<any>): WonderState => ({
       ...state,
-      topics: action.payload || defaultState.topics,
+      topics: action.payload || defaultState.topics
     }),
     PERSIST_PROPOSAL: (state: WonderState, action: Action<any>) => ({
       ...state,
-      proposal: action.payload || defaultState.proposal,
+      proposal: action.payload || defaultState.proposal
     }),
     PERSIST_PARTNERS: (state: WonderState, action: Action<any>) => ({
       ...state,
-      partners: action.payload || defaultState.partners,
+      partners: action.payload || defaultState.partners
     }),
     PERSIST_APPOINTMENTS: (state: WonderState, action: Action<any>) => ({
       ...state,
-      appointments: action.payload || defaultState.appointments,
+      appointments: action.payload || defaultState.appointments
     }),
     PERSIST_ATTENDANCES: (state: WonderState, action: Action<any>) => ({
       ...state,
-      attendances: action.payload,
-    }),
+      attendances: action.payload
+    })
   },
-  defaultState,
+  defaultState
 );

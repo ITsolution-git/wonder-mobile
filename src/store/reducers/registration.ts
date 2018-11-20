@@ -33,11 +33,11 @@ const defaultState: RegistrationState = {
   about: null,
   // images: [],
   // video: null,
-  topic_ids: [],
+  topic_ids: []
 };
 
 export const persistRegistrationInfo = createAction(
-  'PERSIST_REGISTRATION_INFO',
+  'PERSIST_REGISTRATION_INFO'
 );
 export const resetRegistration = createAction('RESET_REGISTRATION');
 
@@ -45,16 +45,16 @@ export default handleActions(
   {
     PERSIST_REGISTRATION_INFO: (
       state: RegistrationState,
-      action: Action<any>,
+      action: Action<any>
     ): RegistrationState => ({
       ...state,
-      ...action.payload,
+      ...action.payload
     }),
     LOGOUT_USER: () => defaultState,
     RESET_REGISTRATION: (
       state: RegistrationState,
-      action: Action<any>,
-    ): RegistrationState => defaultState,
+      action: Action<any>
+    ): RegistrationState => defaultState
   },
-  defaultState,
+  defaultState
 );

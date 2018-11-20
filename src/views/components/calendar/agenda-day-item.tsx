@@ -47,18 +47,18 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: {
       width: 0,
-      height: 3,
+      height: 3
     },
     shadowColor: '#000',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.1
   },
   agendaItemTextContainer: {
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   titleText: {
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   timeText: {
-    fontSize: 11,
-  },
+    fontSize: 11
+  }
 });

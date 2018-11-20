@@ -16,12 +16,12 @@ export const getDecoratedConversation = createSelector(
   [selectCurrentUser, selectConversation],
   (currentUser, conversation): DecoratedConversation => {
     return conversation as DecoratedConversation;
-  },
+  }
 );
 
 export const decorateMessagesForGiftedChat = (
   currentUser: User,
-  conversation: Conversation | null,
+  conversation: Conversation | null
 ): DecoratedConversation | undefined => {
   if (conversation) {
     const messages: ChatResponseMessage[] = _.get(conversation, 'messages', []);
@@ -42,12 +42,12 @@ export const decorateMessagesForGiftedChat = (
             name: message.sender.first_name,
             avatar: owner.images.length
               ? `${owner.images[0].url}${avatarExtension}`
-              : null,
-          },
+              : null
+          }
         };
 
         return o;
-      }),
+      })
     };
   }
 

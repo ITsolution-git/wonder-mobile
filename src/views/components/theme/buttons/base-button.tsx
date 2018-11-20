@@ -4,7 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   StyleProp,
-  ViewStyle,
+  ViewStyle
 } from 'react-native';
 import { Text } from '..';
 import theme from 'src/assets/styles/theme';
@@ -44,7 +44,7 @@ export default class BaseButton extends React.Component<
     start: undefined,
     end: undefined,
     fullWidth: false,
-    color: undefined,
+    color: undefined
   };
 
   renderIcon = () => {
@@ -60,7 +60,7 @@ export default class BaseButton extends React.Component<
         </View>
       );
     }
-  };
+  }
 
   render() {
     const {
@@ -77,7 +77,7 @@ export default class BaseButton extends React.Component<
       fullWidth,
       icon,
       bold,
-      ...rest,
+      ...rest
     } = this.props;
 
     const renderedStyles: any = {};
@@ -97,7 +97,7 @@ export default class BaseButton extends React.Component<
       viewProps = {
         start,
         end,
-        colors,
+        colors
       };
     }
 
@@ -136,23 +136,23 @@ const styles = StyleSheet.create({
     // padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   container: {
-    flex: 0,
+    flex: 0
   },
   txtContainer: {
     flex: 7,
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   iconContainer: {
     width: 40,
     paddingHorizontal: 5,
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   title: {
     fontSize: 14,
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });

@@ -9,12 +9,12 @@ export interface UserState {
 
 export const initialState: UserState = {
   profile: {
-    images: [],
+    images: []
   },
   auth: {
     token: null,
-    uid: null,
-  },
+    uid: null
+  }
 };
 
 export const addProfileImage = createAction('ADD_PROFILE_IMAGE');
@@ -33,10 +33,10 @@ export default handleActions(
             {
               id: Math.floor(1000 + Math.random() * 9000),
               url: action.payload.uri,
-              position: 2,
-            },
-          ],
-        },
+              position: 2
+            }
+          ]
+        }
       };
     },
     ADD_PROFILE_VIDEO: (state: UserState, action) => {
@@ -44,8 +44,8 @@ export default handleActions(
         ...state,
         profile: {
           ...state.profile,
-          video: action.payload.uri,
-        },
+          video: action.payload.uri
+        }
       };
     },
     PERSIST_AUTH: (state: UserState, action) => ({
@@ -54,14 +54,14 @@ export default handleActions(
         token: action.payload.token || initialState.auth.token,
         uid:
           (action.payload.payload && action.payload.payload.sub) ||
-          initialState.auth.uid,
-      },
+          initialState.auth.uid
+      }
     }),
     PERSIST_USER: (state: UserState, action) => ({
       ...state,
-      profile: action.payload || initialState.profile,
+      profile: action.payload || initialState.profile
     }),
-    LOGOUT_USER: () => initialState,
+    LOGOUT_USER: () => initialState
   },
-  initialState,
+  initialState
 );

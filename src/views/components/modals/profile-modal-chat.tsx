@@ -7,7 +7,7 @@ import {
   ScrollView,
   StyleSheet,
   Dimensions,
-  Platform,
+  Platform
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { IconButton } from '../../components/theme';
@@ -22,7 +22,7 @@ const { height } = Dimensions.get('window');
 
 const gradient = [
   lighten(theme.colors.primaryLight, 0.5),
-  lighten(theme.colors.primary, 0.5),
+  lighten(theme.colors.primary, 0.5)
 ];
 
 function lighten(color: string, value: number) {
@@ -53,7 +53,7 @@ const ProfileModalChat = (props: Props) => {
     onRequestClose,
     showVideo,
     openProfileModal,
-    toggleVideo,
+    toggleVideo
   } = props;
 
   const { partner } = conversation;
@@ -79,7 +79,7 @@ const ProfileModalChat = (props: Props) => {
           candidateTopics.map((x: Topic) => {
             if (userTopics) {
               const active: boolean = !!userTopics.find(
-                (i: Topic) => i.name === x.name,
+                (i: Topic) => i.name === x.name
               );
               return (
                 <View style={{ marginRight: 5 }} key={x.name}>
@@ -158,7 +158,7 @@ const ProfileModalChat = (props: Props) => {
                     disableFullscreen={true}
                     autoplay={true}
                     video={{
-                      uri: `${partner.video}`,
+                      uri: `${partner.video}`
                     }}
                   />
                 </View>
@@ -238,7 +238,7 @@ export default ProfileModalChat;
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   modalInnerContainer: {
     position: 'relative',
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f1f1f1',
     marginRight: 15,
     marginLeft: 15,
-    marginBottom: 15,
+    marginBottom: 15
   },
   topGradient: {
     position: 'absolute',
@@ -258,41 +258,41 @@ const styles = StyleSheet.create({
     padding: 5,
     zIndex: 999,
     borderTopRightRadius: 10,
-    borderTopLeftRadius: 10,
+    borderTopLeftRadius: 10
   },
   iconContainer: {
     alignSelf: 'stretch',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   scrollContainer: { borderRadius: 10, overflow: 'hidden' },
   containerHeight: {
     height: (height / 3) * 2,
     zIndex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   imageContainer: { borderRadius: 10, overflow: 'hidden' },
   videoStyles: {
     backgroundColor: 'black',
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   imageTopGradient: {
     padding: 10,
-    zIndex: 999,
+    zIndex: 999
   },
   firstNameText: {
     fontSize: 26,
     color: '#fff',
     marginLeft: 5,
     marginBottom: 2,
-    fontWeight: '800',
+    fontWeight: '800'
   },
   regularImageStyles: { height: (height / 3) * 2, zIndex: 1 },
   topicsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 4,
+    marginTop: 4
   },
   schoolText: { color: '#fff', marginLeft: 5, fontSize: 12 },
   distanceText: { color: '#fff', fontSize: 13, marginLeft: 2 },
@@ -302,8 +302,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginTop: 10,
-    color: '#333',
+    color: '#333'
   },
   genericText: { marginLeft: 5, fontSize: 12, lineHeight: 18, color: '#333' },
-  infoContainer: { backgroundColor: '#fff', padding: 10 },
+  infoContainer: { backgroundColor: '#fff', padding: 10 }
 });

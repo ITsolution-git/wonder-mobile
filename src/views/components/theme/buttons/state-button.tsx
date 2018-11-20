@@ -22,8 +22,8 @@ export const StateButton = (props: StateButtonProps) => {
         styles.btnContainer,
         {
           backgroundColor: props.active ? theme.colors.primary : '#fff',
-          borderColor: props.active ? '#fff' : theme.colors.primary,
-        },
+          borderColor: props.active ? '#fff' : theme.colors.primary
+        }
       ]}
     >
       <Text style={{ color: props.active ? '#fff' : theme.colors.primary }}>
@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    margin: 4,
-  },
+    margin: 4
+  }
 });

@@ -5,7 +5,7 @@ export interface ConfigState {
 }
 
 export const initialState: ConfigState = {
-  loading: {},
+  loading: {}
 };
 
 export const isLoading = createAction('IS_LOADING');
@@ -16,8 +16,8 @@ export default handleActions(
       ...state,
       loading: {
         ...state.loading,
-        [action.payload]: true,
-      },
+        [action.payload]: true
+      }
     }),
     DONE_LOADING: (state: ConfigState, action: Action<any>) => ({
       ...state,
@@ -26,9 +26,9 @@ export default handleActions(
           keys[key] = true;
         }
         return keys;
-      }, {}),
+      }, {})
     }),
-    LOGOUT_USER: () => initialState,
+    LOGOUT_USER: () => initialState
   },
-  initialState,
+  initialState
 );

@@ -4,7 +4,7 @@ import {
   StyleSheet,
   StyleProp,
   ImageStyle,
-  ViewStyle,
+  ViewStyle
 } from 'react-native';
 import { WonderImage } from '../theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,7 +15,7 @@ export enum AvatarSize {
   md = 'md',
   lg = 'lg',
   xl = 'xl',
-  xmd = 'xmd',
+  xmd = 'xmd'
 }
 
 interface AvatarProps {
@@ -38,7 +38,7 @@ class Avatar extends React.Component<AvatarProps> {
     bordered: false,
     rounded: false,
     circle: false,
-    uri: null,
+    uri: null
   };
 
   static Sizes = {
@@ -47,13 +47,13 @@ class Avatar extends React.Component<AvatarProps> {
     xmd: 74,
     md: 96,
     lg: 128,
-    xl: 160,
+    xl: 160
   };
 
   getDimensions = () => {
     const { size } = this.props;
     return Avatar.Sizes[size || AvatarSize.sm];
-  };
+  }
 
   getContainerStyles = () => {
     const { bordered, rounded, circle } = this.props;
@@ -62,9 +62,9 @@ class Avatar extends React.Component<AvatarProps> {
       height: length,
       width: length,
       borderRadius: circle ? length / 2 : rounded ? 5 : 0,
-      borderWidth: bordered ? 3 : 0,
+      borderWidth: bordered ? 3 : 0
     };
-  };
+  }
 
   renderImage = () => {
     const { uri, style, chat, circle } = this.props;
@@ -79,9 +79,9 @@ class Avatar extends React.Component<AvatarProps> {
                   {
                     ...this.getContainerStyles(),
                     width: this.getDimensions(),
-                    height: this.getDimensions(),
+                    height: this.getDimensions()
                   },
-                  style,
+                  style
                 ]}
                 uri={uri}
               />
@@ -101,17 +101,17 @@ class Avatar extends React.Component<AvatarProps> {
               {
                 ...this.getContainerStyles(),
                 width: this.getDimensions(),
-                height: this.getDimensions(),
+                height: this.getDimensions()
               },
               style,
-              { margin: 2 },
+              { margin: 2 }
             ]}
             uri={uri}
           />
         );
       }
     }
-  };
+  }
 
   render() {
     const { containerStyle } = this.props;
@@ -120,7 +120,7 @@ class Avatar extends React.Component<AvatarProps> {
         style={[
           styles.avatarContainer,
           this.getContainerStyles(),
-          containerStyle,
+          containerStyle
         ]}
       >
         {this.renderImage()}
@@ -141,9 +141,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 2
     },
     shadowColor: '#000',
-    shadowOpacity: 0.3,
-  },
+    shadowOpacity: 0.3
+  }
 });

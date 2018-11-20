@@ -4,7 +4,7 @@ import {
   ImageBackground,
   StyleSheet,
   StyleProp,
-  ViewStyle,
+  ViewStyle
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import GradientPoint from 'src/models/gradient-point';
@@ -21,7 +21,7 @@ interface Props {
 
 class Screen extends React.Component<Props> {
   static defaultProps = {
-    gradientStart: undefined,
+    gradientStart: undefined
   };
 
   render() {
@@ -32,7 +32,7 @@ class Screen extends React.Component<Props> {
       gradientEnd,
       gradientStart,
       style,
-      horizontalPadding,
+      horizontalPadding
     } = this.props;
 
     const renderedStyles: any = {};
@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFF',
     flexDirection: 'column',
-    justifyContent: 'flex-start',
-  },
+    justifyContent: 'flex-start'
+  }
 });
 
 export default Screen;

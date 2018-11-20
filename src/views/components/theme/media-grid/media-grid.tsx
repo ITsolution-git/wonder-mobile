@@ -5,7 +5,7 @@ import {
   View,
   Image,
   ImageSourcePropType,
-  TouchableOpacity,
+  TouchableOpacity
 } from 'react-native';
 import MediaGridItem from './media-grid-item';
 
@@ -16,7 +16,7 @@ import User from 'src/models/user';
 import WonderAppState from 'src/models/wonder-app-state';
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state),
+  currentUser: selectCurrentUser(state)
 });
 
 interface Props {
@@ -34,7 +34,7 @@ interface Props {
 class MediaGrid extends React.Component<Props> {
   static defaultProps = {
     gutter: 5,
-    width: 200,
+    width: 200
   };
 
   calcGridSpace = (span: number) => {
@@ -47,7 +47,7 @@ class MediaGrid extends React.Component<Props> {
     }
 
     return result;
-  };
+  }
 
   render() {
     const {
@@ -55,7 +55,7 @@ class MediaGrid extends React.Component<Props> {
       gutter,
       onNewPicture,
       onNewVideo,
-      currentUser,
+      currentUser
     } = this.props;
 
     return (
@@ -122,10 +122,10 @@ export default connect(mapState)(MediaGrid);
 const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between'
   },
   column: {
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   container: {},
   featuredContainer: {
@@ -133,6 +133,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: 154,
-    height: 154,
-  },
+    height: 154
+  }
 });

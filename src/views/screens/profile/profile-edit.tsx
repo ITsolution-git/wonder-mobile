@@ -4,14 +4,14 @@ import validator from 'validator';
 import {
   PrimaryButton,
   TextInput,
-  DatePicker,
+  DatePicker
 } from 'src/views/components/theme';
 import {
   View,
   StyleSheet,
   KeyboardAvoidingView,
   ScrollView,
-  Platform,
+  Platform
 } from 'react-native';
 
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
@@ -29,11 +29,11 @@ import theme from 'src/assets/styles/theme';
 import moment from 'moment-timezone';
 
 const mapState = (state: WonderAppState) => ({
-  currentUser: selectCurrentUser(state),
+  currentUser: selectCurrentUser(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onSave: (data: State) => dispatch(updateUser(data)),
+  onSave: (data: State) => dispatch(updateUser(data))
 });
 
 interface Props {
@@ -74,7 +74,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
     errors: {},
     birthdate: this.props.currentUser.birthdate,
     male_interest: this.props.currentUser.male_interest,
-    female_interest: this.props.currentUser.female_interest,
+    female_interest: this.props.currentUser.female_interest
   };
 
   validate = () => {
@@ -87,7 +87,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
       occupation,
       birthdate,
       male_interest,
-      female_interest,
+      female_interest
     } = this.state;
 
     if (validator.isEmpty(first_name)) {
@@ -118,19 +118,19 @@ class ProfileEditScreen extends React.Component<Props, State> {
       occupation,
       birthdate,
       male_interest,
-      female_interest,
+      female_interest
     });
     navigation.goBack();
-  };
+  }
 
   onChangeText = (key: string) => {
     return (text: string) => {
       this.setState({
         ...this.state,
-        [key]: text,
+        [key]: text
       });
     };
-  };
+  }
 
   setGenderPreference = (gender: string) => {
     if (gender === 'male') {
@@ -138,7 +138,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
     } else if (gender === 'female') {
       this.setState({ female_interest: !this.state.female_interest });
     }
-  };
+  }
 
   public render() {
     const { navigation, currentUser } = this.props;
@@ -230,29 +230,29 @@ class ProfileEditScreen extends React.Component<Props, State> {
 
   private onDateChange = (date: Date) => {
     this.setState({ birthdate: date });
-  };
+  }
 }
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(ProfileEditScreen);
 
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    flex: 1,
+    flex: 1
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   genderBtns: {
     paddingBottom: 4,
     borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.5),
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
   },
   genderBtnsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-  },
+    justifyContent: 'space-around'
+  }
 });

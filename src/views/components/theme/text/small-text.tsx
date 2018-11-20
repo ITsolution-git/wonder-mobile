@@ -15,6 +15,6 @@ export default class SmallText extends React.Component<ThemeTextProps> {
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 10,
-  },
+    fontSize: 10
+  }
 });

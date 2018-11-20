@@ -10,7 +10,7 @@ const localStyles = StyleSheet.create({
   sliderContainer: { height: 70, width: '100%' },
   track: {
     backgroundColor: theme.colors.lightGray,
-    width: '100%',
+    width: '100%'
   },
   marker: {
     width: 30,
@@ -22,19 +22,19 @@ const localStyles = StyleSheet.create({
     shadowColor: theme.colors.black,
     shadowOffset: {
       width: 0,
-      height: 0,
+      height: 0
     },
     elevation: 0,
     shadowRadius: 0,
-    shadowOpacity: 0,
+    shadowOpacity: 0
   },
   selected: {
-    backgroundColor: theme.colors.lightPeach,
+    backgroundColor: theme.colors.lightPeach
   },
   sliderValueText: {
     position: 'absolute',
     bottom: -20,
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   triangle: {
     position: 'absolute',
@@ -50,7 +50,7 @@ const localStyles = StyleSheet.create({
     borderTopColor: 'transparent',
     borderRightColor: 'transparent',
     borderBottomColor: theme.colors.peach,
-    borderLeftColor: 'transparent',
+    borderLeftColor: 'transparent'
   },
   sliderValueContainer: {
     position: 'absolute',
@@ -61,8 +61,8 @@ const localStyles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.colors.lightPeach,
-  },
+    backgroundColor: theme.colors.lightPeach
+  }
 });
 
 export interface MultiPointSliderValue {
@@ -89,7 +89,7 @@ class MultiPointSlider extends React.Component<
 > {
   static getDerivedStateFromProps(
     props: MultiPointSliderProps,
-    state: MultiPointSliderState,
+    state: MultiPointSliderState
   ) {
     const { selectedMin, selectedMax } = state;
     const { min, max, initialMaxValue, initialMinValue } = props;
@@ -111,7 +111,7 @@ class MultiPointSlider extends React.Component<
 
   state = {
     selectedMin: this.props.initialMinValue || this.props.min,
-    selectedMax: this.props.initialMaxValue || this.props.max,
+    selectedMax: this.props.initialMaxValue || this.props.max
   };
 
   //   private renderCustomMarkerLeft = (): React.ReactNode => {
@@ -131,7 +131,7 @@ class MultiPointSlider extends React.Component<
     this.setState({ selectedMin, selectedMax });
 
     onValueChange(selectedMin, selectedMax);
-  };
+  }
 
   private renderValue1 = (): React.ReactNode => {
     const { selectedMin } = this.state;
@@ -150,7 +150,7 @@ class MultiPointSlider extends React.Component<
     //     <Text color={theme.colors.white} size={14}>{`${selectedMin}`}</Text>
     //   </View>
     // );
-  };
+  }
 
   private renderValue2 = (): React.ReactNode => {
     const { selectedMax } = this.state;
@@ -159,7 +159,7 @@ class MultiPointSlider extends React.Component<
         {`${selectedMax}`}
       </Text>
     );
-  };
+  }
 
   render() {
     const { min, max } = this.props;

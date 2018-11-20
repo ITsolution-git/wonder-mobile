@@ -12,17 +12,17 @@ interface LatestMatchesProps {
 
 class LatestMatches extends React.Component<LatestMatchesProps> {
   static defaultProps = {
-    chats: [],
+    chats: []
   };
 
   keyExtractor = (item: Conversation, index: number) => {
     return `${item.id}`;
-  };
+  }
 
   renderItem = ({ item: chat }: { item: Conversation }) => {
     const { onPressChat } = this.props;
     return <LatestMatchesItem chat={chat} onPress={() => onPressChat(chat)} />;
-  };
+  }
 
   renderEmpty = () => {
     return (
@@ -30,7 +30,7 @@ class LatestMatches extends React.Component<LatestMatchesProps> {
         <Title>No Matches</Title>
       </View>
     );
-  };
+  }
 
   render() {
     const { chats, onRefresh } = this.props;
@@ -59,6 +59,6 @@ export default LatestMatches;
 
 const styles = StyleSheet.create({
   emptyContainer: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });

@@ -12,11 +12,11 @@ function lighten(color: string, value: number) {
 
 const enabledColors = [
   theme.colors.cottonCandyBlue,
-  theme.colors.cottonCandyPink,
+  theme.colors.cottonCandyPink
 ];
 const disabledColors = [
   lighten(theme.colors.cottonCandyBlue, 0.1),
-  lighten(theme.colors.cottonCandyPink, 0.1),
+  lighten(theme.colors.cottonCandyPink, 0.1)
 ];
 export default class PrimaryButton extends React.Component<BaseButtonProps> {
   render() {
@@ -39,11 +39,11 @@ const styles = StyleSheet.create({
   primaryButtonContainer: {
     shadowOffset: {
       width: 0,
-      height: 5,
+      height: 5
     },
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowRadius: 5,
-    elevation: 1,
-  },
+    elevation: 1
+  }
 });

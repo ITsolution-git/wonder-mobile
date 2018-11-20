@@ -22,15 +22,15 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 5,
     fontSize: 11,
-    color: theme.colors.textColor,
+    color: theme.colors.textColor
   },
   container: {
     width: '100%',
     borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.2),
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.2)
   },
   input: {
     fontFamily: theme.fonts.primary,
-    color: theme.colors.textColor,
-  },
+    color: theme.colors.textColor
+  }
 });

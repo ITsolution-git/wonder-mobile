@@ -27,8 +27,8 @@ const VibeVideoModal = (props: Props) => {
         <VideoPlayer
           customStyles={{
             wrapper: {
-              flex: 1,
-            },
+              flex: 1
+            }
           }}
           videoHeight={deviceHeight}
           videoWidth={deviceWidth}
@@ -36,7 +36,7 @@ const VibeVideoModal = (props: Props) => {
           disableFullscreen={true}
           autoplay={true}
           video={{
-            uri: `${BASE_URL}/${props.videoUrl}`,
+            uri: `${BASE_URL}/${props.videoUrl}`
           }}
         />
         <LinearGradient
@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
     top: 0,
     height: 80,
     alignItems: 'flex-end',
-    width: '100%',
-  },
+    width: '100%'
+  }
 });

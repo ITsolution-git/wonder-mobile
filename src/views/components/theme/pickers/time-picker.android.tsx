@@ -4,7 +4,7 @@ import {
   StyleSheet,
   DatePickerAndroid,
   TouchableOpacity,
-  TimePickerAndroid,
+  TimePickerAndroid
 } from 'react-native';
 import { Label, Text } from '..';
 import moment from 'moment-timezone';
@@ -34,7 +34,7 @@ interface State {
 export default class DatePicker extends React.Component<Props, State> {
   static defaultProps = {
     displayFormat: 'h:mma',
-    is24Hour: false,
+    is24Hour: false
   };
 
   constructor(props: Props) {
@@ -42,7 +42,7 @@ export default class DatePicker extends React.Component<Props, State> {
     this.state = {
       hour: undefined,
       minute: undefined,
-      open: false,
+      open: false
     };
   }
 
@@ -53,7 +53,7 @@ export default class DatePicker extends React.Component<Props, State> {
       errorHint,
       minDate,
       maxDate,
-      onChange,
+      onChange
     } = this.props;
     const { open, hour, minute } = this.state;
 
@@ -83,7 +83,7 @@ export default class DatePicker extends React.Component<Props, State> {
       const { action, hour, minute } = await TimePickerAndroid.open({
         hour: 12,
         minute: 0,
-        is24Hour,
+        is24Hour
       });
       if (action !== DatePickerAndroid.dismissedAction) {
         // Selected year, month (0-11), day
@@ -94,7 +94,7 @@ export default class DatePicker extends React.Component<Props, State> {
     } catch ({ code, message }) {
       console.warn('Cannot open date picker', message);
     }
-  };
+  }
 
   onChange = ({ hour, minute }: { hour: number; minute: number }) => {
     const { onChange } = this.props;
@@ -102,7 +102,7 @@ export default class DatePicker extends React.Component<Props, State> {
     if (onChange) {
       onChange({ hour, minute });
     }
-  };
+  }
 }
 
 const styles = StyleSheet.create({
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     padding: 10,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   container: {
     flexDirection: 'row',
@@ -119,10 +119,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 4,
     borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.5),
+    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
   },
   text: {
     color: theme.colors.textColor,
-    fontFamily: theme.fonts.primary,
-  },
+    fontFamily: theme.fonts.primary
+  }
 });

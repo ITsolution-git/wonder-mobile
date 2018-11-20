@@ -3,7 +3,7 @@ import { View, StyleSheet, Image } from 'react-native';
 import {
   Text,
   RoundedTextInput,
-  PrimaryButton,
+  PrimaryButton
 } from 'src/views/components/theme';
 import theme from 'src/assets/styles/theme';
 import Screen from 'src/views/components/screen';
@@ -29,7 +29,7 @@ const mapState = (state: WonderAppState) => ({});
 const mapDispatch = (dispatch: Dispatch) => ({
   onLogin: (credentials: UserCredentials) => dispatch(loginUser(credentials)),
   onForgotPassword: (email: Email) =>
-    dispatch(forgotPassword({ forgotEmail: email })),
+    dispatch(forgotPassword({ forgotEmail: email }))
 });
 
 interface Props {
@@ -59,7 +59,7 @@ class LoginScreen extends React.Component<Props> {
     password: '',
     errors: {},
     modalVisible: false,
-    forgotEmail: '',
+    forgotEmail: ''
   };
 
   private onChangeText = (key: string) => {
@@ -69,11 +69,11 @@ class LoginScreen extends React.Component<Props> {
         [key]: text,
         errors: {
           ...errors,
-          [key]: undefined,
-        },
+          [key]: undefined
+        }
       });
     };
-  };
+  }
 
   private submit = () => {
     const errors: StateErrors = {};
@@ -94,7 +94,7 @@ class LoginScreen extends React.Component<Props> {
     }
 
     onLogin({ email, password, onSuccess: () => navigation.navigate('Main') });
-  };
+  }
 
   focusOn = (key: string) => {
     return () => {
@@ -102,7 +102,7 @@ class LoginScreen extends React.Component<Props> {
         this.inputs[key].focus();
       }
     };
-  };
+  }
 
   private submitForgotEmail = () => {
     const { forgotEmail } = this.state;
@@ -118,7 +118,7 @@ class LoginScreen extends React.Component<Props> {
     // fire the action
     this.props.onForgotPassword(forgotEmail);
     this.setState({ modalVisible: false, errors: {} });
-  };
+  }
 
   render() {
     const { navigation } = this.props;
@@ -171,7 +171,7 @@ class LoginScreen extends React.Component<Props> {
               flex: 1,
               width: '100%',
               alignItems: 'center',
-              justifyContent: 'space-between',
+              justifyContent: 'space-between'
             }}
           >
             <View style={{ marginTop: 10, width: '50%' }}>
@@ -180,7 +180,7 @@ class LoginScreen extends React.Component<Props> {
                 style={{
                   textAlign: 'center',
                   color: theme.colors.textColor,
-                  marginTop: 18,
+                  marginTop: 18
                 }}
                 text='Forgot Password?'
                 onPress={() => this.setState({ modalVisible: true })}
@@ -213,18 +213,18 @@ class LoginScreen extends React.Component<Props> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(LoginScreen);
 
 const styles = StyleSheet.create({
   header: {
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   body: {
     flex: 2,
     flexDirection: 'column',
     alignItems: 'center',
-    padding: 20,
-  },
+    padding: 20
+  }
 });

@@ -7,7 +7,7 @@ import { Alert } from 'react-native';
 import {
   persistConversations,
   persistConversation,
-  persistNewMessage,
+  persistNewMessage
 } from '../reducers/chat';
 import Conversation from '../../models/conversation';
 import WonderAppState from '../../models/wonder-app-state';
@@ -27,9 +27,9 @@ export function* getConversationsSaga(action: Action<any>) {
       api,
       {
         method: 'GET',
-        url: '/conversations',
+        url: '/conversations'
       },
-      state.user,
+      state.user
     );
 
     yield put(persistConversations(data));
@@ -54,9 +54,9 @@ export function* getConversationSaga(action: Action<any>) {
       api,
       {
         method: 'GET',
-        url: `/conversations/${id}/messages`,
+        url: `/conversations/${id}/messages`
       },
-      state.user,
+      state.user
     );
 
     yield put(persistConversation(data));
@@ -87,9 +87,9 @@ export function* sendMessageSaga(action: Action<any>) {
       {
         method: 'POST',
         url: `/conversations/${action.payload.recipient_id}/messages`,
-        data: action.payload,
+        data: action.payload
       },
-      state.user,
+      state.user
     );
     yield put(persistNewMessage(data));
   } catch (error) {
@@ -123,9 +123,9 @@ export function* ghostContactSaga(action: Action<any>) {
         method: 'DELETE',
         url: `/conversations/${
           action.payload.partner.id
-        }/ghost?message=${formattedMessage}`,
+        }/ghost?message=${formattedMessage}`
       },
-      state.user,
+      state.user
     );
   } catch (error) {
     handleAxiosError(error);
@@ -150,9 +150,9 @@ export function* deleteConversationSaga(action: Action<any>) {
         method: 'DELETE',
         url: `/conversations/${action.payload.partner.id}/messages/${
           action.payload.id
-        }`,
+        }`
       },
-      state.user,
+      state.user
     );
 
     // yield put(persistConversation(data));

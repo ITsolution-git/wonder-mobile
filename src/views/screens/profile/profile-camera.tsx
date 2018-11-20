@@ -20,7 +20,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onUpdateImage: (data: Response) => dispatch(updateImage(data)),
   onDeleteImage: (data: ProfileImage) => dispatch(deleteProfileImage(data)),
   onAddImage: (data) => dispatch(addProfileImage(data)),
-  onRemoveImage: (data) => dispatch(removeProfileImage(data)),
+  onRemoveImage: (data) => dispatch(removeProfileImage(data))
 });
 
 interface ProfileCameraScreenProps {
@@ -38,7 +38,7 @@ class ProfileCameraScreen extends React.Component<
   ProfileCameraScreenState
 > {
   state: ProfileCameraScreenState = {
-    data: null,
+    data: null
   };
 
   onClear = () => this.setState({ data: null });
@@ -49,7 +49,7 @@ class ProfileCameraScreen extends React.Component<
     this.props.onAddImage(data);
     onUpdateImage(data);
     navigation.goBack();
-  };
+  }
 
   getImage = () => {
     const options: Options = {
@@ -57,8 +57,8 @@ class ProfileCameraScreen extends React.Component<
       mediaType: 'photo',
       storageOptions: {
         skipBackup: true,
-        cameraRoll: true,
-      },
+        cameraRoll: true
+      }
     };
 
     ImagePicker.showImagePicker(options, (res: Response) => {
@@ -70,7 +70,7 @@ class ProfileCameraScreen extends React.Component<
         this.setState({ data: res });
       }
     });
-  };
+  }
 
   onRotate = () => {
     const { data } = this.state;
@@ -82,16 +82,16 @@ class ProfileCameraScreen extends React.Component<
           this.setState({
             data: {
               ...data,
-              uri,
-            },
+              uri
+            }
           });
         },
         (error: Error) => {
           console.error(error);
-        },
+        }
       );
     }
-  };
+  }
 
   onDeleteImage = () => {
     const { navigation, onDeleteImage } = this.props;
@@ -102,7 +102,7 @@ class ProfileCameraScreen extends React.Component<
       // Delete the image
       navigation.goBack();
     }
-  };
+  }
 
   renderContent = () => {
     const { navigation } = this.props;
@@ -160,7 +160,7 @@ class ProfileCameraScreen extends React.Component<
         </View>
       </View>
     );
-  };
+  }
 
   render() {
     return <Screen>{this.renderContent()}</Screen>;
@@ -169,7 +169,7 @@ class ProfileCameraScreen extends React.Component<
 
 export default connect(
   null,
-  mapDispatch,
+  mapDispatch
 )(ProfileCameraScreen);
 // export default ProfileCameraScreen;
 
@@ -177,17 +177,17 @@ const styles = StyleSheet.create({
   imgcontainer: {
     flex: 1,
     flexDirection: 'column',
-    padding: 20,
+    padding: 20
   },
   container: {
     flex: 1,
     flexDirection: 'column',
-    padding: 20,
+    padding: 20
   },
   preview: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   capture: {
     backgroundColor: theme.colors.primary,
@@ -198,16 +198,16 @@ const styles = StyleSheet.create({
     height: 50,
     width: 50,
     alignSelf: 'center',
-    margin: 20,
+    margin: 20
   },
   footer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'space-around'
   },
   footerCol: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
+    justifyContent: 'center'
+  }
 });

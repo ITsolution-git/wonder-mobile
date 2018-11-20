@@ -14,11 +14,11 @@ import { DecoratedAppointment } from 'src/models/appointment';
 import { Alert } from 'react-native';
 
 const mapState = (state: WonderAppState) => ({
-  appointments: selectPastAppointments(state),
+  appointments: selectPastAppointments(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onRefreshAppointments: () => dispatch(getAppointments()),
+  onRefreshAppointments: () => dispatch(getAppointments())
 });
 
 interface PastAppointmentsProps {
@@ -34,7 +34,7 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
 
   goToAppointment = (appointment: DecoratedAppointment) => {
     this.props.navigation.navigate('PastAppointmentView', { appointment });
-  };
+  }
 
   deleteAppointment = (appointment: DecoratedAppointment) => {
     const options = [
@@ -42,16 +42,16 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
       {
         text: 'Remove',
         onPress: () =>
-          Alert.alert('Woohoo!', 'We need to actually perform this action'),
-      },
+          Alert.alert('Woohoo!', 'We need to actually perform this action')
+      }
     ];
 
     Alert.alert(
       'Remove Appointment',
       'Would you like to remove this appointment?',
-      options,
+      options
     );
-  };
+  }
 
   render() {
     const { appointments, onRefreshAppointments } = this.props;
@@ -70,5 +70,5 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(PastAppointmentsScreen);

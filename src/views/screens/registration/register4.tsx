@@ -5,7 +5,7 @@ import {
   Text,
   PrimaryButton,
   TextInput,
-  WonderPicker,
+  WonderPicker
 } from 'src/views/components/theme';
 import Screen from 'src/views/components/screen';
 
@@ -37,13 +37,13 @@ interface State {
 }
 
 const mapState = (state: WonderAppState) => ({
-  topics: state.wonder.topics,
+  topics: state.wonder.topics
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
   getAllTopics: () => dispatch(getTopics()),
   onSave: (data: any) => dispatch(persistRegistrationInfo(data)),
-  onRegister: () => dispatch(registerUser()),
+  onRegister: () => dispatch(registerUser())
 });
 
 const chosenItems = (arr: string[]) => {
@@ -60,12 +60,12 @@ const chosenItems = (arr: string[]) => {
 
 class Register4 extends React.Component<Props, State> {
   static defaultProps = {
-    topics: [],
+    topics: []
   };
 
   state = {
     search: '',
-    selected: [],
+    selected: []
   };
 
   componentWillMount() {
@@ -74,7 +74,7 @@ class Register4 extends React.Component<Props, State> {
 
   onSearchTextChange = (text: string) => {
     this.setState({ search: text.toLowerCase() });
-  };
+  }
 
   onChangeSelected = (topic: Topic) => {
     const limit = 3;
@@ -86,10 +86,10 @@ class Register4 extends React.Component<Props, State> {
       this.setState({ selected: [...selected, topic] });
     } else {
       this.setState({
-        selected: selected.filter((t: Topic) => t.name !== topic.name),
+        selected: selected.filter((t: Topic) => t.name !== topic.name)
       });
     }
-  };
+  }
 
   filterTopics = () => {
     const { search } = this.state;
@@ -103,14 +103,14 @@ class Register4 extends React.Component<Props, State> {
       });
     }
     return topics;
-  };
+  }
 
   renderPicker = () => {
     const filteredTopics = this.filterTopics();
     const { selected } = this.state;
     const { topics } = this.props;
     const quickDates = topics.filter(
-      (t) => t.name === 'Coffee' || t.name === 'Lunch' || t.name === 'Dinner',
+      (t) => t.name === 'Coffee' || t.name === 'Lunch' || t.name === 'Dinner'
     );
 
     const groupedTopics = _.chunk(filteredTopics, 3);
@@ -134,7 +134,7 @@ class Register4 extends React.Component<Props, State> {
         </Text>
       </View>
     );
-  };
+  }
 
   renderPicks = () => {
     const { selected } = this.state;
@@ -146,7 +146,7 @@ class Register4 extends React.Component<Props, State> {
         selected={selected}
       />
     );
-  };
+  }
 
   validate = () => {
     const { onSave, onRegister } = this.props;
@@ -156,11 +156,11 @@ class Register4 extends React.Component<Props, State> {
       onRegister();
       this.props.navigation.navigate('Register3');
     }
-  };
+  }
 
   renderRow = ({ item }: { item: any }) => {
     return <View style={styles.row}>{item.map(this.renderWonder)}</View>;
-  };
+  }
 
   renderWonder = (topic: Topic) => {
     const { selected } = this.state;
@@ -172,7 +172,7 @@ class Register4 extends React.Component<Props, State> {
         onPress={this.onChangeSelected}
       />
     );
-  };
+  }
 
   render() {
     const { selected } = this.state;
@@ -215,35 +215,35 @@ class Register4 extends React.Component<Props, State> {
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(Register4);
 
 const styles = StyleSheet.create({
   welcome: {
     fontSize: 14,
     textAlign: 'center',
-    margin: 10,
+    margin: 10
   },
   instructions: {
     textAlign: 'center',
     color: '#333333',
-    marginBottom: 5,
+    marginBottom: 5
   },
   row: {
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   inputContainer: {
     paddingVertical: 15,
     width: '80%',
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   fixedButton: {
     position: 'absolute',
     bottom: 10,
     width: '100%',
-    zIndex: 10,
-  },
+    zIndex: 10
+  }
 });

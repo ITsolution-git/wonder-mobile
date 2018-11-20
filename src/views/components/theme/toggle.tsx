@@ -14,7 +14,7 @@ interface Props {
 class Toggle extends React.Component<Props> {
   static defaultProps = {
     onValueChange: _.noop,
-    value: false,
+    value: false
   };
 
   onChangeValue = (value: boolean) => {
@@ -22,7 +22,7 @@ class Toggle extends React.Component<Props> {
     if (onValueChange) {
       onValueChange(value);
     }
-  };
+  }
 
   render() {
     const { disabled, value } = this.props;

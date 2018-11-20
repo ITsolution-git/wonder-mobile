@@ -10,7 +10,7 @@ import {
   Dimensions,
   Animated,
   Image,
-  Alert,
+  Alert
 } from 'react-native';
 
 import moment from 'moment-timezone';
@@ -56,7 +56,7 @@ interface CardDetailsOverlayState {
 }
 
 const mapState = (state: WonderAppState) => ({
-  stateProposal: state.wonder.proposal,
+  stateProposal: state.wonder.proposal
 });
 
 class CardDetailsOverlay extends React.Component<
@@ -69,7 +69,7 @@ class CardDetailsOverlay extends React.Component<
     imageCount: 0,
     showVideoPlayer: false,
     location: '',
-    animation: new Animated.Value(0),
+    animation: new Animated.Value(0)
   };
 
   componentDidMount() {
@@ -86,11 +86,11 @@ class CardDetailsOverlay extends React.Component<
     const { zipcode } = this.props.candidate;
     if (zipcode) {
       const geolocation: GoogleGeoLocation = await googleMaps.geocodeByZipCode(
-        zipcode,
+        zipcode
       );
       this.setState({ location: `${geolocation.city}, ${geolocation.state}` });
     }
-  };
+  }
 
   renderDistance = () => {
     const { candidate } = this.props;
@@ -104,7 +104,7 @@ class CardDetailsOverlay extends React.Component<
         {distance <= 1 ? '< 1 mile' : distance + ' miles'}
       </Text>
     );
-  };
+  }
 
   toggleDetails = () => {
     const showDetails = !this.state.showDetails;
@@ -114,10 +114,10 @@ class CardDetailsOverlay extends React.Component<
     this.state.animation.setValue(fromValue);
     Animated.timing(this.state.animation, {
       toValue,
-      duration: 100,
+      duration: 100
     }).start();
     this.setState({ showDetails });
-  };
+  }
 
   getTopics = () => {
     const { candidate, currentUser } = this.props;
@@ -130,7 +130,7 @@ class CardDetailsOverlay extends React.Component<
           candidateTopics.map((x: Topic) => {
             if (userTopics) {
               const active: boolean = !!userTopics.find(
-                (i: Topic) => i.name === x.name,
+                (i: Topic) => i.name === x.name
               );
               return (
                 <View key={x.name} style={{ marginRight: 4 }}>
@@ -141,7 +141,7 @@ class CardDetailsOverlay extends React.Component<
           })}
       </View>
     );
-  };
+  }
 
   getNextPhoto = () => {
     const { candidate } = this.props;
@@ -153,16 +153,16 @@ class CardDetailsOverlay extends React.Component<
     } else {
       this.setState({ imageCount: 0 });
     }
-  };
+  }
 
   showAlert = () => {
     Alert.alert(
       'Coming Soon',
       'Check back soon for Wonder Premium!',
       [{ text: 'Ok' }],
-      { cancelable: false },
+      { cancelable: false }
     );
-  };
+  }
 
   render() {
     const { showDetails, imageCount, location } = this.state;
@@ -204,7 +204,7 @@ class CardDetailsOverlay extends React.Component<
               <Title style={{ fontSize: 24, fontWeight: 'bold' }} color='#FFF'>
                 {[
                   candidate.first_name,
-                  moment().diff(candidate.birthdate, 'years'),
+                  moment().diff(candidate.birthdate, 'years')
                 ].join(', ')}
               </Title>
               {this.renderDistance()}
@@ -216,7 +216,7 @@ class CardDetailsOverlay extends React.Component<
                 style={{ position: 'absolute', bottom: -deviceHeight }}
                 onLayout={(event: any) =>
                   this.setState({
-                    contentHeight: event.nativeEvent.layout.height,
+                    contentHeight: event.nativeEvent.layout.height
                   })
                 }
               >
@@ -228,7 +228,7 @@ class CardDetailsOverlay extends React.Component<
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 paddingBottom: 15,
-                paddingTop: 15,
+                paddingTop: 15
               }}
             >
               <View>
@@ -277,7 +277,7 @@ class ProposalSwiper extends React.Component<Props> {
         </View>
       );
     }
-  };
+  }
 
   renderCard = () => {
     const { stateProposal } = this.props;
@@ -287,7 +287,7 @@ class ProposalSwiper extends React.Component<Props> {
         currentUser={this.props.currentUser}
       />
     );
-  };
+  }
 
   render() {
     const { proposal, onSwipeLeft, onSwipeRight } = this.props;
@@ -325,30 +325,30 @@ const styles = StyleSheet.create({
     backgroundColor: '#eee',
     justifyContent: 'space-between',
     height: Dimensions.get('window').height - 60,
-    width: Dimensions.get('window').width,
+    width: Dimensions.get('window').width
   },
   textContainer: {
     padding: 15,
-    flexDirection: 'row',
+    flexDirection: 'row'
   },
   noMatchesContainer: {
     padding: 20,
     flex: 1,
     backgroundColor: '#EEE',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   titleText: {
-    fontSize: 24,
+    fontSize: 24
   },
   messageText: {
-    textAlign: 'center',
+    textAlign: 'center'
   },
   noImageContainer: {
     flex: 1,
     height: 300,
     backgroundColor: '#EEE',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   cardOverlayContainer: {
     position: 'absolute',
@@ -356,6 +356,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: 1,
-  },
+    zIndex: 1
+  }
 });

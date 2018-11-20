@@ -6,7 +6,7 @@ import {
   Strong,
   TextArea,
   PrimaryButton,
-  TextInput,
+  TextInput
 } from 'src/views/components/theme';
 import theme from 'src/assets/styles/theme';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
@@ -39,7 +39,7 @@ const mapState = (state: WonderAppState) => ({});
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onSubmitFeedback: (feedback: SupportMessage) =>
-    dispatch(submitFeedback(feedback)),
+    dispatch(submitFeedback(feedback))
 });
 
 // automatically get name and email from user in redux
@@ -54,21 +54,21 @@ class FeedbackScreen extends React.Component<
     bodyError: false,
     subjectErrorText: 'Please add a subject',
     bodyErrorText: 'Please add some information about your query',
-    data: {},
+    data: {}
   };
 
   onChangeSubjectText = (text: string) => {
     this.setState({ subject: text });
-  };
+  }
 
   onChangebodyText = (text: string) => {
     this.setState({ body: text });
-  };
+  }
 
   getImage = () => {
     const options: Options = {
       title: 'Upload a Photo',
-      mediaType: 'photo',
+      mediaType: 'photo'
     };
 
     ImagePicker.showImagePicker(options, (res: Response) => {
@@ -80,7 +80,7 @@ class FeedbackScreen extends React.Component<
         this.setState({ data: res });
       }
     });
-  };
+  }
 
   submit = () => {
     const { subject, body, data } = this.state;
@@ -96,7 +96,7 @@ class FeedbackScreen extends React.Component<
         this.setState({ bodyError: true });
       }
     }
-  };
+  }
 
   render() {
     const { navigation } = this.props;
@@ -104,7 +104,7 @@ class FeedbackScreen extends React.Component<
       subjectError,
       bodyError,
       subjectErrorText,
-      bodyErrorText,
+      bodyErrorText
     } = this.state;
 
     return (
@@ -140,7 +140,7 @@ class FeedbackScreen extends React.Component<
                 borderRadius: 4,
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                justifyContent: 'space-between'
               }}
             >
               <StateButton
@@ -162,7 +162,7 @@ class FeedbackScreen extends React.Component<
               style={{
                 minHeight: 150,
                 backgroundColor: '#E1E1E1',
-                color: '#444',
+                color: '#444'
               }}
             />
           </View>
@@ -178,18 +178,18 @@ class FeedbackScreen extends React.Component<
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(FeedbackScreen);
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 15,
+    paddingBottom: 15
   },
   infoText: {
     fontSize: 18,
     paddingHorizontal: 25,
     lineHeight: 24,
     textAlign: 'center',
-    marginBottom: 20,
-  },
+    marginBottom: 20
+  }
 });

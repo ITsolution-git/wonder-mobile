@@ -13,7 +13,7 @@ export const initialState: AppointmentState = {
   match: null,
   activity: null,
   eventAt: null,
-  topic: null,
+  topic: null
 };
 
 export const persistAppointmentData = createAction('PERSIST_APPOINTMENT_DATA');
@@ -23,13 +23,13 @@ export default handleActions(
   {
     PERSIST_APPOINTMENT_DATA: (
       state: AppointmentState,
-      action: Action<any>,
+      action: Action<any>
     ) => ({
       ...state,
-      ...action.payload,
+      ...action.payload
     }),
     RESET_APPOINTMENT: () => initialState,
-    LOGOUT_USER: () => initialState,
+    LOGOUT_USER: () => initialState
   },
-  initialState,
+  initialState
 );

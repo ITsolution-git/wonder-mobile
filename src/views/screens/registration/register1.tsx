@@ -7,7 +7,7 @@ import {
   Platform,
   ScrollView,
   Linking,
-  Alert,
+  Alert
 } from 'react-native';
 import { RoundedTextInput, PrimaryButton } from 'src/views/components/theme';
 import Screen from 'src/views/components/screen';
@@ -19,7 +19,7 @@ import { Dispatch } from 'redux';
 import WonderAppState from '../../../models/wonder-app-state';
 import {
   persistRegistrationInfo,
-  resetRegistration,
+  resetRegistration
 } from 'src/store/reducers/registration';
 
 interface Props {
@@ -49,7 +49,7 @@ const mapState = (state: WonderAppState) => ({});
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
-  onReset: () => dispatch(resetRegistration()),
+  onReset: () => dispatch(resetRegistration())
 });
 
 class Register1 extends React.Component<Props, State> {
@@ -58,7 +58,7 @@ class Register1 extends React.Component<Props, State> {
     last_name: null,
     email: null,
     phone: null,
-    password: null,
+    password: null
   };
 
   state: State = {
@@ -67,7 +67,7 @@ class Register1 extends React.Component<Props, State> {
     email: '',
     phone: '',
     password: '',
-    errors: {},
+    errors: {}
   };
 
   componentWillMount() {
@@ -78,7 +78,7 @@ class Register1 extends React.Component<Props, State> {
     if (this.inputs[key]) {
       this.inputs[key].focus();
     }
-  };
+  }
 
   render() {
     const { errors } = this.state;
@@ -197,7 +197,7 @@ class Register1 extends React.Component<Props, State> {
                 style={{
                   paddingVertical: 10,
                   width: '50%',
-                  alignSelf: 'center',
+                  alignSelf: 'center'
                 }}
               >
                 <PrimaryButton title='Next' onPress={this.validate} />
@@ -243,7 +243,7 @@ class Register1 extends React.Component<Props, State> {
     }
     onSave({ first_name, last_name, email, phone, password });
     navigation.navigate('Register2');
-  };
+  }
 
   private onChangeText = (key: string) => {
     const { errors } = this.state;
@@ -253,16 +253,16 @@ class Register1 extends React.Component<Props, State> {
         [key]: text,
         errors: {
           ...errors,
-          [key]: undefined,
-        },
+          [key]: undefined
+        }
       });
     };
-  };
+  }
 }
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(Register1);
 
 const styles = StyleSheet.create({
@@ -270,11 +270,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
     flexDirection: 'column',
-    padding: 20,
+    padding: 20
   },
   header: {
     maxHeight: 125,
     flex: 0,
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 });
