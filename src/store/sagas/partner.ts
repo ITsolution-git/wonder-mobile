@@ -50,16 +50,6 @@ export function* getPartnerActivitiesSaga(action: Action<any>) {
     }: { id: number; coordinate?: Coordinate } = action.payload;
     const state: WonderAppState = yield select();
 
-<<<<<<< HEAD
-    const { data }: { data: Activity[] } = yield call(api, {
-      method: 'GET',
-      url: `/partners/${id}/activities`,
-      params: {
-        lat: _.get(coordinate, 'lat'),
-        lng: _.get(coordinate, 'lng'),
-      },
-    }, state.user);
-=======
     const { data }: { data: Activity[] } = yield call(
       api,
       {
@@ -72,7 +62,6 @@ export function* getPartnerActivitiesSaga(action: Action<any>) {
       },
       state.user
     );
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 
     yield put(persistActivities(data));
     // yield put(persistUser(data));
@@ -93,12 +82,6 @@ export function* getActivityDetailsSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
 
-<<<<<<< HEAD
-    const { data }: { data: ActivityDetails } = yield call(api, {
-      method: 'GET',
-      url: `/activities/${action.payload.id}`,
-    }, state.user);
-=======
     const { data }: { data: ActivityDetails } = yield call(
       api,
       {
@@ -107,7 +90,6 @@ export function* getActivityDetailsSaga(action: Action<any>) {
       },
       state.user
     );
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 
     yield put(persistActivity(data));
     // yield put(persistUser(data));
@@ -129,12 +111,6 @@ export function* blockUserSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
 
-<<<<<<< HEAD
-    const { data }: { data: ActivityDetails } = yield call(api, {
-      method: 'POST',
-      url: `/partners/${action.payload.id}/blocks?message=cow+goes-moo`,
-    }, state.user);
-=======
     const { data }: { data: ActivityDetails } = yield call(
       api,
       {
@@ -143,7 +119,6 @@ export function* blockUserSaga(action: Action<any>) {
       },
       state.user
     );
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 
     // yield put(persistActivity(data));
     // yield put(persistUser(data));
