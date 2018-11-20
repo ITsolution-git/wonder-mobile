@@ -9,45 +9,17 @@ import { connect } from 'react-redux';
 
 import {
   getPartnerActivities,
-<<<<<<< HEAD
-  getActivityDetails,
-} from "src/store/sagas/partner";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import ActivityDetailsModal from "src/views/components/modals/activity-details-modal";
-=======
   getActivityDetails
 } from 'src/store/sagas/partner';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import ActivityDetailsModal from 'src/views/components/modals/activity-details-modal';
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 
 import { persistActivity } from 'src/store/reducers/chat';
 import {
   GeolocationReturnType,
-<<<<<<< HEAD
-  Image,
   View,
   StyleSheet,
-} from "react-native";
-import {
-  persistAppointmentData,
-  AppointmentState,
-} from "src/store/reducers/appointment";
-import askForDeviceLocation from "src/services/gps";
-
-import { selectCurrentUser } from "src/store/selectors/user";
-import WonderAppState from "src/models/wonder-app-state";
-import Coordinate from "src/models/coordinate";
-import User from "src/models/user";
-import Topic from "src/models/topic";
-import Conversation from "src/models/conversation";
-
-import Activity from "src/models/activity";
-import ActivityDetails from "src/models/activity-details";
-=======
-  Alert,
-  PermissionsAndroid,
-  Platform
+  Image
 } from 'react-native';
 import {
   persistAppointmentData,
@@ -61,9 +33,8 @@ import Coordinate from 'src/models/coordinate';
 import User from 'src/models/user';
 import Activity from 'src/models/activity';
 import ActivityDetails from 'src/models/activity-details';
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 
-import theme from "src/assets/styles/theme";
+import theme from 'src/assets/styles/theme';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),
@@ -153,10 +124,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
       <MarkerContainer
         key={`${id} - ${name}`}
         coordinate={{ latitude, longitude }}
-<<<<<<< HEAD
-=======
-        // onPress={() => onGetActivity(id)}
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
+      // onPress={() => onGetActivity(id)}
       >
         <View
           style={usersTopics.includes(topic.name) && matchTopics.includes(topic.name)
@@ -187,7 +155,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
           // showsUserLocation
           // showsMyLocationButton
           moveOnMarkerPress={false}
-          mapType="mutedStandard"
+          mapType='mutedStandard'
           rotateEnabled={false}
           style={{ flex: 1 }}
           region={{
@@ -206,8 +174,8 @@ class ActivityMapScreen extends React.Component<Props, State> {
           >
             <Image
               style={{ height: 40, width: 40 }}
-              resizeMode="contain"
-              source={require("src/assets/images/icons/MapMatchIcon.png")} />
+              resizeMode='contain'
+              source={require('src/assets/images/icons/MapMatchIcon.png')} />
           </MarkerContainer>
 
           <MarkerContainer
@@ -218,8 +186,8 @@ class ActivityMapScreen extends React.Component<Props, State> {
           >
             <Image
               style={{ height: 40, width: 40 }}
-              resizeMode="contain"
-              source={require("src/assets/images/icons/WonderMapIcon.png")} />
+              resizeMode='contain'
+              source={require('src/assets/images/icons/WonderMapIcon.png')} />
           </MarkerContainer>
 
           {activities.map(this.renderMarker)}
@@ -241,11 +209,11 @@ const styles = StyleSheet.create({
     width: 34,
     borderWidth: 2,
     borderColor: theme.colors.primary,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 17,
   },
-})
+});
 
 export default connect(
   mapState,

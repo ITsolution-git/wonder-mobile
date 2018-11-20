@@ -1,7 +1,7 @@
-import React from "react";
-import _ from "lodash";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import Screen from "src/views/components/screen";
+import React from 'react';
+import _ from 'lodash';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import Screen from 'src/views/components/screen';
 import {
   View,
   StyleSheet,
@@ -10,51 +10,51 @@ import {
   Alert,
   Text,
   Platform,
-} from "react-native";
-import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
-import ChatActionButton from "src/views/components/chat/chat-action-button";
-import { connect } from "react-redux";
-import { Dispatch } from "redux";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { getConversation, ghostContact } from "src/store/sagas/conversations";
-import { blockUser } from "src/store/sagas/partner";
+} from 'react-native';
+import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
+import ChatActionButton from 'src/views/components/chat/chat-action-button';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { getConversation, ghostContact } from 'src/store/sagas/conversations';
+import { blockUser } from 'src/store/sagas/partner';
 import {
   getDecoratedConversation,
   decorateMessagesForGiftedChat,
-} from "src/store/selectors/conversation";
-import { selectCurrentUser } from "src/store/selectors/user";
-import User from "src/models/user";
+} from 'src/store/selectors/conversation';
+import { selectCurrentUser } from 'src/store/selectors/user';
+import User from 'src/models/user';
 import {
   DecoratedConversation,
   ConversationNewMessage,
-} from "src/models/conversation";
-import GiftedChatMessage from "src/models/chat-message";
-import ChatGhostingModal from "../../components/modals/chat-ghosting-modal";
-import WonderAppState from "src/models/wonder-app-state";
-import ChatResponseMessage from "src/models/chat-response-message";
+} from 'src/models/conversation';
+import GiftedChatMessage from 'src/models/chat-message';
+import ChatGhostingModal from '../../components/modals/chat-ghosting-modal';
+import WonderAppState from 'src/models/wonder-app-state';
+import ChatResponseMessage from 'src/models/chat-response-message';
 import {
   AppointmentState,
   persistAppointmentData,
-} from "src/store/reducers/appointment";
+} from 'src/store/reducers/appointment';
 import {
   persistNewChatMessage,
   persistMessageAsRead,
   persistGhostMessage,
-} from "src/store/reducers/chat";
-import Assets from "src/assets/images";
-import Topic from "src/models/topic";
-import ImagePicker from "react-native-image-picker";
+} from 'src/store/reducers/chat';
+import Assets from 'src/assets/images';
+import Topic from 'src/models/topic';
+import ImagePicker from 'react-native-image-picker';
 
 import {
   Menu,
   MenuOptions,
   MenuOption,
   MenuTrigger,
-} from "react-native-popup-menu";
-import { Options, Response } from "../../../models/image-picker";
-import { ImageSource } from "react-native-vector-icons/Icon";
-import Wonder from "src/views/components/theme/wonder/wonder";
-import ProfileModalChat from "src/views/components/modals/profile-modal-chat";
+} from 'react-native-popup-menu';
+import { Options, Response } from '../../../models/image-picker';
+import { ImageSource } from 'react-native-vector-icons/Icon';
+import Wonder from 'src/views/components/theme/wonder/wonder';
+import ProfileModalChat from 'src/views/components/modals/profile-modal-chat';
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -110,18 +110,18 @@ class ChatScreen extends React.Component<Props> {
   static navigationOptions = ({
     navigation,
   }: {
-    navigation: NavigationScreenProp<any, NavigationParams>;
-  }) => {
+      navigation: NavigationScreenProp<any, NavigationParams>;
+    }) => {
     return {
-      title: navigation.getParam("title", "Chat"),
+      title: navigation.getParam('title', 'Chat'),
       headerRight: (
         <View style={{ marginRight: 10 }}>
           <Menu>
             <MenuTrigger>
               <View
                 style={{
-                  justifyContent: "center",
-                  alignItems: "center",
+                  justifyContent: 'center',
+                  alignItems: 'center',
                   width: 40,
                 }}
               >
@@ -132,14 +132,14 @@ class ChatScreen extends React.Component<Props> {
               <MenuOption
                 onSelect={() => navigation.state.params.openProfileModal()}
               >
-                <Text style={{ fontSize: 16, color: "black" }}>
+                <Text style={{ fontSize: 16, color: 'black' }}>
                   View profile
                 </Text>
               </MenuOption>
               <MenuOption
                 onSelect={() => navigation.state.params.onBlockConversation()}
               >
-                <Text style={{ fontSize: 16, color: "black" }}>
+                <Text style={{ fontSize: 16, color: 'black' }}>
                   Block and report
                 </Text>
               </MenuOption>
@@ -147,7 +147,7 @@ class ChatScreen extends React.Component<Props> {
               <MenuOption
                 onSelect={() => navigation.state.params.onGhostPartner()}
               >
-                <Text style={{ fontSize: 16, color: "black" }}>Unmatch</Text>
+                <Text style={{ fontSize: 16, color: 'black' }}>Unmatch</Text>
               </MenuOption>
             </MenuOptions>
           </Menu>
@@ -158,7 +158,7 @@ class ChatScreen extends React.Component<Props> {
 
   state: ChatViewState = {
     isGhostingModalOpen: false,
-    selectedSendImage: "",
+    selectedSendImage: '',
     conversationMessages: [],
     profileModalOpen: false,
     showVideo: false,
@@ -181,13 +181,13 @@ class ChatScreen extends React.Component<Props> {
     const chats = decorateMessagesForGiftedChat(currentUser, conversation);
     this.setState({ conversationMessages: chats.giftedChatMessages });
 
-    const redirect = navigation.getParam("redirect", "");
-    if (redirect === "ghosting") {
+    const redirect = navigation.getParam('redirect', '');
+    if (redirect === 'ghosting') {
       this.openGhostingModal();
-      navigation.setParams({ redirect: "" });
-    } else if (redirect === "profile") {
+      navigation.setParams({ redirect: '' });
+    } else if (redirect === 'profile') {
       this.openProfileModal();
-      navigation.setParams({ redirect: "" });
+      navigation.setParams({ redirect: '' });
     }
   }
 
@@ -216,7 +216,7 @@ class ChatScreen extends React.Component<Props> {
   scheduleWonder = () => {
     const { navigation, conversation, onUpdateAppointment } = this.props;
     onUpdateAppointment({ match: conversation.partner });
-    navigation.navigate("WonderMap", { id: conversation.partner.id });
+    navigation.navigate('WonderMap', { id: conversation.partner.id });
   }
 
   openGhostingModal = () => {
@@ -233,9 +233,9 @@ class ChatScreen extends React.Component<Props> {
 
   showBlockAlert = () => {
     Alert.alert(
-      "Confirm",
-      "Are you sure you want to remove this conversation?",
-      [{ text: "Cancel" }, { text: "YES", onPress: this.blockPartner }],
+      'Confirm',
+      'Are you sure you want to remove this conversation?',
+      [{ text: 'Cancel' }, { text: 'YES', onPress: this.blockPartner }],
       { cancelable: false },
     );
   }
@@ -243,9 +243,9 @@ class ChatScreen extends React.Component<Props> {
   // could refactor these two alerts
   showAlert = () => {
     Alert.alert(
-      "Confirm",
-      "Are you sure you want to remove this conversation?",
-      [{ text: "Cancel" }, { text: "YES", onPress: this.ghostPartner }],
+      'Confirm',
+      'Are you sure you want to remove this conversation?',
+      [{ text: 'Cancel' }, { text: 'YES', onPress: this.ghostPartner }],
       { cancelable: false },
     );
   }
@@ -262,7 +262,7 @@ class ChatScreen extends React.Component<Props> {
       });
     });
 
-    this.setState({ selectedSendImage: "" });
+    this.setState({ selectedSendImage: '' });
   }
 
   renderBubble(props: any) {
@@ -297,8 +297,8 @@ class ChatScreen extends React.Component<Props> {
 
   getImage = () => {
     const options: Options = {
-      title: "Upload a Photo",
-      mediaType: "photo",
+      title: 'Upload a Photo',
+      mediaType: 'photo',
     };
 
     ImagePicker.showImagePicker(options, (res: Response) => {
@@ -307,7 +307,7 @@ class ChatScreen extends React.Component<Props> {
       } else if (res.error) {
         // console.log("Error", res.error);
       } else {
-        const source = { uri: res.uri.replace("file://", "") };
+        const source = { uri: res.uri.replace('file://', '') };
         this.setState({ selectedSendImage: source });
       }
     });
@@ -318,11 +318,11 @@ class ChatScreen extends React.Component<Props> {
 
     this.props.onReportUser({ id: conversation.partner.id });
     this.props.onSendGhostMessage({
-      ghostMessage: "",
+      ghostMessage: '',
       conversation_id: conversation.id,
       partner: conversation.partner,
     });
-    navigation.navigate("ChatList");
+    navigation.navigate('ChatList');
   }
 
   ghostPartner = (ghostMessage: string) => {
@@ -335,7 +335,7 @@ class ChatScreen extends React.Component<Props> {
     });
     onGhostContact({ partner: conversation.partner, message: ghostMessage });
     this.closeGhostingModal();
-    navigation.navigate("ChatList");
+    navigation.navigate('ChatList');
   }
 
   getTopics = () => {
@@ -345,7 +345,7 @@ class ChatScreen extends React.Component<Props> {
     const userTopics = currentUser.topics;
 
     return (
-      <View style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: 'row' }}>
         {candidate &&
           candidateTopics.map((x: Topic) => {
             if (userTopics) {
@@ -369,15 +369,10 @@ class ChatScreen extends React.Component<Props> {
   renderFooter = () => {
     return (
       <View style={styles.footerContainer}>
-        <View style={styles.actionBtnContainer} flexDirection={"row"}>
+        <View style={styles.actionBtnContainer} flexDirection={'row'}>
           <ChatActionButton
-<<<<<<< HEAD
-            bold={Platform.OS === "ios" ? false : true}
-            title="Schedule Wonder"
-=======
             bold={Platform.OS === 'ios' ? false : true}
             title='Schedule Wonder'
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
             onPress={this.scheduleWonder}
           />
           <TouchableOpacity
@@ -408,7 +403,7 @@ class ChatScreen extends React.Component<Props> {
           renderFooter={this.renderFooter}
           onSend={this.onSend}
           renderActions={this.renderActions}
-          dateFormat={"LLL"}
+          dateFormat={'LLL'}
           renderTime={() => null}
           onPressAvatar={this.openProfileModal}
         />
@@ -443,12 +438,12 @@ export default connect(
 
 const bubbleTextStyle = StyleSheet.create({
   right: {
-    color: "#FFF",
-    fontWeight: "bold",
+    color: '#FFF',
+    fontWeight: 'bold',
   },
   left: {
-    color: "#000",
-    fontWeight: "bold",
+    color: '#000',
+    fontWeight: 'bold',
   },
 });
 
@@ -460,14 +455,14 @@ const bubbleWrapperStyle = StyleSheet.create({
     paddingBottom: 10,
     borderRadius: 5,
     elevation: 3,
-    shadowColor: "blue",
+    shadowColor: 'blue',
     shadowOpacity: 0.3,
     shadowRadius: 5,
     shadowOffset: {
       width: 3,
       height: 1,
     },
-    backgroundColor: "#fcb26a",
+    backgroundColor: '#fcb26a',
     marginVertical: 5,
   },
   left: {
@@ -477,21 +472,21 @@ const bubbleWrapperStyle = StyleSheet.create({
     paddingBottom: 10,
     borderRadius: 5,
     elevation: 3,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOpacity: 0.3,
     shadowRadius: 5,
     shadowOffset: {
       width: -3,
       height: 1,
     },
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     marginVertical: 5,
   },
 });
 
 const styles = StyleSheet.create({
   footer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
@@ -500,18 +495,18 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginTop: 2,
     borderRadius: 100 / 2,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     width: 46,
     height: 46,
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     borderWidth: 1,
-    borderColor: "#fcbd77",
+    borderColor: '#fcbd77',
   },
   footerContainer: {
     marginBottom: 10,
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
-  actionBtnContainer: { width: "50%", alignItems: "center" },
+  actionBtnContainer: { width: '50%', alignItems: 'center' },
 });

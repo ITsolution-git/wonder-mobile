@@ -27,29 +27,17 @@ const ChatNavigator = createStackNavigator(
       screen: ActivityMap,
       navigationOptions: {
         // header: null
-<<<<<<< HEAD
         title: 'PICK A WONDER',
-        ...theme.NavBar.transparent,
-      },
-=======
-        title: 'FIND A WONDER',
         ...theme.NavBar.transparent
       }
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
     },
     WonderSchedule: {
       screen: ActivitySchedule,
       navigationOptions: {
         // header: null
-<<<<<<< HEAD
-        title: 'Schedule Your Wonder',
-        ...theme.NavBar.transparent,
-      },
-=======
         title: 'Schedule Your Wonder',
         ...theme.NavBar.transparent
       }
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
     },
     AppointmentInvite: {
       screen: AppointmentInvite,
@@ -60,16 +48,6 @@ const ChatNavigator = createStackNavigator(
     AppointmentConfirm: {
       screen: AppointmentConfirm,
       navigationOptions: {
-<<<<<<< HEAD
-        title: 'Confirm Your Wonder',
-        ...theme.NavBar.transparent,
-      },
-    },
-  },
-  {
-    initialRouteName: 'ChatList',
-  },
-=======
         title: 'Confirm Your Wonder',
         ...theme.NavBar.transparent
       }
@@ -78,7 +56,6 @@ const ChatNavigator = createStackNavigator(
   {
     initialRouteName: 'ChatList'
   }
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
 );
 
 export default ChatNavigator;

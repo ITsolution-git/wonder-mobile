@@ -13,22 +13,18 @@ interface WonderProps {
   size?: number;
   labelStyles?: any;
 }
-<<<<<<< HEAD
-const Wonder: React.SFC<WonderProps> = ({ labelStyles, topic, active, size = 80, noText }) => {
-=======
 const Wonder: React.SFC<WonderProps> = ({
   labelStyles,
   topic,
   active,
   size = 80
 }) => {
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
   const imageSize = (size / 2) * 0.75;
   const containerStyles = {
     height: size,
     width: size,
     borderRadius: size / 2,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
   };
 
   const wonderStyles = [styles.container, containerStyles];
@@ -42,14 +38,14 @@ const Wonder: React.SFC<WonderProps> = ({
         style={{ height: imageSize, width: imageSize, marginBottom: 5 }}
         uri={topic.icon}
       />
-      {noText ? null : <Text
+      <Text
         numberOfLines={1}
         adjustsFontSizeToFit={true}
         allowFontScaling={false}
         style={[styles.label, labelStyles && labelStyles]}
       >
         {_.toUpper(topic.name)}
-      </Text>}
+      </Text>
     </View>
   );
 };
@@ -63,13 +59,8 @@ export default Wonder;
 
 const styles = StyleSheet.create({
   container: {
-<<<<<<< HEAD
-    justifyContent: "center",
-    alignItems: "center",
-=======
     justifyContent: 'center',
     alignItems: 'center'
->>>>>>> bfc3f5e22871dd12d8e61e1275921293ec192c2a
   },
   selectedContainer: {
     borderWidth: 2,
@@ -82,6 +73,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 6,
-    textAlign: "center",
+    textAlign: 'center',
   },
 });
