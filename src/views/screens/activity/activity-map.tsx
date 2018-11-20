@@ -17,10 +17,6 @@ import ActivityDetailsModal from "src/views/components/modals/activity-details-m
 import { persistActivity } from "src/store/reducers/chat";
 import {
   GeolocationReturnType,
-  Alert,
-  PermissionsAndroid,
-  Platform,
-  Text,
   Image,
   View,
   StyleSheet,
@@ -35,12 +31,13 @@ import { selectCurrentUser } from "src/store/selectors/user";
 import WonderAppState from "src/models/wonder-app-state";
 import Coordinate from "src/models/coordinate";
 import User from "src/models/user";
+import Topic from "src/models/topic";
+import Conversation from "src/models/conversation";
+
 import Activity from "src/models/activity";
 import ActivityDetails from "src/models/activity-details";
 
 import theme from "src/assets/styles/theme";
-
-const Logo = require("src/assets/images/icons/LogoIcon.png");
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),
@@ -66,6 +63,7 @@ interface Props {
   onGetActivities: Function;
   onGetActivity: Function;
   clearActivity: Function;
+  conversation: Conversation;
   onUpdateAppointment: (data: AppointmentState) => any;
 }
 
@@ -118,17 +116,13 @@ class ActivityMapScreen extends React.Component<Props, State> {
     navigation.navigate("WonderSchedule");
   }
 
-  // {
-  //   "lat": 41.887528,
-  //   "lng": -88.305352
-  // }
-
   renderMarker = (activity: Activity) => {
     const { onGetActivity, onUpdateAppointment, currentUser, conversation } = this.props;
     const { id, name, latitude, longitude, topic } = activity;
-    const usersTopics = currentUser.topics.map((t) => t.name);
-    const matchTopics = conversation.partner.topics.map((t) => t.name);
-    console.log(activity, this.props.details)
+    const { position } = this.state;
+    const usersTopics = currentUser.topics.map((t: Topic) => t.name);
+    const matchTopics = conversation.partner.topics.map((t: Topic) => t.name);
+
     return (
       <MarkerContainer
         key={`${id} - ${name}`}
@@ -147,14 +141,14 @@ class ActivityMapScreen extends React.Component<Props, State> {
             onUpdateAppointment({ topic: activity.topic });
           }}
         >
-          <ActivityCallout activity={activity} />
+          <ActivityCallout userPosition={position} activity={activity} />
         </Callout>
       </MarkerContainer>
     );
   }
 
   render() {
-    const { activities, details, clearActivity, conversation, currentUser } = this.props;
+    const { activities, details, clearActivity, conversation } = this.props;
     const { position } = this.state;
 
     return (
@@ -162,6 +156,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
         <MapView
           // showsUserLocation
           // showsMyLocationButton
+          moveOnMarkerPress={false}
           mapType="mutedStandard"
           rotateEnabled={false}
           style={{ flex: 1 }}
