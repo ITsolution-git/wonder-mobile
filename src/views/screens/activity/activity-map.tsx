@@ -156,12 +156,12 @@ class ActivityMapScreen extends React.Component<Props, State> {
           // showsUserLocation
           // showsMyLocationButton
           moveOnMarkerPress={false}
-          mapType='mutedStandard'
+          // mapType='mutedStandard'
           rotateEnabled={false}
           style={{ flex: 1 }}
           region={{
-            latitude: position.lat,
-            longitude: position.lng,
+            latitude: 33.88438274567036,
+            longitude: -117.87963314780079,
             latitudeDelta: 0.1,
             longitudeDelta: 0.1,
           }}
@@ -223,3 +223,10 @@ export default connect(
 )(ActivityMapScreen);
 
 // location: "90024"
+
+// region={{
+//   latitude: position.lat,
+//   longitude: position.lng,
+//   latitudeDelta: 0.1,
+//   longitudeDelta: 0.1,
+// }}

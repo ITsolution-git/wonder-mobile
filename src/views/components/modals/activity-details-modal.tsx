@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Modal, View, ModalProps, StyleSheet, Image, Platform, Linking, Alert } from 'react-native';
+import { Modal, View, ModalProps, StyleSheet, Image, Platform, Alert, TouchableWithoutFeedback, Linking } from 'react-native';
 import { Title, Text, PrimaryButton, SmallText, SubTitle, TextButton } from '../theme';
 
 import PricingIndicator from '../pricing-indicator';
@@ -11,6 +11,7 @@ import theme from '../../../assets/styles/theme';
 import Color from 'color';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
+import { lightgrey } from 'color-name';
 
 const gradient = [
   lighten(theme.colors.primaryLight, 0.5),
@@ -75,7 +76,7 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
     if (hours && hours.length) {
       const currentBusinessDay = hours.filter((d: any) => d.day === dow);
       return (
-        <SmallText>
+        <SmallText allowFontScaling={false} adjustsFontSizeToFit={true} numberOfLines={1} style={{ fontSize: 12, color: 'lightgrey', marginRight: 5 }}>
           {
             moment(currentBusinessDay[0].start, 'HH:mm').format('hh:mm a')
             + '-' +
@@ -120,8 +121,8 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
             <View style={styles.body}>
               <View style={styles.row}>
                 <View>
-                  <Title style={{ color: '#000' }}>{name}</Title>
-                  <SmallText style={{ marginBottom: 3 }}>{location.join(' ')}</SmallText>
+                  <Title allowFontScaling={false} style={{ color: '#000' }}>{name}</Title>
+                  <SmallText allowFontScaling={false} style={{ marginBottom: 3 }}>{location.join(' ')}</SmallText>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -142,10 +143,16 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
                 <View style={{ alignItems: 'flex-end' }}>
                   <Text>
                     {distance(userPosition.lat, userPosition.lng, details.latitude, details.longitude, 'N')
-                      .toFixed(0) + 'm'}
+                      .toFixed(0) + 'miles'}
                   </Text>
-                  <RatingIndicator rating={rating} />
-                  <SmallText>({review_count} Reviews)</SmallText>
+                  <RatingIndicator containerStyle={{ marginTop: 4 }} rating={rating} />
+                  <SmallText style={{ marginTop: 3 }}>{review_count} Reviews</SmallText>
+                  <TouchableWithoutFeedback onPress={() => Linking.openURL('https://www.yelp.com')}>
+                    <Image
+                      source={require('../../../assets/images/icons/yelpLogo.png')}
+                      style={{ height: 30, width: 50 }}
+                    />
+                  </TouchableWithoutFeedback>
                 </View>
               </View>
             </View>
@@ -204,7 +211,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   phoneText: {
-    fontSize: 12,
+    fontSize: 13,
     color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
   },
 });
