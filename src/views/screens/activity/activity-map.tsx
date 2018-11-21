@@ -156,7 +156,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
           // showsUserLocation
           // showsMyLocationButton
           moveOnMarkerPress={false}
-          mapType='mutedStandard'
+          // mapType='mutedStandard'
           rotateEnabled={false}
           style={{ flex: 1 }}
           region={{
