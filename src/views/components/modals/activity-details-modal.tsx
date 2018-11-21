@@ -1,6 +1,16 @@
 import React from 'react';
 import _ from 'lodash';
-import { Modal, View, ModalProps, StyleSheet, Image, Platform, Alert, TouchableWithoutFeedback, Linking } from 'react-native';
+import {
+  Modal,
+  View,
+  ModalProps,
+  StyleSheet,
+  Image,
+  Platform,
+  Alert,
+  TouchableWithoutFeedback,
+  Linking
+} from 'react-native';
 import { Title, Text, PrimaryButton, SmallText, SubTitle, TextButton } from '../theme';
 
 import PricingIndicator from '../pricing-indicator';
@@ -76,7 +86,11 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
     if (hours && hours.length) {
       const currentBusinessDay = hours.filter((d: any) => d.day === dow);
       return (
-        <SmallText allowFontScaling={false} adjustsFontSizeToFit={true} numberOfLines={1} style={{ fontSize: 12, color: 'lightgrey', marginRight: 5 }}>
+        <SmallText
+          allowFontScaling={false}
+          adjustsFontSizeToFit={true}
+          numberOfLines={1}
+          style={{ fontSize: 12, color: 'lightgrey', marginRight: 5 }}>
           {
             moment(currentBusinessDay[0].start, 'HH:mm').format('hh:mm a')
             + '-' +
@@ -120,9 +134,19 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
             {this.renderHeaderImage(images)}
             <View style={styles.body}>
               <View style={styles.row}>
-                <View>
-                  <Title allowFontScaling={false} style={{ color: '#000' }}>{name}</Title>
-                  <SmallText allowFontScaling={false} style={{ marginBottom: 3 }}>{location.join(' ')}</SmallText>
+                <View style={{ flex: 2 }}>
+                  <Title
+                    allowFontScaling={false}
+                    style={{ color: '#000' }}
+                  >
+                    {name}
+                  </Title>
+                  <SmallText
+                    allowFontScaling={false}
+                    style={{ marginBottom: 3 }}
+                  >
+                    {location.join(' ')}
+                  </SmallText>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -140,14 +164,16 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
                       onPress={() => this.callNumber(`tel:${phone}`)}
                     />}
                 </View>
-                <View style={{ alignItems: 'flex-end' }}>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
                   <Text>
                     {distance(userPosition.lat, userPosition.lng, details.latitude, details.longitude, 'N')
                       .toFixed(0) + 'miles'}
                   </Text>
                   <RatingIndicator containerStyle={{ marginTop: 4 }} rating={rating} />
                   <SmallText style={{ marginTop: 3 }}>{review_count} Reviews</SmallText>
-                  <TouchableWithoutFeedback onPress={() => Linking.openURL('https://www.yelp.com')}>
+                  <TouchableWithoutFeedback
+                    onPress={() => Linking.openURL('https://www.yelp.com')}
+                  >
                     <Image
                       source={require('../../../assets/images/icons/yelpLogo.png')}
                       style={{ height: 30, width: 50 }}
@@ -156,7 +182,9 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
                 </View>
               </View>
             </View>
-            <View style={{ paddingHorizontal: 10, marginVertical: 10, alignItems: 'center' }}>
+            <View
+              style={{ paddingHorizontal: 10, marginVertical: 10, alignItems: 'center' }}
+            >
               <PrimaryButton title='Invite' onPress={onConfirm} />
             </View>
           </View>
