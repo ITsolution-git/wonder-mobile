@@ -60,7 +60,7 @@ const ProfileModalChat = (props: Props) => {
 
   const renderDistance = () => {
     return (
-      <Text allowFontScaling={false} style={styles.distanceText}>;
+      <Text allowFontScaling={false} style={styles.distanceText}>
         {conversation.partner.distance &&
           _.get(conversation.partner, 'partner.distance', 0).toFixed(0)}{' '}
         miles
