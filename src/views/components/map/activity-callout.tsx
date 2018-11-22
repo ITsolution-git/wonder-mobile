@@ -57,16 +57,18 @@ class ActivityCallout extends React.Component<Props> {
   }
   render() {
     const { activity, userPosition } = this.props;
-    console.log(activity);
+
     return (
       <View
         style={styles.container}
       >
         {this.renderImage()}
         <View flex={3} style={styles.containerRight}>
-          <View style={{ flex: 4, padding: 4 }}>
-            <Text style={styles.title}>{activity.name}</Text>
-            <Text style={styles.address}>{activity.location.join('\n')}</Text>
+          <View style={{ flex: 4, padding: 4, justifyContent: 'space-between' }}>
+            <View>
+              <Text style={styles.title}>{activity.name}</Text>
+              <Text style={styles.address}>{activity.location.join('\n')}</Text>
+            </View>
             <PricingIndicator rating={activity.price_level} />
           </View>
           <View
@@ -78,7 +80,7 @@ class ActivityCallout extends React.Component<Props> {
               source={{ uri: `${BASE_URL}/${activity.topic.icon}` }}
             />
             <Text
-              style={styles.address}
+              style={{ fontSize: 11 }}
             >
               {distance(userPosition.lat, userPosition.lng, activity.latitude, activity.longitude, 'N')
                 .toFixed(0) + 'm'}

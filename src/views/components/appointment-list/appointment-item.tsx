@@ -15,7 +15,7 @@ interface Props {
   callNumber: Function;
 }
 
-class AppointmentItem extends React.Component<Props> {
+class AppointmentItem extends React.PureComponent<Props> {
   renderTitle = () => {
     const { item } = this.props;
     const { name, users, event_at, match } = item;
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
   locationText: { marginLeft: 10 },
   phoneText: {
     fontSize: 10,
-    color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
+    color: 'rgb(0, 122, 255)',
     marginLeft: 10
   },
   status: {

@@ -28,7 +28,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data))
 });
 
-class ChatListItem extends React.Component<ChatListItemProps> {
+class ChatListItem extends React.PureComponent<ChatListItemProps> {
   static defaultProps = {
     chat: {
       messages: []
@@ -55,7 +55,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
           numberOfLines={2}
           style={[
             !chat.last_message.read_at &&
-            chat.last_message.sender_id !== currentUser.id
+              chat.last_message.sender_id !== currentUser.id
               ? { color: 'black' }
               : null,
             { fontSize: 14 }
@@ -143,7 +143,7 @@ class ChatListItem extends React.Component<ChatListItemProps> {
               <View
                 style={
                   chat.last_message.sender_id !== currentUser.id &&
-                  !chat.last_message.read_at
+                    !chat.last_message.read_at
                     ? styles.unreadMessage
                     : null
                 }

@@ -19,13 +19,15 @@ import {
   GeolocationReturnType,
   View,
   StyleSheet,
-  Image
+  ActivityIndicator
 } from 'react-native';
 import {
   persistAppointmentData,
   AppointmentState
 } from 'src/store/reducers/appointment';
 import askForDeviceLocation from 'src/services/gps';
+
+import Svg, { Image } from 'react-native-svg';
 
 import { selectCurrentUser } from 'src/store/selectors/user';
 import WonderAppState from 'src/models/wonder-app-state';
@@ -67,6 +69,7 @@ interface Props {
 
 interface State {
   position: any;
+  mapReady: boolean;
 }
 
 class ActivityMapScreen extends React.Component<Props, State> {
@@ -75,6 +78,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
       lat: 0,
       lng: 0,
     },
+    mapReady: false
   };
 
   componentWillMount() {
@@ -86,6 +90,9 @@ class ActivityMapScreen extends React.Component<Props, State> {
 
   componentDidMount() {
     askForDeviceLocation(this.updatePosition);
+    setTimeout(() => {
+      this.setState({ mapReady: true });
+    }, 3000);
   }
 
   updatePosition = (position: GeolocationReturnType) => {
@@ -152,47 +159,43 @@ class ActivityMapScreen extends React.Component<Props, State> {
 
     return (
       <Screen>
-        <MapView
-          // showsUserLocation
-          // showsMyLocationButton
-          moveOnMarkerPress={false}
-          // mapType='mutedStandard'
-          rotateEnabled={false}
-          style={{ flex: 1 }}
-          region={{
-            latitude: position.lat,
-            longitude: position.lng,
-            latitudeDelta: 0.1,
-            longitudeDelta: 0.1,
-          }}
-        >
-
-          <MarkerContainer
-            coordinate={{
-              latitude: Number(conversation.partner.latitude),
-              longitude: Number(conversation.partner.longitude),
+        {this.state.mapReady ?
+          <MapView
+            // showsUserLocation
+            showsMyLocationButton
+            rotateEnabled={false}
+            style={{ flex: 1 }}
+            initialRegion={{
+              latitude: position.lat,
+              longitude: position.lng,
+              latitudeDelta: 0.1,
+              longitudeDelta: 0.1
             }}
           >
-            <Image
-              style={{ height: 40, width: 40 }}
-              resizeMode='contain'
-              source={require('src/assets/images/icons/MapMatchIcon.png')} />
-          </MarkerContainer>
-
-          <MarkerContainer
-            coordinate={{
-              latitude: Number(this.state.position.lat),
-              longitude: Number(this.state.position.lng),
-            }}
-          >
-            <Image
-              style={{ height: 40, width: 40 }}
-              resizeMode='contain'
-              source={require('src/assets/images/icons/WonderMapIcon.png')} />
-          </MarkerContainer>
-
-          {activities.map(this.renderMarker)}
-        </MapView>
+            {activities.map(this.renderMarker)}
+            <MarkerContainer
+              coordinate={{
+                latitude: Number(conversation.partner.latitude),
+                longitude: Number(conversation.partner.longitude),
+              }}
+            >
+              <Svg width={40} height={40}>
+                <Image href={require('src/assets/images/icons/MapMatchIcon.png')} width={40} height={40} />
+              </Svg>
+            </MarkerContainer>
+            <MarkerContainer
+              coordinate={{
+                latitude: Number(this.state.position.lat),
+                longitude: Number(this.state.position.lng),
+              }}
+            >
+              <Svg width={40} height={40}>
+                <Image href={require('src/assets/images/icons/WonderMapIcon.png')} width={40} height={40} />
+              </Svg>
+            </MarkerContainer>
+          </MapView>
+          :
+          <ActivityIndicator />}
         <ActivityDetailsModal
           userPosition={position}
           onRequestClose={() => clearActivity()}
@@ -223,3 +226,27 @@ export default connect(
 )(ActivityMapScreen);
 
 // location: "90024"
+
+{/* <MarkerContainer
+coordinate={{
+  latitude: Number(conversation.partner.latitude),
+  longitude: Number(conversation.partner.longitude),
+}}
+>
+<Image
+  style={{ height: 40, width: 40 }}
+  resizeMode='contain'
+  source={require('src/assets/images/icons/MapMatchIcon.png')} />
+</MarkerContainer>
+
+<MarkerContainer
+coordinate={{
+  latitude: Number(this.state.position.lat),
+  longitude: Number(this.state.position.lng),
+}}
+>
+<Image
+  style={{ height: 40, width: 40 }}
+  resizeMode='contain'
+  source={require('src/assets/images/icons/WonderMapIcon.png')} />
+</MarkerContainer> */}

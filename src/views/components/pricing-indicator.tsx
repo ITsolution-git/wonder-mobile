@@ -21,8 +21,8 @@ class PricingIndicator extends React.Component<Props> {
       return arr.map((i: number) => (
         <Icon
           key={i}
-          size={10}
-          color={theme.colors.primary}
+          size={14}
+          color={'#27ae60'}
           name='usd'
         />
       ));
@@ -38,7 +38,9 @@ class PricingIndicator extends React.Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 4,
+    marginBottom: 4
   }
 });
 

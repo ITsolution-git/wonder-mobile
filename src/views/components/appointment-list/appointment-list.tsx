@@ -14,7 +14,7 @@ interface Props {
   onPressCallNumber: Function;
 }
 
-class AppointmentList extends React.Component<Props> {
+class AppointmentList extends React.PureComponent<Props> {
   static defaultProps = {
     isLoading: false
   };
