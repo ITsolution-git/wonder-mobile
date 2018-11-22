@@ -41,9 +41,17 @@ export const getDeviceLocation = (
 ) => {
   navigator.geolocation.getCurrentPosition(onSuccess, onError, {
     enableHighAccuracy: true,
-    timeout: 10000,
+    timeout: 30000,
     maximumAge: 1000
   });
+
+  // navigator.geolocation.getCurrentPosition(
+  //   (position) => {
+  //     console.log('HERE NEW POSI: ', position);
+  //   },
+  //   (error) => { console.log(error); },
+  //   { enableHighAccuracy: true, timeout: 30000, maximumAge: 100000 }
+  // );
 
   // navigator.geolocation.watchPosition(
   //   onSuccess,

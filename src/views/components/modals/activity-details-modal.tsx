@@ -89,8 +89,8 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
         <SmallText
           allowFontScaling={false}
           adjustsFontSizeToFit={true}
-          numberOfLines={1}
-          style={{ fontSize: 12, color: 'lightgrey', marginRight: 5 }}>
+          style={{ fontSize: 11, color: 'grey', marginRight: 5 }}
+        >
           {
             moment(currentBusinessDay[0].start, 'HH:mm').format('hh:mm a')
             + '-' +
@@ -147,16 +147,8 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
                   >
                     {location.join(' ')}
                   </SmallText>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      width: '50%',
-                      justifyContent: 'space-between'
-                    }}
-                  >
-                    {this.renderStoreHours()}
-                    <PricingIndicator rating={price_level} />
-                  </View>
+                  {this.renderStoreHours()}
+                  <PricingIndicator rating={price_level} />
                   {phone !== undefined &&
                     <TextButton
                       text={phone}
@@ -167,7 +159,7 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                   <Text>
                     {distance(userPosition.lat, userPosition.lng, details.latitude, details.longitude, 'N')
-                      .toFixed(0) + 'miles'}
+                      .toFixed(0) + ' miles'}
                   </Text>
                   <RatingIndicator containerStyle={{ marginTop: 4 }} rating={rating} />
                   <SmallText style={{ marginTop: 3 }}>{review_count} Reviews</SmallText>
@@ -240,6 +232,6 @@ const styles = StyleSheet.create({
   },
   phoneText: {
     fontSize: 13,
-    color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
+    color: 'rgb(0, 122, 255)',
   },
 });

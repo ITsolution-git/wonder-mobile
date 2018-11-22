@@ -120,8 +120,8 @@ class ChatListScreen extends React.Component<Props> {
     const { chat } = this.props;
     if (chat.newOutgoingMessage.hasOwnProperty('message')) {
       if (
-        chat.newOutgoingMessage.message._id !==
-        prevProps.chat.newOutgoingMessage.message._id
+        chat.newOutgoingMessage.message !==
+        prevProps.chat.newOutgoingMessage.message
       ) {
         this.appChat.deliver({
           message: chat.newOutgoingMessage.message.text,
