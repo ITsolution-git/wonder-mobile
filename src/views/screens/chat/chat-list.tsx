@@ -104,6 +104,8 @@ class ChatListScreen extends React.Component<Props> {
           ) {
             this.showGhostedAlert();
           } else {
+            console.log('MESSAGE RECEIVED', data);
+            console.log('CHAT STATE: ', this.props.chat);
             this.props.onReceiveMessage(data);
           }
         },
@@ -118,8 +120,8 @@ class ChatListScreen extends React.Component<Props> {
     const { chat } = this.props;
     if (chat.newOutgoingMessage.hasOwnProperty('message')) {
       if (
-        chat.newOutgoingMessage.message !==
-        prevProps.chat.newOutgoingMessage.message
+        chat.newOutgoingMessage.message._id !==
+        prevProps.chat.newOutgoingMessage.message._id
       ) {
         this.appChat.deliver({
           message: chat.newOutgoingMessage.message.text,

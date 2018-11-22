@@ -15,7 +15,7 @@ interface Props {
   callNumber: Function;
 }
 
-class AppointmentItem extends React.Component<Props> {
+class AppointmentItem extends React.PureComponent<Props> {
   renderTitle = () => {
     const { item } = this.props;
     const { name, users, event_at, match } = item;

@@ -11,7 +11,7 @@ interface ChatListProps {
   currentUser: number;
 }
 
-class ChatList extends React.Component<ChatListProps> {
+class ChatList extends React.PureComponent<ChatListProps> {
   static defaultProps = {
     chats: []
   };

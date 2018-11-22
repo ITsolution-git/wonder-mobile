@@ -16,6 +16,7 @@ const askForDeviceLocation = async (
   onSuccess: GeolocationSuccessCallback,
   onError: GeolocationErrorCallback = defaultOnError
 ) => {
+
   if (Platform.OS === 'android') {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,

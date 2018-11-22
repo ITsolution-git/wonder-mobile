@@ -57,7 +57,7 @@ class ActivityCallout extends React.Component<Props> {
   }
   render() {
     const { activity, userPosition } = this.props;
-    console.log(activity);
+
     return (
       <View
         style={styles.container}

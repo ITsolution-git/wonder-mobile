@@ -167,30 +167,6 @@ class ActivityMapScreen extends React.Component<Props, State> {
           }}
         >
 
-          <MarkerContainer
-            coordinate={{
-              latitude: Number(conversation.partner.latitude),
-              longitude: Number(conversation.partner.longitude),
-            }}
-          >
-            <Image
-              style={{ height: 40, width: 40 }}
-              resizeMode='contain'
-              source={require('src/assets/images/icons/MapMatchIcon.png')} />
-          </MarkerContainer>
-
-          <MarkerContainer
-            coordinate={{
-              latitude: Number(this.state.position.lat),
-              longitude: Number(this.state.position.lng),
-            }}
-          >
-            <Image
-              style={{ height: 40, width: 40 }}
-              resizeMode='contain'
-              source={require('src/assets/images/icons/WonderMapIcon.png')} />
-          </MarkerContainer>
-
           {activities.map(this.renderMarker)}
         </MapView>
         <ActivityDetailsModal
@@ -223,3 +199,27 @@ export default connect(
 )(ActivityMapScreen);
 
 // location: "90024"
+
+// <MarkerContainer
+// coordinate={{
+//   latitude: Number(conversation.partner.latitude),
+//   longitude: Number(conversation.partner.longitude),
+// }}
+// >
+// <Image
+//   style={{ height: 40, width: 40 }}
+//   resizeMode='contain'
+//   source={require('src/assets/images/icons/MapMatchIcon.png')} />
+// </MarkerContainer>
+
+// <MarkerContainer
+// coordinate={{
+//   latitude: Number(this.state.position.lat),
+//   longitude: Number(this.state.position.lng),
+// }}
+// >
+// <Image
+//   style={{ height: 40, width: 40 }}
+//   resizeMode='contain'
+//   source={require('src/assets/images/icons/WonderMapIcon.png')} />
+// </MarkerContainer>
