@@ -22,7 +22,7 @@ class AppointmentList extends React.PureComponent<Props> {
   keyExtractor = (item: any, index: number) => item.id.toString();
 
   renderRow = ({ item }: { item: DecoratedAppointment }) => {
-    const { onPress, onDelete, onPressCallNumber } = this.props;
+    const { onPress, onDelete, onPressCallNumber, isPast } = this.props;
 
     return (
       <SwipeRow
@@ -36,6 +36,7 @@ class AppointmentList extends React.PureComponent<Props> {
             callNumber={onPressCallNumber}
             item={item}
             onPress={onPress}
+            isPast={isPast}
           />
         }
       />

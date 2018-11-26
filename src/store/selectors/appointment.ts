@@ -85,3 +85,12 @@ export const selectPastAppointments = createSelector(
       .filter(isAppointmentBeforeToday);
   }
 );
+
+export const selectPastAttendences = createSelector(
+  [selectCurrentUser, allAttendances],
+  (currentUser, appointments) => {
+    return appointments
+      .map((a: Appointment) => decorateAttendance(a, currentUser))
+      .filter(isAppointmentBeforeToday);
+  }
+);
