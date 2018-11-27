@@ -269,7 +269,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 {appointment.eventMoment.format('MMMM Do, [at] h:mma')}
               </Text>
             )}
-            {appointment.phone && (
+            {appointment.phone !== undefined || appointment.phone !== null && (
               <TextButton
                 btnStyle={{ alignSelf: 'center', marginTop: 10 }}
                 style={styles.phoneText}

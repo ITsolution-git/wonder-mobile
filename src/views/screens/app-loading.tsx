@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { updateUser } from 'src/store/sagas/user';
 import { selectCurrentUser } from 'src/store/selectors/user';
+import { View, ActivityIndicator } from 'react-native';
 
 const mapState = (state: WonderAppState) => ({
   token: state.user.auth.token,
@@ -35,7 +36,11 @@ class AppLoadingScreen extends React.Component<Props> {
   }
 
   render() {
-    return null;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator/>
+      </View>
+    );
   }
 }
 

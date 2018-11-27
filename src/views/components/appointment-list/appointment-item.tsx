@@ -9,6 +9,9 @@ import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DecoratedAppointment } from 'src/models/appointment';
 
+import api, { BASE_URL } from 'src/services/api';
+import SvgUri from 'react-native-svg-uri';
+
 interface Props {
   item: DecoratedAppointment;
   onPress?: Function;
@@ -32,13 +35,13 @@ class AppointmentItem extends React.PureComponent<Props> {
     }
     return (
       <Title>
-        {name} with {match.first_name}
+        {_.get(item, 'topic.name', null)} with {match.first_name}
       </Title>
     );
   }
 
   render() {
-    const { item, onPress, callNumber } = this.props;
+    const { item, onPress, callNumber, isPast } = this.props;
 
     return (
       <TouchableOpacity
@@ -55,9 +58,25 @@ class AppointmentItem extends React.PureComponent<Props> {
             uri={_.get(item, 'match.images[0].url', null)}
             size={AvatarSize.md}
           />
+          {isPast &&
+                <TextButton
+                  text='Leave review'
+                  style={styles.reviewBtn}
+                  onPress={() => onPress(item)}
+                />
+           }
         </View>
         <View style={styles.contentContainer}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.iconMargin}>
+              <SvgUri
+                height={18}
+                width={18}
+                source={{ uri: `${BASE_URL}/${item.topic.icon}` }}
+              />
+            </View>
           {this.renderTitle()}
+          </View>
           <SubTitle>{moment(item.event_at).format('Do, MMMM')}</SubTitle>
           <View style={styles.locationRow}>
             <View>
@@ -68,7 +87,7 @@ class AppointmentItem extends React.PureComponent<Props> {
               />
             </View>
             <View>
-              <SmallText style={styles.locationText}>{item.location}</SmallText>
+              <SmallText style={styles.locationText}>{item.name} - {item.location}</SmallText>
               {item.phone !== null && (
                 <TextButton
                   text={item.phone}
@@ -123,5 +142,7 @@ const styles = StyleSheet.create({
   status: {
     fontSize: 10,
     alignSelf: 'flex-end'
-  }
+  },
+  reviewBtn: { fontSize: 11, marginTop: 3 },
+  iconMargin: {marginRight: 5}
 });

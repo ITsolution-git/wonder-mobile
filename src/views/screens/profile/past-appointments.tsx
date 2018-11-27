@@ -3,22 +3,26 @@ import React from 'react';
 import Screen from 'src/views/components/screen';
 import { AppointmentList } from 'src/views/components/appointment-list';
 import { connect } from 'react-redux';
-
 import { Dispatch } from 'redux';
 import { getAppointments } from 'src/store/sagas/appointment';
-
-import { selectPastAppointments } from 'src/store/selectors/appointment';
+import { deleteAttendance, getAttendances } from 'src/store/sagas/attendance';
+import { selectPastAppointments, selectPastAttendences } from 'src/store/selectors/appointment';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import WonderAppState from 'src/models/wonder-app-state';
 import { DecoratedAppointment } from 'src/models/appointment';
-import { Alert } from 'react-native';
+import { Alert, View, Linking, StyleSheet } from 'react-native';
+import { TextInput } from 'src/views/components/theme';
+import theme from 'src/assets/styles/theme';
+import moment from 'moment-timezone';
 
 const mapState = (state: WonderAppState) => ({
-  appointments: selectPastAppointments(state)
+  appointments: selectPastAttendences(state)
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onRefreshAppointments: () => dispatch(getAppointments())
+  onRefreshAppointments: () => dispatch(getAppointments()),
+  onDeleteAttendance: (data: DecoratedAppointment) =>
+    dispatch(deleteAttendance(data)),
 });
 
 interface PastAppointmentsProps {
@@ -28,6 +32,10 @@ interface PastAppointmentsProps {
 }
 
 class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
+  state = {
+     search: ''
+  };
+
   componentDidMount() {
     this.props.onRefreshAppointments();
   }
@@ -36,33 +44,74 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
     this.props.navigation.navigate('PastAppointmentView', { appointment });
   }
 
-  deleteAppointment = (appointment: DecoratedAppointment) => {
-    const options = [
-      { text: 'Cancel', onPress: _.noop },
-      {
-        text: 'Remove',
-        onPress: () =>
-          Alert.alert('Woohoo!', 'We need to actually perform this action')
-      }
-    ];
-
-    Alert.alert(
-      'Remove Appointment',
-      'Would you like to remove this appointment?',
-      options
-    );
+    onSearchTextChange = (text: string) => {
+    this.setState({ search: text.toLowerCase() });
   }
 
-  render() {
-    const { appointments, onRefreshAppointments } = this.props;
-    return (
-      <Screen>
-        <AppointmentList
+    filterAppointments = () => {
+    const { search } = this.state;
+    const { appointments } = this.props;
+
+    if (search) {
+      const newAppointments =  appointments.filter((appointment) => {
+        const locationName = appointment.name.toLowerCase().indexOf(search) >= 0;
+        const matchName = appointment.match.first_name.toLowerCase().indexOf(search) >= 0;
+        const date = moment(appointment.event_at)
+                    .format('LLLL')
+                    .toLowerCase()
+                    .indexOf(search) >= 0;
+        return locationName || matchName || date;
+      });
+      return newAppointments;
+    }
+
+    return appointments;
+  }
+
+    renderList = () => {
+      const { appointments, onRefreshAppointments } = this.props;
+      const filteredAppointments = this.filterAppointments();
+      if (filteredAppointments.length) {
+        return (
+       <AppointmentList
+          onPressCallNumber={this.callNumber}
           onRefresh={onRefreshAppointments}
           data={appointments}
           onPress={this.goToAppointment}
-          onDelete={this.deleteAppointment}
-        />
+          onDelete={this.props.onDeleteAttendance}
+          isPast={true}
+       />
+      );
+    }
+  }
+
+   callNumber = (url: string) => {
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (!supported) {
+          Alert.alert("Sorry! This number can't be opened from the app");
+        } else {
+          return Linking.openURL(url);
+        }
+      });
+  }
+
+render() {
+    const { appointments, onRefreshAppointments } = this.props;
+    return (
+      <Screen>
+        <View style={styles.container}>
+       <TextInput
+            color={theme.colors.primaryLight}
+            containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
+            autoCorrect={false}
+            autoCapitalize='none'
+            icon='search'
+            placeholder='Name, Date or Location'
+            onChangeText={this.onSearchTextChange}
+       />
+       {this.renderList()}
+        </View>
       </Screen>
     );
   }
@@ -72,3 +121,11 @@ export default connect(
   mapState,
   mapDispatch
 )(PastAppointmentsScreen);
+
+const styles = StyleSheet.create({
+  container: {
+            paddingVertical: 15,
+            width: '100%',
+            alignSelf: 'center'
+          }
+});

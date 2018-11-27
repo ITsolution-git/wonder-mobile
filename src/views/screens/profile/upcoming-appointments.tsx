@@ -124,7 +124,7 @@ class UpcomingAppointmentsScreen extends React.Component<
         <View
           style={{
             paddingVertical: 15,
-            width: '80%',
+            width: '90%',
             alignSelf: 'center'
           }}
         >

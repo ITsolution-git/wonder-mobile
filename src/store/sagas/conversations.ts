@@ -60,10 +60,11 @@ export function* getConversationSaga(action: Action<any>) {
     );
 
     yield put(persistConversation(data));
-    if (successRoute) {
-      const routeParams = params || {};
-      navigation.navigate(successRoute, routeParams);
-    }
+
+  //   if (successRoute) {
+  //     const routeParams = params || {};
+  //    navigation.navigate(successRoute, routeParams);
+  //  }
   } catch (error) {
     handleAxiosError(error);
   } finally {
