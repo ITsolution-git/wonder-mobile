@@ -34,6 +34,13 @@ import UserService from 'src/services/uber';
 import AmazonService from 'src/services/amazon';
 import { Toast } from 'native-base';
 import Color from 'color';
+
+import api, { BASE_URL } from 'src/services/api';
+import SvgUri from 'react-native-svg-uri';
+
+import { deleteAttendance, getAttendances } from 'src/store/sagas/attendance';
+import moment from 'moment';
+
 interface AppointmentViewProps {
   currentUser: User;
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -57,7 +64,9 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onCancelAppointment: (data: DecoratedAppointment) =>
     dispatch(cancelAppointment(data)),
   onDeclineAppointment: (data: DecoratedAppointment) =>
-    dispatch(declineAppointment(data))
+    dispatch(declineAppointment(data)),
+     onDeleteAttendance: (data: DecoratedAppointment) =>
+    dispatch(deleteAttendance(data)),
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -232,6 +241,43 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     );
   }
 
+  openAddress = (lat, lng, label) => {
+    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:'  });
+    const latLng = `${lat},${lng}`;
+    const url = Platform.select({
+  ios: `${scheme}${label}@${latLng}`,
+  android: `${scheme}${latLng}(${label})`
+});
+
+    Linking.openURL(url);
+  }
+
+  showDeleteAlert = () => {
+     Alert.alert(
+      'Confirm Remove',
+      'Are you sure you want to remove this past date?',
+      [
+        { text: 'Cancel' },
+        {
+          text: 'YES',
+          onPress: this.deletePastDate
+        }
+      ],
+      { cancelable: false }
+    );
+  }
+
+  deletePastDate = () => {
+     const { navigation, currentUser } = this.props;
+     const appointment: DecoratedAppointment = navigation.getParam(
+      'appointment',
+      {}
+    );
+
+     this.props.onDeleteAttendance(appointment);
+     navigation.goBack();
+  }
+
   render() {
     const { navigation, currentUser } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
@@ -239,7 +285,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     const isPast = this.isPastAppointment();
-
+    console.log(appointment);
     return (
       <Screen horizontalPadding={20}>
         {/* <ScrollView
@@ -253,23 +299,46 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               size='xl'
               uri={_.get(appointment, 'match.images[0].url', null)}
             />
+
           </View>
 
-          <View style={{ marginTop: 15 }}>
+          <View style={{ marginTop: 15, alignItems: 'center' }}>
+          <View style={{ marginBottom: 4 }}>
+              <SvgUri
+                height={22}
+                width={22}
+                source={{ uri: `${BASE_URL}/${appointment.topic.icon}` }}
+              />
+          </View>
             <Title align='center'>
               {_.get(appointment, 'topic.name', null)} with{' '}
               {appointment.match.first_name}{' '}
             </Title>
 
-            <SubTitle align='center'>
-              {appointment.name} - {appointment.location}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <IconButton
+                    size={30}
+                    iconSize={28}
+                    icon='map-marker'
+                    primary={'#e74c3c'}
+                    secondary='transparent'
+                    onPress={() => this.openAddress(appointment.latitude, appointment.longitude, appointment.name)}
+                  />
+             <SubTitle align='center'>
+              {appointment.name}
             </SubTitle>
+              </View>
+
+               <SubTitle align='center'>
+              {appointment.location}
+            </SubTitle>
+
             {appointment.eventMoment && (
               <Text align='center'>
-                {appointment.eventMoment.format('MMMM Do, [at] h:mma')}
+                {moment(appointment.event_at).format('MMMM Do, [at] h:mma')}
               </Text>
             )}
-            {appointment.phone !== undefined || appointment.phone !== null && (
+            {appointment.phone !== null  && (
               <TextButton
                 btnStyle={{ alignSelf: 'center', marginTop: 10 }}
                 style={styles.phoneText}
@@ -354,7 +423,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               </View>
             )}
             <View style={styles.col}>
-              <SecondaryButton title='Decline' onPress={this.decline} />
+              {isPast ? <SecondaryButton title='Delete' onPress={this.showDeleteAlert} /> : <SecondaryButton title='Decline' onPress={this.decline} />}
             </View>
           </View>
         </View>
@@ -400,3 +469,7 @@ const styles = StyleSheet.create({
     marginLeft: 10
   }
 });
+
+// import { deleteAttendance, getAttendances } from 'src/store/sagas/attendance';
+//  onDeleteAttendance: (data: DecoratedAppointment) =>
+//     dispatch(deleteAttendance(data)),
