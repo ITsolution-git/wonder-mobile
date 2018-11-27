@@ -10,6 +10,7 @@ import {
   Alert,
   Text,
   Platform,
+  ActivityIndicator
 } from 'react-native';
 import { GiftedChat, Bubble, Send } from 'react-native-gifted-chat';
 import ChatActionButton from 'src/views/components/chat/chat-action-button';
@@ -40,6 +41,7 @@ import {
   persistNewChatMessage,
   persistMessageAsRead,
   persistGhostMessage,
+  clearCurrentConversation
 } from 'src/store/reducers/chat';
 import Assets from 'src/assets/images';
 import Topic from 'src/models/topic';
@@ -101,6 +103,7 @@ const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   onReadMessages: (data: object) => dispatch(persistMessageAsRead(data)),
   onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data)),
   onReportUser: (data: object) => dispatch(blockUser(data)),
+  onClearConversation: () => dispatch(clearCurrentConversation())
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -169,7 +172,7 @@ class ChatScreen extends React.Component<Props> {
   componentWillMount() {
     const { conversation, navigation } = this.props;
     navigation.setParams({
-      title: conversation.partner.first_name,
+      title:  navigation.state.params.name,
       onGhostPartner: this.showAlert,
       onBlockConversation: this.showBlockAlert,
       openProfileModal: this.openProfileModal,
@@ -193,10 +196,8 @@ class ChatScreen extends React.Component<Props> {
 
   componentDidUpdate(prevProps: any) {
     const { currentUser, conversation } = this.props;
-    if (
-      conversation.messages &&
-      conversation.messages.length !== prevProps.conversation.messages.length
-    ) {
+
+    if (conversation !== prevProps.conversation && !_.isEmpty(conversation)) {
       const chats = decorateMessagesForGiftedChat(currentUser, conversation);
       this.setState({ conversationMessages: chats.giftedChatMessages });
     }
@@ -211,6 +212,7 @@ class ChatScreen extends React.Component<Props> {
       user: currentUser.id,
       conversation_id: conversation.id,
     });
+    this.props.onClearConversation();
   }
 
   scheduleWonder = () => {
@@ -391,43 +393,52 @@ class ChatScreen extends React.Component<Props> {
 
   render() {
     const { currentUser, conversation } = this.props;
+    console.log('conversation: ', conversation);
 
-    return (
+    if (!_.isEmpty(conversation)) {
+      return (
       <Screen>
-        <GiftedChat
-          renderAvatarOnTop
-          user={{ _id: currentUser.id }}
-          renderSend={this.renderSend}
-          renderBubble={this.renderBubble}
-          messages={this.state.conversationMessages}
-          renderFooter={this.renderFooter}
-          onSend={this.onSend}
-          renderActions={this.renderActions}
-          dateFormat={'LLL'}
-          renderTime={() => null}
-          onPressAvatar={this.openProfileModal}
-        />
-        <ChatGhostingModal
-          visible={this.state.isGhostingModalOpen}
-          onSuccess={this.ghostPartner}
-          onCancel={this.closeGhostingModal}
-          conversation={conversation}
-        />
-        <ProfileModalChat
-          currentUser={currentUser}
-          conversation={conversation}
-          visible={this.state.profileModalOpen}
-          onRequestClose={this.openProfileModal}
-          showVideo={this.state.showVideo}
-          openProfileModal={this.openProfileModal}
-          toggleVideo={() =>
-            this.setState({ showVideo: !this.state.showVideo })
-          }
-          showDetails={this.state.showDetails}
-          toggleDetails={this.toggleDetails}
-        />
+          <GiftedChat
+            renderAvatarOnTop
+            user={{ _id: currentUser.id }}
+            renderSend={this.renderSend}
+            renderBubble={this.renderBubble}
+            messages={this.state.conversationMessages}
+            renderFooter={this.renderFooter}
+            onSend={this.onSend}
+            renderActions={this.renderActions}
+            dateFormat={'LLL'}
+            renderTime={() => null}
+            onPressAvatar={this.openProfileModal}
+          />
+          <ChatGhostingModal
+            visible={this.state.isGhostingModalOpen}
+            onSuccess={this.ghostPartner}
+            onCancel={this.closeGhostingModal}
+            conversation={conversation}
+          />
+          <ProfileModalChat
+            currentUser={currentUser}
+            conversation={conversation}
+            visible={this.state.profileModalOpen}
+            onRequestClose={this.openProfileModal}
+            showVideo={this.state.showVideo}
+            openProfileModal={this.openProfileModal}
+            toggleVideo={() =>
+              this.setState({ showVideo: !this.state.showVideo })
+            }
+            showDetails={this.state.showDetails}
+            toggleDetails={this.toggleDetails}
+          />
       </Screen>
     );
+   } else {
+     return (
+     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff'}}>
+           <ActivityIndicator/>
+     </View>
+     );
+   }
   }
 }
 
@@ -510,3 +521,11 @@ const styles = StyleSheet.create({
   },
   actionBtnContainer: { width: '50%', alignItems: 'center' },
 });
+
+    // if (
+    //   conversation.messages &&
+    //   conversation.messages.length !== prevProps.conversation.messages.length
+    // ) {
+    //   const chats = decorateMessagesForGiftedChat(currentUser, conversation);
+    //   this.setState({ conversationMessages: chats.giftedChatMessages });
+    // }

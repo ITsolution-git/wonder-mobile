@@ -38,8 +38,16 @@ export const persistGhostMessage = createAction('PERSIST_GHOST_MESSAGE');
 
 export const persistChatSearch = createAction('PERSIST_CHAT_SEARCH');
 
+export const clearCurrentConversation = createAction('CLEAR_CURRENT_CONVERSATION');
+
 export default handleActions(
   {
+      CLEAR_CURRENT_CONVERSATION: (state: ChatState, action: Action<any>) => {
+      return {
+        ...state,
+        conversation: []
+      };
+    },
     PERSIST_CHAT_SEARCH: (state: ChatState, action: Action<any>) => {
       const results = state.conversations.filter((c) =>
         c.partner.first_name.includes(action.payload)

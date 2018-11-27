@@ -60,9 +60,10 @@ export function* getConversationSaga(action: Action<any>) {
     );
 
     yield put(persistConversation(data));
+    console.log('DONE FETCHING DATA');
     if (successRoute) {
       const routeParams = params || {};
-      navigation.navigate(successRoute, routeParams);
+     // navigation.navigate(successRoute, routeParams);
     }
   } catch (error) {
     handleAxiosError(error);
