@@ -104,8 +104,6 @@ class ChatListScreen extends React.Component<Props> {
           ) {
             this.showGhostedAlert();
           } else {
-            console.log('MESSAGE RECEIVED', data);
-            console.log('CHAT STATE: ', this.props.chat);
             this.props.onReceiveMessage(data);
           }
         },
