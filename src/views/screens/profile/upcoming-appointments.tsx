@@ -114,8 +114,7 @@ class UpcomingAppointmentsScreen extends React.Component<
         } else {
           return Linking.openURL(url);
         }
-      })
-      .catch((err) => console.error('An error occurred', err));
+      });
   }
 
   render() {

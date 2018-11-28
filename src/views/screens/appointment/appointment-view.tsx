@@ -423,7 +423,16 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               </View>
             )}
             <View style={styles.col}>
-              {isPast ? <SecondaryButton title='Delete' onPress={this.showDeleteAlert} /> : <SecondaryButton title='Decline' onPress={this.decline} />}
+              {isPast ?
+              <SecondaryButton
+                title='Delete'
+                onPress={this.showDeleteAlert}
+              /> :
+              <SecondaryButton
+                title='Decline'
+                onPress={this.decline}
+              />
+                }
             </View>
           </View>
         </View>
@@ -469,7 +478,3 @@ const styles = StyleSheet.create({
     marginLeft: 10
   }
 });
-
-// import { deleteAttendance, getAttendances } from 'src/store/sagas/attendance';
-//  onDeleteAttendance: (data: DecoratedAppointment) =>
-//     dispatch(deleteAttendance(data)),

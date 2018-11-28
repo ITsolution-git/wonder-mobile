@@ -131,8 +131,8 @@ export default class BaseButton extends React.Component<
 
 const styles = StyleSheet.create({
   btnContainer: {
-    minWidth: 150,
-    minHeight: 44,
+    minWidth: 130,
+    minHeight: 35,
     // padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
