@@ -26,17 +26,40 @@ class AppointmentItem extends React.PureComponent<Props> {
     const now = moment();
     if (moment(event_at).isSameOrAfter(now)) {
       return (
-        <Title>
-          {_.get(item, 'topic.name', null)} at{' '}
+       <View style={{ flexDirection: 'row' }}>
+         <Title>
+          {_.get(item, 'topic.name', null)}
+        </Title>
+           <View style={styles.iconMargin}>
+              <SvgUri
+                height={18}
+                width={18}
+                source={{ uri: `${BASE_URL}/${item.topic.icon}` }}
+              />
+            </View>
+
+          <Title>
+           at{' '}
           <Strong>{moment(event_at).format('h:mma')}</Strong> with{' '}
           {match.first_name}
         </Title>
+       </View>
       );
     }
     return (
-      <Title>
-        {_.get(item, 'topic.name', null)} with {match.first_name}
-      </Title>
+      <View style={{ flexDirection: 'row' }}>
+        <Title>
+        {_.get(item, 'topic.name', null)} </Title>
+         <View style={styles.iconMargin}>
+              <SvgUri
+                height={18}
+                width={18}
+                source={{ uri: `${BASE_URL}/${item.topic.icon}` }}
+              />
+            </View>
+        <Title> with {match.first_name}</Title>
+      </View>
+
     );
   }
 
@@ -68,16 +91,11 @@ class AppointmentItem extends React.PureComponent<Props> {
         </View>
         <View style={styles.contentContainer}>
           <View style={{ flexDirection: 'row' }}>
-            <View style={styles.iconMargin}>
-              <SvgUri
-                height={18}
-                width={18}
-                source={{ uri: `${BASE_URL}/${item.topic.icon}` }}
-              />
-            </View>
+
           {this.renderTitle()}
+
           </View>
-          <SubTitle>{moment(item.event_at).format('Do, MMMM')}</SubTitle>
+          <SubTitle>{moment(item.event_at).format('MMMM Do')}</SubTitle>
           <View style={styles.locationRow}>
             <View>
               <Icon
@@ -144,5 +162,5 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   reviewBtn: { fontSize: 11, marginTop: 3 },
-  iconMargin: {marginRight: 5}
+  iconMargin: {marginRight: 5, marginLeft: 5}
 });

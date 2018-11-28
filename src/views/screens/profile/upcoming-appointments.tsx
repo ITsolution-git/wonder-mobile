@@ -114,8 +114,7 @@ class UpcomingAppointmentsScreen extends React.Component<
         } else {
           return Linking.openURL(url);
         }
-      })
-      .catch((err) => console.error('An error occurred', err));
+      });
   }
 
   render() {
@@ -124,7 +123,7 @@ class UpcomingAppointmentsScreen extends React.Component<
         <View
           style={{
             paddingVertical: 15,
-            width: '90%',
+            width: '100%',
             alignSelf: 'center'
           }}
         >

@@ -12,7 +12,8 @@ import {
   AlertOptions,
   Linking,
   TouchableHighlight,
-  ScrollView
+  ScrollView,
+  Share
 } from 'react-native';
 import Screen from 'src/views/components/screen';
 import ElevatedButton from 'src/views/components/theme/elevated-button';
@@ -179,14 +180,22 @@ class ProfileViewScreen extends React.Component<Props> {
     );
   }
 
+  share = () => {
+    Share.share({
+      message: 'Thought you would like to find someone Wonder’ful on the Wonder Dating App! Click here to download!',
+      url: 'https://wonder.dating/en',
+      title: 'Heard of Wonder?'
+    });
+  }
+
   render() {
     const { currentUser, onLogout } = this.props;
     const { showVideo } = this.state;
     const years = moment().diff(currentUser.birthdate, 'years');
 
     return (
-      <Screen horizontalPadding={10}>
-        <View flex={1} style={styles.row}>
+      <View style={styles.outerContainer}>
+        <View style={[styles.row]}>
           <View style={[styles.col, styles.heading]}>
             <TouchableHighlight
               onPress={this.openProfileModal}
@@ -195,15 +204,23 @@ class ProfileViewScreen extends React.Component<Props> {
               <Avatar
                 rounded
                 uri={this.getProfileImage()}
-                size={AvatarSize.md}
+                size={AvatarSize.lg}
               />
             </TouchableHighlight>
+            <Text
+              allowFontScaling={false}
+              style={{ marginTop: 6 }}
+            >
+              {currentUser.first_name} {currentUser.last_name}
+            </Text>
           </View>
         </View>
-        <View flex={1}>
+        <View>
           <View style={styles.row}>
             <View style={styles.col}>
               <ElevatedButton
+                style={styles.btnMargin}
+                innerStyle={styles.btnHeight}
                 icon='user'
                 title={currentUser.first_name}
                 onPress={this.goTo('ProfileEdit')}
@@ -211,6 +228,8 @@ class ProfileViewScreen extends React.Component<Props> {
             </View>
             <View style={styles.col}>
               <ElevatedButton
+                style={styles.btnMargin}
+                innerStyle={styles.btnHeight}
                 icon='heart'
                 title='Activities'
                 onPress={this.goTo('ProfileWonders')}
@@ -220,6 +239,8 @@ class ProfileViewScreen extends React.Component<Props> {
           <View style={styles.row}>
             <View style={styles.col}>
               <ElevatedButton
+                style={styles.btnMargin}
+                innerStyle={styles.btnHeight}
                 icon='image'
                 title='Photos'
                 onPress={this.goTo('ProfileMedia')}
@@ -227,6 +248,8 @@ class ProfileViewScreen extends React.Component<Props> {
             </View>
             <View style={styles.col}>
               <ElevatedButton
+                style={styles.btnMargin}
+                innerStyle={styles.btnHeight}
                 icon='envelope-o'
                 title='Contact'
                 onPress={this.goTo('Feedback')}
@@ -236,6 +259,8 @@ class ProfileViewScreen extends React.Component<Props> {
           <View style={styles.row}>
             <View style={styles.col}>
               <ElevatedButton
+                style={styles.btnMargin}
+                innerStyle={styles.btnHeight}
                 icon='gear'
                 title='Settings'
                 onPress={this.goTo('ProfilePreferences')}
@@ -243,6 +268,8 @@ class ProfileViewScreen extends React.Component<Props> {
             </View>
             <View style={styles.col}>
               <ElevatedButton
+                style={styles.btnMargin}
+                innerStyle={styles.btnHeight}
                 icon='question'
                 title='FAQ'
                 onPress={() => this.showFaq(`${HTTP_DOMAIN}/faq.html`)}
@@ -251,20 +278,32 @@ class ProfileViewScreen extends React.Component<Props> {
           </View>
         </View>
 
-        <View style={{ marginVertical: 10 }}>
-          <View style={styles.row}>
+         <View style={styles.btnContainer}>
             <PrimaryButton
               fullWidth
               title='UPGRADE TO WONDER PREMIUM'
               onPress={_.noop}
             />
+            <TouchableHighlight onPress={this.share} underlayColor='transparent'>
+              <Text style={{ color: theme.colors.primary, marginTop: 15 }}>Share Wonder with friends!</Text>
+            </TouchableHighlight>
           </View>
+
+        <View style={{ marginVertical: 10 }}>
           <View style={styles.row}>
             <View style={styles.col}>
-              <Button rounded title='Logout' onPress={this.promptLogout} />
+              <Button
+                style={{ margin: 8}}
+                innerStyle={styles.logoutStyles}
+                rounded
+                title='Logout'
+                onPress={this.promptLogout}
+              />
             </View>
             <View style={styles.col}>
               <Button
+                style={{ margin: 8}}
+                innerStyle={styles.logoutStyles}
                 rounded
                 title='Deactivate'
                 onPress={this.deactivateAccount}
@@ -419,7 +458,7 @@ class ProfileViewScreen extends React.Component<Props> {
             </View>
           </LinearGradient>
         </Modal>
-      </Screen>
+      </View>
     );
   }
 }
@@ -430,19 +469,26 @@ export default connect(
 )(ProfileViewScreen);
 
 const styles = StyleSheet.create({
+  outerContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'space-around',
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 15
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 5
+    // marginBottom: 5
   },
   col: {
-    flex: 1,
-    padding: 5
+    flex: 1
   },
   heading: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-between'
   },
   modalContainer: {
     flex: 1,
@@ -513,5 +559,9 @@ const styles = StyleSheet.create({
     color: '#333'
   },
   genericText: { marginLeft: 5, fontSize: 12, lineHeight: 18, color: '#333' },
-  infoContainer: { backgroundColor: '#fff', padding: 10 }
+  infoContainer: { backgroundColor: '#fff', padding: 10 },
+  btnMargin: { margin: 6},
+  btnHeight: { height: 40 },
+  logoutStyles: { height: 40, backgroundColor: '#f2f2f2' },
+  btnContainer: { alignItems: 'center', justifyContent: 'space-around', width: '70%', alignSelf: 'center'}
 });
