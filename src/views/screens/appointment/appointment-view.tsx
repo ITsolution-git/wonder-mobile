@@ -285,13 +285,9 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     const isPast = this.isPastAppointment();
-    console.log(appointment);
+
     return (
       <Screen horizontalPadding={20}>
-        {/* <ScrollView
-          style={{ flex: 1, paddingTop: 20 }}
-          contentContainerStyle={{ flex: 1 }}
-        > */}
         <View flex={1}>
           <View style={styles.header}>
             <Avatar
@@ -301,37 +297,24 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             />
 
           </View>
-
           <View style={{ marginTop: 15, alignItems: 'center' }}>
-          <View style={{ marginBottom: 4 }}>
-              <SvgUri
-                height={22}
-                width={22}
-                source={{ uri: `${BASE_URL}/${appointment.topic.icon}` }}
-              />
-          </View>
             <Title align='center'>
               {_.get(appointment, 'topic.name', null)} with{' '}
               {appointment.match.first_name}{' '}
             </Title>
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <IconButton
-                    size={30}
-                    iconSize={28}
-                    icon='map-marker'
-                    primary={'#e74c3c'}
-                    secondary='transparent'
-                    onPress={() => this.openAddress(appointment.latitude, appointment.longitude, appointment.name)}
-                  />
              <SubTitle align='center'>
               {appointment.name}
             </SubTitle>
               </View>
 
-               <SubTitle align='center'>
-              {appointment.location}
-            </SubTitle>
+             <TextButton
+                btnStyle={{ alignSelf: 'center', marginTop: 10 }}
+                style={styles.phoneText}
+                text={appointment.location}
+                onPress={() => this.openAddress(appointment.latitude, appointment.longitude, appointment.name)}
+              />
 
             {appointment.eventMoment && (
               <Text align='center'>
@@ -436,7 +419,6 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             </View>
           </View>
         </View>
-        {/* </ScrollView> */}
         <AppointmentReviewModal
           onRequestClose={this.closeReviewModal}
           visible={this.state.isModalOpen}
@@ -475,6 +457,10 @@ const styles = StyleSheet.create({
   phoneText: {
     fontSize: 14,
     color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
-    marginLeft: 10
+    marginLeft: 10,
+    textAlign: 'center'
   }
 });
+
+  //  onPress={() => this.openAddress(appointment.latitude, appointment.longitude, appointment.name)}
+                 
