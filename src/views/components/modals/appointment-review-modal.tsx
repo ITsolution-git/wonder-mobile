@@ -76,8 +76,19 @@ class AppointmentReviewModal extends React.Component<
   }
 
   onSubmit = () => {
-    const {flaked, photo, fib, dateAgain, details, value} = this.state;
-    // console.log(flaked, photo, fib, dateAgain, details, value);
+    const { flaked, photo, fib, dateAgain, details, value } = this.state;
+    const { currentUser, appointment } = this.props;
+    const data = {
+          review: {
+          flake: flaked,
+          fib,
+          looks_like_photo: photo,
+          activity_score: value
+      },
+      attendanceId: appointment.attendanceId,
+    };
+    this.props.onSubmit(data);
+    this.props.onRequestClose();
   }
 
   render() {

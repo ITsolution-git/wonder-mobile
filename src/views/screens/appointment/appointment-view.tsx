@@ -38,7 +38,7 @@ import Color from 'color';
 import api, { BASE_URL } from 'src/services/api';
 import SvgUri from 'react-native-svg-uri';
 
-import { deleteAttendance, getAttendances } from 'src/store/sagas/attendance';
+import { deleteAttendance, getAttendances, reviewDate } from 'src/store/sagas/attendance';
 import moment from 'moment';
 
 interface AppointmentViewProps {
@@ -67,6 +67,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
     dispatch(declineAppointment(data)),
      onDeleteAttendance: (data: DecoratedAppointment) =>
     dispatch(deleteAttendance(data)),
+    onReviewDate: (data) => dispatch(reviewDate(data))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -285,7 +286,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     const isPast = this.isPastAppointment();
-
+    
     return (
       <Screen horizontalPadding={20}>
         <View flex={1}>
@@ -424,6 +425,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           visible={this.state.isModalOpen}
           currentUser={currentUser}
           appointment={appointment}
+          onSubmit={this.props.onReviewDate}
         />
       </Screen>
     );

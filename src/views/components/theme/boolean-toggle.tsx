@@ -59,7 +59,6 @@ class BooleanToggle extends React.Component<
   render() {
     const { noLabel, yesLabel } = this.props;
     const { value } = this.state;
-    console.log('BOOLEAN: ', this.state.value);
     return (
       <View style={styles.container}>
         <TouchableOpacity onPress={this.setYes}>

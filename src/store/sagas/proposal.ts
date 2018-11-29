@@ -55,7 +55,6 @@ export function* getNextProposalSaga() {
       },
       state.user
     );
-    console.log('PROPOSABLES: ', newProp);
     yield put(persistPropsalImages(newProp.data));
   } catch (e) {
     handleAxiosError(e);
