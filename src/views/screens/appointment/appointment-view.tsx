@@ -38,7 +38,7 @@ import Color from 'color';
 import api, { BASE_URL } from 'src/services/api';
 import SvgUri from 'react-native-svg-uri';
 
-import { deleteAttendance, getAttendances } from 'src/store/sagas/attendance';
+import { deleteAttendance, getAttendances, reviewDate } from 'src/store/sagas/attendance';
 import moment from 'moment';
 
 interface AppointmentViewProps {
@@ -67,6 +67,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
     dispatch(declineAppointment(data)),
      onDeleteAttendance: (data: DecoratedAppointment) =>
     dispatch(deleteAttendance(data)),
+    onReviewDate: (data) => dispatch(reviewDate(data))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -285,13 +286,9 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     const isPast = this.isPastAppointment();
-    console.log(appointment);
+
     return (
       <Screen horizontalPadding={20}>
-        {/* <ScrollView
-          style={{ flex: 1, paddingTop: 20 }}
-          contentContainerStyle={{ flex: 1 }}
-        > */}
         <View flex={1}>
           <View style={styles.header}>
             <Avatar
@@ -301,37 +298,24 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             />
 
           </View>
-
-          <View style={{ marginTop: 15, alignItems: 'center' }}>
-          <View style={{ marginBottom: 4 }}>
-              <SvgUri
-                height={22}
-                width={22}
-                source={{ uri: `${BASE_URL}/${appointment.topic.icon}` }}
-              />
-          </View>
+          <View style={styles.contentContainer}>
             <Title align='center'>
               {_.get(appointment, 'topic.name', null)} with{' '}
               {appointment.match.first_name}{' '}
             </Title>
 
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <IconButton
-                    size={30}
-                    iconSize={28}
-                    icon='map-marker'
-                    primary={'#e74c3c'}
-                    secondary='transparent'
-                    onPress={() => this.openAddress(appointment.latitude, appointment.longitude, appointment.name)}
-                  />
              <SubTitle align='center'>
               {appointment.name}
             </SubTitle>
               </View>
 
-               <SubTitle align='center'>
-              {appointment.location}
-            </SubTitle>
+             <TextButton
+                btnStyle={{ alignSelf: 'center', marginTop: 10 }}
+                style={styles.phoneText}
+                text={appointment.location}
+                onPress={() => this.openAddress(appointment.latitude, appointment.longitude, appointment.name)}
+              />
 
             {appointment.eventMoment && (
               <Text align='center'>
@@ -351,10 +335,12 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
         <View>
           {isPast ? (
-            <PrimaryButton
+          <View>
+            {appointment.state === 'confirmed' && <PrimaryButton
               title='Leave Review'
               onPress={this.openReviewModal}
-            />
+            />}
+          </View>
           ) : (
             this.renderConfirmationButton(appointment)
           )}
@@ -436,12 +422,12 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             </View>
           </View>
         </View>
-        {/* </ScrollView> */}
         <AppointmentReviewModal
           onRequestClose={this.closeReviewModal}
           visible={this.state.isModalOpen}
           currentUser={currentUser}
           appointment={appointment}
+          onSubmit={this.props.onReviewDate}
         />
       </Screen>
     );
@@ -475,6 +461,8 @@ const styles = StyleSheet.create({
   phoneText: {
     fontSize: 14,
     color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
-    marginLeft: 10
-  }
+    marginLeft: 10,
+    textAlign: 'center'
+  },
+  contentContainer: { marginTop: 15, alignItems: 'center' }
 });

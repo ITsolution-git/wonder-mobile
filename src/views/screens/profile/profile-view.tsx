@@ -211,7 +211,7 @@ class ProfileViewScreen extends React.Component<Props> {
               allowFontScaling={false}
               style={{ marginTop: 6 }}
             >
-              {currentUser.first_name} {currentUser.last_name}
+              {currentUser.first_name}
             </Text>
           </View>
         </View>

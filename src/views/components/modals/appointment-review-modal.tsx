@@ -6,7 +6,8 @@ import {
   ModalProps,
   StyleSheet,
   Platform,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
 import {
   Text,
@@ -27,6 +28,7 @@ import BooleanToggle from '../theme/boolean-toggle';
 import StarRatingInput from '../theme/star-rating-input';
 import { DecoratedAppointment } from 'src/models/appointment';
 import User from 'src/models/user';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 interface AppointmentReviewModalProps extends ModalProps {
   currentUser: User;
@@ -42,11 +44,57 @@ class AppointmentReviewModal extends React.Component<
   AppointmentReviewModalState
 > {
   state: AppointmentReviewModalState = {
-    // isModalOpen: false
+    flaked: true,
+    photo: true,
+    fib: true,
+    dateAgain: true,
+    details: '',
+    value: 0
   };
+
+  onValueChangeDetails = (value: number) => {
+    this.setState({ value });
+  }
+
+  renderOption = (key: number) => {
+    const { value } = this.state;
+    return (
+      <TouchableOpacity
+        style={styles.option}
+        key={key}
+        onPress={() => this.onValueChangeDetails(key)}
+      >
+        <Icon
+          name='star'
+          color={
+            value >= key ? theme.colors.primaryLight : theme.colors.textColor
+          }
+          size={25}
+        />
+      </TouchableOpacity>
+    );
+  }
+
+  onSubmit = () => {
+    const { flaked, photo, fib, dateAgain, details, value } = this.state;
+    const { currentUser, appointment } = this.props;
+    const data = {
+          review: {
+          flake: flaked,
+          fib,
+          looks_like_photo: photo,
+          activity_score: value,
+          details
+      },
+      attendanceId: appointment.attendanceId,
+    };
+    this.props.onSubmit(data);
+    this.props.onRequestClose();
+  }
 
   render() {
     const { appointment, currentUser, ...rest } = this.props;
+
     return (
       <Modal {...rest} animationType='fade' transparent>
         <LinearGradient
@@ -78,36 +126,75 @@ class AppointmentReviewModal extends React.Component<
                     <Text style={styles.label}>
                       Did {appointment.match.first_name} Flake?
                     </Text>
-                    <BooleanToggle />
+
+                   <View style={styles.btnContainer}>
+                      <TouchableOpacity onPress={() => this.setState({ flaked: true })}>
+                        <Text style={{ color: this.state.flaked ? theme.colors.primary : 'grey'  }}>Yes</Text>
+                    </TouchableOpacity>
+                     <TouchableOpacity onPress={() => this.setState({ flaked: false })}>
+                        <Text style={{ color: !this.state.flaked ? theme.colors.primary : 'grey' }}>No</Text>
+                    </TouchableOpacity>
+                   </View>
+
                   </View>
                   <View style={styles.row}>
                     <Text style={styles.label}>
                       Hows was {appointment.name}?
                     </Text>
-                    <StarRatingInput />
+                    <View style={{ flexDirection: 'row' }}>
+                    {_.range(1, 6).map(this.renderOption)}
+                  </View>
                   </View>
                   <View style={styles.row}>
                     <Text style={styles.label}>
                       Did {appointment.match.first_name} look like their photos?
                     </Text>
-                    <BooleanToggle />
+
+                     <View style={styles.btnContainer}>
+                      <TouchableOpacity onPress={() => this.setState({ photo: true })}>
+                        <Text style={{ color: this.state.photo ? theme.colors.primary : 'grey'  }}>Yes</Text>
+                    </TouchableOpacity>
+                     <TouchableOpacity onPress={() => this.setState({ photo: false })}>
+                        <Text style={{ color: !this.state.photo ? theme.colors.primary : 'grey' }}>No</Text>
+                    </TouchableOpacity>
+                   </View>
+
                   </View>
                   <View style={styles.row}>
                     <Text style={styles.label}>
                       Did {appointment.match.first_name} fib about anything?
                       (Height, Weight, etc.)
                     </Text>
-                    <BooleanToggle />
+
+                     <View style={styles.btnContainer}>
+                      <TouchableOpacity onPress={() => this.setState({ fib: true })}>
+                        <Text style={{ color: this.state.fib ? theme.colors.primary : 'grey'  }}>Yes</Text>
+                    </TouchableOpacity>
+                     <TouchableOpacity onPress={() => this.setState({ fib: false })}>
+                        <Text style={{ color: !this.state.fib ? theme.colors.primary : 'grey' }}>No</Text>
+                    </TouchableOpacity>
+                   </View>
+
                   </View>
                   <View style={styles.row}>
                     <Text style={styles.label}>
                       Do you want to setup another wonder with{' '}
                       {appointment.match.first_name}?
                     </Text>
-                    <BooleanToggle />
+
+                     <View style={styles.btnContainer}>
+                      <TouchableOpacity onPress={() => this.setState({ dateAgain: true })}>
+                        <Text style={{ color: this.state.dateAgain ? theme.colors.primary : 'grey'  }}>Yes</Text>
+                    </TouchableOpacity>
+                     <TouchableOpacity onPress={() => this.setState({ dateAgain: false })}>
+                        <Text style={{ color: !this.state.dateAgain ? theme.colors.primary : 'grey' }}>No</Text>
+                    </TouchableOpacity>
+                   </View>
+
                   </View>
                   <View style={[styles.row, { alignItems: undefined }]}>
                     <TextArea
+                      onChangeText={(e) => this.setState({ details: e })}
                       placeholder="Tell us more! How'd it go?"
                       style={{ flex: 1, minHeight: 150 }}
                     />
@@ -121,7 +208,7 @@ class AppointmentReviewModal extends React.Component<
                     you!
                   </Label>
                 </View>
-                <PrimaryButton title='Submit' onPress={_.noop} />
+                <PrimaryButton title='Submit' onPress={this.onSubmit} />
                 <TextButton
                   style={{ marginTop: 10 }}
                   text='Cancel'
@@ -178,5 +265,9 @@ const styles = StyleSheet.create({
   row: {
     width: '100%',
     alignItems: 'center'
+  },
+  btnContainer: { flexDirection: 'row', width: '30%', justifyContent: 'space-around' },
+  option: {
+    padding: 5
   }
 });

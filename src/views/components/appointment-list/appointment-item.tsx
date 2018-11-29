@@ -26,40 +26,17 @@ class AppointmentItem extends React.PureComponent<Props> {
     const now = moment();
     if (moment(event_at).isSameOrAfter(now)) {
       return (
-       <View style={{ flexDirection: 'row' }}>
          <Title>
           {_.get(item, 'topic.name', null)}
-        </Title>
-           <View style={styles.iconMargin}>
-              <SvgUri
-                height={18}
-                width={18}
-                source={{ uri: `${BASE_URL}/${item.topic.icon}` }}
-              />
-            </View>
-
-          <Title>
            at{' '}
           <Strong>{moment(event_at).format('h:mma')}</Strong> with{' '}
           {match.first_name}
         </Title>
-       </View>
+
       );
     }
     return (
-      <View style={{ flexDirection: 'row' }}>
-        <Title>
-        {_.get(item, 'topic.name', null)} </Title>
-         <View style={styles.iconMargin}>
-              <SvgUri
-                height={18}
-                width={18}
-                source={{ uri: `${BASE_URL}/${item.topic.icon}` }}
-              />
-            </View>
-        <Title> with {match.first_name}</Title>
-      </View>
-
+        <Title>{_.get(item, 'topic.name', null)}  with {match.first_name}</Title>
     );
   }
 
