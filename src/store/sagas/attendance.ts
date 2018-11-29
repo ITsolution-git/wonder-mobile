@@ -19,7 +19,9 @@ export function* reviewDateSaga(action: Action<any>) {
       {
         method: 'POST',
         url: `/attendances/${action.payload.attendanceId}/review`,
-        data: action.payload.review
+        data: {
+          review: action.payload.review
+        }
       },
       state.user
     );

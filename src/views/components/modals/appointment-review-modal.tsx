@@ -83,7 +83,8 @@ class AppointmentReviewModal extends React.Component<
           flake: flaked,
           fib,
           looks_like_photo: photo,
-          activity_score: value
+          activity_score: value,
+          details
       },
       attendanceId: appointment.attendanceId,
     };

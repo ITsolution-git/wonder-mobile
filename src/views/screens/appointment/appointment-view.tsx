@@ -286,7 +286,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     const isPast = this.isPastAppointment();
-    
+
     return (
       <Screen horizontalPadding={20}>
         <View flex={1}>
@@ -298,7 +298,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             />
 
           </View>
-          <View style={{ marginTop: 15, alignItems: 'center' }}>
+          <View style={styles.contentContainer}>
             <Title align='center'>
               {_.get(appointment, 'topic.name', null)} with{' '}
               {appointment.match.first_name}{' '}
@@ -335,10 +335,12 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
         <View>
           {isPast ? (
-            <PrimaryButton
+          <View>
+            {appointment.state === 'confirmed' && <PrimaryButton
               title='Leave Review'
               onPress={this.openReviewModal}
-            />
+            />}
+          </View>
           ) : (
             this.renderConfirmationButton(appointment)
           )}
@@ -461,8 +463,6 @@ const styles = StyleSheet.create({
     color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
     marginLeft: 10,
     textAlign: 'center'
-  }
+  },
+  contentContainer: { marginTop: 15, alignItems: 'center' }
 });
-
-  //  onPress={() => this.openAddress(appointment.latitude, appointment.longitude, appointment.name)}
-                 
