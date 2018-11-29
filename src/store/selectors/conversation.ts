@@ -38,8 +38,7 @@ export const decorateMessagesForGiftedChat = (
           text: message.body,
           createdAt: message.sent_at,
           user: {
-            _id: message.sender.id,
-            name: message.sender.first_name,
+            _id: message.sender_id,
             avatar: owner.images.length
               ? `${owner.images[0].url}${avatarExtension}`
               : null

@@ -393,7 +393,7 @@ class ChatScreen extends React.Component<Props> {
 
   render() {
     const { currentUser, conversation } = this.props;
-    console.log('CU: ', currentUser);
+    console.log('CU: ', currentUser, conversation);
     if (!_.isEmpty(conversation)) {
       return (
       <Screen>
