@@ -393,7 +393,6 @@ class ChatScreen extends React.Component<Props> {
 
   render() {
     const { currentUser, conversation } = this.props;
-    console.log('conversation: ', conversation);
 
     if (!_.isEmpty(conversation)) {
       return (
@@ -521,11 +520,3 @@ const styles = StyleSheet.create({
   },
   actionBtnContainer: { width: '50%', alignItems: 'center' },
 });
-
-    // if (
-    //   conversation.messages &&
-    //   conversation.messages.length !== prevProps.conversation.messages.length
-    // ) {
-    //   const chats = decorateMessagesForGiftedChat(currentUser, conversation);
-    //   this.setState({ conversationMessages: chats.giftedChatMessages });
-    // }

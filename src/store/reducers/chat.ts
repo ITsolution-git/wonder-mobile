@@ -108,10 +108,11 @@ export default handleActions(
       action: Action<any>
     ) => {
       const { conversation_id } = action.payload;
+
       if (state.conversationsLib.indexOf(conversation_id !== -1)) {
         const newConvos = state.conversations.map((c: Conversation) => {
           if (c.partner) {
-            if (c.partner.id && c.partner.id === action.payload.sender.id) {
+            if (c.partner.id && c.partner.id === action.payload.sender_id) {
               c.last_message = { ...action.payload, aasm_state: 'delivered' };
             }
           }
