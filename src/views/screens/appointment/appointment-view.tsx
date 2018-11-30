@@ -2,7 +2,6 @@ import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import Screen from 'src/views/components/screen';
-
 import {
   Title,
   Text,
@@ -12,7 +11,7 @@ import {
   TextButton,
   SecondaryButton
 } from 'src/views/components/theme';
-import { View, StyleSheet, Alert, Linking, Platform } from 'react-native';
+import { View, StyleSheet, Alert, Linking, Platform, TouchableOpacity } from 'react-native';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import AppointmentReviewModal from 'src/views/components/modals/appointment-review-modal';
 
@@ -285,6 +284,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       'appointment',
       {}
     );
+    const {latitude, longitude} = appointment;
     const isPast = this.isPastAppointment();
 
     return (
@@ -296,27 +296,26 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               size='xl'
               uri={_.get(appointment, 'match.images[0].url', null)}
             />
-
           </View>
           <View style={styles.contentContainer}>
             <Title align='center'>
               {_.get(appointment, 'topic.name', null)} with{' '}
               {appointment.match.first_name}{' '}
             </Title>
-
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-             <SubTitle align='center'>
-              {appointment.name}
-            </SubTitle>
+              <View style={{ flexDirection: 'row', marginTop: 10 }}>
+                <Text
+                  style={{ fontSize: 15 }}
+                  align='center'
+                >
+                   {appointment.name}{' '}{'-'}{' '}
+                    <Text
+                      style={styles.addressText}
+                      onPress={() => this.openAddress(appointment.latitude, appointment.longitude, appointment.name)}
+                    >
+                    {appointment.location}
+                    </Text>
+                </Text>
               </View>
-
-             <TextButton
-                btnStyle={{ alignSelf: 'center', marginTop: 10 }}
-                style={styles.phoneText}
-                text={appointment.location}
-                onPress={() => this.openAddress(appointment.latitude, appointment.longitude, appointment.name)}
-              />
-
             {appointment.eventMoment && (
               <Text align='center'>
                 {moment(appointment.event_at).format('MMMM Do, [at] h:mma')}
@@ -332,7 +331,6 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             )}
           </View>
         </View>
-
         <View>
           {isPast ? (
           <View>
@@ -396,7 +394,6 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               <Text style={styles.btnLabel}>Chat</Text>
             </View>
           </View>
-
           <View
             style={[
               styles.row,
@@ -460,7 +457,13 @@ const styles = StyleSheet.create({
   },
   phoneText: {
     fontSize: 14,
-    color: Platform.OS === 'ios' ? 'rgb(0, 122, 255)' : '#16a085',
+    color: 'rgb(0, 122, 255)',
+    marginLeft: 10,
+    textAlign: 'center'
+  },
+  addressText: {
+    fontSize: 15,
+    color: 'rgb(0, 122, 255)',
     marginLeft: 10,
     textAlign: 'center'
   },

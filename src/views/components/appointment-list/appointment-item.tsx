@@ -28,7 +28,7 @@ class AppointmentItem extends React.PureComponent<Props> {
       return (
          <Title>
           {_.get(item, 'topic.name', null)}
-           at{' '}
+           {' '}at{' '}
           <Strong>{moment(event_at).format('h:mma')}</Strong> with{' '}
           {match.first_name}
         </Title>
@@ -59,11 +59,11 @@ class AppointmentItem extends React.PureComponent<Props> {
             size={AvatarSize.md}
           />
           {isPast &&
-                <TextButton
-                  text='Leave review'
-                  style={styles.reviewBtn}
-                  onPress={() => onPress(item)}
-                />
+            <TextButton
+              text='Leave review'
+              style={styles.reviewBtn}
+              onPress={() => onPress(item)}
+            />
            }
         </View>
         <View style={styles.contentContainer}>
