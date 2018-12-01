@@ -1,10 +1,8 @@
-import NavigatorService from '../../services/navigation';
 import { select, call, put, takeEvery } from 'redux-saga/effects';
 import { createAction, Action } from 'redux-actions';
 import api from '../../services/api';
 import { persistProposal } from '../actions/proposal';
 
-import { Alert } from 'react-native';
 import { persistCurrentMatch, persistPropsalImages } from '../reducers/wonder';
 import WonderAppState from '../../models/wonder-app-state';
 import Proposal from '../../models/proposal';

@@ -7,7 +7,7 @@ import Attendance from 'src/models/attendance';
 import { actionChannel } from 'redux-saga/effects';
 export interface WonderState {
   readonly topics: Topic[];
-  readonly proposal: Proposal | null;
+  readonly proposal: Proposal[];
   readonly partners: Partner[];
   readonly currentMatch: Proposal | {};
   readonly appointments: Appointment[];
@@ -17,7 +17,7 @@ export interface WonderState {
 
 const defaultState: WonderState = {
   topics: [],
-  proposal: null,
+  proposal: [],
   partners: [],
   currentMatch: {},
   appointments: [],
@@ -31,6 +31,17 @@ export const persistCurrentMatch = createAction('PERSIST_CURRENT_MATCH');
 export const persistAppointments = createAction('PERSIST_APPOINTMENTS');
 export const persistAttendances = createAction('PERSIST_ATTENDANCES');
 export const persistPropsalImages = createAction('PERSIST_PROPOSAL_IMAGES');
+
+const getProposalFromPersistProposal = (
+  state: Proposal[],
+  proposal: Proposal
+): Proposal[] => {
+  if (state.length) {
+    return [...state.slice(1), proposal];
+  }
+
+  return [proposal];
+};
 
 export default handleActions(
   {
@@ -49,7 +60,7 @@ export default handleActions(
     }),
     PERSIST_PROPOSAL: (state: WonderState, action: Action<any>) => ({
       ...state,
-      proposal: action.payload || defaultState.proposal
+      proposal: getProposalFromPersistProposal(state.proposal, action.payload)
     }),
     PERSIST_PARTNERS: (state: WonderState, action: Action<any>) => ({
       ...state,

@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import applyAppStateListener from "redux-enhancer-react-native-appstate";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
+import { PURGE } from "@appConfig";
 import rootReducer from "./reducers";
 import rootSaga from "./sagas";
 import Reactotron from "reactotron-react-native";
@@ -38,7 +39,9 @@ export default (initialState) => {
   const persistor = persistStore(store);
 
   // Uncomment next line to dev purge the store.
-  // persistor.purge();
+  if (PURGE) {
+    persistor.purge();
+  }
 
   if (module.hot) {
     module.hot.accept(() => {

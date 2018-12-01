@@ -1,15 +1,11 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Screen from 'src/views/components/screen';
 import ProposalSwiper from 'src/views/components/proposal-swiper/proposal-swiper';
 
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import {
-  getNewProposal,
-  rateProposal,
-  getNextProposal
-} from 'src/store/sagas/proposal';
+import { getNewProposal, rateProposal } from 'src/store/sagas/proposal';
 
 import FoundMatchModal from 'src/views/components/modals/found-match-modal';
 import { persistCurrentMatch } from 'src/store/reducers/wonder';
@@ -47,7 +43,6 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onRefreshConversations: () => dispatch(getConversations()),
   onGetConversation: (partnerId: number) =>
     dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
-  // onGetNextProposal: () => dispatch(getNextProposal())
 });
 
 type Candidate = Partial<User>;
@@ -58,7 +53,7 @@ interface Props {
   onClearCurrentMatch: Function;
   onLeftSwipe: Function;
   onRightSwipe: Function;
-  proposal: Proposal | null;
+  proposal: WonderAppState['wonder']['proposal'];
   currentUser: User;
   currentMatch: Proposal;
   onGetConversation: Function;
@@ -128,12 +123,12 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   swipeRight = () => {
     const { proposal } = this.props;
-    this.props.onRightSwipe(proposal);
+    this.props.onRightSwipe(proposal[0]);
   }
 
   swipeLeft = () => {
     const { proposal } = this.props;
-    this.props.onLeftSwipe(proposal);
+    this.props.onLeftSwipe(proposal[0]);
   }
 
   render() {
@@ -141,7 +136,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
     return (
       <Screen>
-        <View style={{ flex: 1 }}>
+        <View style={styles.flex1}>
           <ProposalSwiper
             currentUser={currentUser}
             proposal={proposal}
@@ -160,6 +155,12 @@ class ProposalViewScreen extends React.Component<Props, State> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  flex1: {
+    flex: 1
+  }
+});
 
 export default connect(
   mapState,

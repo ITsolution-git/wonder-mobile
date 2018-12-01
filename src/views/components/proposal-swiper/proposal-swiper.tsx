@@ -1,8 +1,7 @@
-import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { DeckSwiper } from 'native-base';
-import { Text, Title, WonderImage, SubTitle, IconButton } from '../theme';
+import { Text, Title, WonderImage } from '../theme';
 import {
   View,
   StyleSheet,
@@ -17,7 +16,6 @@ import moment from 'moment-timezone';
 import Icon from 'react-native-vector-icons/Entypo';
 import Topic from 'src/models/topic';
 import Images from 'src/assets/images';
-import FastImage from 'react-native-fast-image';
 import LinearGradient from 'react-native-linear-gradient';
 import Wonder from '../theme/wonder/wonder';
 import Proposal from 'src/models/proposal';
@@ -28,13 +26,11 @@ import WonderAppState from 'src/models/wonder-app-state';
 import googleMaps, { GoogleGeoLocation } from '../../../services/google-maps';
 import MatchAvailableMedia from '../../components/proposal-swiper/match-available-media';
 import VibeVideoModal from '../modals/vibe-video-modal';
-import { cadetblue } from 'color-name';
 
 const deviceHeight = Dimensions.get('window').height;
-const deviceWidth = Dimensions.get('window').width;
 
 interface Props {
-  proposal: Proposal | null;
+  proposal: Proposal[];
   onSwipeLeft: Function;
   onSwipeRight: Function;
   currentUser: User;
@@ -56,7 +52,7 @@ interface CardDetailsOverlayState {
 }
 
 const mapState = (state: WonderAppState) => ({
-  stateProposal: state.wonder.proposal
+  stateProposal: state.wonder.proposal[0]
 });
 
 class CardDetailsOverlay extends React.Component<
@@ -164,8 +160,16 @@ class CardDetailsOverlay extends React.Component<
     );
   }
 
+  private showVideoPlayer = (): void => {
+    this.setState({ showVideoPlayer: true });
+  }
+
+  private hideVideoPlayer = (): void => {
+    this.setState({ showVideoPlayer: false });
+  }
+
   render() {
-    const { showDetails, imageCount, location } = this.state;
+    const { showDetails, imageCount } = this.state;
     const { candidate } = this.props;
 
     const details = (
@@ -190,7 +194,7 @@ class CardDetailsOverlay extends React.Component<
           style={styles.container}
         >
           <MatchAvailableMedia
-            onPress={() => this.setState({ showVideoPlayer: true })}
+            onPress={this.showVideoPlayer}
             candidate={candidate}
             currentImageIndex={this.state.imageCount}
           />
@@ -249,7 +253,7 @@ class CardDetailsOverlay extends React.Component<
           </LinearGradient>
           <VibeVideoModal
             visible={this.state.showVideoPlayer}
-            onRequestClose={() => this.setState({ showVideoPlayer: false })}
+            onRequestClose={this.hideVideoPlayer}
             videoUrl={candidate.video}
           />
         </WonderImage>
@@ -291,15 +295,14 @@ class ProposalSwiper extends React.Component<Props> {
 
   render() {
     const { proposal, onSwipeLeft, onSwipeRight } = this.props;
-    const data = [proposal];
 
     // TODO: prefetch one more proposal
-    if (proposal) {
+    if (proposal && proposal.length) {
       return (
         <DeckSwiper
           onSwipeLeft={onSwipeLeft}
           onSwipeRight={onSwipeRight}
-          dataSource={data}
+          dataSource={proposal}
           renderItem={this.renderCard}
         />
       );
