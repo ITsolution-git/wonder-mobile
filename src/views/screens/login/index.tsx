@@ -14,7 +14,7 @@ import { connect } from 'react-redux';
 import ForgotPasswordModal from '../../components/modals/forgot-password-modal';
 
 import { Dispatch } from 'redux';
-import { loginUser, forgotPassword } from 'src/store/sagas/user';
+import { loginUser, forgotPassword, getVerification } from 'src/store/sagas/user';
 
 import validator from 'validator';
 import WonderAppState from 'src/models/wonder-app-state';
@@ -29,7 +29,8 @@ const mapState = (state: WonderAppState) => ({});
 const mapDispatch = (dispatch: Dispatch) => ({
   onLogin: (credentials: UserCredentials) => dispatch(loginUser(credentials)),
   onForgotPassword: (email: Email) =>
-    dispatch(forgotPassword({ forgotEmail: email }))
+    dispatch(forgotPassword({ forgotEmail: email })),
+    onGetVerification: (data) => dispatch(getVerification(data))
 });
 
 interface Props {
@@ -80,20 +81,13 @@ class LoginScreen extends React.Component<Props> {
     const { email, password } = this.state;
     const { onLogin, navigation } = this.props;
 
-    if (!validator.isEmail(email)) {
-      errors.email = 'Please enter a valid email';
-    }
-
     if (validator.isEmpty(password)) {
       errors.password = 'Please enter your password';
     }
 
-    if (Object.keys(errors).length) {
-      this.setState({ errors });
-      return;
-    }
-
-    onLogin({ email, password, onSuccess: () => navigation.navigate('Main') });
+    this.props.onGetVerification(email);
+   // navigation.navigate('Verify');
+    // onLogin({ email, onSuccess: () => navigation.navigate('Verify') });
   }
 
   focusOn = (key: string) => {
@@ -144,13 +138,13 @@ class LoginScreen extends React.Component<Props> {
               autoCapitalize='none'
               autoCorrect={false}
               errorHint={errors.email}
-              icon='envelope-o'
-              placeholder='Email'
+              icon='phone'
+              placeholder='Phone'
               onChangeText={this.onChangeText('email')}
               fullWidth
             />
           </View>
-          <View style={{ marginTop: 10, width: '100%' }}>
+          {/* <View style={{ marginTop: 10, width: '100%' }}>
             <RoundedTextInput
               returnKeyType='done'
               getRef={(input: RoundedTextInput) => {
@@ -165,7 +159,7 @@ class LoginScreen extends React.Component<Props> {
               onChangeText={this.onChangeText('password')}
               fullWidth
             />
-          </View>
+          </View> */}
           <View
             style={{
               flex: 1,

@@ -8,6 +8,7 @@ import {
   MediaGridItem
 } from 'src/views/components/theme/media-grid';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import { loginUser, forgotPassword, getVerification } from 'src/store/sagas/user';
 import validator from 'validator';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -40,7 +41,8 @@ const mapState = (state: WonderAppState) => ({
 });
 const mapDispatch = (dispatch: Dispatch) => ({
   onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
-  onLogin: (data) => dispatch(loginUser(data))
+  onLogin: (data) => dispatch(loginUser(data)),
+  onGetVerification: (data) => dispatch(getVerification(data))
 });
 
 class Register3 extends React.Component<Props, State> {
@@ -65,15 +67,11 @@ class Register3 extends React.Component<Props, State> {
   }
 
   private validate = () => {
-    const { onSave, navigation } = this.props;
+    const { onSave, navigation, registration } = this.props;
     const { about } = this.state;
 
     onSave({ about });
-    this.props.onLogin({
-      email: this.props.registration.email,
-      password: this.props.registration.password
-    });
-    // navigation.navigate('Register4');
+    this.props.onGetVerification(registration.phone);
   }
 
   render() {

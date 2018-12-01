@@ -162,7 +162,6 @@ class ProfileViewScreen extends React.Component<Props> {
     const candidate = conversation.partner;
     const candidateTopics = candidate.topics || [];
     const userTopics = currentUser.topics;
-    console.log('CT: ', candidateTopics);
     return (
       <View style={{ flexDirection: 'row' }}>
         {currentUser &&

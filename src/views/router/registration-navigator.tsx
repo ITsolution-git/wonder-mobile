@@ -7,6 +7,7 @@ import {
   Register2,
   Register3,
   Register4,
+  VerifyScreen,
   ProfileCamera,
   ProfileVideo
 } from '../screens';
@@ -23,6 +24,13 @@ const RegistrationNavigator = createStackNavigator(
       screen: Login,
       navigationOptions: {
         title: 'LOGIN',
+        ...theme.NavBar.transparent
+      }
+    },
+    Verify: {
+      screen: VerifyScreen,
+      navigationOptions: {
+        title: 'VERIFY',
         ...theme.NavBar.transparent
       }
     },
