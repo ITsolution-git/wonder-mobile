@@ -26,7 +26,7 @@ export function* getNewProposalSaga() {
       api,
       {
         method: 'GET',
-        url: `/proposables?limit=1&offset=5`
+        url: `/proposables?limit=1&offset=4`
       },
       state.user
     );

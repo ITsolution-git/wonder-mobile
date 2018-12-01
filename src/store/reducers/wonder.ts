@@ -45,11 +45,9 @@ const getProposalFromPersistProposal = (
     if (!proposalExists) {
       return [...existingProposals, proposal];
     }
-
-    return existingProposals;
   }
 
-  return [];
+  return existingProposals;
 };
 
 export default handleActions(
