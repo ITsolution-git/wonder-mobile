@@ -144,7 +144,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   private localClearProposals = (): void => {
     this.props.clearProposals();
-    this.props.getNextProposal(5);
+    // this.props.getNextProposal(5);
   }
 
   render() {
