@@ -36,7 +36,7 @@ class AppointmentItem extends React.PureComponent<Props> {
       );
     }
     return (
-        <Title>{_.get(item, 'topic.name', null)}  with {match.first_name}</Title>
+        <Title>{_.get(item, 'topic.name', null)} with {match.first_name}</Title>
     );
   }
 
