@@ -41,7 +41,7 @@ class VerifyScreen extends React.PureComponent {
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Image
-            style={{ width: '80%', maxHeight: 100 }}
+            style={styles.image}
             source={Logo.DARK}
             resizeMode='contain'
           />
@@ -107,5 +107,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 20,
     justifyContent: 'space-around'
-  }
+  },
+  image: { width: '80%', maxHeight: 100 }
 });
