@@ -1,5 +1,6 @@
 import React from 'react';
 import WonderAppState from '../../models/wonder-app-state';
+import { NavigationActions, StackActions } from 'react-navigation';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { updateUser } from 'src/store/sagas/user';
@@ -29,7 +30,12 @@ interface UserPushNotificationOptions {
 class AppLoadingScreen extends React.Component<Props> {
   componentDidMount() {
     if (this.props.token) {
-      this.props.navigation.navigate('Main');
+      this.props.navigation.dispatch(
+        StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Main' })]
+        })
+      );
       return;
     }
     this.props.navigation.navigate('onboarding');
@@ -38,7 +44,7 @@ class AppLoadingScreen extends React.Component<Props> {
   render() {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator/>
+        <ActivityIndicator />
       </View>
     );
   }

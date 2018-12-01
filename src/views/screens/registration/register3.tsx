@@ -1,14 +1,9 @@
 import React from 'react';
 import { View, StyleSheet, KeyboardAvoidingView } from 'react-native';
 import { PrimaryButton, TextArea } from 'src/views/components/theme';
-import ShadowBox from 'src/views/components/theme/shadow-box';
 import Screen from 'src/views/components/screen';
-import {
-  MediaGrid,
-  MediaGridItem
-} from 'src/views/components/theme/media-grid';
+import { MediaGrid } from 'src/views/components/theme/media-grid';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import validator from 'validator';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import WonderAppState from '../../../models/wonder-app-state';
@@ -65,7 +60,7 @@ class Register3 extends React.Component<Props, State> {
   }
 
   private validate = () => {
-    const { onSave, navigation } = this.props;
+    const { onSave } = this.props;
     const { about } = this.state;
 
     onSave({ about });
@@ -116,16 +111,3 @@ export default connect(
   mapState,
   mapDispatch
 )(Register3);
-
-const styles = StyleSheet.create({
-  welcome: {
-    fontSize: 14,
-    textAlign: 'center',
-    margin: 10
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5
-  }
-});

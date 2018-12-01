@@ -4,9 +4,6 @@ import { createAction, Action } from 'redux-actions';
 import api from '../../services/api';
 import { persistUser, persistAuth } from '../actions/user';
 
-import { NavigationActions } from 'react-navigation';
-import { Alert } from 'react-native';
-
 import { Toast } from 'native-base';
 import {
   resetRegistration,
@@ -16,12 +13,11 @@ import WonderAppState from '../../models/wonder-app-state';
 import User from '../../models/user';
 import UserCredentials from '../../models/user-credentials';
 import ProfileImage from '../../models/profile-image';
-import PushNotificationService from '../../services/push-notification';
 import { handleAxiosError } from './utils';
 
 export const DEACTIVATE_ACCOUNT = 'DEACTIVATE_ACCOUNT';
 export const deactivateAccount = createAction(DEACTIVATE_ACCOUNT);
-export function* deactivateAccountSaga(action: Action<any>) {
+export function* deactivateAccountSaga() {
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
@@ -30,15 +26,6 @@ export function* deactivateAccountSaga(action: Action<any>) {
     yield put(persistUser({}));
 
     NavigatorService.reset('Onboarding', null);
-    // delete users account
-    const response = yield call(
-      api,
-      {
-        method: 'DELETE',
-        url: `/users/${auth.uid}`
-      },
-      state.user
-    );
   } catch (error) {
     handleAxiosError(error);
   } finally {
@@ -51,7 +38,7 @@ export function* watchDeactivateAccount() {
 
 export const REGISTER_USER = 'REGISTER_USER';
 export const registerUser = createAction(REGISTER_USER);
-export function* registerUserSaga(action: Action<any>) {
+export function* registerUserSaga() {
   try {
     const state: WonderAppState = yield select();
 
@@ -65,7 +52,6 @@ export function* registerUserSaga(action: Action<any>) {
 
     yield put(persistRegistrationInfo(data));
 
-    const { email, password } = state.registration;
     // yield put(loginUser({ email, password }));
   } catch (error) {
     handleAxiosError(error);
@@ -86,13 +72,6 @@ export function* forgotPasswordSaga(action: Action<any>) {
   try {
     if (action.payload) {
       const { forgotEmail } = action.payload;
-      const response = yield call(api, {
-        method: 'POST',
-        url: '/password_resets',
-        data: {
-          email: forgotEmail
-        }
-      });
       Toast.show({ text: `Email sent to ${forgotEmail}` });
     }
   } catch (error) {
@@ -176,7 +155,7 @@ export function* watchLogoutUser() {
 
 const GET_USER = 'GET_USER';
 export const getUser = createAction(GET_USER);
-export function* getUserSaga(action: Action<any>) {
+export function* getUserSaga() {
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
@@ -276,25 +255,7 @@ export function* updateImageSaga(action: Action<any>) {
           token: auth_token.token
         }
       };
-      const { data }: { data: any } = yield call(
-        api,
-        {
-          method: 'POST',
-          url: `/users/${id}/images`,
-          data: body
-        },
-        authHeader
-      );
     } else {
-      const { data }: { data: any } = yield call(
-        api,
-        {
-          method: 'POST',
-          url: `/users/${auth.uid}/images`,
-          data: body
-        },
-        state.user
-      );
     }
 
     yield put(getUser());
@@ -317,15 +278,6 @@ export function* deleteProfileImageSaga(action: Action<any>) {
       const state: WonderAppState = yield select();
       const { auth } = state.user;
 
-      const { data }: { data: any } = yield call(
-        api,
-        {
-          method: 'DELETE',
-          url: `/users/${auth.uid}/images/${asset.id}`
-        },
-        state.user
-      );
-
       yield put(getUser());
     }
   } catch (error) {
@@ -340,19 +292,10 @@ export function* watchDeleteProfileImageSaga() {
 
 const DELETE_PROFILE_VIDEO = 'DELETE_PROFILE_VIDEO';
 export const deleteProfileVideo = createAction(DELETE_PROFILE_VIDEO);
-export function* deleteProfileVideoSaga(action: Action<any>) {
+export function* deleteProfileVideoSaga() {
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
-
-    const { data }: { data: any } = yield call(
-      api,
-      {
-        method: 'DELETE',
-        url: `/users/${auth.uid}/video`
-      },
-      state.user
-    );
 
     yield put(getUser());
   } catch (error) {
@@ -388,25 +331,7 @@ export function* updateVideoSaga(action: Action<any>) {
           token: auth_token.token
         }
       };
-      const { data }: { data: any } = yield call(
-        api,
-        {
-          method: 'POST',
-          url: `/users/${id}/video`,
-          data: body
-        },
-        authHeader
-      );
     } else {
-      const { data }: { data: any } = yield call(
-        api,
-        {
-          method: 'POST',
-          url: `/users/${auth.uid}/video`,
-          data: body
-        },
-        state.user
-      );
     }
     yield put(getUser());
   } catch (error) {

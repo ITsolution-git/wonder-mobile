@@ -5,7 +5,12 @@ import ProposalSwiper from 'src/views/components/proposal-swiper/proposal-swiper
 
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import { getNewProposal, rateProposal } from 'src/store/sagas/proposal';
+import {
+  getNewProposal,
+  rateProposal,
+  getNextProposal,
+  clearProposals
+} from 'src/store/sagas/proposal';
 
 import FoundMatchModal from 'src/views/components/modals/found-match-modal';
 import { persistCurrentMatch } from 'src/store/reducers/wonder';
@@ -35,6 +40,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
     push_device_type: string;
   }) => dispatch(updateUser(data)),
   onGetNewProposal: () => dispatch(getNewProposal()),
+  clearProposals: () => dispatch(clearProposals()),
+  getNextProposal: (limit: number) => dispatch(getNextProposal(limit)),
   onLeftSwipe: (proposal: Proposal) =>
     dispatch(rateProposal({ proposal, liked: false })),
   onRightSwipe: (proposal: Proposal) =>
@@ -49,6 +56,8 @@ type Candidate = Partial<User>;
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
+  clearProposals: () => void;
+  getNextProposal: (limit: number) => void;
   onGetNewProposal: Function;
   onClearCurrentMatch: Function;
   onLeftSwipe: Function;
@@ -77,12 +86,14 @@ class ProposalViewScreen extends React.Component<Props, State> {
     isModalOpen: false
   };
 
-  componentWillMount() {
-    const { updatePushToken, currentUser } = this.props;
+  componentDidMount() {
+    const { proposal, updatePushToken, currentUser } = this.props;
     // Get a new proposal if it has been voted for or if none exist
-    if (!this.props.proposal || this.props.proposal.id) {
-      this.props.onGetNewProposal();
+    if (proposal.length < 5 || proposal[0].id) {
+      const proposalsToFetch = 5 - proposal.length;
       this.setCandidate(null);
+      this.props.getNextProposal(proposalsToFetch);
+      //   this.props.onGetNewProposal();
     }
 
     PushNotificationService.onRegister = (token: RNPushNotificationToken) => {
@@ -131,6 +142,11 @@ class ProposalViewScreen extends React.Component<Props, State> {
     this.props.onLeftSwipe(proposal[0]);
   }
 
+  private localClearProposals = (): void => {
+    this.props.clearProposals();
+    this.props.getNextProposal(5);
+  }
+
   render() {
     const { proposal, currentMatch, currentUser } = this.props;
 
@@ -142,6 +158,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
             proposal={proposal}
             onSwipeRight={this.swipeRight}
             onSwipeLeft={this.swipeLeft}
+            clearProposals={this.localClearProposals}
           />
         </View>
         <FoundMatchModal

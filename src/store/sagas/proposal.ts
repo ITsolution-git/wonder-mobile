@@ -3,10 +3,18 @@ import { createAction, Action } from 'redux-actions';
 import api from '../../services/api';
 import { persistProposal } from '../actions/proposal';
 
-import { persistCurrentMatch, persistPropsalImages } from '../reducers/wonder';
+import {
+  persistCurrentMatch,
+  persistProposalImages,
+  persistBulkProposals
+} from '../reducers/wonder';
 import WonderAppState from '../../models/wonder-app-state';
 import Proposal from '../../models/proposal';
 import { handleAxiosError } from './utils';
+import User from 'src/models/user';
+
+const CLEAR_PROPOSALS = 'CLEAR_PROPOSALS';
+export const clearProposals = createAction(CLEAR_PROPOSALS);
 
 const GET_NEW_PROPOSAL = 'GET_NEW_PROPOSAL';
 export const getNewProposal = createAction(GET_NEW_PROPOSAL);
@@ -18,12 +26,15 @@ export function* getNewProposalSaga() {
       api,
       {
         method: 'GET',
-        url: '/proposals/new'
+        url: `/proposables?limit=1&offset=5`
       },
       state.user
     );
 
-    yield put(persistProposal(response.data));
+    console.log(`proposal response:`, response);
+    if (response.data[0]) {
+      yield put(persistProposal(response.data[0]));
+    }
   } catch (error) {
     const { response } = error;
     if (response && response.status === 404) {
@@ -42,18 +53,27 @@ export function* watchGetNewProposal() {
 const GET_NEXT_PROPOSAL = 'GET_NEXT_PROPOSAL';
 export const getNextProposal = createAction(GET_NEXT_PROPOSAL);
 
-export function* getNextProposalSaga() {
+export function* getNextProposalSaga(act: {
+  type: GET_NEXT_PROPOSAL;
+  payload: number;
+}) {
+  console.log(`act:`, act);
+  const { payload: limit } = act;
+  console.log(`limit:`, limit);
   try {
     const state: WonderAppState = yield select();
-    const newProp = yield call(
+    const bulkProposalRes = yield call(
       api,
       {
         method: 'GET',
-        url: '/proposables?limit=5'
+        url: `/proposables?limit=${limit}`
       },
       state.user
     );
-    yield put(persistPropsalImages(newProp.data));
+
+    console.log(`getNextProposalSaga - bulkProposalRes`, bulkProposalRes);
+
+    yield put(persistBulkProposals(bulkProposalRes.data));
   } catch (e) {
     handleAxiosError(e);
   }
@@ -75,6 +95,7 @@ export function* rateProposalSaga(action: Action<any>) {
 
     const state: WonderAppState = yield select();
 
+    console.log(`Posting proposal with liked: ${liked}:`, proposal);
     const { data }: { data: Proposal } = yield call(
       api,
       {

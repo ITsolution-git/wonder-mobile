@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { DeckSwiper } from 'native-base';
 import { Text, Title, WonderImage } from '../theme';
 import {
@@ -11,7 +10,7 @@ import {
   Image,
   Alert
 } from 'react-native';
-
+import _ from 'lodash';
 import moment from 'moment-timezone';
 import Icon from 'react-native-vector-icons/Entypo';
 import Topic from 'src/models/topic';
@@ -22,19 +21,22 @@ import Proposal from 'src/models/proposal';
 import User from 'src/models/user';
 import ProfileImage from 'src/models/profile-image';
 import Candidate from 'src/models/candidate';
-import WonderAppState from 'src/models/wonder-app-state';
 import googleMaps, { GoogleGeoLocation } from '../../../services/google-maps';
 import MatchAvailableMedia from '../../components/proposal-swiper/match-available-media';
 import VibeVideoModal from '../modals/vibe-video-modal';
 
 const deviceHeight = Dimensions.get('window').height;
 
+interface State {
+  index: number;
+}
+
 interface Props {
   proposal: Proposal[];
   onSwipeLeft: Function;
   onSwipeRight: Function;
   currentUser: User;
-  stateProposal: Proposal;
+  clearProposals: () => void;
 }
 
 interface CardDetailsOverlayProps {
@@ -50,10 +52,6 @@ interface CardDetailsOverlayState {
   location: string;
   showVideoPlayer: boolean;
 }
-
-const mapState = (state: WonderAppState) => ({
-  stateProposal: state.wonder.proposal[0]
-});
 
 class CardDetailsOverlay extends React.Component<
   CardDetailsOverlayProps,
@@ -262,7 +260,11 @@ class CardDetailsOverlay extends React.Component<
   }
 }
 
-class ProposalSwiper extends React.Component<Props> {
+class ProposalSwiper extends React.Component<Props, State> {
+  state = {
+    index: 0
+  };
+
   renderProfileImage = (images?: ProfileImage[]) => {
     if (images && images.length) {
       return (
@@ -283,43 +285,71 @@ class ProposalSwiper extends React.Component<Props> {
     }
   }
 
-  renderCard = () => {
-    const { stateProposal } = this.props;
+  renderCard = (proposal: Proposal) => {
     return (
       <CardDetailsOverlay
-        candidate={stateProposal.candidate}
+        candidate={proposal.candidate}
         currentUser={this.props.currentUser}
       />
     );
   }
 
-  render() {
-    const { proposal, onSwipeLeft, onSwipeRight } = this.props;
+  private checkIfEnd = () => {
+    const { proposal } = this.props;
+    const { index } = this.state;
 
-    // TODO: prefetch one more proposal
+    if (index === proposal.length) {
+      this.props.clearProposals();
+
+      this.setState({ index: 0 });
+    }
+  }
+
+  private onSwipeRight = (): void => {
+    this.setState({ index: this.state.index + 1 }, () => {
+      this.props.onSwipeRight();
+      this.checkIfEnd();
+    });
+  }
+
+  private onSwipeLeft = (): void => {
+    this.setState({ index: this.state.index + 1 }, () => {
+      this.props.onSwipeLeft();
+      this.checkIfEnd();
+    });
+  }
+
+  private renderNoMatches = (): React.ReactNode => (
+    <View style={styles.noMatchesContainer}>
+      <Title style={[styles.messageText, styles.titleText]}>
+        Looks like you&apos;re out of people...
+      </Title>
+      <Text style={styles.messageText}>Check back soon!</Text>
+    </View>
+  )
+
+  render() {
+    const { proposal } = this.props;
+
     if (proposal && proposal.length) {
       return (
         <DeckSwiper
-          onSwipeLeft={onSwipeLeft}
-          onSwipeRight={onSwipeRight}
+          //   onSwipeLeft={onSwipeLeft}
+          //   onSwipeRight={onSwipeRight}
+          onSwipeLeft={this.onSwipeLeft}
+          onSwipeRight={this.onSwipeRight}
           dataSource={proposal}
           renderItem={this.renderCard}
+          looping={false}
         />
       );
-    } else {
-      return (
-        <View style={styles.noMatchesContainer}>
-          <Title style={[styles.messageText, styles.titleText]}>
-            Looks like you&apos;re out of people...
-          </Title>
-          <Text style={styles.messageText}>Check back soon!</Text>
-        </View>
-      );
     }
+
+    return this.renderNoMatches();
   }
 }
 
-export default connect(mapState)(ProposalSwiper);
+export default ProposalSwiper;
 
 const styles = StyleSheet.create({
   container: {

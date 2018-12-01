@@ -38,7 +38,11 @@ import {
   watchGhostContact,
 } from "./conversations";
 import { watchSubmitFeedback } from "./feedback";
-import { watchGetAttendances, watchDeleteAttendance, watchReviewDateSaga } from "./attendance";
+import {
+  watchGetAttendances,
+  watchDeleteAttendance,
+  watchReviewDateSaga,
+} from "./attendance";
 
 export default function* rootSaga() {
   yield all([

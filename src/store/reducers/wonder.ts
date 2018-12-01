@@ -25,26 +25,47 @@ const defaultState: WonderState = {
   proposalImages: []
 };
 
+export const persistBulkProposals = createAction('PERSIST_BULK_PROPOSALS');
 export const persistTopics = createAction('PERSIST_TOPICS');
 export const persistPartners = createAction('PERSIST_PARTNERS');
 export const persistCurrentMatch = createAction('PERSIST_CURRENT_MATCH');
 export const persistAppointments = createAction('PERSIST_APPOINTMENTS');
 export const persistAttendances = createAction('PERSIST_ATTENDANCES');
-export const persistPropsalImages = createAction('PERSIST_PROPOSAL_IMAGES');
+export const persistProposalImages = createAction('PERSIST_PROPOSAL_IMAGES');
 
 const getProposalFromPersistProposal = (
-  state: Proposal[],
+  existingProposals: Proposal[],
   proposal: Proposal
 ): Proposal[] => {
-  if (state.length) {
-    return [...state.slice(1), proposal];
+  const proposalExists = existingProposals
+    ? existingProposals.find((obj) => obj.candidate.id === proposal.candidate.id)
+    : false;
+
+  if (existingProposals.length) {
+    if (!proposalExists) {
+      return [...existingProposals, proposal];
+    }
+
+    return existingProposals;
   }
 
-  return [proposal];
+  return [];
 };
 
 export default handleActions(
   {
+    CLEAR_PROPOSALS: (state: WonderState, action: Action<any>) => ({
+      ...state,
+      proposal: []
+    }),
+    PERSIST_BULK_PROPOSALS: (state: WonderState, action: Action<any>) => {
+      const { proposal } = state;
+
+      return {
+        ...state,
+        proposal: [...proposal, ...action.payload]
+      };
+    },
     PERSIST_PROPOSAL_IMAGES: (state: WonderState, action: Action<any>) => ({
       ...state,
       proposalImages: action.payload || defaultState.proposalImages
@@ -58,6 +79,10 @@ export default handleActions(
       ...state,
       topics: action.payload || defaultState.topics
     }),
+    // RATE_PROPOSAL: (state: WonderState, action: Action<any>) => ({
+    //   ...state,
+    //   proposal: state.proposal.length > 0 ? state.proposal.slice(1) : []
+    // }),
     PERSIST_PROPOSAL: (state: WonderState, action: Action<any>) => ({
       ...state,
       proposal: getProposalFromPersistProposal(state.proposal, action.payload)

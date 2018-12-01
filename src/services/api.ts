@@ -9,9 +9,9 @@ export const HTTP_DOMAIN = 'http://getwonderapp.com';
 
 const wonderApi = axios.create({
   baseURL: BASE_URL + API_PATH,
-  // timeout: 1000,
+  //   timeout: 5000,
   headers: {
-    'Accept': 'application/json',
+    "Accept": 'application/json',
     'Content-Type': 'application/json'
   }
 });
@@ -20,7 +20,7 @@ const api = (opts: AxiosRequestConfig, userState?: UserState) => {
   if (userState && userState.auth && userState.auth.token) {
     opts.headers = {
       ...opts.headers,
-      Authorization: `Bearer ${userState.auth.token}`,
+      Authorization: `Bearer ${userState.auth.token}`
     };
   }
 
