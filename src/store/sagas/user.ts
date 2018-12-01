@@ -12,12 +12,40 @@ import {
   resetRegistration,
   persistRegistrationInfo
 } from '../reducers/registration';
+import { persistUserPhone } from '../reducers/user';
 import WonderAppState from '../../models/wonder-app-state';
 import User from '../../models/user';
 import UserCredentials from '../../models/user-credentials';
 import ProfileImage from '../../models/profile-image';
 import PushNotificationService from '../../services/push-notification';
 import { handleAxiosError } from './utils';
+
+export const GET_VERIFICATION = 'GET_VERIFICATION';
+export const getVerification = createAction(GET_VERIFICATION);
+export function* getVerificationSaga(action: Action<any>) {
+  try {
+    const state: WonderAppState = yield select();
+
+    const { data }: { data: User } = yield call(api, {
+      method: 'POST',
+      url: '/verifications',
+      data: {
+        verify: {
+          country_code: '1',
+          phone_number: action.payload
+        }
+      }
+    });
+    yield put(persistUserPhone(action.payload));
+    NavigatorService.navigate('Verify');
+  } catch (error) {
+    handleAxiosError(error);
+  }
+}
+
+export function* watchGetVerificationSaga() {
+  yield takeEvery(GET_VERIFICATION, getVerificationSaga);
+}
 
 export const DEACTIVATE_ACCOUNT = 'DEACTIVATE_ACCOUNT';
 export const deactivateAccount = createAction(DEACTIVATE_ACCOUNT);
@@ -64,13 +92,8 @@ export function* registerUserSaga(action: Action<any>) {
     });
 
     yield put(persistRegistrationInfo(data));
-
-    const { email, password } = state.registration;
-    // yield put(loginUser({ email, password }));
   } catch (error) {
     handleAxiosError(error);
-  } finally {
-    // yield put(getUser());
   }
 }
 
@@ -97,29 +120,30 @@ export function* forgotPasswordSaga(action: Action<any>) {
     }
   } catch (error) {
     handleAxiosError(error);
-  } finally {
   }
 }
 
 export function* watchForgotPassword() {
   yield takeEvery(FORGOT_PASSWORD, forgotPasswordSaga);
 }
-//
+
 export const LOGIN_USER = 'LOGIN_USER';
 export const loginUser = createAction(LOGIN_USER);
 export function* loginUserSaga(action: Action<UserCredentials>) {
   try {
+
     if (action.payload) {
-      const { email, password } = action.payload;
+      const { phone, code } = action.payload;
       const response = yield call(api, {
         method: 'POST',
         url: '/user_tokens',
-        data: {
-          auth: {
-            email,
-            password
+          data: {
+              phone_auth: {
+              country_code: '1',
+              phone_number: phone,
+              verification_code: code
+            }
           }
-        }
       });
 
       yield put(persistAuth(response.data));
@@ -128,7 +152,6 @@ export function* loginUserSaga(action: Action<UserCredentials>) {
     }
   } catch (error) {
     handleAxiosError(error);
-  } finally {
   }
 }
 
@@ -259,7 +282,7 @@ export function* updateImageSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
-    const { auth_token, id } = state.registration;
+    const { auth_token, id, phone } = state.registration;
     const body = new FormData();
     const profile: Partial<any> = action.payload;
     const photo = {
@@ -285,6 +308,7 @@ export function* updateImageSaga(action: Action<any>) {
         },
         authHeader
       );
+
     } else {
       const { data }: { data: any } = yield call(
         api,

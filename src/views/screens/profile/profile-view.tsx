@@ -162,7 +162,6 @@ class ProfileViewScreen extends React.Component<Props> {
     const candidate = conversation.partner;
     const candidateTopics = candidate.topics || [];
     const userTopics = currentUser.topics;
-
     return (
       <View style={{ flexDirection: 'row' }}>
         {currentUser &&
@@ -192,7 +191,6 @@ class ProfileViewScreen extends React.Component<Props> {
     const { currentUser, onLogout } = this.props;
     const { showVideo } = this.state;
     const years = moment().diff(currentUser.birthdate, 'years');
-
     return (
       <View style={styles.outerContainer}>
         <View style={[styles.row]}>
@@ -407,7 +405,7 @@ class ProfileViewScreen extends React.Component<Props> {
                                 </WonderImage>
                                 <View style={styles.infoContainer}>
                                   <View style={{ flexDirection: 'row' }}>
-                                    {currentUser &&
+                                    {currentUser.topics &&
                                       currentUser.topics.map((x) => {
                                         return (
                                           <Wonder

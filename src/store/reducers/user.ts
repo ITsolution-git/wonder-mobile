@@ -11,6 +11,7 @@ export const initialState: UserState = {
   profile: {
     images: []
   },
+  phone: null,
   auth: {
     token: null,
     uid: null
@@ -20,9 +21,14 @@ export const initialState: UserState = {
 export const addProfileImage = createAction('ADD_PROFILE_IMAGE');
 export const addProfileVideo = createAction('ADD_PROFILE_VIDEO');
 export const removeProfileImage = createAction('REMOVE_PROFILE_IMAGE');
+export const persistUserPhone = createAction('PERSIST_USER_PHONE');
 
 export default handleActions(
   {
+     PERSIST_USER_PHONE: (state: UserState, action) => ({
+      ...state,
+     phone: action.payload || initialState.phone
+    }),
     ADD_PROFILE_IMAGE: (state: UserState, action) => {
       return {
         ...state,
