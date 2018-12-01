@@ -9,7 +9,7 @@ export const HTTP_DOMAIN = 'http://getwonderapp.com';
 
 const wonderApi = axios.create({
   baseURL: BASE_URL + API_PATH,
-  //   timeout: 5000,
+  //   timeout: 1000,
   headers: {
     "Accept": 'application/json',
     'Content-Type': 'application/json'
