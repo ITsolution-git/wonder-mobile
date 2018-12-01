@@ -6,6 +6,7 @@ export { default as Register1 } from './registration/register1';
 export { default as Register2 } from './registration/register2';
 export { default as Register3 } from './registration/register3';
 export { default as Register4 } from './registration/register4';
+export { default as VerifyScreen } from './registration/verify';
 
 // Profile Views
 export { default as ProfileView } from './profile/profile-view';

@@ -4,13 +4,14 @@ import { PrimaryButton, TextArea } from 'src/views/components/theme';
 import Screen from 'src/views/components/screen';
 import { MediaGrid } from 'src/views/components/theme/media-grid';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import { loginUser, forgotPassword, getVerification } from 'src/store/sagas/user';
+import validator from 'validator';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import WonderAppState from '../../../models/wonder-app-state';
 import { persistRegistrationInfo } from '../../../store/reducers/registration';
 import { Device } from 'src/assets/styles/theme';
 import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view';
-import { loginUser } from 'src/store/sagas/user';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -35,7 +36,8 @@ const mapState = (state: WonderAppState) => ({
 });
 const mapDispatch = (dispatch: Dispatch) => ({
   onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
-  onLogin: (data) => dispatch(loginUser(data))
+  onLogin: (data) => dispatch(loginUser(data)),
+  onGetVerification: (data) => dispatch(getVerification(data))
 });
 
 class Register3 extends React.Component<Props, State> {
@@ -61,14 +63,11 @@ class Register3 extends React.Component<Props, State> {
 
   private validate = () => {
     const { onSave } = this.props;
+
     const { about } = this.state;
 
     onSave({ about });
-    this.props.onLogin({
-      email: this.props.registration.email,
-      password: this.props.registration.password
-    });
-    // navigation.navigate('Register4');
+    this.props.onGetVerification(registration.phone);
   }
 
   render() {

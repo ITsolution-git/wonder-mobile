@@ -37,7 +37,6 @@ export function* submitFeedbackSaga(action: Action<any>) {
     }
   } catch (error) {
     if (error.response) {
-      console.log(error.response);
       Alert.alert(
         `HTTP ${error.response.status}`,
         JSON.stringify(error.response.data)
