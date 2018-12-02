@@ -61,7 +61,7 @@ export default handleActions(
 
       return {
         ...state,
-        proposal: [...proposal, ...action.payload]
+        proposal: action.payload
       };
     },
     PERSIST_PROPOSAL_IMAGES: (state: WonderState, action: Action<any>) => ({
