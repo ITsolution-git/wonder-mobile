@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Screen from 'src/views/components/screen';
 import ProposalSwiper from 'src/views/components/proposal-swiper/proposal-swiper';
 
@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 import {
   getNewProposal,
   rateProposal,
-  getNextProposal
+  getNextProposal,
+  clearProposals
 } from 'src/store/sagas/proposal';
 
 import FoundMatchModal from 'src/views/components/modals/found-match-modal';
@@ -39,6 +40,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
     push_device_type: string;
   }) => dispatch(updateUser(data)),
   onGetNewProposal: () => dispatch(getNewProposal()),
+  clearProposals: () => dispatch(clearProposals()),
+  getNextProposal: (limit: number) => dispatch(getNextProposal(limit)),
   onLeftSwipe: (proposal: Proposal) =>
     dispatch(rateProposal({ proposal, liked: false })),
   onRightSwipe: (proposal: Proposal) =>
@@ -47,18 +50,19 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onRefreshConversations: () => dispatch(getConversations()),
   onGetConversation: (partnerId: number) =>
     dispatch(getConversation({ id: partnerId, successRoute: 'Chat' }))
-  // onGetNextProposal: () => dispatch(getNextProposal())
 });
 
 type Candidate = Partial<User>;
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
+  clearProposals: () => void;
+  getNextProposal: (limit: number) => void;
   onGetNewProposal: Function;
   onClearCurrentMatch: Function;
   onLeftSwipe: Function;
   onRightSwipe: Function;
-  proposal: Proposal | null;
+  proposal: WonderAppState['wonder']['proposal'];
   currentUser: User;
   currentMatch: Proposal;
   onGetConversation: Function;
@@ -82,13 +86,12 @@ class ProposalViewScreen extends React.Component<Props, State> {
     isModalOpen: false
   };
 
-  componentWillMount() {
-    const { updatePushToken, currentUser } = this.props;
-    // Get a new proposal if it has been voted for or if none exist
-    if (!this.props.proposal || this.props.proposal.id) {
-      this.props.onGetNewProposal();
-      this.setCandidate(null);
-    }
+  componentDidMount() {
+    const { proposal, updatePushToken, currentUser } = this.props;
+    // Get a (guaranteed to be) new batch of 5 proposals
+    
+    this.setCandidate(null);
+    this.props.getNextProposal(5);
 
     PushNotificationService.onRegister = (token: RNPushNotificationToken) => {
       const newDeviceId =
@@ -128,12 +131,17 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   swipeRight = () => {
     const { proposal } = this.props;
-    this.props.onRightSwipe(proposal);
+    this.props.onRightSwipe(proposal[0]);
   }
 
   swipeLeft = () => {
     const { proposal } = this.props;
-    this.props.onLeftSwipe(proposal);
+    this.props.onLeftSwipe(proposal[0]);
+  }
+
+  private localClearProposals = (): void => {
+    this.props.clearProposals();
+    // this.props.getNextProposal(5);
   }
 
   render() {
@@ -141,12 +149,13 @@ class ProposalViewScreen extends React.Component<Props, State> {
     console.log(currentUser);
     return (
       <Screen>
-        <View style={{ flex: 1 }}>
+        <View style={styles.flex1}>
           <ProposalSwiper
             currentUser={currentUser}
             proposal={proposal}
             onSwipeRight={this.swipeRight}
             onSwipeLeft={this.swipeLeft}
+            clearProposals={this.localClearProposals}
           />
         </View>
         <FoundMatchModal
@@ -160,6 +169,12 @@ class ProposalViewScreen extends React.Component<Props, State> {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  flex1: {
+    flex: 1
+  }
+});
 
 export default connect(
   mapState,
