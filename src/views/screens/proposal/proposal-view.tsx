@@ -88,13 +88,10 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   componentDidMount() {
     const { proposal, updatePushToken, currentUser } = this.props;
-    // Get a new proposal if it has been voted for or if none exist
-    if (proposal.length < 5 || proposal[0].id) {
-      const proposalsToFetch = 5 - proposal.length;
-      this.setCandidate(null);
-      this.props.getNextProposal(proposalsToFetch);
-      //   this.props.onGetNewProposal();
-    }
+    // Get a (guaranteed to be) new batch of 5 proposals
+    
+    this.setCandidate(null);
+    this.props.getNextProposal(5);
 
     PushNotificationService.onRegister = (token: RNPushNotificationToken) => {
       const newDeviceId =
