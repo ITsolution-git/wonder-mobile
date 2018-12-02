@@ -36,14 +36,7 @@ export function* getNewProposalSaga() {
       yield put(persistProposal(response.data[0]));
     }
   } catch (error) {
-    const { response } = error;
-    if (response && response.status === 404) {
-      // 404 - No Proposals available for user;
-      yield put(persistProposal(undefined));
-    } else {
-      handleAxiosError(error);
-    }
-  }
+    handleAxiosError(error);
 }
 
 export function* watchGetNewProposal() {
