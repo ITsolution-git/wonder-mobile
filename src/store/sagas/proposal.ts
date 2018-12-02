@@ -95,9 +95,9 @@ export function* rateProposalSaga(action: Action<any>) {
         url: '/proposals',
         method: 'POST',
         data: {
-          proposal: {
+          proposal: { 
             candidate_id: proposal.candidate.id,
-            liked
+            liked: liked
           }
         }
       },
