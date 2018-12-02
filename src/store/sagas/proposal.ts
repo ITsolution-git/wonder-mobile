@@ -36,7 +36,14 @@ export function* getNewProposalSaga() {
       yield put(persistProposal(response.data[0]));
     }
   } catch (error) {
-    handleAxiosError(error);
+    const { response } = error;
+    if (response && response.status === 404) {
+      // 404 - No Proposals available for user;
+      yield put(persistProposal(undefined));
+    } else {
+      handleAxiosError(error);
+    }
+  }
 }
 
 export function* watchGetNewProposal() {
@@ -95,9 +102,9 @@ export function* rateProposalSaga(action: Action<any>) {
         url: '/proposals',
         method: 'POST',
         data: {
-          proposal: { 
+          proposal: {
             candidate_id: proposal.candidate.id,
-            liked: liked
+            liked
           }
         }
       },
