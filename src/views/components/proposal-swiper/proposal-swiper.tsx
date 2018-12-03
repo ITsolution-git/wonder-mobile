@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import Icon from 'react-native-vector-icons/Entypo';
+import { Swiper } from '@components';
 import Topic from 'src/models/topic';
 import Images from 'src/assets/images';
 import LinearGradient from 'react-native-linear-gradient';
@@ -33,8 +34,8 @@ interface State {
 
 interface Props {
   proposal: Proposal[];
-  onSwipeLeft: Function;
-  onSwipeRight: Function;
+  onSwipeLeft: (index: number) => void;
+  onSwipeRight: (index: number) => void;
   currentUser: User;
   clearProposals: () => void;
 }
@@ -306,15 +307,19 @@ class ProposalSwiper extends React.Component<Props, State> {
   }
 
   private onSwipeRight = (): void => {
+    const { index } = this.state;
+
     this.setState({ index: this.state.index + 1 }, () => {
-      this.props.onSwipeRight();
+      this.props.onSwipeRight(index);
       this.checkIfEnd();
     });
   }
 
   private onSwipeLeft = (): void => {
+    const { index } = this.state;
+
     this.setState({ index: this.state.index + 1 }, () => {
-      this.props.onSwipeLeft();
+      this.props.onSwipeLeft(index);
       this.checkIfEnd();
     });
   }
@@ -333,14 +338,18 @@ class ProposalSwiper extends React.Component<Props, State> {
 
     if (proposal && proposal.length) {
       return (
-        <DeckSwiper
-          //   onSwipeLeft={onSwipeLeft}
-          //   onSwipeRight={onSwipeRight}
+        // <DeckSwiper
+        //   onSwipeLeft={this.onSwipeLeft}
+        //   onSwipeRight={this.onSwipeRight}
+        //   dataSource={proposal}
+        //   renderItem={this.renderCard}
+        //   looping={false}
+        // />
+        <Swiper
           onSwipeLeft={this.onSwipeLeft}
           onSwipeRight={this.onSwipeRight}
-          dataSource={proposal}
-          renderItem={this.renderCard}
-          looping={false}
+          data={proposal}
+          renderCard={this.renderCard}
         />
       );
     }

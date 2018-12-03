@@ -23,55 +23,65 @@ class AppointmentItem extends React.PureComponent<Props> {
     const { item } = this.props;
     const { name, users, event_at, match } = item;
 
+    if (!match) {
+      return null;
+    }
+
     const now = moment();
     if (moment(event_at).isSameOrAfter(now)) {
       return (
-         <Title>
-          {_.get(item, 'topic.name', null)}
-           {' '}at{' '}
+        <Title>
+          {_.get(item, 'topic.name', null)} at{' '}
           <Strong>{moment(event_at).format('h:mma')}</Strong> with{' '}
           {match.first_name}
         </Title>
-
       );
     }
     return (
-        <Title>{_.get(item, 'topic.name', null)} with {match.first_name}</Title>
+      <Title>
+        {_.get(item, 'topic.name', null)} with {match.first_name}
+      </Title>
     );
   }
 
+  handleOnPress = (): void => {
+    const { item, onPress } = this.props;
+
+    if (onPress) {
+      onPress(item);
+    }
+  }
+
+  private handleCallNumber = (): void => {
+    const {
+      item: { phone },
+      callNumber
+    } = this.props;
+
+    callNumber(`tel:${phone}`);
+  }
+
   render() {
-    const { item, onPress, callNumber, isPast } = this.props;
+    const { item, isPast } = this.props;
 
     return (
-      <TouchableOpacity
-        style={styles.container}
-        onPress={() => {
-          if (onPress) {
-            onPress(item);
-          }
-        }}
-      >
+      <TouchableOpacity style={styles.container} onPress={this.handleOnPress}>
         <View style={styles.imageContainer}>
           <Avatar
             circle
             uri={_.get(item, 'match.images[0].url', null)}
             size={AvatarSize.md}
           />
-          {isPast &&
+          {isPast && (
             <TextButton
               text='Leave review'
               style={styles.reviewBtn}
-              onPress={() => onPress(item)}
+              onPress={this.handleOnPress}
             />
-           }
+          )}
         </View>
         <View style={styles.contentContainer}>
-          <View style={{ flexDirection: 'row' }}>
-
-          {this.renderTitle()}
-
-          </View>
+          <View style={{ flexDirection: 'row' }}>{this.renderTitle()}</View>
           <SubTitle>{moment(item.event_at).format('MMMM Do')}</SubTitle>
           <View style={styles.locationRow}>
             <View>
@@ -82,12 +92,14 @@ class AppointmentItem extends React.PureComponent<Props> {
               />
             </View>
             <View>
-              <SmallText style={styles.locationText}>{item.name} - {item.location}</SmallText>
+              <SmallText style={styles.locationText}>
+                {item.name} - {item.location}
+              </SmallText>
               {item.phone !== null && (
                 <TextButton
                   text={item.phone}
                   style={styles.phoneText}
-                  onPress={() => callNumber(`tel:${item.phone}`)}
+                  onPress={this.handleCallNumber}
                 />
               )}
             </View>
@@ -139,5 +151,5 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end'
   },
   reviewBtn: { fontSize: 11, marginTop: 3 },
-  iconMargin: {marginRight: 5, marginLeft: 5}
+  iconMargin: { marginRight: 5, marginLeft: 5 }
 });

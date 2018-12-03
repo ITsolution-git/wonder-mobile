@@ -25,9 +25,9 @@ export const persistUserPhone = createAction('PERSIST_USER_PHONE');
 
 export default handleActions(
   {
-     PERSIST_USER_PHONE: (state: UserState, action) => ({
+    PERSIST_USER_PHONE: (state: UserState, action) => ({
       ...state,
-     phone: action.payload || initialState.phone
+      phone: action.payload || initialState.phone
     }),
     ADD_PROFILE_IMAGE: (state: UserState, action) => {
       return {
@@ -67,7 +67,8 @@ export default handleActions(
       ...state,
       profile: action.payload || initialState.profile
     }),
-    LOGOUT_USER: () => initialState
+    LOGOUT_USER: () => initialState,
+    DEACTIVATE_ACCOUNT: () => initialState
   },
   initialState
 );

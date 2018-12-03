@@ -89,7 +89,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
   componentDidMount() {
     const { proposal, updatePushToken, currentUser } = this.props;
     // Get a (guaranteed to be) new batch of 5 proposals
-    
+
     this.setCandidate(null);
     this.props.getNextProposal(5);
 
@@ -129,14 +129,14 @@ class ProposalViewScreen extends React.Component<Props, State> {
     onGetConversation(currentMatch.candidate.id);
   }
 
-  swipeRight = () => {
+  swipeRight = (index: number) => {
     const { proposal } = this.props;
-    this.props.onRightSwipe(proposal[0]);
+    this.props.onRightSwipe(proposal[index]);
   }
 
-  swipeLeft = () => {
+  swipeLeft = (index: number) => {
     const { proposal } = this.props;
-    this.props.onLeftSwipe(proposal[0]);
+    this.props.onLeftSwipe(proposal[index]);
   }
 
   private localClearProposals = (): void => {

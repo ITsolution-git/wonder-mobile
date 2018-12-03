@@ -19,7 +19,7 @@ class AppointmentList extends React.PureComponent<Props> {
     isLoading: false
   };
 
-  keyExtractor = (item: any, index: number) => item.id.toString();
+  keyExtractor = (item: any, index: number) => `${item.id}`;
 
   renderRow = ({ item }: { item: DecoratedAppointment }) => {
     const { onPress, onDelete, onPressCallNumber, isPast } = this.props;

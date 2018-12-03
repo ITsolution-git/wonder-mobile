@@ -4,7 +4,11 @@ import { PrimaryButton, TextArea } from 'src/views/components/theme';
 import Screen from 'src/views/components/screen';
 import { MediaGrid } from 'src/views/components/theme/media-grid';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import { loginUser, forgotPassword, getVerification } from 'src/store/sagas/user';
+import {
+  loginUser,
+  forgotPassword,
+  getVerification
+} from 'src/store/sagas/user';
 import validator from 'validator';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -62,7 +66,7 @@ class Register3 extends React.Component<Props, State> {
   }
 
   private validate = () => {
-    const { onSave } = this.props;
+    const { onSave, registration } = this.props;
 
     const { about } = this.state;
 

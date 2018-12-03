@@ -79,14 +79,14 @@ class AppointmentReviewModal extends React.Component<
     const { flaked, photo, fib, dateAgain, details, value } = this.state;
     const { currentUser, appointment } = this.props;
     const data = {
-          review: {
-          flake: flaked,
-          fib,
-          looks_like_photo: photo,
-          activity_score: value,
-          details
+      review: {
+        flake: flaked,
+        fib,
+        looks_like_photo: photo,
+        activity_score: value,
+        details
       },
-      attendanceId: appointment.attendanceId,
+      attendanceId: appointment.attendanceId
     };
     this.props.onSubmit(data);
     this.props.onRequestClose();
@@ -94,6 +94,10 @@ class AppointmentReviewModal extends React.Component<
 
   render() {
     const { appointment, currentUser, ...rest } = this.props;
+
+    const firstName = appointment.match
+      ? appointment.match.first_name
+      : '[Deactivated User]';
 
     return (
       <Modal {...rest} animationType='fade' transparent>
@@ -116,81 +120,153 @@ class AppointmentReviewModal extends React.Component<
                     uri={_.get(appointment, 'match.images[0].url', null)}
                   />
                   <SubTitle style={{ textAlign: 'center' }}>
-                    {appointment.match.first_name}
+                    {firstName}
                   </SubTitle>
                 </View>
               </CardItem>
               <CardItem>
                 <View style={styles.body}>
                   <View style={styles.row}>
-                    <Text style={styles.label}>
-                      Did {appointment.match.first_name} Flake?
-                    </Text>
+                    <Text style={styles.label}>Did {firstName} Flake?</Text>
 
-                   <View style={styles.btnContainer}>
-                      <TouchableOpacity onPress={() => this.setState({ flaked: true })}>
-                        <Text style={{ color: this.state.flaked ? theme.colors.primary : 'grey'  }}>Yes</Text>
-                    </TouchableOpacity>
-                     <TouchableOpacity onPress={() => this.setState({ flaked: false })}>
-                        <Text style={{ color: !this.state.flaked ? theme.colors.primary : 'grey' }}>No</Text>
-                    </TouchableOpacity>
-                   </View>
-
+                    <View style={styles.btnContainer}>
+                      <TouchableOpacity
+                        onPress={() => this.setState({ flaked: true })}
+                      >
+                        <Text
+                          style={{
+                            color: this.state.flaked
+                              ? theme.colors.primary
+                              : 'grey'
+                          }}
+                        >
+                          Yes
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => this.setState({ flaked: false })}
+                      >
+                        <Text
+                          style={{
+                            color: !this.state.flaked
+                              ? theme.colors.primary
+                              : 'grey'
+                          }}
+                        >
+                          No
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   <View style={styles.row}>
                     <Text style={styles.label}>
                       Hows was {appointment.name}?
                     </Text>
                     <View style={{ flexDirection: 'row' }}>
-                    {_.range(1, 6).map(this.renderOption)}
-                  </View>
-                  </View>
-                  <View style={styles.row}>
-                    <Text style={styles.label}>
-                      Did {appointment.match.first_name} look like their photos?
-                    </Text>
-
-                     <View style={styles.btnContainer}>
-                      <TouchableOpacity onPress={() => this.setState({ photo: true })}>
-                        <Text style={{ color: this.state.photo ? theme.colors.primary : 'grey'  }}>Yes</Text>
-                    </TouchableOpacity>
-                     <TouchableOpacity onPress={() => this.setState({ photo: false })}>
-                        <Text style={{ color: !this.state.photo ? theme.colors.primary : 'grey' }}>No</Text>
-                    </TouchableOpacity>
-                   </View>
-
+                      {_.range(1, 6).map(this.renderOption)}
+                    </View>
                   </View>
                   <View style={styles.row}>
                     <Text style={styles.label}>
-                      Did {appointment.match.first_name} fib about anything?
-                      (Height, Weight, etc.)
+                      Did {firstName} look like their photos?
                     </Text>
 
-                     <View style={styles.btnContainer}>
-                      <TouchableOpacity onPress={() => this.setState({ fib: true })}>
-                        <Text style={{ color: this.state.fib ? theme.colors.primary : 'grey'  }}>Yes</Text>
-                    </TouchableOpacity>
-                     <TouchableOpacity onPress={() => this.setState({ fib: false })}>
-                        <Text style={{ color: !this.state.fib ? theme.colors.primary : 'grey' }}>No</Text>
-                    </TouchableOpacity>
-                   </View>
-
+                    <View style={styles.btnContainer}>
+                      <TouchableOpacity
+                        onPress={() => this.setState({ photo: true })}
+                      >
+                        <Text
+                          style={{
+                            color: this.state.photo
+                              ? theme.colors.primary
+                              : 'grey'
+                          }}
+                        >
+                          Yes
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => this.setState({ photo: false })}
+                      >
+                        <Text
+                          style={{
+                            color: !this.state.photo
+                              ? theme.colors.primary
+                              : 'grey'
+                          }}
+                        >
+                          No
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   <View style={styles.row}>
                     <Text style={styles.label}>
-                      Do you want to setup another wonder with{' '}
-                      {appointment.match.first_name}?
+                      Did {firstName} fib about anything? (Height, Weight, etc.)
                     </Text>
 
-                     <View style={styles.btnContainer}>
-                      <TouchableOpacity onPress={() => this.setState({ dateAgain: true })}>
-                        <Text style={{ color: this.state.dateAgain ? theme.colors.primary : 'grey'  }}>Yes</Text>
-                    </TouchableOpacity>
-                     <TouchableOpacity onPress={() => this.setState({ dateAgain: false })}>
-                        <Text style={{ color: !this.state.dateAgain ? theme.colors.primary : 'grey' }}>No</Text>
-                    </TouchableOpacity>
-                   </View>
+                    <View style={styles.btnContainer}>
+                      <TouchableOpacity
+                        onPress={() => this.setState({ fib: true })}
+                      >
+                        <Text
+                          style={{
+                            color: this.state.fib
+                              ? theme.colors.primary
+                              : 'grey'
+                          }}
+                        >
+                          Yes
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => this.setState({ fib: false })}
+                      >
+                        <Text
+                          style={{
+                            color: !this.state.fib
+                              ? theme.colors.primary
+                              : 'grey'
+                          }}
+                        >
+                          No
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                  <View style={styles.row}>
+                    <Text style={styles.label}>
+                      Do you want to setup another wonder with {firstName}?
+                    </Text>
 
+                    <View style={styles.btnContainer}>
+                      <TouchableOpacity
+                        onPress={() => this.setState({ dateAgain: true })}
+                      >
+                        <Text
+                          style={{
+                            color: this.state.dateAgain
+                              ? theme.colors.primary
+                              : 'grey'
+                          }}
+                        >
+                          Yes
+                        </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => this.setState({ dateAgain: false })}
+                      >
+                        <Text
+                          style={{
+                            color: !this.state.dateAgain
+                              ? theme.colors.primary
+                              : 'grey'
+                          }}
+                        >
+                          No
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                   <View style={[styles.row, { alignItems: undefined }]}>
                     <TextArea
@@ -266,7 +342,11 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center'
   },
-  btnContainer: { flexDirection: 'row', width: '30%', justifyContent: 'space-around' },
+  btnContainer: {
+    flexDirection: 'row',
+    width: '30%',
+    justifyContent: 'space-around'
+  },
   option: {
     padding: 5
   }

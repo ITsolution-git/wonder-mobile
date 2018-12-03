@@ -11,7 +11,14 @@ import {
   TextButton,
   SecondaryButton
 } from 'src/views/components/theme';
-import { View, StyleSheet, Alert, Linking, Platform, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Alert,
+  Linking,
+  Platform,
+  TouchableOpacity
+} from 'react-native';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import AppointmentReviewModal from 'src/views/components/modals/appointment-review-modal';
 
@@ -37,7 +44,11 @@ import Color from 'color';
 import api, { BASE_URL } from 'src/services/api';
 import SvgUri from 'react-native-svg-uri';
 
-import { deleteAttendance, getAttendances, reviewDate } from 'src/store/sagas/attendance';
+import {
+  deleteAttendance,
+  getAttendances,
+  reviewDate
+} from 'src/store/sagas/attendance';
 import moment from 'moment';
 
 interface AppointmentViewProps {
@@ -64,9 +75,9 @@ const mapDispatch = (dispatch: Dispatch) => ({
     dispatch(cancelAppointment(data)),
   onDeclineAppointment: (data: DecoratedAppointment) =>
     dispatch(declineAppointment(data)),
-     onDeleteAttendance: (data: DecoratedAppointment) =>
+  onDeleteAttendance: (data: DecoratedAppointment) =>
     dispatch(deleteAttendance(data)),
-    onReviewDate: (data) => dispatch(reviewDate(data))
+  onReviewDate: (data) => dispatch(reviewDate(data))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -76,7 +87,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     return {
-      title: appointment.match.first_name
+      title: appointment.match ? appointment.match.first_name : ''
     };
   }
 
@@ -242,18 +253,18 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   }
 
   openAddress = (lat, lng, label) => {
-    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:'  });
+    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:' });
     const latLng = `${lat},${lng}`;
     const url = Platform.select({
-  ios: `${scheme}${label}@${latLng}`,
-  android: `${scheme}${latLng}(${label})`
-});
+      ios: `${scheme}${label}@${latLng}`,
+      android: `${scheme}${latLng}(${label})`
+    });
 
     Linking.openURL(url);
   }
 
   showDeleteAlert = () => {
-     Alert.alert(
+    Alert.alert(
       'Confirm Remove',
       'Are you sure you want to remove this past date?',
       [
@@ -268,14 +279,14 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   }
 
   deletePastDate = () => {
-     const { navigation, currentUser } = this.props;
-     const appointment: DecoratedAppointment = navigation.getParam(
+    const { navigation, currentUser } = this.props;
+    const appointment: DecoratedAppointment = navigation.getParam(
       'appointment',
       {}
     );
 
-     this.props.onDeleteAttendance(appointment);
-     navigation.goBack();
+    this.props.onDeleteAttendance(appointment);
+    navigation.goBack();
   }
 
   render() {
@@ -284,7 +295,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       'appointment',
       {}
     );
-    const {latitude, longitude} = appointment;
+    const { latitude, longitude } = appointment;
     const isPast = this.isPastAppointment();
 
     return (
@@ -300,28 +311,33 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           <View style={styles.contentContainer}>
             <Title align='center'>
               {_.get(appointment, 'topic.name', null)} with{' '}
-              {appointment.match.first_name}{' '}
+              {appointment.match
+                ? appointment.match.first_name
+                : 'Deactivated User'}{' '}
             </Title>
-              <View style={{ flexDirection: 'row', marginTop: 10 }}>
+            <View style={{ flexDirection: 'row', marginTop: 10 }}>
+              <Text style={{ fontSize: 15 }} align='center'>
+                {appointment.name} {'-'}{' '}
                 <Text
-                  style={{ fontSize: 15 }}
-                  align='center'
+                  style={styles.addressText}
+                  onPress={() =>
+                    this.openAddress(
+                      appointment.latitude,
+                      appointment.longitude,
+                      appointment.name
+                    )
+                  }
                 >
-                   {appointment.name}{' '}{'-'}{' '}
-                    <Text
-                      style={styles.addressText}
-                      onPress={() => this.openAddress(appointment.latitude, appointment.longitude, appointment.name)}
-                    >
-                    {appointment.location}
-                    </Text>
+                  {appointment.location}
                 </Text>
-              </View>
+              </Text>
+            </View>
             {appointment.eventMoment && (
               <Text align='center'>
                 {moment(appointment.event_at).format('MMMM Do, [at] h:mma')}
               </Text>
             )}
-            {appointment.phone !== null  && (
+            {appointment.phone !== null && (
               <TextButton
                 btnStyle={{ alignSelf: 'center', marginTop: 10 }}
                 style={styles.phoneText}
@@ -333,12 +349,14 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         </View>
         <View>
           {isPast ? (
-          <View>
-            {appointment.state === 'confirmed' && <PrimaryButton
-              title='Leave Review'
-              onPress={this.openReviewModal}
-            />}
-          </View>
+            <View>
+              {appointment.state === 'confirmed' && (
+                <PrimaryButton
+                  title='Leave Review'
+                  onPress={this.openReviewModal}
+                />
+              )}
+            </View>
           ) : (
             this.renderConfirmationButton(appointment)
           )}
@@ -406,16 +424,14 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               </View>
             )}
             <View style={styles.col}>
-              {isPast ?
-              <SecondaryButton
-                title='Delete'
-                onPress={this.showDeleteAlert}
-              /> :
-              <SecondaryButton
-                title='Decline'
-                onPress={this.decline}
-              />
-                }
+              {isPast ? (
+                <SecondaryButton
+                  title='Delete'
+                  onPress={this.showDeleteAlert}
+                />
+              ) : (
+                <SecondaryButton title='Decline' onPress={this.decline} />
+              )}
             </View>
           </View>
         </View>
