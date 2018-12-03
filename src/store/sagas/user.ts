@@ -45,18 +45,59 @@ export function* watchGetVerificationSaga() {
 
 export const DEACTIVATE_ACCOUNT = 'DEACTIVATE_ACCOUNT';
 export const deactivateAccount = createAction(DEACTIVATE_ACCOUNT);
-export function* deactivateAccountSaga() {
+export function* deactivateAccountSaga(action: Action<any>) {
   try {
+    console.log(`action:`, action);
     const state: WonderAppState = yield select();
-    const { auth } = state.user;
+    const { id, token }: { id: number; token: string } = action.payload;
+
+    const authHeader = {
+      auth: {
+        token
+      }
+    };
+
+    const deleteRes = yield call(
+      api,
+      {
+        method: 'DELETE',
+        url: `/users/${id}`,
+        data: {
+          user: {
+            push_device_id: '',
+            push_device_type: ''
+          }
+        }
+      },
+      authHeader
+    );
+
+    console.log(`Deleted user account:`, deleteRes);
+
     // log user out
     yield put(persistAuth({}));
     yield put(persistUser({}));
 
     NavigatorService.reset('Onboarding', null);
+
+    // setTimeout(() => {
+    //   call(
+    //     api,
+    //     {
+    //       method: 'DELETE',
+    //       url: `/users/${id}`,
+    //       data: {
+    //         user: {
+    //           push_device_id: '',
+    //           push_device_type: ''
+    //         }
+    //       }
+    //     },
+    //     authHeader
+    //   );
+    // }, 1500);
   } catch (error) {
     handleAxiosError(error);
-  } finally {
   }
 }
 
@@ -81,7 +122,6 @@ export function* registerUserSaga() {
     yield put(persistRegistrationInfo(data));
 
     // yield put(loginUser({ email, password }));
-
   } catch (error) {
     handleAxiosError(error);
   }
@@ -114,19 +154,18 @@ export const LOGIN_USER = 'LOGIN_USER';
 export const loginUser = createAction(LOGIN_USER);
 export function* loginUserSaga(action: Action<UserCredentials>) {
   try {
-
     if (action.payload) {
       const { phone, code } = action.payload;
       const response = yield call(api, {
         method: 'POST',
         url: '/user_tokens',
-          data: {
-              phone_auth: {
-              country_code: '1',
-              phone_number: phone,
-              verification_code: code
-            }
+        data: {
+          phone_auth: {
+            country_code: '1',
+            phone_number: phone,
+            verification_code: code
           }
+        }
       });
 
       yield put(persistAuth(response.data));
@@ -292,7 +331,6 @@ export function* updateImageSaga(action: Action<any>) {
         },
         authHeader
       );
-
     }
 
     yield put(getUser());

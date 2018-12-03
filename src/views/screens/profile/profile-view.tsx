@@ -70,7 +70,7 @@ interface Props {
   currentUser: User;
   onLogout: (id: number, token: string) => void;
   onRefreshProfile: () => void;
-  deactivateUsersAccount: () => void;
+  deactivateUsersAccount: (data: { id: number; token: string }) => void;
   auth: AuthToken;
 }
 
@@ -82,7 +82,8 @@ const mapState = (state: WonderAppState) => ({
 const mapDispatch = (dispatch: Dispatch) => ({
   onLogout: (id: number, token: string) => dispatch(logoutUser({ id, token })),
   onRefreshProfile: () => dispatch(getUser()),
-  deactivateUsersAccount: () => dispatch(deactivateAccount())
+  deactivateUsersAccount: ({ id, token }: { id: number; token: string }) =>
+    dispatch(deactivateAccount({ id, token }))
 });
 
 class ProfileViewScreen extends React.Component<Props> {
@@ -120,10 +121,21 @@ class ProfileViewScreen extends React.Component<Props> {
   }
   deactivateAccount = () => {
     const { currentUser } = this.props;
+    const {
+      auth: { uid: id, token }
+    } = this.props;
 
     const options = [
       { text: 'Cancel' },
-      { text: 'Yes', onPress: this.props.deactivateUsersAccount }
+      {
+        text: 'Yes',
+        onPress: () => {
+          this.props.deactivateUsersAccount({
+            id,
+            token
+          });
+        }
+      }
     ];
 
     Alert.alert(
@@ -181,7 +193,8 @@ class ProfileViewScreen extends React.Component<Props> {
 
   share = () => {
     Share.share({
-      message: 'Thought you would like to find someone Wonder’ful on the Wonder Dating App! Click here to download!',
+      message:
+        'Thought you would like to find someone Wonder’ful on the Wonder Dating App! Click here to download!',
       url: 'https://wonder.dating/en',
       title: 'Heard of Wonder?'
     });
@@ -205,10 +218,7 @@ class ProfileViewScreen extends React.Component<Props> {
                 size={AvatarSize.lg}
               />
             </TouchableHighlight>
-            <Text
-              allowFontScaling={false}
-              style={{ marginTop: 6 }}
-            >
+            <Text allowFontScaling={false} style={{ marginTop: 6 }}>
               {currentUser.first_name}
             </Text>
           </View>
@@ -276,22 +286,24 @@ class ProfileViewScreen extends React.Component<Props> {
           </View>
         </View>
 
-         <View style={styles.btnContainer}>
-            <PrimaryButton
-              fullWidth
-              title='UPGRADE TO WONDER PREMIUM'
-              onPress={_.noop}
-            />
-            <TouchableHighlight onPress={this.share} underlayColor='transparent'>
-              <Text style={{ color: theme.colors.primary, marginTop: 15 }}>Share Wonder with friends!</Text>
-            </TouchableHighlight>
-          </View>
+        <View style={styles.btnContainer}>
+          <PrimaryButton
+            fullWidth
+            title='UPGRADE TO WONDER PREMIUM'
+            onPress={_.noop}
+          />
+          <TouchableHighlight onPress={this.share} underlayColor='transparent'>
+            <Text style={{ color: theme.colors.primary, marginTop: 15 }}>
+              Share Wonder with friends!
+            </Text>
+          </TouchableHighlight>
+        </View>
 
         <View style={{ marginVertical: 10 }}>
           <View style={styles.row}>
             <View style={styles.col}>
               <Button
-                style={{ margin: 8}}
+                style={{ margin: 8 }}
                 innerStyle={styles.logoutStyles}
                 rounded
                 title='Logout'
@@ -300,7 +312,7 @@ class ProfileViewScreen extends React.Component<Props> {
             </View>
             <View style={styles.col}>
               <Button
-                style={{ margin: 8}}
+                style={{ margin: 8 }}
                 innerStyle={styles.logoutStyles}
                 rounded
                 title='Deactivate'
@@ -478,7 +490,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
     // marginBottom: 5
   },
   col: {
@@ -558,8 +570,13 @@ const styles = StyleSheet.create({
   },
   genericText: { marginLeft: 5, fontSize: 12, lineHeight: 18, color: '#333' },
   infoContainer: { backgroundColor: '#fff', padding: 10 },
-  btnMargin: { margin: 6},
+  btnMargin: { margin: 6 },
   btnHeight: { height: 40 },
   logoutStyles: { height: 40, backgroundColor: '#f2f2f2' },
-  btnContainer: { alignItems: 'center', justifyContent: 'space-around', width: '70%', alignSelf: 'center'}
+  btnContainer: {
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    width: '70%',
+    alignSelf: 'center'
+  }
 });

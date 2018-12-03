@@ -47,7 +47,6 @@ interface ISwiperProps {
 
 interface ISwiperState {
   index: number;
-  swipeEnabled: boolean;
 }
 
 class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
@@ -55,8 +54,7 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
     super(props);
 
     this.state = {
-      index: 0,
-      swipeEnabled: true
+      index: 0
     };
 
     this._opacityOutputRanges = [];
@@ -121,15 +119,11 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
     this._bodyPosition.setValue(0);
 
     if (reset) {
-      this.setState({ index: 0, swipeEnabled: true });
+      this.setState({ index: 0 });
     } else {
-      if (direction === 'left') {
-        this.setState({ index: index + 1, swipeEnabled: true }, onSwipeLeft);
-      } else {
-        if (this._index > 0) {
-          this.setState({ index: index - 1, swipeEnabled: true }, onSwipeRight);
-        }
-      }
+      const callback = direction === 'left' ? onSwipeLeft : onSwipeRight;
+
+      this.setState({ index: index + 1 }, callback);
     }
   }
 
@@ -178,31 +172,41 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
     i: number
   ): {
     opacity: Animated.AnimatedInterpolation;
-    transform: Array<{
-      translateX: Animated.AnimatedInterpolation;
-    }>;
+    transform: [{ [key: string]: Animated.AnimatedInterpolation }];
   } => {
     const { index } = this.state;
+
     const isActive = i === index;
+    const isNext = i === index + 1;
+    // const offsetMult = isActive ? 1 : i - index;
     const offsetMult = isActive ? 1 : i - index;
     const offset = WIDTH * offsetMult;
     const negOffset = offset > 0 ? offset * -1 : offset;
 
-    const outputRange =
-      offset > 0 ? [-offset, 0, offset] : [offset, 0, -offset];
+    // const outputRange =
+    //   offset > 0 ? [-offset, 0, offset] : [offset, 0, -offset];
+
+    const outputRange = isActive ? [-offset, 0, offset] : [0, 0, 0];
 
     const translateX = this._bodyPosition.interpolate({
       inputRange: [negOffset, 0, negOffset * -1], // [-WIDTH, 0, WIDTH]
       outputRange
     });
 
-    const opacity = this._bodyPosition.interpolate({
+    const scale = this._bodyPosition.interpolate({
       inputRange: COMMON_RANGE,
-      outputRange: isActive ? [0, 1, 0] : [1, 0, 1]
+      outputRange: isNext ? [1, 0, 1] : isActive ? [1, 1, 1] : [0, 0, 0]
     });
+
+    // const opacity = this._bodyPosition.interpolate({
+    //   inputRange: COMMON_RANGE,
+    //   outputRange: isActive ? [0, 1, 0] : [1, 0, 1]
+    // });
+
     return {
-      opacity,
-      transform: [{ translateX }]
+      //   opacity,
+      transform: [{ translateX }, { scale }],
+      zIndex: -i
     };
   }
 
@@ -223,10 +227,10 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
             {...activeProps}
             style={[
               this.getBodyStyle(i),
-              localStyles.commonCard,
-              {
-                left: offset
-              }
+              localStyles.commonCard
+              //   {
+              //     left: offset
+              //   }
             ]}
           >
             {renderCard(dataItem)}

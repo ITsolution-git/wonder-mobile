@@ -17,6 +17,7 @@ export const handleAxiosError = (error: any) => {
     );
   } else {
     // tslint:disable-next-line
+    console.log(`error:`, error);
     console.warn(error);
   }
 };
