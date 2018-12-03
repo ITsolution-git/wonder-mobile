@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { isEqual } from 'underscore';
 import {
   View,
   StyleSheet,
@@ -8,11 +6,9 @@ import {
   PanResponder,
   PanResponderInstance,
   PanResponderGestureState,
-  NativeSyntheticEvent,
-  LayoutChangeEvent,
-  Dimensions
+  NativeSyntheticEvent
 } from 'react-native';
-import { colors, width as WIDTH } from '@assets';
+import { width as WIDTH } from '@assets';
 
 const X_SWIPE_THRESHOLD_COEFF: number = 0.5;
 const SWIPE_THRESHOLD: number = WIDTH * X_SWIPE_THRESHOLD_COEFF;
@@ -152,19 +148,17 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
 
     console.log(`Force swiping ${direction}`);
 
-    this.setState({ swipeEnabled: false }, () => {
-      const x = isRight ? WIDTH * xMultiplier : -WIDTH * xMultiplier;
+    const x = isRight ? WIDTH * xMultiplier : -WIDTH * xMultiplier;
 
-      console.log(`x`, x);
+    console.log(`x`, x);
 
-      Animated.spring(this._bodyPosition, {
-        toValue: x,
-        speed: SWIPE_SPEED,
-        overshootClamping: true,
-        useNativeDriver: true
-      }).start(() => {
-        this.onSwipeComplete(direction);
-      });
+    Animated.spring(this._bodyPosition, {
+      toValue: x,
+      speed: SWIPE_SPEED,
+      overshootClamping: true,
+      useNativeDriver: true
+    }).start(() => {
+      this.onSwipeComplete(direction);
     });
   }
 
@@ -225,13 +219,7 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
           <Animated.View
             key={i}
             {...activeProps}
-            style={[
-              this.getBodyStyle(i),
-              localStyles.commonCard
-              //   {
-              //     left: offset
-              //   }
-            ]}
+            style={[this.getBodyStyle(i), localStyles.commonCard]}
           >
             {renderCard(dataItem)}
           </Animated.View>
