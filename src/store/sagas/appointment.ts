@@ -33,6 +33,8 @@ export function* getAppointmentsSaga(action: Action<any>) {
       },
       state.user
     );
+
+    console.log(`appointment data:`, data);
     yield put(persistAppointments(data));
   } catch (error) {
     handleAxiosError(error);

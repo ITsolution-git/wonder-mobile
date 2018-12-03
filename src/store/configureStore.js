@@ -28,8 +28,8 @@ const middlewares = [sagaMiddleware];
 
 export default (initialState) => {
   // create store and persistor per normal...
-  //   const makeStore = __DEV__ ? Reactotron.createStore : createStore;
-  const makeStore = createStore;
+  const makeStore = __DEV__ ? Reactotron.createStore : createStore;
+  //   const makeStore = createStore;
 
   const store = makeStore(
     persistedReducer,
