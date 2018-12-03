@@ -28,9 +28,7 @@ import VibeVideoModal from '../modals/vibe-video-modal';
 
 const deviceHeight = Dimensions.get('window').height;
 
-interface State {
-  index: number;
-}
+interface State {}
 
 interface Props {
   proposal: Proposal[];
@@ -262,10 +260,6 @@ class CardDetailsOverlay extends React.Component<
 }
 
 class ProposalSwiper extends React.Component<Props, State> {
-  state = {
-    index: 0
-  };
-
   renderProfileImage = (images?: ProfileImage[]) => {
     if (images && images.length) {
       return (
@@ -295,33 +289,22 @@ class ProposalSwiper extends React.Component<Props, State> {
     );
   }
 
-  private checkIfEnd = () => {
+  private checkIfEnd = (index: number): void => {
     const { proposal } = this.props;
-    const { index } = this.state;
 
     if (index === proposal.length) {
       this.props.clearProposals();
-
-      this.setState({ index: 0 });
     }
   }
 
-  private onSwipeRight = (): void => {
-    const { index } = this.state;
-
-    this.setState({ index: this.state.index + 1 }, () => {
-      this.props.onSwipeRight(index);
-      this.checkIfEnd();
-    });
+  private onSwipeRight = (index: number): void => {
+    this.props.onSwipeRight(index);
+    this.checkIfEnd(index);
   }
 
-  private onSwipeLeft = (): void => {
-    const { index } = this.state;
-
-    this.setState({ index: this.state.index + 1 }, () => {
-      this.props.onSwipeLeft(index);
-      this.checkIfEnd();
-    });
+  private onSwipeLeft = (index: number): void => {
+    this.props.onSwipeLeft(index);
+    this.checkIfEnd(index);
   }
 
   private renderNoMatches = (): React.ReactNode => (
@@ -338,13 +321,6 @@ class ProposalSwiper extends React.Component<Props, State> {
 
     if (proposal && proposal.length) {
       return (
-        // <DeckSwiper
-        //   onSwipeLeft={this.onSwipeLeft}
-        //   onSwipeRight={this.onSwipeRight}
-        //   dataSource={proposal}
-        //   renderItem={this.renderCard}
-        //   looping={false}
-        // />
         <Swiper
           onSwipeLeft={this.onSwipeLeft}
           onSwipeRight={this.onSwipeRight}

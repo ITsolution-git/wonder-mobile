@@ -116,7 +116,7 @@ export function* rateProposalSaga(action: Action<any>) {
       yield put(persistCurrentMatch(data));
     }
 
-    yield put(persistProposal(data));
+    // yield put(persistProposal(data));
   } catch (error) {
     const { response } = error;
     if (response && response.status === 422) {

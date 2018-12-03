@@ -73,7 +73,7 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
         return false;
       },
       onPanResponderMove: (_, gesture) => {
-        const { dx: bodyX, dy: bodyY } = gesture;
+        const { dx: bodyX } = gesture;
         // const bodyX = this.getXPreventOverflow(gesture.dx, 1500, false);
 
         // const { x: tabX, y: tabY } = this.getTabXFromBodyPan({ bodyX, bodyY });
@@ -110,7 +110,7 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
     reset: boolean = false
   ): void => {
     const { index } = this.state;
-    const { data, onSwipeRight, onSwipeLeft } = this.props;
+    const { onSwipeRight, onSwipeLeft } = this.props;
 
     this._bodyPosition.setValue(0);
 
@@ -118,8 +118,10 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
       this.setState({ index: 0 });
     } else {
       const callback = direction === 'left' ? onSwipeLeft : onSwipeRight;
-
-      this.setState({ index: index + 1 }, callback);
+      callback(index);
+      //   this.setState({ index: index + 1 }, () => {
+      // callback(index + 1);
+      //   });
     }
   }
 
@@ -140,11 +142,9 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
       return;
     }
 
-    console.log(`forceSwiping`);
-
-    if ((index === data.length - 1 && !isRight) || (index === 0 && isRight)) {
-      return this.resetPosition();
-    }
+    // if ((index === data.length - 1 && !isRight) || (index === 0 && isRight)) {
+    //   return this.resetPosition();
+    // }
 
     console.log(`Force swiping ${direction}`);
 
@@ -180,7 +180,7 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
     // const outputRange =
     //   offset > 0 ? [-offset, 0, offset] : [offset, 0, -offset];
 
-    const outputRange = isActive ? [-offset, 0, offset] : [0, 0, 0];
+    const outputRange = isActive || !isNext ? [-offset, 0, offset] : [0, 0, 0];
 
     const translateX = this._bodyPosition.interpolate({
       inputRange: [negOffset, 0, negOffset * -1], // [-WIDTH, 0, WIDTH]
@@ -199,8 +199,8 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
 
     return {
       //   opacity,
-      transform: [{ translateX }, { scale }],
-      zIndex: -i
+      transform: [{ translateX }, { scale }]
+      //   zIndex: -i
     };
   }
 

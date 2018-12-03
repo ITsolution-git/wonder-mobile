@@ -77,10 +77,10 @@ export default handleActions(
       ...state,
       topics: action.payload || defaultState.topics
     }),
-    // RATE_PROPOSAL: (state: WonderState, action: Action<any>) => ({
-    //   ...state,
-    //   proposal: state.proposal.length > 0 ? state.proposal.slice(1) : []
-    // }),
+    RATE_PROPOSAL: (state: WonderState, action: Action<any>) => ({
+      ...state,
+      proposal: state.proposal.length > 0 ? state.proposal.slice(1) : []
+    }),
     PERSIST_PROPOSAL: (state: WonderState, action: Action<any>) => ({
       ...state,
       proposal: getProposalFromPersistProposal(state.proposal, action.payload)
