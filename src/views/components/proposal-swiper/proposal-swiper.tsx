@@ -13,6 +13,7 @@ import {
 import _ from 'lodash';
 import moment from 'moment-timezone';
 import Icon from 'react-native-vector-icons/Entypo';
+import { Swiper } from '@components';
 import Topic from 'src/models/topic';
 import Images from 'src/assets/images';
 import LinearGradient from 'react-native-linear-gradient';
@@ -337,12 +338,18 @@ class ProposalSwiper extends React.Component<Props, State> {
 
     if (proposal && proposal.length) {
       return (
-        <DeckSwiper
+        // <DeckSwiper
+        //   onSwipeLeft={this.onSwipeLeft}
+        //   onSwipeRight={this.onSwipeRight}
+        //   dataSource={proposal}
+        //   renderItem={this.renderCard}
+        //   looping={false}
+        // />
+        <Swiper
           onSwipeLeft={this.onSwipeLeft}
           onSwipeRight={this.onSwipeRight}
-          dataSource={proposal}
-          renderItem={this.renderCard}
-          looping={false}
+          data={proposal}
+          renderCard={this.renderCard}
         />
       );
     }
