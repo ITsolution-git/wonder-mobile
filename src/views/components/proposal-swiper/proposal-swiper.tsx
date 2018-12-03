@@ -33,8 +33,8 @@ interface State {
 
 interface Props {
   proposal: Proposal[];
-  onSwipeLeft: Function;
-  onSwipeRight: Function;
+  onSwipeLeft: (index: number) => void;
+  onSwipeRight: (index: number) => void;
   currentUser: User;
   clearProposals: () => void;
 }
@@ -306,15 +306,19 @@ class ProposalSwiper extends React.Component<Props, State> {
   }
 
   private onSwipeRight = (): void => {
+    const { index } = this.state;
+
     this.setState({ index: this.state.index + 1 }, () => {
-      this.props.onSwipeRight();
+      this.props.onSwipeRight(index);
       this.checkIfEnd();
     });
   }
 
   private onSwipeLeft = (): void => {
+    const { index } = this.state;
+
     this.setState({ index: this.state.index + 1 }, () => {
-      this.props.onSwipeLeft();
+      this.props.onSwipeLeft(index);
       this.checkIfEnd();
     });
   }
@@ -334,8 +338,6 @@ class ProposalSwiper extends React.Component<Props, State> {
     if (proposal && proposal.length) {
       return (
         <DeckSwiper
-          //   onSwipeLeft={onSwipeLeft}
-          //   onSwipeRight={onSwipeRight}
           onSwipeLeft={this.onSwipeLeft}
           onSwipeRight={this.onSwipeRight}
           dataSource={proposal}
