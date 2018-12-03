@@ -573,6 +573,13 @@
 			remoteGlobalIDString = 2D2A28201D9B03D100D4039D;
 			remoteInfo = "RCTAnimation-tvOS";
 		};
+		773BEE4621B5A0D300319AFF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 86A90332181353AC89F4057458BF33C2;
+			remoteInfo = BugsnagReactNative;
+		};
 		77415B2C21A0C59000EF1C82 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
@@ -938,6 +945,7 @@
 			isa = PBXGroup;
 			children = (
 				070BEB66214EDECB00309E64 /* libBolts.a */,
+				773BEE4721B5A0D300319AFF /* libBugsnagReactNative.a */,
 				1E5D1F85212FEC1F00419E22 /* libDoubleConversion.a */,
 				070BEB68214EDECB00309E64 /* libFBSDKCoreKit.a */,
 				070BEB6A214EDECB00309E64 /* libFBSDKLoginKit.a */,
@@ -1921,6 +1929,13 @@
 			fileType = archive.ar;
 			path = libRCTAnimation.a;
 			remoteRef = 5E9157341DD0AC6500FF2AA8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		773BEE4721B5A0D300319AFF /* libBugsnagReactNative.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libBugsnagReactNative.a;
+			remoteRef = 773BEE4621B5A0D300319AFF /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		77415B2D21A0C59000EF1C82 /* libFLAnimatedImage.a */ = {
