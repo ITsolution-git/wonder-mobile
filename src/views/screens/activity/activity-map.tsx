@@ -43,7 +43,7 @@ const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state),
   activities: state.chat.activities,
   details: state.chat.activity,
-  conversation: state.chat.conversation,
+  conversation: state.chat.conversation
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
@@ -52,7 +52,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onGetActivity: (id: string) => dispatch(getActivityDetails({ id })),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
-  clearActivity: () => dispatch(persistActivity(null)),
+  clearActivity: () => dispatch(persistActivity(null))
 });
 
 interface Props {
@@ -73,10 +73,13 @@ interface State {
 }
 
 class ActivityMapScreen extends React.Component<Props, State> {
+  // tslint:disable-next-line:variable-name
+  _mapRef: null | React.RefObject<MapView> = null;
+
   state: State = {
     position: {
       lat: 0,
-      lng: 0,
+      lng: 0
     },
     mapReady: false
   };
@@ -90,20 +93,21 @@ class ActivityMapScreen extends React.Component<Props, State> {
 
   componentDidMount() {
     askForDeviceLocation(this.updatePosition);
-    setTimeout(() => {
-      this.setState({ mapReady: true });
-    }, 3000);
   }
 
   updatePosition = (position: GeolocationReturnType) => {
     const { navigation, onGetActivities, clearActivity } = this.props;
     const partnerId: number = navigation.getParam('id', 0);
+
+    console.log(`updating position:`, position);
+
     const { coords } = position;
     this.setState({
       position: {
         lng: coords.longitude,
-        lat: coords.latitude,
+        lat: coords.latitude
       },
+      mapReady: true
     });
 
     onGetActivities(partnerId, coords);
@@ -114,7 +118,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
       details,
       navigation,
       clearActivity,
-      onUpdateAppointment,
+      onUpdateAppointment
     } = this.props;
     clearActivity();
     onUpdateAppointment({ activity: details });
@@ -122,7 +126,12 @@ class ActivityMapScreen extends React.Component<Props, State> {
   }
 
   renderMarker = (activity: Activity) => {
-    const { onGetActivity, onUpdateAppointment, currentUser, conversation } = this.props;
+    const {
+      onGetActivity,
+      onUpdateAppointment,
+      currentUser,
+      conversation
+    } = this.props;
     const { id, name, latitude, longitude, topic } = activity;
     const { position } = this.state;
     const usersTopics = currentUser.topics.map((t: Topic) => t.name);
@@ -132,11 +141,14 @@ class ActivityMapScreen extends React.Component<Props, State> {
       <MarkerContainer
         key={`${id} - ${name}`}
         coordinate={{ latitude, longitude }}
-      // onPress={() => onGetActivity(id)}
+        // onPress={() => onGetActivity(id)}
       >
         <View
-          style={usersTopics.includes(topic.name) && matchTopics.includes(topic.name)
-            ? styles.active : null}
+          style={
+            usersTopics.includes(topic.name) && matchTopics.includes(topic.name)
+              ? styles.active
+              : null
+          }
         >
           <Marker title={topic.name} icon={topic.icon} />
         </View>
@@ -153,15 +165,41 @@ class ActivityMapScreen extends React.Component<Props, State> {
     );
   }
 
+  private handleMapRef = (ref: React.RefObject<MapView>): void => {
+    const { position } = this.state;
+    this._mapRef = ref;
+
+    if (!this._mapRef) {
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      if (!this._mapRef) {
+        return;
+      }
+
+      this._mapRef.animateToRegion(
+        {
+          latitude: position.lat,
+          longitude: position.lng,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.1
+        },
+        1
+      );
+    });
+  }
+
   render() {
     const { activities, details, clearActivity, conversation } = this.props;
     const { position } = this.state;
 
     return (
       <Screen>
-        {this.state.mapReady ?
+        {this.state.mapReady ? (
           <MapView
             // showsUserLocation
+            ref={this.handleMapRef}
             showsMyLocationButton
             rotateEnabled={false}
             style={{ flex: 1 }}
@@ -176,26 +214,35 @@ class ActivityMapScreen extends React.Component<Props, State> {
             <MarkerContainer
               coordinate={{
                 latitude: Number(conversation.partner.latitude),
-                longitude: Number(conversation.partner.longitude),
+                longitude: Number(conversation.partner.longitude)
               }}
             >
               <Svg width={40} height={40}>
-                <Image href={require('src/assets/images/icons/MapMatchIcon.png')} width={40} height={40} />
+                <Image
+                  href={require('src/assets/images/icons/MapMatchIcon.png')}
+                  width={40}
+                  height={40}
+                />
               </Svg>
             </MarkerContainer>
             <MarkerContainer
               coordinate={{
                 latitude: Number(this.state.position.lat),
-                longitude: Number(this.state.position.lng),
+                longitude: Number(this.state.position.lng)
               }}
             >
               <Svg width={40} height={40}>
-                <Image href={require('src/assets/images/icons/WonderMapIcon.png')} width={40} height={40} />
+                <Image
+                  href={require('src/assets/images/icons/WonderMapIcon.png')}
+                  width={40}
+                  height={40}
+                />
               </Svg>
             </MarkerContainer>
           </MapView>
-          :
-          <ActivityIndicator />}
+        ) : (
+          <ActivityIndicator />
+        )}
         <ActivityDetailsModal
           userPosition={position}
           onRequestClose={() => clearActivity()}
@@ -216,18 +263,19 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 17,
-  },
+    borderRadius: 17
+  }
 });
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(ActivityMapScreen);
 
 // location: "90024"
 
-{/* <MarkerContainer
+{
+  /* <MarkerContainer
 coordinate={{
   latitude: Number(conversation.partner.latitude),
   longitude: Number(conversation.partner.longitude),
@@ -249,4 +297,5 @@ coordinate={{
   style={{ height: 40, width: 40 }}
   resizeMode='contain'
   source={require('src/assets/images/icons/WonderMapIcon.png')} />
-</MarkerContainer> */}
+</MarkerContainer> */
+}

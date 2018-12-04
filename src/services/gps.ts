@@ -12,11 +12,11 @@ export type GeolocationSuccessCallback = (
 export type GeolocationErrorCallback = (position: GeolocationError) => any;
 
 const defaultOnError = (error: GeolocationError) => Alert.alert(error.message);
+
 const askForDeviceLocation = async (
   onSuccess: GeolocationSuccessCallback,
   onError: GeolocationErrorCallback = defaultOnError
 ) => {
-
   if (Platform.OS === 'android') {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -25,6 +25,8 @@ const askForDeviceLocation = async (
         message: 'Use your location to find activities near you'
       }
     );
+
+    console.log(`Android geo granted?`, granted);
 
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       getDeviceLocation(onSuccess, onError);
@@ -39,24 +41,12 @@ export const getDeviceLocation = (
   onSuccess: GeolocationSuccessCallback,
   onError: GeolocationErrorCallback
 ) => {
+  console.log(`requesting user location`);
   navigator.geolocation.getCurrentPosition(onSuccess, onError, {
-    enableHighAccuracy: true,
-    timeout: 30000,
+    // enableHighAccuracy: true,
+    timeout: 5000,
     maximumAge: 1000
   });
-
-  // navigator.geolocation.getCurrentPosition(
-  //   (position) => {
-  //     console.log('HERE NEW POSI: ', position);
-  //   },
-  //   (error) => { console.log(error); },
-  //   { enableHighAccuracy: true, timeout: 30000, maximumAge: 100000 }
-  // );
-
-  // navigator.geolocation.watchPosition(
-  //   onSuccess,
-  //   onError
-  // );
 };
 
 export default askForDeviceLocation;
