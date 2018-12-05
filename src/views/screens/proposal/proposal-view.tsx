@@ -41,6 +41,10 @@ const mapDispatch = (dispatch: Dispatch) => ({
     tzinfo: string;
     tzoffset: number;
   }) => dispatch(updateUser(data)),
+  updateTZ: (data: {
+    tzinfo: string;
+    tzoffset: number;
+  }) => dispatch(updateUser(data)),
   onGetNewProposal: () => dispatch(getNewProposal()),
   clearProposals: () => dispatch(clearProposals()),
   getNextProposal: (limit: number) => dispatch(getNextProposal(limit)),
@@ -77,6 +81,12 @@ interface Props {
       tzoffset: number;
     }
   ) => void;
+  updateTZ: (
+    data: {
+      tzinfo: string;
+      tzoffset: number;
+    }
+  ) => void;
 }
 
 interface State {
@@ -91,7 +101,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    const { proposal, updatePushToken, currentUser } = this.props;
+    const { proposal, updatePushToken, updateTZ, currentUser } = this.props;
     // Get a (guaranteed to be) new batch of 5 proposals
 
     this.setCandidate(null);
@@ -110,7 +120,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
           tzoffset: (new Date()).getTimezoneOffset() / 60
         });
       } else {
-        updateUser({
+        updateTZ({
           tzinfo: DeviceInfo.getTimezone(),
           tzoffset: (new Date()).getTimezoneOffset() / 60
         });
