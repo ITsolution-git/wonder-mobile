@@ -200,6 +200,21 @@ class ProfileViewScreen extends React.Component<Props> {
     });
   }
 
+  /*
+  <View style={styles.btnContainer}>
+    <PrimaryButton
+      fullWidth
+      title='UPGRADE TO WONDER PREMIUM'
+      onPress={_.noop}
+    />
+    <TouchableHighlight onPress={this.share} underlayColor='transparent'>
+      <Text style={{ color: theme.colors.primary, marginTop: 15 }}>
+        Share Wonder with friends!
+      </Text>
+    </TouchableHighlight>
+  </View>
+  */
+
   render() {
     const { currentUser, onLogout } = this.props;
     const { showVideo } = this.state;
@@ -285,22 +300,6 @@ class ProfileViewScreen extends React.Component<Props> {
             </View>
           </View>
         </View>
-
-        /*
-        <View style={styles.btnContainer}>
-          <PrimaryButton
-            fullWidth
-            title='UPGRADE TO WONDER PREMIUM'
-            onPress={_.noop}
-          />
-          <TouchableHighlight onPress={this.share} underlayColor='transparent'>
-            <Text style={{ color: theme.colors.primary, marginTop: 15 }}>
-              Share Wonder with friends!
-            </Text>
-          </TouchableHighlight>
-        </View>
-        */
-
         <View style={{ marginVertical: 10 }}>
           <View style={styles.row}>
             <View style={styles.col}>
