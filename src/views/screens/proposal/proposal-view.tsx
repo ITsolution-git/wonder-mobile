@@ -4,6 +4,7 @@ import Screen from 'src/views/components/screen';
 import ProposalSwiper from 'src/views/components/proposal-swiper/proposal-swiper';
 
 import { Dispatch } from 'redux';
+import { DeviceInfo } from 'react-native-device-info';
 import { connect } from 'react-redux';
 import {
   getNewProposal,
