@@ -38,6 +38,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
   updatePushToken: (data: {
     push_device_id: string;
     push_device_type: string;
+    tzinfo: string;
+    tzoffset: number;
   }) => dispatch(updateUser(data)),
   onGetNewProposal: () => dispatch(getNewProposal()),
   clearProposals: () => dispatch(clearProposals()),
@@ -71,6 +73,8 @@ interface Props {
     data: {
       push_device_id: string;
       push_device_type: string;
+      tzinfo: string;
+      tzoffset: number;
     }
   ) => void;
 }
@@ -101,7 +105,14 @@ class ProposalViewScreen extends React.Component<Props, State> {
       if (newDeviceId) {
         updatePushToken({
           push_device_id: token.token,
-          push_device_type: token.os === 'ios' ? 'apns' : 'fcm'
+          push_device_type: token.os === 'ios' ? 'apns' : 'fcm',
+          tzinfo: DeviceInfo.getTimezone(),
+          tzoffset: (new Date()).getTimezoneOffset() / 60
+        });
+      } else {
+        updateUser({
+          tzinfo: DeviceInfo.getTimezone(),
+          tzoffset: (new Date()).getTimezoneOffset() / 60
         });
       }
     };

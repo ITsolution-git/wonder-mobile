@@ -52,6 +52,8 @@ interface User {
   partner: object;
   distance: number;
   age?: number;
+  tzinfo?: string;
+  tzoffset?: number;
 }
 
 export default User;
