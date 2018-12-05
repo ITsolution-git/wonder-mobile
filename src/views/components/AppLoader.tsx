@@ -20,7 +20,7 @@ class AppLoader extends React.PureComponent<IAppLoaderProps, IAppLoaderState> {
       isOnline: false
     };
 
-    this._bugsnag.notify(new Error('Test error #2 with source maps'));
+    // this._bugsnag.notify(new Error('Test error #2 with source maps'));
   }
 
   componentDidMount() {
