@@ -118,12 +118,12 @@ class ProposalViewScreen extends React.Component<Props, State> {
           push_device_id: token.token,
           push_device_type: token.os === 'ios' ? 'apns' : 'fcm',
           tzinfo: DeviceInfo.getTimezone(),
-          tzoffset: (new Date()).getTimezoneOffset() / 60
+          tzoffset: ((new Date()).getTimezoneOffset() / 60) * -100
         });
       } else {
         updateTZ({
           tzinfo: DeviceInfo.getTimezone(),
-          tzoffset: (new Date()).getTimezoneOffset() / 60
+          tzoffset: ((new Date()).getTimezoneOffset() / 60) * -100
         });
       }
     };
