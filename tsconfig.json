@@ -42,9 +42,10 @@
     "paths": {
       "assets": ["src/assets"],
       "components": ["src/views/components"],
-      "@appConfig": ["src/utils/appConfig"],
+      "@utils": ["src/utils/index.ts"],
       "@components": ["src/views/components"],
       "@assets": ["src/assets"],
+      "@images": ["src/assets/images"],
       "@theme": ["src/views/components/theme"]
     } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
