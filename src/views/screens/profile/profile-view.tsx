@@ -195,7 +195,7 @@ class ProfileViewScreen extends React.Component<Props> {
     Share.share({
       message:
         'Thought you would like to find someone Wonder’ful on the Wonder Dating App! Click here to download!',
-      url: 'https://wonder.dating/en',
+      url: 'http://getwonderapp.com/',
       title: 'Heard of Wonder?'
     });
   }
