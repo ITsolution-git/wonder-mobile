@@ -69,7 +69,7 @@ class UpcomingAppointmentsScreen extends React.Component<
     if (search) {
       return appointments.filter((appointment) => {
         const locationName =
-          appointment.name.toLowerCase().indexOf(search) >= 0;
+          appointment.topic.name.toLowerCase().indexOf(search) >= 0;
         const matchName =
           appointment.match.first_name.toLowerCase().indexOf(search) >= 0;
         const date =
@@ -93,12 +93,13 @@ class UpcomingAppointmentsScreen extends React.Component<
       onRefreshAttendances
     } = this.props;
     const filteredAppointments = this.filterAppointments();
+
     if (filteredAppointments.length) {
       return (
         <AppointmentList
           onPressCallNumber={this.callNumber}
           onRefresh={onRefreshAttendances}
-          data={attendances}
+          data={filteredAppointments}
           onPress={this.goToAppointment}
           onDelete={this.props.onDeleteAttendance}
         />

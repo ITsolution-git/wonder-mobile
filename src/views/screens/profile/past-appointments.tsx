@@ -48,21 +48,24 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
     this.setState({ search: text.toLowerCase() });
   }
 
-    filterAppointments = () => {
+     filterAppointments = () => {
     const { search } = this.state;
     const { appointments } = this.props;
 
     if (search) {
-      const newAppointments =  appointments.filter((appointment) => {
-        const locationName = appointment.name.toLowerCase().indexOf(search) >= 0;
-        const matchName = appointment.match.first_name.toLowerCase().indexOf(search) >= 0;
-        const date = moment(appointment.event_at)
-                    .format('LLLL')
-                    .toLowerCase()
-                    .indexOf(search) >= 0;
+      return appointments.filter((appointment) => {
+        const locationName =
+          appointment.topic.name.toLowerCase().indexOf(search) >= 0;
+        const matchName =
+          appointment.match.first_name.toLowerCase().indexOf(search) >= 0;
+        const date =
+          moment(appointment.event_at)
+            .format('LLLL')
+            .toLowerCase()
+            .indexOf(search) >= 0;
+
         return locationName || matchName || date;
       });
-      return newAppointments;
     }
 
     return appointments;
@@ -76,7 +79,7 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
        <AppointmentList
           onPressCallNumber={this.callNumber}
           onRefresh={onRefreshAppointments}
-          data={appointments}
+          data={filteredAppointments}
           onPress={this.goToAppointment}
           onDelete={this.props.onDeleteAttendance}
           isPast={true}
