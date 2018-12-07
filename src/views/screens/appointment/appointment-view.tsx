@@ -297,7 +297,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     );
     const { latitude, longitude } = appointment;
     const isPast = this.isPastAppointment();
-
+    console.log('appointment: ', appointment);
     return (
       <Screen horizontalPadding={20}>
         <View flex={1}>
