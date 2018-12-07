@@ -101,6 +101,7 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
 
 render() {
     const { appointments, onRefreshAppointments } = this.props;
+
     return (
       <Screen>
         <View style={styles.container}>

@@ -64,10 +64,10 @@ class UpcomingAppointmentsScreen extends React.Component<
 
   filterAppointments = () => {
     const { search } = this.state;
-    const { appointments } = this.props;
+    const { appointments, attendances } = this.props;
 
     if (search) {
-      return appointments.filter((appointment) => {
+      return attendances.filter((appointment) => {
         const locationName =
           appointment.topic.name.toLowerCase().indexOf(search) >= 0;
         const matchName =
@@ -77,12 +77,11 @@ class UpcomingAppointmentsScreen extends React.Component<
             .format('LLLL')
             .toLowerCase()
             .indexOf(search) >= 0;
-
         return locationName || matchName || date;
       });
     }
 
-    return appointments;
+    return attendances;
   }
 
   renderList = () => {
