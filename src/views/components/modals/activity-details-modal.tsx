@@ -85,24 +85,19 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
 
     if (hours && hours.length) {
       const currentBusinessDay = hours.filter((d: any) => d.day === dow);
-      if(currentBusinessDay && currentBusinessDay[0]){
-        return (
-          <SmallText
-            allowFontScaling={false}
-            adjustsFontSizeToFit={true}
-            style={{ fontSize: 11, color: 'grey', marginRight: 5 }}
-          >
-            {
-              moment(currentBusinessDay[0].start, 'HH:mm').format('hh:mm a')
-              + '-' +
-              moment(currentBusinessDay[0].end, 'HH:mm').format('hh:mm a')
-            }
-          </SmallText>
-        );
-      }else{
-        return <View></View>;
-      }
-     
+      return (
+        <SmallText
+          allowFontScaling={false}
+          adjustsFontSizeToFit={true}
+          style={{ fontSize: 11, color: 'grey', marginRight: 5 }}
+        >
+          {
+            moment(currentBusinessDay[0].start, 'HH:mm').format('hh:mm a')
+            + '-' +
+            moment(currentBusinessDay[0].end, 'HH:mm').format('hh:mm a')
+          }
+        </SmallText>
+      );
     }
 
   }
