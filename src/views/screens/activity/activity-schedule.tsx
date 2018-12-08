@@ -22,7 +22,7 @@ import {
   persistAppointmentData
 } from 'src/store/reducers/appointment';
 import { NavigationParams, NavigationScreenProp } from 'react-navigation';
-import Avatar from 'src/views/components/theme/avatar';
+import Avatar, { AvatarSize } from 'src/views/components/theme/avatar';
 import { getDecoratedConversation } from 'src/store/selectors/conversation';
 import Conversation from 'src/models/conversation';
 import User from 'src/models/user';
@@ -75,7 +75,8 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     isCalendarOpen: true,
     selectedDate: undefined,
     selectedTime: undefined,
-    agendaItems: {}
+    agendaItems: {},
+    
   };
 
   componentWillMount() {
@@ -121,7 +122,6 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
       const dateMoment = moment(selectedDate, 'YYYY-MM-DD');
       dateMoment.hours(selectedTime.hour);
       dateMoment.minutes(selectedTime.minute);
-
       onUpdateAppointment({ eventAt: dateMoment.toDate() });
       navigation.navigate('AppointmentConfirm', { appointment: null });
     }
@@ -132,7 +132,6 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
    */
   mapNativeCalendarEventsToAgenda = async () => {
     const RCE_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss.SSSSZ';
-
     //
     // Attaches native calendar events to wonder agenda
     try {
@@ -213,8 +212,21 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     this.setState({ selectedTime });
   }
 
+
+  renderConfirmButton=(missingDate:any,disabled:any)=>{
+    return(<View style={{ position: 'absolute', right: 0, left: 0, bottom: 0}}>
+    <PrimaryButton
+       title={missingDate ? 'Select Date' : 'Confirm'}
+       onPress={missingDate ? this.openCalendarModal : this.schedule}
+       disabled={disabled}
+       rounded={false}
+    />
+  </View>);
+  }
+
   renderHeader = () => {
-    const { navigation, conversation } = this.props;
+    const { navigation, conversation,appointment } = this.props;
+    const { match, activity, eventAt } = appointment;
     const { selectedDate, selectedTime } = this.state;
     const { first_name, last_name, images = [] } = _.get(
       conversation,
@@ -237,9 +249,10 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           paddingBottom: 15
         }}
       >
-        <Avatar circle uri={_.get(images[0], 'url', null)} />
-        <Text style={{ marginTop: 15 }}>
-          {[first_name, last_name].join(' ')}
+        <Avatar circle uri={_.get(images[0], 'url', null)} size={AvatarSize.xl} />
+        <Text style={{ marginTop: 15, fontFamily:'Poppins-Regular'}}>
+          {/* {[first_name, last_name].join(' ')} */}
+          {first_name}
         </Text>
 
         {selectedDate && (
@@ -247,7 +260,8 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
             <Text style={styles.dateTimeLabel}>You are proposing:</Text>
             <TextButton
               style={styles.calendarButtonText}
-              text={dateTime.format('MMMM Do, YYYY[\n][at] h:mma')}
+              // text={"Soccer with ".."dateTime.format('MMMM Do, YYYY[\n][at] h:mma')}
+              text={[this.props.appointment==null?'':this.props.appointment.topic.name,'with',first_name,'on',dateTime.format('MMMM Do, h:mma')].join(' ')}
               onPress={this.openCalendarModal}
             />
           </View>
@@ -257,6 +271,9 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
   }
 
   render() {
+   // console.log();
+    // console.log(JSON.stringify(this.props));
+    // console.log(JSON.stringify(this.state));
     const {
       selectedDate,
       selectedTime,
@@ -273,7 +290,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
             paddingHorizontal: 20,
             paddingVertical: 15,
             flex: 1,
-            justifyContent: 'flex-end'
+            justifyContent: 'center'
           }}
         >
           <TimePicker label='Select a time' onChange={this.selectTime} />
@@ -290,11 +307,11 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
                 width: '50%'
               }}
             >
-              <PrimaryButton
+              {/* <PrimaryButton
                 title={missingDate ? 'Select Date' : 'Confirm'}
                 onPress={missingDate ? this.openCalendarModal : this.schedule}
                 disabled={disabled}
-              />
+              /> */}
             </View>
           </View>
         </View>
@@ -304,6 +321,8 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           agendaItems={agendaItems}
           onRequestClose={this.closeCalendarModal}
         />
+       {this.renderConfirmButton(missingDate,disabled)}          
+
       </Screen>
     );
   }
@@ -316,15 +335,17 @@ export default connect(
 
 const styles = StyleSheet.create({
   dateTimeContainer: {
-    marginTop: 50
+    marginTop: 10
   },
   dateTimeLabel: {
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily:'Poppins-Light'
   },
   calendarButtonText: {
     textAlign: 'center',
     fontSize: 24,
     color: theme.colors.primary,
-    fontWeight: 'bold'
+   
+    fontFamily:'Poppins-Bold'
   }
 });
