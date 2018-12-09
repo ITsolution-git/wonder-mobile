@@ -15,10 +15,10 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.9.0)
   - boost-for-react-native (1.63.0)
-  - BugsnagReactNative (2.12.5):
-    - BugsnagReactNative/Core (= 2.12.5)
+  - BugsnagReactNative (2.12.6):
+    - BugsnagReactNative/Core (= 2.12.6)
     - React
-  - BugsnagReactNative/Core (2.12.5):
+  - BugsnagReactNative/Core (2.12.6):
     - React
   - DoubleConversion (1.1.5)
   - FBSDKCoreKit (4.39.0):
