@@ -10,6 +10,7 @@ import Avatar, { AvatarSize } from '../theme/avatar';
 import Images from 'src/assets/images';
 import Proposal from 'src/models/proposal';
 import User from 'src/models/user';
+import { FirstTimeModal } from '@components';
 
 function lighten(color: string, value: number) {
   return Color(color)
@@ -21,6 +22,12 @@ interface FoundMatchModalProps extends ModalProps {
   proposal: Proposal;
   currentUser: User;
   onSuccess: Function;
+  updateHasMatched: () => void;
+}
+
+interface FoundMatchModalState {
+  firstTimeModal1Visible: boolean;
+  firstTimeModal2Visible: boolean;
 }
 
 const textGradient = [
@@ -31,10 +38,37 @@ const gradient = [
   lighten(theme.colors.primaryLight, 0.1),
   lighten(theme.colors.primary, 0.1)
 ];
-class FoundMatchModal extends React.Component<FoundMatchModalProps> {
+class FoundMatchModal extends React.Component<
+  FoundMatchModalProps,
+  FoundMatchModalState
+> {
   static defaultProps = {
     visible: false
   };
+
+  constructor(props: FoundMatchModalProps) {
+    super(props);
+    this.state = {
+      firstTimeModal1Visible: false,
+      firstTimeModal2Visible: false
+    };
+  }
+
+  componentDidUpdate(
+    { visible: wasVisible }: FoundMatchModalProps,
+    prevState: FoundMatchModalState
+  ) {
+    const { visible, currentUser } = this.props;
+
+    if (visible && !wasVisible) {
+      if (
+        !currentUser.onboarding_ui_state ||
+        !currentUser.onboarding_ui_state.has_matched
+      ) {
+        this.props.updateHasMatched();
+      }
+    }
+  }
 
   getCandidateImage = () => {
     const { candidate } = this.props.proposal;
@@ -101,9 +135,40 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
     }
     return null;
   }
+
+  private onFirstTimeModal2Press = (): void => {
+    this.setState({ firstTimeModal2Visible: false });
+  }
+
+  private onFirstTimeModal1Press = (): void => {
+    this.setState({ firstTimeModal1Visible: false }, () => {
+      setTimeout(this.onFirstTimeModal2Press, 500);
+    });
+  }
+
   render() {
+    const { firstTimeModal1Visible, firstTimeModal2Visible } = this.state;
+
     return (
       <Modal animationType='fade' transparent {...this.props}>
+        <FirstTimeModal
+          onRequestClose={this.onFirstTimeModal1Press}
+          onPress={this.onFirstTimeModal1Press}
+          renderWonderful={false}
+          visible={firstTimeModal1Visible}
+          title={'Wonders'}
+          body={
+            'Wonders with Circles around them are Wonders you have in common!'
+          }
+        />
+        <FirstTimeModal
+          onRequestClose={this.onFirstTimeModal2Press}
+          onPress={this.onFirstTimeModal2Press}
+          renderWonderful={false}
+          visible={firstTimeModal2Visible}
+          title={'About'}
+          body={'Press the right bottom arrow to learn more about someone!'}
+        />
         {this.renderModalContent()}
       </Modal>
     );

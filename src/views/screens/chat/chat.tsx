@@ -18,16 +18,17 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { getConversation, ghostContact } from 'src/store/sagas/conversations';
+import { updateUser } from 'src/store/sagas/user';
 import { blockUser } from 'src/store/sagas/partner';
 import {
   getDecoratedConversation,
-  decorateMessagesForGiftedChat,
+  decorateMessagesForGiftedChat
 } from 'src/store/selectors/conversation';
 import { selectCurrentUser } from 'src/store/selectors/user';
 import User from 'src/models/user';
 import {
   DecoratedConversation,
-  ConversationNewMessage,
+  ConversationNewMessage
 } from 'src/models/conversation';
 import GiftedChatMessage from 'src/models/chat-message';
 import ChatGhostingModal from '../../components/modals/chat-ghosting-modal';
@@ -35,7 +36,7 @@ import WonderAppState from 'src/models/wonder-app-state';
 import ChatResponseMessage from 'src/models/chat-response-message';
 import {
   AppointmentState,
-  persistAppointmentData,
+  persistAppointmentData
 } from 'src/store/reducers/appointment';
 import {
   persistNewChatMessage,
@@ -51,12 +52,13 @@ import {
   Menu,
   MenuOptions,
   MenuOption,
-  MenuTrigger,
+  MenuTrigger
 } from 'react-native-popup-menu';
 import { Options, Response } from '../../../models/image-picker';
 import { ImageSource } from 'react-native-vector-icons/Icon';
 import Wonder from 'src/views/components/theme/wonder/wonder';
 import ProfileModalChat from 'src/views/components/modals/profile-modal-chat';
+import { FirstTimeModal } from '@components';
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -66,6 +68,9 @@ interface DispatchProps {
   onReadMessages: (data: any) => void;
   onSendGhostMessage: (data: any) => void;
   onReportUser: (data: object) => void;
+  updateHasScheduledWonder: (
+    onboardingUiState: WonderAppState['user']['profile']['onboarding_ui_state']
+  ) => void;
 }
 
 interface StateProps {
@@ -86,15 +91,19 @@ interface ChatViewState {
   showVideo: boolean;
   showDetails: boolean;
   contentHeight: number;
+  modalVisible: boolean;
 }
 
 const mapState = (state: WonderAppState): StateProps => ({
   token: state.user.auth.token,
   currentUser: selectCurrentUser(state),
-  conversation: getDecoratedConversation(state),
+  conversation: getDecoratedConversation(state)
 });
 
 const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
+  updateHasScheduledWonder: (
+    onboardingUiState: WonderAppState['user']['profile']['onboarding_ui_state']
+  ) => dispatch(updateUser(onboardingUiState)),
   onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
@@ -111,10 +120,10 @@ class ChatScreen extends React.Component<Props> {
   appChat: any;
 
   static navigationOptions = ({
-    navigation,
+    navigation
   }: {
-      navigation: NavigationScreenProp<any, NavigationParams>;
-    }) => {
+    navigation: NavigationScreenProp<any, NavigationParams>;
+  }) => {
     return {
       title: navigation.getParam('title', 'Chat'),
       headerRight: (
@@ -125,7 +134,7 @@ class ChatScreen extends React.Component<Props> {
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
-                  width: 40,
+                  width: 40
                 }}
               >
                 <Icon name='ellipsis-v' size={20} color='#9292ad' />
@@ -155,9 +164,11 @@ class ChatScreen extends React.Component<Props> {
             </MenuOptions>
           </Menu>
         </View>
-      ),
+      )
     };
   }
+
+  _hasShownModal: boolean = false;
 
   state: ChatViewState = {
     isGhostingModalOpen: false,
@@ -167,15 +178,16 @@ class ChatScreen extends React.Component<Props> {
     showVideo: false,
     contentHeight: 0,
     showDetails: false,
+    modalVisible: false
   };
 
   componentWillMount() {
     const { conversation, navigation } = this.props;
     navigation.setParams({
-      title:  navigation.state.params.name,
+      title: navigation.state.params.name,
       onGhostPartner: this.showAlert,
       onBlockConversation: this.showBlockAlert,
-      openProfileModal: this.openProfileModal,
+      openProfileModal: this.openProfileModal
     });
   }
 
@@ -197,9 +209,30 @@ class ChatScreen extends React.Component<Props> {
   componentDidUpdate(prevProps: any) {
     const { currentUser, conversation } = this.props;
 
+    if (
+      !this._hasShownModal &&
+      conversation &&
+      (!currentUser.onboarding_ui_state ||
+        !currentUser.onboarding_ui_state.has_scheduled_wonder)
+    ) {
+      const chats = decorateMessagesForGiftedChat(currentUser, conversation);
+
+      if (chats && chats.giftedChatMessages.length >= 4) {
+        this._hasShownModal = true;
+
+        this.setState(
+          { modalVisible: true },
+          this.localUpdateHasScheduledWonder
+        );
+      }
+    }
+
     if (conversation !== prevProps.conversation && !_.isEmpty(conversation)) {
       const chats = decorateMessagesForGiftedChat(currentUser, conversation);
-      this.setState({ conversationMessages: chats.giftedChatMessages });
+
+      if (chats) {
+        this.setState({ conversationMessages: chats.giftedChatMessages });
+      }
     }
   }
 
@@ -210,9 +243,20 @@ class ChatScreen extends React.Component<Props> {
     }
     this.props.onReadMessages({
       user: currentUser.id,
-      conversation_id: conversation.id,
+      conversation_id: conversation.id
     });
     this.props.onClearConversation();
+  }
+
+  private localUpdateHasScheduledWonder = (): void => {
+    const {
+      currentUser: { onboarding_ui_state = {} }
+    } = this.props;
+
+    this.props.updateHasScheduledWonder({
+      ...onboarding_ui_state,
+      has_scheduled_wonder: true
+    });
   }
 
   scheduleWonder = () => {
@@ -238,7 +282,7 @@ class ChatScreen extends React.Component<Props> {
       'Confirm',
       'Are you sure you want to remove this conversation?',
       [{ text: 'Cancel' }, { text: 'YES', onPress: this.blockPartner }],
-      { cancelable: false },
+      { cancelable: false }
     );
   }
 
@@ -248,7 +292,7 @@ class ChatScreen extends React.Component<Props> {
       'Confirm',
       'Are you sure you want to remove this conversation?',
       [{ text: 'Cancel' }, { text: 'YES', onPress: this.ghostPartner }],
-      { cancelable: false },
+      { cancelable: false }
     );
   }
 
@@ -260,7 +304,7 @@ class ChatScreen extends React.Component<Props> {
         recipient_id: conversation.partner.id,
         recipient: conversation.partner,
         sender: this.props.currentUser,
-        conversation_id: this.props.conversation.id,
+        conversation_id: this.props.conversation.id
       });
     });
 
@@ -300,7 +344,7 @@ class ChatScreen extends React.Component<Props> {
   getImage = () => {
     const options: Options = {
       title: 'Upload a Photo',
-      mediaType: 'photo',
+      mediaType: 'photo'
     };
 
     ImagePicker.showImagePicker(options, (res: Response) => {
@@ -322,7 +366,7 @@ class ChatScreen extends React.Component<Props> {
     this.props.onSendGhostMessage({
       ghostMessage: '',
       conversation_id: conversation.id,
-      partner: conversation.partner,
+      partner: conversation.partner
     });
     navigation.navigate('ChatList');
   }
@@ -333,7 +377,7 @@ class ChatScreen extends React.Component<Props> {
     this.props.onSendGhostMessage({
       ghostMessage,
       conversation_id: conversation.id,
-      partner: conversation.partner,
+      partner: conversation.partner
     });
     onGhostContact({ partner: conversation.partner, message: ghostMessage });
     this.closeGhostingModal();
@@ -352,7 +396,7 @@ class ChatScreen extends React.Component<Props> {
           candidateTopics.map((x: Topic) => {
             if (userTopics) {
               const active: boolean = !!userTopics.find(
-                (i: Topic) => i.name === x.name,
+                (i: Topic) => i.name === x.name
               );
               return (
                 <Wonder key={x.name} topic={x} size={60} active={active} />
@@ -391,12 +435,30 @@ class ChatScreen extends React.Component<Props> {
     );
   }
 
+  private closeModalAndScheduleWonder = (): void => {
+    this.setState({ modalVisible: false }, () => {
+      setTimeout(this.scheduleWonder, 500);
+    });
+  }
+
   render() {
     const { currentUser, conversation } = this.props;
+    const { modalVisible } = this.state;
 
     if (!_.isEmpty(conversation)) {
       return (
-      <Screen>
+        <Screen>
+          <FirstTimeModal
+            onPress={this.closeModalAndScheduleWonder}
+            onRequestClose={this.closeModalAndScheduleWonder}
+            buttonTitle={'Schedule Wonder'}
+            renderWonderful={true}
+            visible={modalVisible}
+            title={'Wonder Time!'}
+            body={`Schedule with ${
+              conversation.partner.first_name
+            } to do something`}
+          />
           <GiftedChat
             renderAvatarOnTop
             user={{ _id: currentUser.id }}
@@ -429,32 +491,39 @@ class ChatScreen extends React.Component<Props> {
             showDetails={this.state.showDetails}
             toggleDetails={this.toggleDetails}
           />
-      </Screen>
-    );
-   } else {
-     return (
-     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff'}}>
-           <ActivityIndicator/>
-     </View>
-     );
-   }
+        </Screen>
+      );
+    } else {
+      return (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#fff'
+          }}
+        >
+          <ActivityIndicator />
+        </View>
+      );
+    }
   }
 }
 
 export default connect(
   mapState,
-  mapDispatch,
+  mapDispatch
 )(ChatScreen);
 
 const bubbleTextStyle = StyleSheet.create({
   right: {
     color: '#FFF',
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   },
   left: {
     color: '#000',
-    fontWeight: 'bold',
-  },
+    fontWeight: 'bold'
+  }
 });
 
 const bubbleWrapperStyle = StyleSheet.create({
@@ -470,10 +539,10 @@ const bubbleWrapperStyle = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: {
       width: 3,
-      height: 1,
+      height: 1
     },
     backgroundColor: '#fcb26a',
-    marginVertical: 5,
+    marginVertical: 5
   },
   left: {
     paddingLeft: 10,
@@ -487,11 +556,11 @@ const bubbleWrapperStyle = StyleSheet.create({
     shadowRadius: 5,
     shadowOffset: {
       width: -3,
-      height: 1,
+      height: 1
     },
     backgroundColor: '#FFF',
-    marginVertical: 5,
-  },
+    marginVertical: 5
+  }
 });
 
 const styles = StyleSheet.create({
@@ -499,7 +568,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     left: 0,
-    right: 0,
+    right: 0
   },
   ghostButtonStyle: {
     marginLeft: 20,
@@ -511,12 +580,12 @@ const styles = StyleSheet.create({
     height: 46,
     backgroundColor: '#FFF',
     borderWidth: 1,
-    borderColor: '#fcbd77',
+    borderColor: '#fcbd77'
   },
   footerContainer: {
     marginBottom: 10,
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
-  actionBtnContainer: { width: '50%', alignItems: 'center' },
+  actionBtnContainer: { width: '50%', alignItems: 'center' }
 });

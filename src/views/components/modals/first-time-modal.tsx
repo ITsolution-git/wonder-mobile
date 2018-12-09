@@ -1,13 +1,11 @@
 import * as React from 'react';
-import * as Animatable from 'react-native-animatable';
 import {
   ImageProperties,
   ImageStyle,
   StyleSheet,
   Image,
   View,
-  Modal,
-  TextInput
+  Modal
 } from 'react-native';
 import { colors } from '@assets';
 import images from '@images';
@@ -38,11 +36,14 @@ const localStyles = StyleSheet.create({
   },
   textPadding: {
     paddingHorizontal: 10
+  },
+  button2: {
+    marginTop: 10
   }
 });
 
-interface IFirstTimeModalProps {
-  icon: number;
+export interface IFirstTimeModalProps {
+  icon?: number;
   title: string;
   body: string;
   buttonTitle: string;
@@ -52,7 +53,9 @@ interface IFirstTimeModalProps {
   animationType?: 'slide' | 'fade';
   iconStyle?: ImageStyle;
   resizeMode?: ImageProperties['resizeMode'];
-  renderWonderful: boolean;
+  renderWonderful?: boolean;
+  buttonTitle2?: string;
+  onPress2?: (data?: any) => void;
 }
 
 class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
@@ -61,7 +64,9 @@ class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
     resizeMode: 'contain',
     iconStyle: {},
     icon: images.LogoIcon,
-    renderWonderful: true
+    renderWonderful: true,
+    buttonTitle: 'Got it!',
+    buttonTitle2: ''
   };
 
   private renderWonderfulText = (): React.ReactNode => {
@@ -78,12 +83,29 @@ class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
         style={localStyles.textPadding}
         //   allowFontScaling={false}
       >
-        {` Wonder'ful`}
+        {` Wonder'ful!`}
         <Text align={'center'} color={colors.textColor}>
           "
         </Text>
       </Text>
     );
+  }
+
+  private handleOnPress = (): void => {
+    const { onPress, onRequestClose } = this.props;
+
+    onRequestClose();
+    onPress();
+  }
+
+  private handleOnPress2 = (): void => {
+    const { onPress2, onRequestClose } = this.props;
+
+    onRequestClose();
+
+    if (onPress2) {
+      onPress2();
+    }
   }
 
   render(): React.ReactNode {
@@ -97,7 +119,7 @@ class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
       onRequestClose,
       animationType,
       resizeMode,
-      onPress
+      buttonTitle2
     } = this.props;
 
     return (
@@ -130,7 +152,14 @@ class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
               {body}
               {this.renderWonderfulText()}
             </Text>
-            <PrimaryButton title={buttonTitle} onPress={onPress} />
+            <PrimaryButton title={buttonTitle} onPress={this.handleOnPress} />
+            {!!buttonTitle2 && (
+              <PrimaryButton
+                style={localStyles.button2}
+                title={buttonTitle2}
+                onPress={this.handleOnPress2}
+              />
+            )}
           </View>
         </View>
       </Modal>

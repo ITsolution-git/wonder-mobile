@@ -79,23 +79,6 @@ export function* deactivateAccountSaga(action: Action<any>) {
     yield put(persistUser({}));
 
     NavigatorService.reset('Onboarding', null);
-
-    // setTimeout(() => {
-    //   call(
-    //     api,
-    //     {
-    //       method: 'DELETE',
-    //       url: `/users/${id}`,
-    //       data: {
-    //         user: {
-    //           push_device_id: '',
-    //           push_device_type: ''
-    //         }
-    //       }
-    //     },
-    //     authHeader
-    //   );
-    // }, 1500);
   } catch (error) {
     handleAxiosError(error);
   }
@@ -258,7 +241,6 @@ export function* getUserSaga() {
     }
   } catch (error) {
     handleAxiosError(error);
-  } finally {
   }
 }
 
@@ -275,6 +257,8 @@ export function* updateUserSaga(action: Action<any>) {
 
     const profile: Partial<User> = action.payload;
 
+    console.log(`Updating profile:`, profile);
+
     const { data }: { data: User } = yield call(
       api,
       {
@@ -286,6 +270,8 @@ export function* updateUserSaga(action: Action<any>) {
       },
       state.user
     );
+
+    console.log(`Raw data from updating user:`, data);
 
     yield put(persistUser(data));
   } catch (error) {

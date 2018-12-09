@@ -20,7 +20,7 @@ const disabledColors = [
 ];
 export default class PrimaryButton extends React.Component<BaseButtonProps> {
   render() {
-    const { disabled, style } = this.props;
+    const { disabled, style, ...otherProps } = this.props;
     return (
       <BaseButton
         rounded
@@ -29,7 +29,8 @@ export default class PrimaryButton extends React.Component<BaseButtonProps> {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={[styles.primaryButtonContainer, style]}
-        {...this.props}
+        disabled={disabled}
+        {...otherProps}
       />
     );
   }
