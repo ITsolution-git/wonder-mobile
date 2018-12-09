@@ -46,7 +46,7 @@ export interface IFirstTimeModalProps {
   icon?: number;
   title: string;
   body: string;
-  buttonTitle: string;
+  buttonTitle?: string;
   visible: boolean;
   onPress: (data?: any) => any;
   onRequestClose: () => void;

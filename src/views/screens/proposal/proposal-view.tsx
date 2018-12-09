@@ -100,16 +100,20 @@ interface Props {
 
 interface State {
   candidate?: Candidate | null;
-  modalOpen: 'pass' | 'accept' | '';
+  modalOpen: 'firstTime1' | 'firstTime2' | 'pass' | 'accept' | '';
   index: number;
 }
 
 class ProposalViewScreen extends React.Component<Props, State> {
-  state: State = {
-    candidate: null,
-    modalOpen: '',
-    index: 0
-  };
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      candidate: null,
+      modalOpen: '',
+      index: 0
+    };
+  }
 
   componentDidMount() {
     const { proposal, updatePushToken, updateTZ, currentUser } = this.props;
@@ -139,6 +143,21 @@ class ProposalViewScreen extends React.Component<Props, State> {
     };
 
     PushNotificationService.configure(currentUser);
+  }
+
+  componentDidUpdate({ currentUser: { id: prevId } }: Props) {
+    const {
+      currentUser: { id, onboarding_ui_state }
+    } = this.props;
+
+    const userJustPersisted = !prevId && id;
+
+    if (userJustPersisted) {
+      if (onboarding_ui_state && !onboarding_ui_state.has_matched) {
+        this.updateHasMatched();
+        this.setState({ modalOpen: 'firstTime1' });
+      }
+    }
   }
 
   setCandidate = (candidate?: Candidate | null) => {
@@ -212,6 +231,36 @@ class ProposalViewScreen extends React.Component<Props, State> {
     this.setState({ modalOpen: '' });
   }
 
+  private onCloseFirstModal = (): void => {
+    const { modalOpen } = this.state;
+
+    if (modalOpen === 'firstTime1') {
+      this.setState({ modalOpen: 'firstTime2' });
+    } else {
+      this.closeModal();
+    }
+  }
+
+  private getFirstMatchModalProps = (): IFirstTimeModalProps => {
+    const { modalOpen } = this.state;
+
+    const isFirst = modalOpen === 'firstTime1';
+
+    const modalProps = {
+      visible: modalOpen.includes('firstTime'),
+      title: isFirst ? 'Wonders' : `About`,
+      body: isFirst
+        ? 'Wonders with Circles around them are Wonders you have in common!'
+        : 'Press the right bottom arrow to learn more about someone!',
+      renderWonderful: false,
+      onRequestClose: this.onCloseFirstModal,
+      onPress: this.onCloseFirstModal,
+      onPress2: this.onCloseFirstModal
+    };
+
+    return modalProps;
+  }
+
   private getModalProps = (): IFirstTimeModalProps => {
     const { modalOpen, index } = this.state;
     const { proposal } = this.props;
@@ -221,7 +270,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
     const name = validProposal ? validProposal.candidate.first_name || '' : '';
 
     const modalProps = {
-      visible: !!modalOpen,
+      visible: !!modalOpen && !modalOpen.includes('firstTime'),
       title: isPass ? "It's a Pass?" : `Wonder'n about ${name}?`,
       body: isPass
         ? "Swiping left means you don't want to get to them."
@@ -254,6 +303,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
     return (
       <Screen>
         <FirstTimeModal {...this.getModalProps()} />
+        <FirstTimeModal {...this.getFirstMatchModalProps()} />
         <View style={styles.flex1}>
           <ProposalSwiper
             currentUser={currentUser}
@@ -264,7 +314,6 @@ class ProposalViewScreen extends React.Component<Props, State> {
           />
         </View>
         <FoundMatchModal
-          updateHasMatched={this.updateHasMatched}
           currentUser={currentUser}
           onSuccess={this.goToChat}
           onRequestClose={this.clearCurrentMatch}
