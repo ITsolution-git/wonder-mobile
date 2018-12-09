@@ -69,7 +69,7 @@ interface DispatchProps {
   onSendGhostMessage: (data: any) => void;
   onReportUser: (data: object) => void;
   updateHasScheduledWonder: (
-    onboardingUiState: WonderAppState['user']['profile']['onboarding_ui_state']
+    onboardingUIState: WonderAppState['user']['profile']['onboarding_ui_state']
   ) => void;
 }
 
@@ -102,8 +102,13 @@ const mapState = (state: WonderAppState): StateProps => ({
 
 const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   updateHasScheduledWonder: (
-    onboardingUiState: WonderAppState['user']['profile']['onboarding_ui_state']
-  ) => dispatch(updateUser(onboardingUiState)),
+    onboardingUIState: WonderAppState['user']['profile']['onboarding_ui_state']
+  ) =>
+    dispatch(
+      updateUser({
+        onboarding_ui_state: onboardingUIState
+      })
+    ),
   onGetMessage: (userId: number) => dispatch(getConversation({ id: userId })),
   onUpdateAppointment: (data: AppointmentState) =>
     dispatch(persistAppointmentData(data)),
