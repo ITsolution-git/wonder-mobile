@@ -119,9 +119,6 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
     } else {
       const callback = direction === 'left' ? onSwipeLeft : onSwipeRight;
       callback(index);
-      //   this.setState({ index: index + 1 }, () => {
-      // callback(index + 1);
-      //   });
     }
   }
 

@@ -15,6 +15,8 @@ import WonderAppState from 'src/models/wonder-app-state';
 import User from 'src/models/user';
 import { Response } from 'src/models/image-picker';
 import theme from 'src/assets/styles/theme';
+import { FirstTimeModal } from '@components';
+// import images from '@images';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state)
@@ -32,31 +34,64 @@ interface Props {
 
 interface State {
   about: string;
+  modalVisible: boolean;
+  hasSeenModal: boolean;
 }
 
-class ProfileMediaScreen extends React.Component<Props> {
+class ProfileMediaScreen extends React.Component<Props, State> {
   state = {
-    about: this.props.currentUser.about || ''
+    about: this.props.currentUser.about || '',
+    modalVisible: false,
+    hasSeenModal: false
   };
 
   onSave = () => {
-    const { onUpdateUser, navigation } = this.props;
-    const { about } = this.state;
+    const {
+      onUpdateUser,
+      navigation,
+      currentUser: { video }
+    } = this.props;
+    const { about, hasSeenModal } = this.state;
 
-    onUpdateUser({ about });
-    navigation.goBack();
+    if (!video && !hasSeenModal) {
+      this.setState({ modalVisible: true, hasSeenModal: true });
+    } else {
+      onUpdateUser({ about });
+      navigation.goBack();
+    }
   }
 
   onAboutChange = (text: string) => {
     this.setState({ about: text });
   }
 
+  private navToVideo = (data: Response | null) => {
+    this.props.navigation.navigate('ProfileVideo', { data });
+  }
+
+  private toggleModalVisibility = (): void => {
+    const { modalVisible } = this.state;
+
+    this.setState({ modalVisible: !modalVisible });
+  }
+
   render() {
     const { navigation } = this.props;
-    const { about } = this.state;
+    const { about, modalVisible } = this.state;
 
     return (
       <Screen>
+        <FirstTimeModal
+          onPress={this.navToVideo}
+          title={'VIBE VIDEO'}
+          body={
+            'Record a 15-second video of yourself saying "Hi and what makes you"'
+          }
+          buttonTitle={'Record'}
+          renderWonderful={true}
+          onRequestClose={this.toggleModalVisibility}
+          visible={modalVisible}
+        />
         <View style={{ paddingHorizontal: 20, flex: 1 }}>
           <Text
             allowFontScaling={false}
@@ -85,9 +120,7 @@ class ProfileMediaScreen extends React.Component<Props> {
                     onNewPicture={(data: Response | null) =>
                       navigation.navigate('ProfileCamera', { data })
                     }
-                    onNewVideo={(data: Response | null) =>
-                      navigation.navigate('ProfileVideo', { data })
-                    }
+                    onNewVideo={this.navToVideo}
                   />
                 </View>
                 <TextArea

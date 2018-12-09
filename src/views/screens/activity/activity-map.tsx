@@ -92,7 +92,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    askForDeviceLocation(this.updatePosition);
+    askForDeviceLocation(this.updatePosition, this.fallbackToBackendLocation);
   }
 
   updatePosition = (position: GeolocationReturnType) => {
@@ -113,6 +113,22 @@ class ActivityMapScreen extends React.Component<Props, State> {
     onGetActivities(partnerId, coords);
   }
 
+  private fallbackToBackendLocation = (): void => {
+    const {
+      currentUser: { latitude, longitude }
+    } = this.props;
+
+    if (latitude && longitude) {
+      this.setState({
+        position: {
+          lng: longitude,
+          lat: latitude
+        },
+        mapReady: true
+      });
+    }
+  }
+
   onInviteMatch = () => {
     const {
       details,
@@ -125,7 +141,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
     navigation.navigate('WonderSchedule');
   }
 
-  renderMarker = (activity: Activity) => {
+  renderMarker = (activity: Activity, index: number) => {
     const {
       onGetActivity,
       onUpdateAppointment,
@@ -139,7 +155,7 @@ class ActivityMapScreen extends React.Component<Props, State> {
 
     return (
       <MarkerContainer
-        key={`${id} - ${name}`}
+        key={`${id} - ${name} - ${index}`}
         coordinate={{ latitude, longitude }}
         // onPress={() => onGetActivity(id)}
       >

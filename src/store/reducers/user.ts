@@ -9,7 +9,13 @@ export interface UserState {
 
 export const initialState: UserState = {
   profile: {
-    images: []
+    images: [],
+    onboarding_ui_state: {
+      has_matched: false,
+      has_swiped_left: false,
+      has_scheduled_wonder: false,
+      has_swiped_right: false
+    }
   },
   phone: null,
   auth: {

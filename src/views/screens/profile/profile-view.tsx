@@ -46,7 +46,7 @@ import WonderImage from '../../components/theme/wonder-image';
 import theme from '../../../assets/styles/theme';
 import Wonder from '../../components/theme/wonder/wonder';
 import Color from 'color';
-import { INITIAL_PROFILE_NAV } from '@appConfig';
+import { INITIAL_PROFILE_NAV } from '@utils';
 
 const { height } = Dimensions.get('window');
 
