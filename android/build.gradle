@@ -45,6 +45,16 @@ ext {
 }
 
 subprojects {
+    beforeEvaluate {project ->
+        if (project.name.contains('react-native-fast-image')) {
+          buildscript {
+             repositories {
+                maven { url = "https://dl.bintray.com/android/android-tools/" }
+             }
+          }
+        }
+    }
+
     afterEvaluate {project ->
         if (project.hasProperty("android")) {
             android {
@@ -61,12 +71,4 @@ subprojects {
         }
      }
    }
-   if (project.name.contains('react-native-fast-image')) {
-     buildscript {
-        repositories {
-           maven { url = "https://dl.bintray.com/android/android-tools/" }
-        }
-     }
-   }
 }
-
