@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
     borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
   },
   input: {
+    backgroundColor: 'red',
     height: 40,
     flex: 10,
     fontFamily: theme.fonts.primary,

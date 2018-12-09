@@ -55,16 +55,18 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
     if (search) {
       return appointments.filter((appointment) => {
         const locationName =
-          appointment.topic.name.toLowerCase().indexOf(search) >= 0;
+          appointment.name.toLowerCase().indexOf(search) >= 0;
         const matchName =
           appointment.match.first_name.toLowerCase().indexOf(search) >= 0;
         const date =
           moment(appointment.event_at)
-            .format('LLLL')
+            .format('MMMM Do, [at] h:mma')
             .toLowerCase()
             .indexOf(search) >= 0;
+        const activity =
+          appointment.topic.name.toLowerCase().indexOf(search) >= 0;
 
-        return locationName || matchName || date;
+        return locationName || matchName || date || activity;
       });
     }
 
@@ -101,7 +103,7 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
 
 render() {
     const { appointments, onRefreshAppointments } = this.props;
-
+    console.log('appointments: ', appointments);
     return (
       <Screen>
         <View style={styles.container}>

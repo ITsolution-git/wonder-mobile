@@ -81,8 +81,8 @@ class AppointmentItem extends React.PureComponent<Props> {
           )}
         </View>
         <View style={styles.contentContainer}>
-          <View style={{ flexDirection: 'row' }}>{this.renderTitle()}</View>
-          <SubTitle>{moment(item.event_at).format('MMMM Do')}</SubTitle>
+          {this.renderTitle()}
+          <SubTitle style={{ marginTop: -8 }}>{moment(item.event_at).format('MMMM Do')}</SubTitle>
           <View style={styles.locationRow}>
             <View>
               <Icon
@@ -136,8 +136,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   contentContainer: {
-    flex: 2,
-    justifyContent: 'center'
+    flex: 2
   },
   locationRow: { flexDirection: 'row' },
   locationText: { marginLeft: 10 },

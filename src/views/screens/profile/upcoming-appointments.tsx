@@ -69,15 +69,18 @@ class UpcomingAppointmentsScreen extends React.Component<
     if (search) {
       return attendances.filter((appointment) => {
         const locationName =
-          appointment.topic.name.toLowerCase().indexOf(search) >= 0;
+          appointment.name.toLowerCase().indexOf(search) >= 0;
         const matchName =
           appointment.match.first_name.toLowerCase().indexOf(search) >= 0;
         const date =
           moment(appointment.event_at)
-            .format('LLLL')
+            .format('MMMM Do, [at] h:mma')
             .toLowerCase()
             .indexOf(search) >= 0;
-        return locationName || matchName || date;
+        const activity =
+          appointment.topic.name.toLowerCase().indexOf(search) >= 0;
+
+        return locationName || matchName || date || activity;
       });
     }
 
