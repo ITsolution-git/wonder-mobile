@@ -156,11 +156,6 @@ android {
 }
 
 dependencies {
-    implementation ('com.google.android.exoplayer:exoplayer:2.X.X') {
-        exclude group: 'com.android.support'
-        exclude module: 'appcompat-v7'
-        exclude module: 'support-v4'
-    }
     compile project(':bugsnag-react-native')
     compile project(':appcenter')
     compile project(':appcenter-crashes')

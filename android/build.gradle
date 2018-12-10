@@ -5,9 +5,9 @@ buildscript {
         google()
         jcenter()
         maven {
-            url 'https://maven.google.com'
+            url 'https://maven.google.com/'
+            name 'Google'
         }
-        maven { url 'https://dl.google.com/dl/android/maven2' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.0'
@@ -19,15 +19,10 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()
-        jcenter()
-         maven {
-            url 'https://maven.google.com'
-        }
-        maven { url 'https://dl.google.com/dl/android/maven2' }
         google()
         maven { url "https://jitpack.io" }
         mavenLocal()
+        jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
@@ -49,40 +44,8 @@ ext {
     firebaseVersion = "+"
 }
 
-subprojects {project ->
-    if (project.name.contains('react-native-fast-image')) {
-      buildscript {
-         repositories {
-            maven { url = "https://dl.bintray.com/android/android-tools/" }
-         }
-      }
-    }
-
-    if (project.name.contains('react-native-image-picker')) {
-            buildscript {
-                repositories {
-                maven { url "https://dl.bintray.com/android/android-tools/"  }
-            }    
-        }
-    }
-
-    if (project.name.contains('react-native-svg')) {
-      buildscript {
-         repositories {
-            maven { url = "https://dl.bintray.com/android/android-tools/" }
-         }
-      }
-    }
-
-    if (project.name.contains('react-native-vector-icons')) {
-      buildscript {
-         repositories {
-            maven { url = "https://dl.bintray.com/android/android-tools/" }
-         }
-      }
-    }
-
-    afterEvaluate {
+subprojects {
+    afterEvaluate {project ->
         if (project.hasProperty("android")) {
             android {
                 compileSdkVersion 27
@@ -90,12 +53,12 @@ subprojects {project ->
             }
         }
     }
-    project.configurations.all {
+      project.configurations.all {
      resolutionStrategy.eachDependency { details ->
         if (details.requested.group == 'com.android.support'
               && !details.requested.name.contains('multidex') ) {
            details.useVersion "27.0.2"
         }
      }
-   }
+  }
 }
