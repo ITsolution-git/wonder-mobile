@@ -119,7 +119,7 @@ class AppointmentReviewModal extends React.Component<
                     size='md'
                     uri={_.get(appointment, 'match.images[0].url', null)}
                   />
-                  <SubTitle style={{ textAlign: 'center' }}>
+                  <SubTitle style={{ textAlign: 'center', marginTop: 8 }}>
                     {firstName}
                   </SubTitle>
                 </View>
@@ -279,17 +279,18 @@ class AppointmentReviewModal extends React.Component<
               </CardItem>
               <CardItem footer style={styles.footer}>
                 <View>
-                  <Label style={{ textAlign: 'center' }}>
+                  <Label style={{ textAlign: 'center', marginTop: -10}}>
                     All feedback is anonymous and used to improve Wonder for
                     you!
                   </Label>
                 </View>
-                <PrimaryButton title='Submit' onPress={this.onSubmit} />
-                <TextButton
-                  style={{ marginTop: 10 }}
-                  text='Cancel'
-                  onPress={this.props.onRequestClose}
-                />
+                <View style={styles.btnContainer}>
+                  <PrimaryButton title='Submit' onPress={this.onSubmit} />
+                  <TextButton
+                    text='Cancel'
+                    onPress={this.props.onRequestClose}
+                  />
+                </View>
               </CardItem>
             </Card>
           </Content>
@@ -348,6 +349,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around'
   },
   option: {
-    padding: 5
-  }
+    padding: 5,
+    marginTop: 10,
+    marginBottom: 10
+  },
+  btnContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 5
+   }
 });

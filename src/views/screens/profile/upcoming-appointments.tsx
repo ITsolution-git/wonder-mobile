@@ -123,13 +123,7 @@ class UpcomingAppointmentsScreen extends React.Component<
   render() {
     return (
       <Screen>
-        <View
-          style={{
-            paddingVertical: 15,
-            width: '100%',
-            alignSelf: 'center'
-          }}
-        >
+
           <TextInput
             color={theme.colors.primaryLight}
             containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
@@ -139,7 +133,7 @@ class UpcomingAppointmentsScreen extends React.Component<
             placeholder='Name, Date or Location'
             onChangeText={this.onSearchTextChange}
           />
-        </View>
+
         {this.renderList()}
       </Screen>
     );

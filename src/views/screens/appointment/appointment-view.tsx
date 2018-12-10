@@ -87,7 +87,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     return {
-      title: appointment.match ? appointment.match.first_name : ''
+      title: 'YOUR DATE'
     };
   }
 
@@ -315,10 +315,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 ? appointment.match.first_name
                 : 'Deactivated User'}{' '}
             </Title>
-            <View style={{ flexDirection: 'row', marginTop: 10 }}>
-              <Text style={{ fontSize: 15 }} align='center'>
-                {appointment.name} {'-'}{' '}
-                <Text
+
+              <Text style={{ fontSize: 15, marginTop: 5 }} align='center'>
+                {appointment.name}
+              </Text>
+               <Text
                   style={styles.addressText}
                   onPress={() =>
                     this.openAddress(
@@ -327,11 +328,10 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                       appointment.name
                     )
                   }
-                >
+               >
                   {appointment.location}
-                </Text>
-              </Text>
-            </View>
+               </Text>
+
             {appointment.eventMoment && (
               <Text align='center'>
                 {moment(appointment.event_at).format('MMMM Do, [at] h:mma')}
@@ -339,7 +339,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             )}
             {appointment.phone !== null && (
               <TextButton
-                btnStyle={{ alignSelf: 'center', marginTop: 10 }}
+                btnStyle={{ alignSelf: 'center'}}
                 style={styles.phoneText}
                 text={appointment.phone}
                 onPress={() => this.onCall(`tel:${appointment.phone}`)}

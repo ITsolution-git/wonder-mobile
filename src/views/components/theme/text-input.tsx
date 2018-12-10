@@ -118,10 +118,10 @@ export default class TextInput extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%'
+    width: '100%',
+    height: 42
   },
   errorHintContainer: {
-    borderColor: 'red',
     borderWidth: 2
   },
   errorHintText: {
@@ -140,7 +140,6 @@ const styles = StyleSheet.create({
     borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
   },
   input: {
-    backgroundColor: 'red',
     height: 40,
     flex: 10,
     fontFamily: theme.fonts.primary,
