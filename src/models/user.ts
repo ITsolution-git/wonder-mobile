@@ -54,6 +54,12 @@ interface User {
   age?: number;
   tzinfo?: string;
   tzoffset?: number;
+  onboarding_ui_state: {
+    has_matched: boolean;
+    has_scheduled_wonder: boolean;
+    has_swiped_left: boolean;
+    has_swiped_right: boolean;
+  };
 }
 
 export default User;

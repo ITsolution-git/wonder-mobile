@@ -20,7 +20,7 @@ import {
   ProfileVideo,
   Feedback
 } from '../screens';
-import { INITIAL_PROFILE_SCREEN } from '@appConfig';
+import { INITIAL_PROFILE_SCREEN } from '@utils';
 
 import TabIcon from 'src/views/components/tabs/secondary-tab-icon';
 import theme from 'src/assets/styles/theme';
