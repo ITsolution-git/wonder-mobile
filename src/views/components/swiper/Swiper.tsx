@@ -169,24 +169,29 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
 
     const isActive = i === index;
     const isNext = i === index + 1;
-    // const offsetMult = isActive ? 1 : i - index;
     const offsetMult = isActive ? 1 : i - index;
     const offset = WIDTH * offsetMult;
     const negOffset = offset > 0 ? offset * -1 : offset;
 
-    // const outputRange =
-    //   offset > 0 ? [-offset, 0, offset] : [offset, 0, -offset];
-
     const outputRange = isActive || !isNext ? [-offset, 0, offset] : [0, 0, 0];
+
+    const rotateOutputRange = isActive
+      ? ['-20deg', '0deg', '20deg']
+      : ['0deg', '0deg', '0deg'];
 
     const translateX = this._bodyPosition.interpolate({
       inputRange: [negOffset, 0, negOffset * -1], // [-WIDTH, 0, WIDTH]
       outputRange
     });
 
+    const rotate = this._bodyPosition.interpolate({
+      inputRange: [negOffset, 0, negOffset * -1], // [-WIDTH, 0, WIDTH]
+      outputRange: rotateOutputRange
+    });
+
     const scale = this._bodyPosition.interpolate({
       inputRange: COMMON_RANGE,
-      outputRange: isNext ? [1, 0, 1] : isActive ? [1, 1, 1] : [0, 0, 0]
+      outputRange: isNext ? [1, 1, 1] : isActive ? [1, 1, 1] : [0, 0, 0]
     });
 
     // const opacity = this._bodyPosition.interpolate({
@@ -196,7 +201,7 @@ class Swiper extends React.PureComponent<ISwiperProps, ISwiperState> {
 
     return {
       //   opacity,
-      transform: [{ translateX }, { scale }]
+      transform: [{ translateX }, { scale }, { rotate }]
       //   zIndex: -i
     };
   }
