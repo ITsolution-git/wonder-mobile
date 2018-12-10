@@ -94,7 +94,6 @@ interface State {
   candidate?: Candidate | null;
   isModalOpen: boolean;
 }
-
 class ProposalViewScreen extends React.Component<Props, State> {
   state: State = {
     candidate: null,
