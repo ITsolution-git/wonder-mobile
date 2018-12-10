@@ -31,7 +31,6 @@ export function* getNewProposalSaga() {
       state.user
     );
 
-    console.log(`proposal response:`, response);
     if (response.data[0]) {
       yield put(persistProposal(response.data[0]));
     }

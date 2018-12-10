@@ -30,7 +30,7 @@ class AppointmentItem extends React.PureComponent<Props> {
     const now = moment();
     if (moment(event_at).isSameOrAfter(now)) {
       return (
-        <Title>
+        <Title style={styles.title}>
           {_.get(item, 'topic.name', null)} at{' '}
           <Strong>{moment(event_at).format('h:mma')}</Strong> with{' '}
           {match.first_name}
@@ -38,7 +38,7 @@ class AppointmentItem extends React.PureComponent<Props> {
       );
     }
     return (
-      <Title>
+      <Title style={styles.title}>
         {_.get(item, 'topic.name', null)} with {match.first_name}
       </Title>
     );
@@ -69,7 +69,11 @@ class AppointmentItem extends React.PureComponent<Props> {
         <View style={styles.imageContainer}>
           <Avatar
             circle
-            uri={_.get(item, 'match.images[0].url', null)}
+            uri={_.get(
+              item,
+              'match.images[0].url',
+              `https://wonderapp.imgix.net/female-silhouette.jpg`
+            )}
             size={AvatarSize.md}
           />
           {isPast && (
@@ -82,7 +86,9 @@ class AppointmentItem extends React.PureComponent<Props> {
         </View>
         <View style={styles.contentContainer}>
           {this.renderTitle()}
-          <SubTitle style={{ marginTop: -8 }}>{moment(item.event_at).format('MMMM Do')}</SubTitle>
+          <SubTitle style={{ marginTop: -6 }}>
+            {moment(item.event_at).format('MMMM Do')}
+          </SubTitle>
           <View style={styles.locationRow}>
             <View>
               <Icon
@@ -149,6 +155,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
     alignSelf: 'flex-end'
   },
-  reviewBtn: { fontSize: 11, marginTop: 3 },
-  iconMargin: { marginRight: 5, marginLeft: 5 }
+  reviewBtn: {
+    fontSize: 11,
+    marginTop: 3
+  },
+  iconMargin: {
+    marginRight: 5,
+    marginLeft: 5
+  },
+  title: { lineHeight: 18 }
 });

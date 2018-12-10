@@ -1,7 +1,7 @@
-import _ from 'lodash';
-import React from 'react';
-import { connect } from 'react-redux';
-import Screen from 'src/views/components/screen';
+import React from "react";
+import _ from "lodash";
+import { connect } from "react-redux";
+import Screen from "src/views/components/screen";
 import {
   Title,
   Text,
@@ -10,7 +10,7 @@ import {
   IconButton,
   TextButton,
   SecondaryButton
-} from 'src/views/components/theme';
+} from "src/views/components/theme";
 import {
   View,
   StyleSheet,
@@ -18,38 +18,38 @@ import {
   Linking,
   Platform,
   TouchableOpacity
-} from 'react-native';
-import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import AppointmentReviewModal from 'src/views/components/modals/appointment-review-modal';
+} from "react-native";
+import { NavigationScreenProp, NavigationParams } from "react-navigation";
+import AppointmentReviewModal from "src/views/components/modals/appointment-review-modal";
 
-import { selectCurrentUser } from 'src/store/selectors/user';
-import { Dispatch } from 'redux';
-import Avatar from 'src/views/components/theme/avatar';
-import User from 'src/models/user';
-import { DecoratedAppointment } from 'src/models/appointment';
-import WonderAppState from 'src/models/wonder-app-state';
-import theme from 'src/assets/styles/theme';
-import { getConversation } from 'src/store/sagas/conversations';
+import { selectCurrentUser } from "src/store/selectors/user";
+import { Dispatch } from "redux";
+import Avatar from "src/views/components/theme/avatar";
+import User from "src/models/user";
+import { DecoratedAppointment } from "src/models/appointment";
+import WonderAppState from "src/models/wonder-app-state";
+import theme from "src/assets/styles/theme";
+import { getConversation } from "src/store/sagas/conversations";
 import {
   cancelAppointment,
   declineAppointment
-} from 'src/store/sagas/appointment';
+} from "src/store/sagas/appointment";
 import { isAppointmentBeforeToday } from 'src/utils/appointment';
-import { callPhoneNumber } from 'src/services/communication';
-import UserService from 'src/services/uber';
-import AmazonService from 'src/services/amazon';
-import { Toast } from 'native-base';
+import { callPhoneNumber } from "src/services/communication";
+import UserService from "src/services/uber";
+import AmazonService from "src/services/amazon";
+import { Toast } from "native-base";
 import Color from 'color';
 
-import api, { BASE_URL } from 'src/services/api';
-import SvgUri from 'react-native-svg-uri';
+import api, { BASE_URL } from "src/services/api";
+import SvgUri from "react-native-svg-uri";
 
 import {
   deleteAttendance,
   getAttendances,
   reviewDate
-} from 'src/store/sagas/attendance';
-import moment from 'moment';
+} from "src/store/sagas/attendance";
+import moment from "moment";
 
 interface AppointmentViewProps {
   currentUser: User;
@@ -70,7 +70,7 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
-    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
+    dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
   onCancelAppointment: (data: DecoratedAppointment) =>
     dispatch(cancelAppointment(data)),
   onDeclineAppointment: (data: DecoratedAppointment) =>
@@ -83,13 +83,13 @@ const mapDispatch = (dispatch: Dispatch) => ({
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   static navigationOptions = ({ navigation }) => {
     const appointment: DecoratedAppointment = navigation.getParam(
-      'appointment',
+      "appointment",
       {}
     );
     return {
-      title: 'YOUR DATE'
+      title: "YOUR DATE"
     };
-  }
+  };
 
   state: AppointmentViewState = {
     isModalOpen: false
@@ -97,7 +97,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
   componentDidMount() {
     const { navigation } = this.props;
-    const open = navigation.getParam('review', false);
+    const open = navigation.getParam("review", false);
     if (open) {
       this.openReviewModal();
       navigation.setParams({ review: false });
@@ -107,19 +107,19 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   isPastAppointment = () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
-      'appointment',
+      "appointment",
       {}
     );
     return isAppointmentBeforeToday(appointment);
-  }
+  };
 
   openReviewModal = () => {
     this.setState({ isModalOpen: true });
-  }
+  };
 
   closeReviewModal = () => {
     this.setState({ isModalOpen: false });
-  }
+  };
 
   onCall = async (url?: string | null) => {
     Linking.canOpenURL(url)
@@ -316,21 +316,21 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 : 'Deactivated User'}{' '}
             </Title>
 
-              <Text style={{ fontSize: 15, marginTop: 5 }} align='center'>
-                {appointment.name}
-              </Text>
-               <Text
-                  style={styles.addressText}
-                  onPress={() =>
-                    this.openAddress(
-                      appointment.latitude,
-                      appointment.longitude,
-                      appointment.name
-                    )
-                  }
-               >
-                  {appointment.location}
-               </Text>
+            <Text style={{ fontSize: 15, marginTop: 5 }} align='center'>
+              {appointment.name}
+            </Text>
+            <Text
+              style={styles.addressText}
+              onPress={() =>
+                this.openAddress(
+                  appointment.latitude,
+                  appointment.longitude,
+                  appointment.name
+                )
+              }
+            >
+              {appointment.location}
+            </Text>
 
             {appointment.eventMoment && (
               <Text align='center'>
@@ -339,7 +339,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             )}
             {appointment.phone !== null && (
               <TextButton
-                btnStyle={{ alignSelf: 'center'}}
+                btnStyle={{ alignSelf: 'center' }}
                 style={styles.phoneText}
                 text={appointment.phone}
                 onPress={() => this.onCall(`tel:${appointment.phone}`)}
