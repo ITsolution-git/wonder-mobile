@@ -61,6 +61,14 @@ subprojects {project ->
         }
     }
 
+    if (project.name.contains('react-native-svg')) {
+      buildscript {
+         repositories {
+            maven { url = "https://dl.bintray.com/android/android-tools/" }
+         }
+      }
+    }
+
     afterEvaluate {
         if (project.hasProperty("android")) {
             android {
