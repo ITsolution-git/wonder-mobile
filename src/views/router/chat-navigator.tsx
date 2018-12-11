@@ -60,7 +60,7 @@ const ChatNavigator = createStackNavigator(
         //   }
         // }),
         //headerTitleStyle :{textAlign: 'center',alignSelf:'center',justifyContent: 'center'},
-        title: 'Schedule Your Wonder',
+        title: 'SCHEDULE YOUR WONDER',
         ...theme.NavBar.transparent,
         headerRight:(<View></View>)
       }
