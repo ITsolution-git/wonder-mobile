@@ -124,14 +124,14 @@ android {
         }
     }
 
-    signingConfigs {
-        release {
-           storeFile file(WONDER_PROD_STORE_FILE)
-           storePassword releasePass
-           keyAlias WONDER_PROD_KEY_ALIAS
-           keyPassword releasePass
-        }
-    }
+    // signingConfigs {
+    //     release {
+    //        storeFile file(WONDER_PROD_STORE_FILE)
+    //        storePassword releasePass
+    //        keyAlias WONDER_PROD_KEY_ALIAS
+    //        keyPassword releasePass
+    //     }
+    // }
 
     splits {
         abi {
@@ -142,10 +142,24 @@ android {
         }
     }
     buildTypes {
+        
+        all {
+            manifestPlaceholders = [
+                uses_clear_text_traffic: "false"
+            ]
+        }
+
+        debug {
+          debuggable true
+          manifestPlaceholders = [
+            uses_clear_text_traffic: "true"
+          ]
+        }
+
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            signingConfig signingConfigs.release
+            // signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
