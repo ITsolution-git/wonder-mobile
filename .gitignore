@@ -62,4 +62,4 @@ buck-out/
 *.jsbundle
 .jest/
 
-yarn.lock
+package-lock.json
