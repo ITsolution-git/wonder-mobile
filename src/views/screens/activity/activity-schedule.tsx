@@ -76,7 +76,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     selectedDate: undefined,
     selectedTime: undefined,
     agendaItems: {},
-    
+
   };
 
   componentWillMount() {
@@ -212,20 +212,21 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     this.setState({ selectedTime });
   }
 
-
-  renderConfirmButton=(missingDate:any,disabled:any)=>{
-    return(<View style={{ position: 'absolute', right: 0, left: 0, bottom: 0}}>
-    <PrimaryButton
-       title={missingDate ? 'Select Date' : 'Confirm'}
-       onPress={missingDate ? this.openCalendarModal : this.schedule}
-       disabled={disabled}
-       rounded={false}
-    />
-  </View>);
+  renderConfirmButton = (missingDate: any, disabled: any) => {
+    return (
+    <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0}}>
+      <PrimaryButton
+        title={missingDate ? 'Select Date' : 'Confirm'}
+        onPress={missingDate ? this.openCalendarModal : this.schedule}
+        disabled={disabled}
+        rounded={false}
+      />
+    </View>
+  );
   }
 
   renderHeader = () => {
-    const { navigation, conversation,appointment } = this.props;
+    const { navigation, conversation, appointment } = this.props;
     const { match, activity, eventAt } = appointment;
     const { selectedDate, selectedTime } = this.state;
     const { first_name, last_name, images = [] } = _.get(
@@ -250,7 +251,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
         }}
       >
         <Avatar circle uri={_.get(images[0], 'url', null)} size={AvatarSize.xl} />
-        <Text style={{ marginTop: 15, fontFamily:'Poppins-Regular'}}>
+        <Text style={{ marginTop: 15, fontFamily: 'Poppins-Regular'}}>
           {/* {[first_name, last_name].join(' ')} */}
           {first_name}
         </Text>
@@ -261,7 +262,8 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
             <TextButton
               style={styles.calendarButtonText}
               // text={"Soccer with ".."dateTime.format('MMMM Do, YYYY[\n][at] h:mma')}
-              text={[this.props.appointment==null?'':this.props.appointment.topic.name,'with',first_name,'on',dateTime.format('MMMM Do, h:mma')].join(' ')}
+              text={[this.props.appointment == null ? '' : this.props.appointment.topic.name, 'with',
+                    first_name, 'on', dateTime.format('MMMM Do, h:mma')].join(' ')}
               onPress={this.openCalendarModal}
             />
           </View>
@@ -321,7 +323,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           agendaItems={agendaItems}
           onRequestClose={this.closeCalendarModal}
         />
-       {this.renderConfirmButton(missingDate,disabled)}          
+       {this.renderConfirmButton(missingDate, disabled)}
 
       </Screen>
     );
@@ -339,13 +341,13 @@ const styles = StyleSheet.create({
   },
   dateTimeLabel: {
     textAlign: 'center',
-    fontFamily:'Poppins-Light'
+    fontFamily: 'Poppins-Light'
   },
   calendarButtonText: {
     textAlign: 'center',
     fontSize: 24,
     color: theme.colors.primary,
-   
-    fontFamily:'Poppins-Bold'
+
+    fontFamily: 'Poppins-Bold'
   }
 });

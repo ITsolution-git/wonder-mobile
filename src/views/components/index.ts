@@ -1,2 +1,2 @@
 export * from './AppLoader';
-export * from './swiper'
+export * from './swiper';
