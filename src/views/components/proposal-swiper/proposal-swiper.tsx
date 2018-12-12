@@ -28,6 +28,8 @@ import VibeVideoModal from '../modals/vibe-video-modal';
 
 const deviceHeight = Dimensions.get('window').height;
 
+interface State {}
+
 interface Props {
   proposal: Proposal[];
   onSwipeLeft: (index: number) => void;
@@ -257,7 +259,7 @@ class CardDetailsOverlay extends React.Component<
   }
 }
 
-class ProposalSwiper extends React.Component<Props, {}> {
+class ProposalSwiper extends React.Component<Props, State> {
   renderProfileImage = (images?: ProfileImage[]) => {
     if (images && images.length) {
       return (

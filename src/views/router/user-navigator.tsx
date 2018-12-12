@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, View } from 'react-native';
+import { Platform,View } from 'react-native';
 import {
   createStackNavigator,
   createMaterialTopTabNavigator,
@@ -53,7 +53,7 @@ const ProfileNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Profile',
         ...theme.NavBar.transparent,
-        headerRight: <View/>
+        headerRight:(<View></View>)
       }
     },
     ProfileMedia: {
@@ -67,7 +67,7 @@ const ProfileNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Pick Your Wonders',
         ...theme.NavBar.transparent,
-        headerRight: <View/>
+        headerRight:(<View></View>)
       }
     },
     ProfilePreferences: {
@@ -75,7 +75,7 @@ const ProfileNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Preferences',
         ...theme.NavBar.transparent,
-        headerRight: <View/>
+        headerRight:(<View></View>)
         // header: null,
       }
     },
@@ -84,7 +84,7 @@ const ProfileNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Profile Selfie',
         ...theme.NavBar.transparent,
-        headerRight: <View/>
+        headerRight:(<View></View>)
       }
     },
     ProfileVideo: {
@@ -92,7 +92,7 @@ const ProfileNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Vibe Video',
         ...theme.NavBar.transparent,
-        headerRight: <View/>
+        headerRight:(<View></View>)
       }
     },
     Feedback: {
@@ -100,7 +100,7 @@ const ProfileNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Contact Us',
         ...theme.NavBar.transparent,
-        headerRight: <View/>
+        headerRight:(<View></View>)
       }
     }
   },
@@ -118,7 +118,7 @@ const UpcomingAppointmentsNavigator = createStackNavigator({
     screen: AppointmentView,
     navigationOptions: {
       ...theme.NavBar.transparent,
-      headerRight: <View/>
+      headerRight:(<View></View>)
     }
   }
 });
@@ -132,7 +132,7 @@ const PastAppointmentsNavigator = createStackNavigator({
     screen: AppointmentView,
     navigationOptions: {
       ...theme.NavBar.transparent,
-      headerRight: <View/>
+      headerRight:(<View></View>)
     }
   }
 });

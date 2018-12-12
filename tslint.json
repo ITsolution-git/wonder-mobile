@@ -15,8 +15,7 @@
     "ban-types": false,
     "jsx-no-multiline-js": false,
     "member-access": false,
-    "max-classes-per-file": false,
-    "no-empty-interface": true
+    "max-classes-per-file": false
   },
   "rulesDirectory": []
 }

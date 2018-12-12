@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Platform, View } from 'react-native';
+import { Dimensions, Platform,View } from 'react-native';
 import Color from 'color';
 
 export const IOS = Platform.OS === 'ios';
@@ -24,7 +24,7 @@ export const colors = {
   lightPeach: '#efb16e',
   primary50: 'rgba(246, 142, 86, 0.5)',
   lightPurple: '#cbc2fa',
-  iconColor: '#fcdfc2',
+  iconColor:'#fcdfc2',
   peach: '#ffdf95',
   lightGray: '#e5e3e3',
   iron: '#cbc9cb'
@@ -34,8 +34,8 @@ const transparentNavigationStyles = {
   headerStyle: {
     backgroundColor: colors.white,
     borderBottomWidth: 0,
-    elevation: 0,
-    width: '100%'
+    elevation: 0, 
+    width:'100%' 
   },
   headerTintColor: colors.textColor,
   headerTitleStyle: {
@@ -44,12 +44,14 @@ const transparentNavigationStyles = {
     fontWeight: 'normal',
     color: colors.textColor,
     textAlign: 'center',
-    alignSelf: 'center',
-    flex: 1
+    alignSelf:'center',
+    flex:1
   },
   headerBackTitle: null,
-
+ 
 };
+
+
 
 export const Device = {
   WIDTH: width,

@@ -45,7 +45,6 @@ export function* submitFeedbackSaga(action: Action<any>) {
       console.warn(error);
     }
   } finally {
-    console.warn(error);
   }
 }
 
