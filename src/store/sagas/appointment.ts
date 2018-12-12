@@ -187,7 +187,7 @@ export function* confirmAppointmentSaga(action: Action<any>) {
 
     yield put(resetAppointment());
     yield put(getAppointments());
-    NavigatorService.popToTop();
+    // NavigatorService.popToTop();
   } catch (error) {
     handleAxiosError(error);
   } finally {

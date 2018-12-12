@@ -44,9 +44,9 @@ class AppointmentReviewModal extends React.Component<
   AppointmentReviewModalState
 > {
   state: AppointmentReviewModalState = {
-    flaked: true,
+    flaked: false,
     photo: true,
-    fib: true,
+    fib: false,
     dateAgain: true,
     details: '',
     value: 0
@@ -119,9 +119,7 @@ class AppointmentReviewModal extends React.Component<
                     size='md'
                     uri={_.get(appointment, 'match.images[0].url', null)}
                   />
-                  <SubTitle style={{ textAlign: 'center', marginTop: 8 }}>
-                    {firstName}
-                  </SubTitle>
+                  <SubTitle style={styles.subTitle}>{firstName}</SubTitle>
                 </View>
               </CardItem>
               <CardItem>
@@ -279,7 +277,7 @@ class AppointmentReviewModal extends React.Component<
               </CardItem>
               <CardItem footer style={styles.footer}>
                 <View>
-                  <Label style={{ textAlign: 'center', marginTop: -10}}>
+                  <Label style={{ textAlign: 'center', marginTop: -10 }}>
                     All feedback is anonymous and used to improve Wonder for
                     you!
                   </Label>
@@ -340,8 +338,9 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   row: {
-    width: '100%',
-    alignItems: 'center'
+    width: '90%',
+    alignItems: 'center',
+    margin: 2
   },
   btnContainer: {
     flexDirection: 'row',
@@ -359,5 +358,6 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     marginTop: 5
-   }
+  },
+  subTitle: { textAlign: 'center', marginTop: 8 }
 });

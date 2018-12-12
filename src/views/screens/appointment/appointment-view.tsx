@@ -36,11 +36,11 @@ import {
   declineAppointment
 } from "src/store/sagas/appointment";
 import { isAppointmentBeforeToday } from "src/utils/appointment";
-import { callPhoneNumber } from 'src/services/communication';
+import { callPhoneNumber } from "src/services/communication";
 import UserService from "src/services/uber";
 import AmazonService from "src/services/amazon";
 import { Toast } from "native-base";
-import Color from 'color';
+import Color from "color";
 
 import api, { BASE_URL } from "src/services/api";
 import SvgUri from "react-native-svg-uri";
@@ -52,6 +52,8 @@ import {
 } from "src/store/sagas/attendance";
 import Wonder from "../../components/theme/wonder/wonder";
 import WonderImage from "../../components/theme/wonder-image";
+import { confirmAppointment } from "src/store/sagas/appointment";
+import { FirstTimeModal, IFirstTimeModalProps } from "@components";
 import moment from "moment";
 
 const { height } = Dimensions.get("window");
@@ -75,14 +77,16 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
-    dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
+    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
   onCancelAppointment: (data: DecoratedAppointment) =>
     dispatch(cancelAppointment(data)),
   onDeclineAppointment: (data: DecoratedAppointment) =>
     dispatch(declineAppointment(data)),
   onDeleteAttendance: (data: DecoratedAppointment) =>
     dispatch(deleteAttendance(data)),
-  onReviewDate: (data) => dispatch(reviewDate(data))
+  onReviewDate: (data) => dispatch(reviewDate(data)),
+  onConfirmAppointment: (appointment: DecoratedAppointment) =>
+    dispatch(confirmAppointment({ appointment }))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -97,7 +101,9 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   };
 
   state: AppointmentViewState = {
-    isModalOpen: false
+    isModalOpen: false,
+    modalOpen: false,
+    isConfirmed: false
   };
 
   componentDidMount() {
@@ -128,7 +134,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
   onCall = async (url?: string | null) => {
     Linking.canOpenURL(url)
-      .then((supported) => {
+      .then(supported => {
         if (!supported) {
           Alert.alert("Sorry! This number can't be opened from the app");
         } else {
@@ -136,11 +142,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         }
       })
       .catch((err) => console.error('An error occurred', err));
-  }
+  };
 
   onServicePress = (url: string) => {
     Alert.alert('Third Party', `This would go to ${url}`);
-  }
+  };
 
   onUber = async () => {
     const { navigation } = this.props;
@@ -155,7 +161,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       longitude,
       latitude
     });
-  }
+  };
 
   onAmazon = async () => {
     const { navigation } = this.props;
@@ -170,7 +176,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     } else {
       Toast.show({ text: 'Unable to launch amazon, missing topic' });
     }
-  }
+  };
 
   goToChat = () => {
     const { navigation, onGetConversation } = this.props;
@@ -180,21 +186,27 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     );
 
     onGetConversation(appointment.match.id);
-  }
+  };
 
   handleConfirmation = (appointment: DecoratedAppointment) => {
     const { navigation } = this.props;
-    navigation.navigate('AppointmentConfirm', {
-      appointment
-    });
-  }
+    this.setState({ modalOpen: true });
+    this.props.onConfirmAppointment(appointment);
+
+    // change text of button to confirmed
+
+    // navigation.navigate('AppointmentConfirm', {
+    //   appointment
+    // });
+  };
 
   renderConfirmationButton = (appointment: DecoratedAppointment) => {
     const { state, owner, me } = appointment;
+    const { isConfirmed } = this.state;
     const isOwner = owner.id === me.id;
     if (
-      (isOwner && state === 'negotiating') ||
-      (!isOwner && state === 'invited')
+      (isOwner && state === 'negotiating' && !isConfirmed) ||
+      (!isOwner && state === 'invited' && !isConfirmed)
     ) {
       return (
         <PrimaryButton
@@ -215,7 +227,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         />
       );
     }
-  }
+  };
 
   decline = () => {
     const { navigation } = this.props;
@@ -237,6 +249,13 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     );
   }
 
+  cancelAndGoToChat = (date) => {
+    this.props.onGetConversation(date.match.id, {});
+    this.props.onCancelAppointment(date);
+    // this.props.onDeleteAttendance(date);
+    this.props.navigation.navigate('Chat', { name: date.match.first_name });
+  }
+
   cancel = () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
@@ -250,7 +269,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         { text: 'Cancel' },
         {
           text: 'YES',
-          onPress: () => this.props.onCancelAppointment(appointment)
+          onPress: () => this.cancelAndGoToChat(appointment)
         }
       ],
       { cancelable: false }
@@ -294,6 +313,29 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     navigation.goBack();
   }
 
+  closeModal = () => {
+    this.setState({ modalOpen: false, isConfirmed: true });
+  }
+
+  private getModalProps = (): IFirstTimeModalProps => {
+    const { modalOpen } = this.state;
+
+    const isPass = modalOpen === 'pass';
+    const name = '';
+
+    const modalProps = {
+      visible: modalOpen,
+      title: 'YAY!',
+      body: `You've just confirmed a date. We've let them know!`,
+      buttonTitle: 'Okay!',
+      onRequestClose: this.closeModal,
+      renderWonderful: false,
+      onPress: this.closeModal
+    };
+
+    return modalProps;
+  }
+
   render() {
     const { navigation, currentUser } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
@@ -320,9 +362,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 ? appointment.match.first_name
                 : 'Deactivated User'}{' '}
             </Title>
-
             <WonderImage style={{ height: 30 }} uri={appointment.topic.icon} />
-
             <Text
               style={{ fontSize: height <= 700 ? 12 : 15, marginTop: 5 }}
               align='center'
@@ -379,7 +419,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               <View style={styles.col}>
                 <IconButton
                   size={50}
-                  iconSize={44}
+                  iconSize={height <= 700 ? 30 : 44}
                   icon='car'
                   primary={theme.colors.primaryLight}
                   secondary='transparent'
@@ -437,7 +477,16 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           >
             {!isPast && (
               <View style={styles.col}>
-                <SecondaryButton title='Cancel' onPress={this.cancel} />
+                <SecondaryButton
+                  disabled={
+                    appointment.state === 'cancelled' ||
+                    appointment.state === 'declined'
+                      ? true
+                      : false
+                  }
+                  title='Cancel'
+                  onPress={this.cancel}
+                />
               </View>
             )}
             <View style={styles.col}>
@@ -447,11 +496,21 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                   onPress={this.showDeleteAlert}
                 />
               ) : (
-                <SecondaryButton title='Decline' onPress={this.decline} />
+                <SecondaryButton
+                  disabled={
+                    appointment.state === 'declined' ||
+                    appointment.state === 'cancelled'
+                      ? true
+                      : false
+                  }
+                  title='Decline'
+                  onPress={this.decline}
+                />
               )}
             </View>
           </View>
         </View>
+        <FirstTimeModal {...this.getModalProps()} />
         <AppointmentReviewModal
           onRequestClose={this.closeReviewModal}
           visible={this.state.isModalOpen}
