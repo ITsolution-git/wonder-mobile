@@ -125,7 +125,8 @@ class ProfileMediaScreen extends React.Component<Props, State> {
                 </View>
                 <TextArea
                   label='About Me'
-                  placeholder='Take this time to describe yourself, life experience, hobbies, and anything else that makes you wonderful...'
+                  placeholder='Take this time to describe yourself, life experience, hobbies,
+                  and anything else that makes you wonderful...'
                   maxLength={200}
                   defaultValue={about}
                   onChangeText={this.onAboutChange}

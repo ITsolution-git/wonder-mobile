@@ -85,7 +85,7 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
 
     if (hours && hours.length) {
       const currentBusinessDay = hours.filter((d: any) => d.day === dow);
-      if(currentBusinessDay && currentBusinessDay[0]){
+      if (currentBusinessDay && currentBusinessDay[0]) {
         return (
           <SmallText
             allowFontScaling={false}
@@ -99,10 +99,10 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
             }
           </SmallText>
         );
-      }else{
-        return <View></View>;
+      } else {
+        return <View />;
       }
-     
+
     }
 
   }

@@ -13,7 +13,7 @@ import navigation from '../../services/navigation';
 import {
 
   View,
-  
+
 } from 'react-native';
 
 const ChatNavigator = createStackNavigator(
@@ -39,37 +39,36 @@ const ChatNavigator = createStackNavigator(
         //   titleStyle: {
         //     color: 'black',
         //     textAlign:'center',
-          
         //     fontWeight: '500'
         //   }
         // },
        // headerTitleStyle :{textAlign: 'center',alignSelf:'center',justifyContent: 'space-between'},
         title: 'PICK A WONDER',
         ...theme.NavBar.transparent,
-        headerRight:(<View></View>)
+        headerRight: <View/>
       }
     },
     WonderSchedule: {
       screen: ActivitySchedule,
       navigationOptions: {
-        //header:null
+        // header:null
         // header: navigation => ({
         //   titleStyle: {
         //     justifyContent: 'space-between',
         //     textAlign: 'center'
         //   }
         // }),
-        //headerTitleStyle :{textAlign: 'center',alignSelf:'center',justifyContent: 'center'},
+        // headerTitleStyle :{textAlign: 'center',alignSelf:'center',justifyContent: 'center'},
         title: 'Schedule Your Wonder',
         ...theme.NavBar.transparent,
-        headerRight:(<View></View>)
+        headerRight: <View/>
       }
     },
     AppointmentInvite: {
       screen: AppointmentInvite,
       navigationOptions: {
         ...theme.NavBar.transparent,
-        headerRight:(<View></View>)
+        headerRight: <View/>
       },
     },
     AppointmentConfirm: {
@@ -77,7 +76,7 @@ const ChatNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Confirm Your Wonder',
         ...theme.NavBar.transparent,
-        headerRight:(<View></View>)
+        headerRight: <View/>
       }
     }
   },

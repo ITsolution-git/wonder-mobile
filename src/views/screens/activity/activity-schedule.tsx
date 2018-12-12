@@ -76,6 +76,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
     selectedDate: undefined,
     selectedTime: undefined,
     agendaItems: {},
+
   };
 
   componentWillMount() {
@@ -210,20 +211,23 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
   selectTime = (selectedTime: { hour: number; minute: number }) => {
     this.setState({ selectedTime });
   }
-  renderConfirmButton = (missingDate: boolean, disabled: boolean) => {
-    return(
+
+  renderConfirmButton = (missingDate: any, disabled: any) => {
+    return (
     <View style={{ position: 'absolute', right: 0, left: 0, bottom: 0}}>
-    <PrimaryButton
-       title={missingDate ? 'Select Date' : 'Confirm'}
-       onPress={missingDate ? this.openCalendarModal : this.schedule}
-       disabled={disabled}
-       rounded={false}
-    />
-  </View>);
+      <PrimaryButton
+        title={missingDate ? 'Select Date' : 'Confirm'}
+        onPress={missingDate ? this.openCalendarModal : this.schedule}
+        disabled={disabled}
+        rounded={false}
+      />
+    </View>
+  );
   }
 
   renderHeader = () => {
-    const { navigation, conversation } = this.props;
+    const { navigation, conversation, appointment } = this.props;
+    const { match, activity, eventAt } = appointment;
     const { selectedDate, selectedTime } = this.state;
     const { first_name, last_name, images = [] } = _.get(
       conversation,
@@ -258,7 +262,8 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
             <TextButton
               style={styles.calendarButtonText}
               // text={"Soccer with ".."dateTime.format('MMMM Do, YYYY[\n][at] h:mma')}
-              text={[, 'with', first_name, 'on', dateTime.format('MMMM Do, h:mma')].join(' ')}
+              text={[this.props.appointment == null ? '' : this.props.appointment.topic.name, 'with',
+                    first_name, 'on', dateTime.format('MMMM Do, h:mma')].join(' ')}
               onPress={this.openCalendarModal}
             />
           </View>
@@ -342,6 +347,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 24,
     color: theme.colors.primary,
+
     fontFamily: 'Poppins-Bold'
   }
 });

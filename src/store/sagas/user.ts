@@ -191,7 +191,9 @@ export function* logoutUserSaga(action: Action<any>) {
       },
       authHeader
     );
-  } catch (error) {}
+  } catch (error) {
+    handleAxiosError(error);
+  }
 
   yield put(persistAuth({}));
   yield put(persistUser({}));
@@ -241,6 +243,8 @@ export function* getUserSaga() {
     }
   } catch (error) {
     handleAxiosError(error);
+  } finally {
+    handleAxiosError(error);
   }
 }
 
@@ -277,6 +281,7 @@ export function* updateUserSaga(action: Action<any>) {
   } catch (error) {
     handleAxiosError(error);
   } finally {
+    handleAxiosError(error);
   }
 }
 
@@ -323,6 +328,7 @@ export function* updateImageSaga(action: Action<any>) {
   } catch (error) {
     handleAxiosError(error);
   } finally {
+    handleAxiosError(error);
   }
 }
 
@@ -344,6 +350,7 @@ export function* deleteProfileImageSaga(action: Action<any>) {
   } catch (error) {
     handleAxiosError(error);
   } finally {
+    handleAxiosError(error);
   }
 }
 
@@ -362,6 +369,7 @@ export function* deleteProfileVideoSaga() {
   } catch (error) {
     handleAxiosError(error);
   } finally {
+    handleAxiosError(error);
   }
 }
 
@@ -393,11 +401,13 @@ export function* updateVideoSaga(action: Action<any>) {
         }
       };
     } else {
+      handleAxiosError(error);
     }
     yield put(getUser());
   } catch (error) {
     handleAxiosError(error);
   } finally {
+    handleAxiosError(error);
   }
 }
 
