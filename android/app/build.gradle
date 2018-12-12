@@ -1,3 +1,16 @@
+def getPassword(String currentUser, String keyChain) {
+   def stdout = new ByteArrayOutputStream()
+   def stderr = new ByteArrayOutputStream()
+   exec {
+       commandLine 'security', '-q', 'find-generic-password', '-a', currentUser, '-s', keyChain, '-w'
+       standardOutput = stdout
+       errorOutput = stderr
+       ignoreExitValue true
+   }
+   //noinspection GroovyAssignabilityCheck
+      stdout.toString().trim()
+}
+
 apply plugin: "com.android.application"
 
 import com.android.build.OutputFile
@@ -93,6 +106,8 @@ def enableSeparateBuildPerCPUArchitecture = false
  */
 def enableProguardInReleaseBuilds = false
 
+def releasePass = getPassword("William Koutrelakos", "wonder-app-keystore")
+
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -108,16 +123,16 @@ android {
             abiFilters "armeabi-v7a", "x86"
         }
     }
-    // signingConfigs {
-    //     release {
-    //         if (project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
-    //             storeFile rootProject.file(project.findProperty('MYAPP_RELEASE_STORE_FILE') ?: "ANDROID_STORE_FILE_NOT_SET")
-    //             storePassword project.findProperty('MYAPP_RELEASE_STORE_PASSWORD') ?: "ANDROID_STORE_PASSWORD_NOT_SET"
-    //             keyAlias project.findProperty('MYAPP_RELEASE_KEY_ALIAS') ?: "ANDROID_KEY_ALIAS_NOT_SET"
-    //             keyPassword project.findProperty('MYAPP_RELEASE_KEY_PASSWORD') ?: "ANDROID_KEY_PASSWORD_NOT_SET"
-    //         }
-    //     }
-    // }
+
+    signingConfigs {
+        release {
+           storeFile file(WONDER_PROD_STORE_FILE)
+           storePassword releasePass
+           keyAlias WONDER_PROD_KEY_ALIAS
+           keyPassword releasePass
+        }
+    }
+
     splits {
         abi {
             reset()
@@ -130,14 +145,7 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            // if (false && project.hasProperty('MYAPP_RELEASE_STORE_FILE')) {
-                // signingConfig signingConfigs.release
-            // } else {
-            //     println '-------------------------------------------------'
-            //     println 'The MYAPP_RELEASE_STORE_FILE property was not set!'
-            //     println 'This release will not be signed by gradle!'
-            //     println '-------------------------------------------------'
-            // }   
+            signingConfig signingConfigs.release
         }
     }
     // applicationVariants are e.g. debug, release
@@ -156,25 +164,23 @@ android {
 }
 
 dependencies {
-    compile project(':bugsnag-react-native')
-    compile project(':appcenter')
-    compile project(':appcenter-crashes')
-    compile project(':appcenter-push')
-    compile project(':appcenter-analytics')
-    compile project(':react-native-version-number')
-    compile project(':react-native-vector-icons')
-    compile project(':react-native-maps')
-    compile project(':react-native-linear-gradient')
-    compile project(':react-native-device-info')
-    compile project(':react-native-calendar-events')
-    compile project(':react-native-fbsdk')
-    compile project(':react-native-svg')
-
-    compile project(':react-native-image-rotate')
-    compile project(':react-native-image-picker')
-    compile project(':react-native-push-notification')
-    compile project(':react-native-video')
-    compile project(':react-native-fast-image')
+    implementation project(':bugsnag-react-native')
+    implementation project(':appcenter')
+    implementation project(':appcenter-crashes')
+    implementation project(':appcenter-push')
+    implementation project(':appcenter-analytics')
+    implementation project(':react-native-version-number')
+    implementation project(':react-native-vector-icons')
+    implementation project(':react-native-linear-gradient')
+    implementation project(':react-native-device-info')
+    implementation project(':react-native-calendar-events')
+    implementation project(':react-native-fbsdk')
+    implementation project(':react-native-svg')
+    implementation project(':react-native-image-rotate')
+    implementation project(':react-native-image-picker')
+    implementation project(':react-native-push-notification')
+    implementation project(':react-native-video')
+    implementation project(':react-native-fast-image')
     
 
     implementation(project(':react-native-maps')){
@@ -184,10 +190,6 @@ dependencies {
     implementation "com.google.android.gms:play-services-base:${rootProject.ext.googlePlayServicesVersion}"
     implementation "com.google.android.gms:play-services-maps:${rootProject.ext.googlePlayServicesVersion}"
 
-    implementation project(':react-native-linear-gradient')
-    implementation project(':react-native-vector-icons')
-    implementation project(':react-native-version-number')
-    implementation project(':react-native-device-info')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+"  // From node_modules
