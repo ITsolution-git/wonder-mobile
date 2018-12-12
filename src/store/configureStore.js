@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import applyAppStateListener from "redux-enhancer-react-native-appstate";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
-import { PURGE } from "@appConfig";
+import { PURGE } from "@utils";
 import rootReducer from "./reducers";
 import rootSaga from "./sagas";
 import Reactotron from "reactotron-react-native";

@@ -22,6 +22,7 @@ export const colors = {
   // NK below
   purple: '#8E8EAA',
   lightPeach: '#efb16e',
+  primary50: 'rgba(246, 142, 86, 0.5)',
   lightPurple: '#cbc2fa',
   iconColor: '#fcdfc2',
   peach: '#ffdf95',

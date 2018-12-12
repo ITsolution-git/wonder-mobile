@@ -13,7 +13,7 @@ import theme from 'src/assets/styles/theme';
 import UserNavigator from './user-navigator';
 import RegistrationNavigator from './registration-navigator';
 import ChatNavigator from './chat-navigator';
-import { INITIAL_HOME_SCREEN } from '@appConfig';
+import { INITIAL_HOME_SCREEN } from '@utils';
 
 // Manages the Matches and Scheduling flow
 const HomeNavigator = createStackNavigator(

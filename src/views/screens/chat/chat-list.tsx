@@ -146,10 +146,9 @@ class ChatListScreen extends React.Component<Props> {
   }
 
   goToChat = (chat: Chat) => {
-
     const { onGetConversation } = this.props;
     onGetConversation(chat.partner.id, {});
-    this.props.navigation.navigate('Chat', {name: chat.partner.first_name});
+    this.props.navigation.navigate('Chat', { name: chat.partner.first_name });
   }
 
   openSearchModal = () => {
