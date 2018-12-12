@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   reviewBtn: {
     fontSize: 11,
-    marginTop: 3
+    marginTop: 7
   },
   iconMargin: {
     marginRight: 5,

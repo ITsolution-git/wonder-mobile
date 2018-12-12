@@ -17,7 +17,8 @@ import {
   Alert,
   Linking,
   Platform,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from "react-native";
 import { NavigationScreenProp, NavigationParams } from "react-navigation";
 import AppointmentReviewModal from "src/views/components/modals/appointment-review-modal";
@@ -34,8 +35,8 @@ import {
   cancelAppointment,
   declineAppointment
 } from "src/store/sagas/appointment";
-import { isAppointmentBeforeToday } from 'src/utils/appointment';
-import { callPhoneNumber } from "src/services/communication";
+import { isAppointmentBeforeToday } from "src/utils/appointment";
+import { callPhoneNumber } from 'src/services/communication';
 import UserService from "src/services/uber";
 import AmazonService from "src/services/amazon";
 import { Toast } from "native-base";
@@ -49,7 +50,11 @@ import {
   getAttendances,
   reviewDate
 } from "src/store/sagas/attendance";
+import Wonder from "../../components/theme/wonder/wonder";
+import WonderImage from "../../components/theme/wonder-image";
 import moment from "moment";
+
+const { height } = Dimensions.get("window");
 
 interface AppointmentViewProps {
   currentUser: User;
@@ -304,7 +309,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           <View style={styles.header}>
             <Avatar
               circle
-              size='xl'
+              size={height <= 700 ? 'md' : 'xl'}
               uri={_.get(appointment, 'match.images[0].url', null)}
             />
           </View>
@@ -316,7 +321,12 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 : 'Deactivated User'}{' '}
             </Title>
 
-            <Text style={{ fontSize: 15, marginTop: 5 }} align='center'>
+            <WonderImage style={{ height: 30 }} uri={appointment.topic.icon} />
+
+            <Text
+              style={{ fontSize: height <= 700 ? 12 : 15, marginTop: 5 }}
+              align='center'
+            >
               {appointment.name}
             </Text>
             <Text
@@ -333,7 +343,10 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             </Text>
 
             {appointment.eventMoment && (
-              <Text align='center'>
+              <Text
+                style={{ fontSize: height <= 700 ? 12 : 15 }}
+                align='center'
+              >
                 {moment(appointment.event_at).format('MMMM Do, [at] h:mma')}
               </Text>
             )}
@@ -352,6 +365,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             <View>
               {appointment.state === 'confirmed' && (
                 <PrimaryButton
+                  innerStyle={{ padding: 0 }}
                   title='Leave Review'
                   onPress={this.openReviewModal}
                 />
@@ -360,7 +374,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           ) : (
             this.renderConfirmationButton(appointment)
           )}
-          <View style={[styles.row, styles.buttonRow]}>
+          <View style={styles.row}>
             {!isPast && (
               <View style={styles.col}>
                 <IconButton
@@ -378,7 +392,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               <View style={styles.col}>
                 <IconButton
                   size={50}
-                  iconSize={44}
+                  iconSize={height <= 700 ? 30 : 44}
                   icon='shopping-cart'
                   primary={theme.colors.primaryLight}
                   secondary='transparent'
@@ -391,7 +405,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               <View style={styles.col}>
                 <IconButton
                   size={50}
-                  iconSize={44}
+                  iconSize={height <= 700 ? 30 : 44}
                   icon='gift'
                   primary={theme.colors.primaryLight}
                   secondary='transparent'
@@ -403,7 +417,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             <View style={styles.col}>
               <IconButton
                 size={50}
-                iconSize={44}
+                iconSize={height <= 700 ? 30 : 44}
                 icon='comments'
                 primary={theme.colors.primaryLight}
                 secondary='transparent'
@@ -415,7 +429,10 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           <View
             style={[
               styles.row,
-              { marginVertical: 15, justifyContent: 'space-between' }
+              {
+                marginVertical: 15,
+                justifyContent: 'space-between'
+              }
             ]}
           >
             {!isPast && (
@@ -478,10 +495,13 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   addressText: {
-    fontSize: 15,
+    fontSize: height <= 700 ? 12 : 15,
     color: 'rgb(0, 122, 255)',
     marginLeft: 10,
     textAlign: 'center'
   },
-  contentContainer: { marginTop: 15, alignItems: 'center' }
+  contentContainer: {
+    marginTop: 15,
+    alignItems: 'center'
+  }
 });
