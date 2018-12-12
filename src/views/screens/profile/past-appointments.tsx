@@ -22,8 +22,9 @@ const mapState = (state: WonderAppState) => ({
   appointments: selectPastAttendences(state)
 });
 
+// not we're getting attendances and not appointments
 const mapDispatch = (dispatch: Dispatch) => ({
-  onRefreshAppointments: () => dispatch(getAppointments()),
+  onRefreshAppointments: () => dispatch(getAttendances()),
   onDeleteAttendance: (data: DecoratedAppointment) =>
     dispatch(deleteAttendance(data))
 });
@@ -105,7 +106,7 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
 
   render() {
     const { appointments, onRefreshAppointments } = this.props;
-
+    console.log('UPCOMING ATTENDANCES', this.props);
     return (
       <Screen>
         <View style={styles.container}>

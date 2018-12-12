@@ -1,7 +1,7 @@
-import React from "react";
-import _ from "lodash";
-import { connect } from "react-redux";
-import Screen from "src/views/components/screen";
+import React from 'react';
+import _ from 'lodash';
+import { connect } from 'react-redux';
+import Screen from 'src/views/components/screen';
 import {
   Title,
   Text,
@@ -10,7 +10,7 @@ import {
   IconButton,
   TextButton,
   SecondaryButton
-} from "src/views/components/theme";
+} from 'src/views/components/theme';
 import {
   View,
   StyleSheet,
@@ -18,45 +18,46 @@ import {
   Linking,
   Platform,
   TouchableOpacity,
-  Dimensions
-} from "react-native";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import AppointmentReviewModal from "src/views/components/modals/appointment-review-modal";
+  Dimensions,
+  Share
+} from 'react-native';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import AppointmentReviewModal from 'src/views/components/modals/appointment-review-modal';
 
-import { selectCurrentUser } from "src/store/selectors/user";
-import { Dispatch } from "redux";
-import Avatar from "src/views/components/theme/avatar";
-import User from "src/models/user";
-import { DecoratedAppointment } from "src/models/appointment";
-import WonderAppState from "src/models/wonder-app-state";
-import theme from "src/assets/styles/theme";
-import { getConversation } from "src/store/sagas/conversations";
+import { selectCurrentUser } from 'src/store/selectors/user';
+import { Dispatch } from 'redux';
+import Avatar from 'src/views/components/theme/avatar';
+import User from 'src/models/user';
+import { DecoratedAppointment } from 'src/models/appointment';
+import WonderAppState from 'src/models/wonder-app-state';
+import theme from 'src/assets/styles/theme';
+import { getConversation } from 'src/store/sagas/conversations';
 import {
   cancelAppointment,
   declineAppointment
-} from "src/store/sagas/appointment";
-import { isAppointmentBeforeToday } from "src/utils/appointment";
-import { callPhoneNumber } from "src/services/communication";
-import UserService from "src/services/uber";
-import AmazonService from "src/services/amazon";
-import { Toast } from "native-base";
-import Color from "color";
+} from 'src/store/sagas/appointment';
+import { isAppointmentBeforeToday } from 'src/utils/appointment';
+import { callPhoneNumber } from 'src/services/communication';
+import UserService from 'src/services/uber';
+import AmazonService from 'src/services/amazon';
+import { Toast } from 'native-base';
+import Color from 'color';
 
-import api, { BASE_URL } from "src/services/api";
-import SvgUri from "react-native-svg-uri";
+import api, { BASE_URL } from 'src/services/api';
+import SvgUri from 'react-native-svg-uri';
 
 import {
   deleteAttendance,
   getAttendances,
   reviewDate
-} from "src/store/sagas/attendance";
-import Wonder from "../../components/theme/wonder/wonder";
-import WonderImage from "../../components/theme/wonder-image";
-import { confirmAppointment } from "src/store/sagas/appointment";
-import { FirstTimeModal, IFirstTimeModalProps } from "@components";
-import moment from "moment";
+} from 'src/store/sagas/attendance';
+import Wonder from '../../components/theme/wonder/wonder';
+import WonderImage from '../../components/theme/wonder-image';
+import { confirmAppointment } from 'src/store/sagas/appointment';
+import { FirstTimeModal, IFirstTimeModalProps } from '@components';
+import moment from 'moment';
 
-const { height } = Dimensions.get("window");
+const { height } = Dimensions.get('window');
 
 interface AppointmentViewProps {
   currentUser: User;
@@ -92,13 +93,13 @@ const mapDispatch = (dispatch: Dispatch) => ({
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   static navigationOptions = ({ navigation }) => {
     const appointment: DecoratedAppointment = navigation.getParam(
-      "appointment",
+      'appointment',
       {}
     );
     return {
-      title: "YOUR DATE"
+      title: 'YOUR DATE'
     };
-  };
+  }
 
   state: AppointmentViewState = {
     isModalOpen: false,
@@ -108,7 +109,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
   componentDidMount() {
     const { navigation } = this.props;
-    const open = navigation.getParam("review", false);
+    const open = navigation.getParam('review', false);
     if (open) {
       this.openReviewModal();
       navigation.setParams({ review: false });
@@ -118,23 +119,23 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   isPastAppointment = () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
-      "appointment",
+      'appointment',
       {}
     );
     return isAppointmentBeforeToday(appointment);
-  };
+  }
 
   openReviewModal = () => {
     this.setState({ isModalOpen: true });
-  };
+  }
 
   closeReviewModal = () => {
     this.setState({ isModalOpen: false });
-  };
+  }
 
   onCall = async (url?: string | null) => {
     Linking.canOpenURL(url)
-      .then(supported => {
+      .then((supported) => {
         if (!supported) {
           Alert.alert("Sorry! This number can't be opened from the app");
         } else {
@@ -142,11 +143,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         }
       })
       .catch((err) => console.error('An error occurred', err));
-  };
+  }
 
   onServicePress = (url: string) => {
     Alert.alert('Third Party', `This would go to ${url}`);
-  };
+  }
 
   onUber = async () => {
     const { navigation } = this.props;
@@ -161,7 +162,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       longitude,
       latitude
     });
-  };
+  }
 
   onAmazon = async () => {
     const { navigation } = this.props;
@@ -176,7 +177,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     } else {
       Toast.show({ text: 'Unable to launch amazon, missing topic' });
     }
-  };
+  }
 
   goToChat = () => {
     const { navigation, onGetConversation } = this.props;
@@ -186,19 +187,24 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     );
 
     onGetConversation(appointment.match.id);
-  };
+  }
 
   handleConfirmation = (appointment: DecoratedAppointment) => {
     const { navigation } = this.props;
     this.setState({ modalOpen: true });
     this.props.onConfirmAppointment(appointment);
+  }
 
-    // change text of button to confirmed
-
-    // navigation.navigate('AppointmentConfirm', {
-    //   appointment
-    // });
-  };
+  share = (appointment) => {
+    Share.share({
+      message: `  "Wanted to share with you the information for my date through Wonder. My date is with ${
+        appointment.match.first_name
+      } on  ${moment(appointment.event_at).format('MMMM Do')} at ${moment(
+        appointment.event_at
+      ).format('h:mma')} at ${appointment.name} at ${appointment.location}."`,
+      title: `${appointment.owner.first_name}'s Wonder date!`
+    });
+  }
 
   renderConfirmationButton = (appointment: DecoratedAppointment) => {
     const { state, owner, me } = appointment;
@@ -227,7 +233,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         />
       );
     }
-  };
+  }
 
   decline = () => {
     const { navigation } = this.props;
@@ -344,7 +350,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     );
     const { latitude, longitude } = appointment;
     const isPast = this.isPastAppointment();
-
+    console.log('THE APPOINTMENT: ', appointment);
     return (
       <Screen horizontalPadding={20}>
         <View flex={1}>
@@ -403,13 +409,13 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         <View>
           {isPast ? (
             <View>
-              {appointment.state === 'confirmed' && (
+              {appointment.state === 'confirmed' && !appointment.reviewed_at ? (
                 <PrimaryButton
                   innerStyle={{ padding: 0 }}
                   title='Leave Review'
                   onPress={this.openReviewModal}
                 />
-              )}
+              ) : null}
             </View>
           ) : (
             this.renderConfirmationButton(appointment)
@@ -458,12 +464,12 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               <IconButton
                 size={50}
                 iconSize={height <= 700 ? 30 : 44}
-                icon='comments'
+                icon='share'
                 primary={theme.colors.primaryLight}
                 secondary='transparent'
-                onPress={this.goToChat}
+                onPress={() => this.share(appointment)}
               />
-              <Text style={styles.btnLabel}>Chat</Text>
+              <Text style={styles.btnLabel}>Share</Text>
             </View>
           </View>
           <View
@@ -499,7 +505,9 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 <SecondaryButton
                   disabled={
                     appointment.state === 'declined' ||
-                    appointment.state === 'cancelled'
+                    appointment.state === 'cancelled' ||
+                    appointment.state === 'confirmed' ||
+                    appointment.me.id === appointment.owner.id
                       ? true
                       : false
                   }

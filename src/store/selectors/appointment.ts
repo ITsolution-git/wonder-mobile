@@ -52,7 +52,8 @@ export const decorateAttendance = (
       ),
       eventMoment: appointment.appointment.event_at
         ? moment(appointment.event_at)
-        : undefined
+        : undefined,
+      reviewed_at: appointment.reviewed_at
     };
     return result;
   }

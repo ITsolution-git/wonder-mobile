@@ -26,7 +26,11 @@ class LatestMatchesItem extends React.Component<LatestMatchesItemProps> {
           <Avatar
             size={'xmd'}
             circle
-            uri={_.get(chat, 'partner.images[0].url', null)}
+            uri={_.get(
+              chat,
+              'partner.images[0].url',
+              `https://wonderapp.imgix.net/female-silhouette.jpg`
+            )}
           />
         </View>
       </TouchableOpacity>

@@ -32,7 +32,6 @@ export function* reviewDateSaga(action: Action<any>) {
       [{ text: 'OK' }],
       { cancelable: false }
     );
-
   } catch (error) {
     handleAxiosError(error);
   }
