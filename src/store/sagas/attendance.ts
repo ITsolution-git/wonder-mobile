@@ -71,7 +71,6 @@ export const deleteAttendance = createAction(DELETE_ATTENDANCE);
 export function* deleteAttendanceSaga(action: Action<any>) {
   try {
     const state: WonderAppState = yield select();
-    console.log('ACTION: ', action);
     const { data }: { data: Attendance[] } = yield call(
       api,
       {

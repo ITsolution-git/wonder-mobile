@@ -147,6 +147,7 @@ export function* confirmAppointmentSaga(action: Action<any>) {
     const { event_at, match, topic, location, id } = appointment;
 
     const authorized = yield call([RNCalendarEvents, 'authorizationStatus']);
+
     if (authorized && event_at && match && topic && location) {
       // Save the calendar Event to the users calendar
       const calendars = yield call([RNCalendarEvents, 'findCalendars']);
@@ -157,12 +158,12 @@ export function* confirmAppointmentSaga(action: Action<any>) {
           (c: RNCalendarCalendar) => c.allowsModifications
         );
         // calendars.find((c: RNCalendarCalendar) => ['Default', 'Phone'].indexOf(c.source) >= 0) || calendars[0];
-        if (primaryCalendar) {
+        if (primaryCalendar[0]) {
           const title = `${topic.name} with ${match.first_name}`;
           const details: Partial<RNCalendarEvent> = {
             calendarId: primaryCalendar.id,
             location,
-            startDate: event_at,
+            startDate: moment(event_at),
             endDate: moment(event_at)
               .add(1, 'hour')
               .toDate()
@@ -189,6 +190,7 @@ export function* confirmAppointmentSaga(action: Action<any>) {
     yield put(getAppointments());
     // NavigatorService.popToTop();
   } catch (error) {
+    console.log('ERROR HERE: ', error);
     handleAxiosError(error);
   } finally {
     yield put(getAttendances());

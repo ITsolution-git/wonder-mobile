@@ -150,7 +150,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
           <KeyboardAvoidingView
             keyboardVerticalOffset={Platform.select({ android: -40, ios: 0 })}
             behavior='position'
-            contentContainerStyle={{ flex: 1 }}
+            contentContainerStyle={{ flex: 1, justifyContent: 'space-around' }}
             // style={styles.body}
             style={{ flex: 1 }}
           >
@@ -241,7 +241,8 @@ export default connect(
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
-    flex: 1
+    flex: 1,
+    backgroundColor: 'pink'
   },
   row: {
     flexDirection: 'row'

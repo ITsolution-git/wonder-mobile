@@ -7,6 +7,9 @@ export const CABLE_PATH = '/cable';
 
 export const HTTP_DOMAIN = 'http://getwonderapp.com';
 
+// fallback image for avatar
+export const fallbackImageUrl = `https://wonderapp.imgix.net/female-silhouette.jpg?fit=fill`;
+
 const wonderApi = axios.create({
   baseURL: BASE_URL + API_PATH,
   //   timeout: 1000,

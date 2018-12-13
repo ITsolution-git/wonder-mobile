@@ -13,6 +13,7 @@ import { SwipeRow, Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { deleteConversation } from 'src/store/sagas/conversations';
 import { persistGhostMessage } from 'src/store/reducers/chat';
+import { fallbackImageUrl } from 'src/services/api';
 
 interface ChatListItemProps {
   chat: Conversation;
@@ -154,11 +155,7 @@ class ChatListItem extends React.PureComponent<ChatListItemProps> {
                   sender={chat.last_message.sender_id}
                   currentUser={currentUser}
                   circle
-                  uri={_.get(
-                    chat,
-                    'partner.images[0].url',
-                    `https://wonderapp.imgix.net/female-silhouette.jpg?fit=fill`
-                  )}
+                  uri={_.get(chat, 'partner.images[0].url', fallbackImageUrl)}
                 />
               </View>
             </View>
