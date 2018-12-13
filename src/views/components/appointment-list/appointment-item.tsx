@@ -8,7 +8,7 @@ import Avatar, { AvatarSize } from 'src/views/components/theme/avatar';
 import theme from 'src/assets/styles/theme';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { DecoratedAppointment } from 'src/models/appointment';
-
+import { fallbackImageUrl } from 'src/services/api';
 import api, { BASE_URL } from 'src/services/api';
 import SvgUri from 'react-native-svg-uri';
 
@@ -68,11 +68,7 @@ class AppointmentItem extends React.PureComponent<Props> {
         <View style={styles.imageContainer}>
           <Avatar
             circle
-            uri={_.get(
-              item,
-              'match.images[0].url',
-              `https://wonderapp.imgix.net/female-silhouette.jpg?fit=fill`
-            )}
+            uri={_.get(item, 'match.images[0].url', fallbackImageUrl)}
             size={AvatarSize.md}
           />
           {isPast && item.state === 'confirmed' ? (

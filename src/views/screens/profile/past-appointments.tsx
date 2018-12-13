@@ -108,18 +108,17 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
     const { appointments, onRefreshAppointments } = this.props;
     return (
       <Screen>
-        <View style={styles.container}>
-          <TextInput
-            color={theme.colors.primaryLight}
-            containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
-            autoCorrect={false}
-            autoCapitalize='none'
-            icon='search'
-            placeholder='Name, Date or Location'
-            onChangeText={this.onSearchTextChange}
-          />
-          {this.renderList()}
-        </View>
+        <TextInput
+          outerContainerStyles={{ height: 42 }}
+          color={theme.colors.primaryLight}
+          containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
+          autoCorrect={false}
+          autoCapitalize='none'
+          icon='search'
+          placeholder='Name, Date or Location'
+          onChangeText={this.onSearchTextChange}
+        />
+        {this.renderList()}
       </Screen>
     );
   }

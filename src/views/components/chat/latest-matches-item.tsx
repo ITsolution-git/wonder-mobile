@@ -5,6 +5,7 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import Avatar from 'src/views/components/theme/avatar';
 import Conversation from 'src/models/conversation';
 import TouchableOpacityOnPress from 'src/models/touchable-on-press';
+import { fallbackImageUrl } from 'src/services/api';
 
 interface LatestMatchesItemProps {
   chat: Conversation;
@@ -26,11 +27,7 @@ class LatestMatchesItem extends React.Component<LatestMatchesItemProps> {
           <Avatar
             size={'xmd'}
             circle
-            uri={_.get(
-              chat,
-              'partner.images[0].url',
-              `https://wonderapp.imgix.net/female-silhouette.jpg?fit=fill`
-            )}
+            uri={_.get(chat, 'partner.images[0].url', fallbackImageUrl)}
           />
         </View>
       </TouchableOpacity>

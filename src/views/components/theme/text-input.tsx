@@ -91,10 +91,11 @@ export default class TextInput extends React.Component<Props, State> {
       containerStyles,
       padLeft,
       getRef,
+      outerContainerStyles,
       ...rest
     } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, outerContainerStyles]}>
         {label && <Label>{label.toUpperCase()}</Label>}
         <View style={[styles.inputContainer, containerStyles]}>
           {this.renderIcon()}
@@ -118,8 +119,7 @@ export default class TextInput extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: 42
+    width: '100%'
   },
   errorHintContainer: {
     borderWidth: 2
