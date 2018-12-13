@@ -1,7 +1,7 @@
-import React from 'react';
-import _ from 'lodash';
-import { connect } from 'react-redux';
-import Screen from 'src/views/components/screen';
+import React from "react";
+import _ from "lodash";
+import { connect } from "react-redux";
+import Screen from "src/views/components/screen";
 import {
   Title,
   Text,
@@ -10,7 +10,7 @@ import {
   IconButton,
   TextButton,
   SecondaryButton
-} from 'src/views/components/theme';
+} from "src/views/components/theme";
 import {
   View,
   StyleSheet,
@@ -20,24 +20,24 @@ import {
   TouchableOpacity,
   Dimensions,
   Share
-} from 'react-native';
-import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import AppointmentReviewModal from 'src/views/components/modals/appointment-review-modal';
+} from "react-native";
+import { NavigationScreenProp, NavigationParams } from "react-navigation";
+import AppointmentReviewModal from "src/views/components/modals/appointment-review-modal";
 
-import { selectCurrentUser } from 'src/store/selectors/user';
-import { Dispatch } from 'redux';
-import Avatar from 'src/views/components/theme/avatar';
-import User from 'src/models/user';
-import { DecoratedAppointment } from 'src/models/appointment';
-import WonderAppState from 'src/models/wonder-app-state';
-import theme from 'src/assets/styles/theme';
-import { getConversation } from 'src/store/sagas/conversations';
+import { selectCurrentUser } from "src/store/selectors/user";
+import { Dispatch } from "redux";
+import Avatar from "src/views/components/theme/avatar";
+import User from "src/models/user";
+import { DecoratedAppointment } from "src/models/appointment";
+import WonderAppState from "src/models/wonder-app-state";
+import theme from "src/assets/styles/theme";
+import { getConversation } from "src/store/sagas/conversations";
 import {
   cancelAppointment,
   declineAppointment
-} from 'src/store/sagas/appointment';
-import { isAppointmentBeforeToday } from 'src/utils/appointment';
-import { callPhoneNumber } from 'src/services/communication';
+} from "src/store/sagas/appointment";
+import { isAppointmentBeforeToday } from "src/utils/appointment";
+import { callPhoneNumber } from "src/services/communication";
 import UserService from 'src/services/uber';
 import AmazonService from 'src/services/amazon';
 import { Toast } from 'native-base';
@@ -99,7 +99,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     return {
       title: 'YOUR DATE'
     };
-  }
+  };
 
   state: AppointmentViewState = {
     isModalOpen: false,
@@ -350,7 +350,6 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     );
     const { latitude, longitude } = appointment;
     const isPast = this.isPastAppointment();
-    console.log('THE APPOINTMENT: ', appointment);
     return (
       <Screen horizontalPadding={20}>
         <View flex={1}>

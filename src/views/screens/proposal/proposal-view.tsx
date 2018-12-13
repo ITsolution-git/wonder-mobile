@@ -103,7 +103,6 @@ interface State {
   modalOpen: 'firstTime1' | 'firstTime2' | 'pass' | 'accept' | '';
   index: number;
 }
-
 class ProposalViewScreen extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
