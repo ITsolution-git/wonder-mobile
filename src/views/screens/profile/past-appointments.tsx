@@ -6,7 +6,10 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { getAppointments } from 'src/store/sagas/appointment';
 import { deleteAttendance, getAttendances } from 'src/store/sagas/attendance';
-import { selectPastAppointments, selectPastAttendences } from 'src/store/selectors/appointment';
+import {
+  selectPastAppointments,
+  selectPastAttendences
+} from 'src/store/selectors/appointment';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import WonderAppState from 'src/models/wonder-app-state';
 import { DecoratedAppointment } from 'src/models/appointment';
@@ -19,10 +22,11 @@ const mapState = (state: WonderAppState) => ({
   appointments: selectPastAttendences(state)
 });
 
+// not we're getting attendances and not appointments
 const mapDispatch = (dispatch: Dispatch) => ({
-  onRefreshAppointments: () => dispatch(getAppointments()),
+  onRefreshAppointments: () => dispatch(getAttendances()),
   onDeleteAttendance: (data: DecoratedAppointment) =>
-    dispatch(deleteAttendance(data)),
+    dispatch(deleteAttendance(data))
 });
 
 interface PastAppointmentsProps {
@@ -33,7 +37,7 @@ interface PastAppointmentsProps {
 
 class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
   state = {
-     search: ''
+    search: ''
   };
 
   componentDidMount() {
@@ -44,67 +48,68 @@ class PastAppointmentsScreen extends React.Component<PastAppointmentsProps> {
     this.props.navigation.navigate('PastAppointmentView', { appointment });
   }
 
-    onSearchTextChange = (text: string) => {
+  onSearchTextChange = (text: string) => {
     this.setState({ search: text.toLowerCase() });
   }
 
-     filterAppointments = () => {
+  filterAppointments = () => {
     const { search } = this.state;
     const { appointments } = this.props;
 
     if (search) {
       return appointments.filter((appointment) => {
         const locationName =
-          appointment.topic.name.toLowerCase().indexOf(search) >= 0;
+          appointment.name.toLowerCase().indexOf(search) >= 0;
         const matchName =
           appointment.match.first_name.toLowerCase().indexOf(search) >= 0;
         const date =
           moment(appointment.event_at)
-            .format('LLLL')
+            .format('MMMM Do, [at] h:mma')
             .toLowerCase()
             .indexOf(search) >= 0;
+        const activity =
+          appointment.topic.name.toLowerCase().indexOf(search) >= 0;
 
-        return locationName || matchName || date;
+        return locationName || matchName || date || activity;
       });
     }
 
     return appointments;
   }
 
-    renderList = () => {
-      const { appointments, onRefreshAppointments } = this.props;
-      const filteredAppointments = this.filterAppointments();
-      if (filteredAppointments.length) {
-        return (
-       <AppointmentList
+  renderList = () => {
+    const { appointments, onRefreshAppointments } = this.props;
+    const filteredAppointments = this.filterAppointments();
+    if (filteredAppointments.length) {
+      return (
+        <AppointmentList
           onPressCallNumber={this.callNumber}
           onRefresh={onRefreshAppointments}
           data={filteredAppointments}
           onPress={this.goToAppointment}
           onDelete={this.props.onDeleteAttendance}
           isPast={true}
-       />
+        />
       );
     }
   }
 
-   callNumber = (url: string) => {
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (!supported) {
-          Alert.alert("Sorry! This number can't be opened from the app");
-        } else {
-          return Linking.openURL(url);
-        }
-      });
+  callNumber = (url: string) => {
+    Linking.canOpenURL(url).then((supported) => {
+      if (!supported) {
+        Alert.alert("Sorry! This number can't be opened from the app");
+      } else {
+        return Linking.openURL(url);
+      }
+    });
   }
 
-render() {
+  render() {
     const { appointments, onRefreshAppointments } = this.props;
     return (
       <Screen>
         <View style={styles.container}>
-       <TextInput
+          <TextInput
             color={theme.colors.primaryLight}
             containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
             autoCorrect={false}
@@ -112,8 +117,8 @@ render() {
             icon='search'
             placeholder='Name, Date or Location'
             onChangeText={this.onSearchTextChange}
-       />
-       {this.renderList()}
+          />
+          {this.renderList()}
         </View>
       </Screen>
     );
@@ -127,8 +132,8 @@ export default connect(
 
 const styles = StyleSheet.create({
   container: {
-            paddingVertical: 15,
-            width: '100%',
-            alignSelf: 'center'
-          }
+    paddingVertical: 15,
+    width: '100%',
+    alignSelf: 'center'
+  }
 });

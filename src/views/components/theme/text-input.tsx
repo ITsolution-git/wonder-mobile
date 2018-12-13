@@ -118,10 +118,10 @@ export default class TextInput extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%'
+    width: '100%',
+    height: 42
   },
   errorHintContainer: {
-    borderColor: 'red',
     borderWidth: 2
   },
   errorHintText: {

@@ -34,7 +34,6 @@ export function* getAppointmentsSaga(action: Action<any>) {
       state.user
     );
 
-    console.log(`appointment data:`, data);
     yield put(persistAppointments(data));
   } catch (error) {
     handleAxiosError(error);
@@ -188,7 +187,7 @@ export function* confirmAppointmentSaga(action: Action<any>) {
 
     yield put(resetAppointment());
     yield put(getAppointments());
-    NavigatorService.popToTop();
+    // NavigatorService.popToTop();
   } catch (error) {
     handleAxiosError(error);
   } finally {

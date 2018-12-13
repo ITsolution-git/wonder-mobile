@@ -16,6 +16,11 @@ import { deleteAttendance, getAttendances } from 'src/store/sagas/attendance';
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import WonderAppState from 'src/models/wonder-app-state';
 import { DecoratedAppointment } from 'src/models/appointment';
+import { getConversation } from 'src/store/sagas/conversations';
+import {
+  cancelAppointment,
+  declineAppointment
+} from 'src/store/sagas/appointment';
 
 interface State {
   search: string;
@@ -31,7 +36,11 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onRefreshAppointments: () => dispatch(getAppointments()),
   onDeleteAttendance: (data: DecoratedAppointment) =>
     dispatch(deleteAttendance(data)),
-  onRefreshAttendances: () => dispatch(getAttendances())
+  onRefreshAttendances: () => dispatch(getAttendances()),
+  onGetConversation: (partnerId: number, params: object) =>
+    dispatch(getConversation({ id: partnerId, successRoute: 'Chat', params })),
+  onCancelAppointment: (data: DecoratedAppointment) =>
+    dispatch(cancelAppointment(data))
 });
 
 interface UpcomingAppointmentsProps {
@@ -62,6 +71,22 @@ class UpcomingAppointmentsScreen extends React.Component<
     this.setState({ search: text.toLowerCase() });
   }
 
+  handleCancel = (date) => {
+    this.props.onGetConversation(date.match.id, {});
+    this.props.onCancelAppointment(date);
+    this.props.onDeleteAttendance(date);
+    this.props.navigation.navigate('Chat', { name: date.match.first_name });
+  }
+
+  cancelAppointment = (date) => {
+    Alert.alert(
+      'Confirm',
+      'Are you sure you want to cancel this date?',
+      [{ text: 'No' }, { text: 'Yes', onPress: () => this.handleCancel(date) }],
+      { cancelable: false }
+    );
+  }
+
   filterAppointments = () => {
     const { search } = this.state;
     const { appointments } = this.props;
@@ -69,16 +94,18 @@ class UpcomingAppointmentsScreen extends React.Component<
     if (search) {
       return appointments.filter((appointment) => {
         const locationName =
-          appointment.topic.name.toLowerCase().indexOf(search) >= 0;
+          appointment.name.toLowerCase().indexOf(search) >= 0;
         const matchName =
           appointment.match.first_name.toLowerCase().indexOf(search) >= 0;
         const date =
           moment(appointment.event_at)
-            .format('LLLL')
+            .format('MMMM Do, [at] h:mma')
             .toLowerCase()
             .indexOf(search) >= 0;
+        const activity =
+          appointment.topic.name.toLowerCase().indexOf(search) >= 0;
 
-        return locationName || matchName || date;
+        return locationName || matchName || date || activity;
       });
     }
 
@@ -101,43 +128,34 @@ class UpcomingAppointmentsScreen extends React.Component<
           onRefresh={onRefreshAttendances}
           data={filteredAppointments}
           onPress={this.goToAppointment}
-          onDelete={this.props.onDeleteAttendance}
+          onDelete={this.cancelAppointment}
         />
       );
     }
   }
 
   callNumber = (url: string) => {
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (!supported) {
-          Alert.alert("Sorry! This number can't be opened from the app");
-        } else {
-          return Linking.openURL(url);
-        }
-      });
+    Linking.canOpenURL(url).then((supported) => {
+      if (!supported) {
+        Alert.alert("Sorry! This number can't be opened from the app");
+      } else {
+        return Linking.openURL(url);
+      }
+    });
   }
 
   render() {
     return (
       <Screen>
-        <View
-          style={{
-            paddingVertical: 15,
-            width: '100%',
-            alignSelf: 'center'
-          }}
-        >
-          <TextInput
-            color={theme.colors.primaryLight}
-            containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
-            autoCorrect={false}
-            autoCapitalize='none'
-            icon='search'
-            placeholder='Name, Date or Location'
-            onChangeText={this.onSearchTextChange}
-          />
-        </View>
+        <TextInput
+          color={theme.colors.primaryLight}
+          containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
+          autoCorrect={false}
+          autoCapitalize='none'
+          icon='search'
+          placeholder='Name, Date or Location'
+          onChangeText={this.onSearchTextChange}
+        />
         {this.renderList()}
       </Screen>
     );

@@ -44,9 +44,9 @@ class AppointmentReviewModal extends React.Component<
   AppointmentReviewModalState
 > {
   state: AppointmentReviewModalState = {
-    flaked: true,
+    flaked: false,
     photo: true,
-    fib: true,
+    fib: false,
     dateAgain: true,
     details: '',
     value: 0
@@ -119,9 +119,7 @@ class AppointmentReviewModal extends React.Component<
                     size='md'
                     uri={_.get(appointment, 'match.images[0].url', null)}
                   />
-                  <SubTitle style={{ textAlign: 'center' }}>
-                    {firstName}
-                  </SubTitle>
+                  <SubTitle style={styles.subTitle}>{firstName}</SubTitle>
                 </View>
               </CardItem>
               <CardItem>
@@ -279,17 +277,18 @@ class AppointmentReviewModal extends React.Component<
               </CardItem>
               <CardItem footer style={styles.footer}>
                 <View>
-                  <Label style={{ textAlign: 'center' }}>
+                  <Label style={{ textAlign: 'center', marginTop: -10 }}>
                     All feedback is anonymous and used to improve Wonder for
                     you!
                   </Label>
                 </View>
-                <PrimaryButton title='Submit' onPress={this.onSubmit} />
-                <TextButton
-                  style={{ marginTop: 10 }}
-                  text='Cancel'
-                  onPress={this.props.onRequestClose}
-                />
+                <View style={styles.btnContainer}>
+                  <PrimaryButton title='Submit' onPress={this.onSubmit} />
+                  <TextButton
+                    text='Cancel'
+                    onPress={this.props.onRequestClose}
+                  />
+                </View>
               </CardItem>
             </Card>
           </Content>
@@ -339,15 +338,26 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   row: {
-    width: '100%',
-    alignItems: 'center'
+    width: '90%',
+    alignItems: 'center',
+    margin: 2
+  },
+  // btnContainer: {
+  //   flexDirection: 'row',
+  //   width: '30%',
+  //   justifyContent: 'space-around'
+  // },
+  option: {
+    padding: 5,
+    marginTop: 10,
+    marginBottom: 10
   },
   btnContainer: {
     flexDirection: 'row',
-    width: '30%',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 5
   },
-  option: {
-    padding: 5
-  }
+  subTitle: { textAlign: 'center', marginTop: 8 }
 });

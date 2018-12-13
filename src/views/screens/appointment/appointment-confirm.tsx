@@ -56,6 +56,7 @@ class AppointmentConfirmScreen extends React.Component<
   handleConfirmAppointment = (appointment: DecoratedAppointment) => {
     const { onConfirmAppointment, navigation } = this.props;
     onConfirmAppointment(appointment);
+    navigation.goBack();
     // navigation.setParams({ appointment: null });
   }
 

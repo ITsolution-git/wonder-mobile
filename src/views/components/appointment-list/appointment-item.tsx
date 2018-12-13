@@ -30,7 +30,7 @@ class AppointmentItem extends React.PureComponent<Props> {
     const now = moment();
     if (moment(event_at).isSameOrAfter(now)) {
       return (
-        <Title>
+        <Title style={styles.title}>
           {_.get(item, 'topic.name', null)} at{' '}
           <Strong>{moment(event_at).format('h:mma')}</Strong> with{' '}
           {match.first_name}
@@ -38,7 +38,7 @@ class AppointmentItem extends React.PureComponent<Props> {
       );
     }
     return (
-      <Title>
+      <Title style={styles.title}>
         {_.get(item, 'topic.name', null)} with {match.first_name}
       </Title>
     );
@@ -63,26 +63,31 @@ class AppointmentItem extends React.PureComponent<Props> {
 
   render() {
     const { item, isPast } = this.props;
-
     return (
       <TouchableOpacity style={styles.container} onPress={this.handleOnPress}>
         <View style={styles.imageContainer}>
           <Avatar
             circle
-            uri={_.get(item, 'match.images[0].url', null)}
+            uri={_.get(
+              item,
+              'match.images[0].url',
+              `https://wonderapp.imgix.net/female-silhouette.jpg?fit=fill`
+            )}
             size={AvatarSize.md}
           />
-          {isPast && (
+          {isPast && item.state === 'confirmed' ? (
             <TextButton
-              text='Leave review'
+              text={!item.reviewed_at ? 'Leave Review' : 'Left Review'}
               style={styles.reviewBtn}
               onPress={this.handleOnPress}
             />
-          )}
+          ) : null}
         </View>
         <View style={styles.contentContainer}>
-          <View style={{ flexDirection: 'row' }}>{this.renderTitle()}</View>
-          <SubTitle>{moment(item.event_at).format('MMMM Do')}</SubTitle>
+          {this.renderTitle()}
+          <SubTitle style={{ marginTop: -4 }}>
+            {moment(item.event_at).format('MMMM Do')}
+          </SubTitle>
           <View style={styles.locationRow}>
             <View>
               <Icon
@@ -136,8 +141,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   contentContainer: {
-    flex: 2,
-    justifyContent: 'center'
+    flex: 2
   },
   locationRow: { flexDirection: 'row' },
   locationText: { marginLeft: 10 },
@@ -150,6 +154,13 @@ const styles = StyleSheet.create({
     fontSize: 10,
     alignSelf: 'flex-end'
   },
-  reviewBtn: { fontSize: 11, marginTop: 3 },
-  iconMargin: { marginRight: 5, marginLeft: 5 }
+  reviewBtn: {
+    fontSize: 11,
+    marginTop: 7
+  },
+  iconMargin: {
+    marginRight: 5,
+    marginLeft: 5
+  },
+  title: { lineHeight: 18 }
 });

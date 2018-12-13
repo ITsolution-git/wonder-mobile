@@ -41,7 +41,7 @@ export const decorateMessagesForGiftedChat = (
             _id: message.sender_id,
             avatar: owner.images.length
               ? `${owner.images[0].url}${avatarExtension}`
-              : null
+              : `https://wonderapp.imgix.net/female-silhouette.jpg`
           }
         };
 

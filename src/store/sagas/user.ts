@@ -47,7 +47,6 @@ export const DEACTIVATE_ACCOUNT = 'DEACTIVATE_ACCOUNT';
 export const deactivateAccount = createAction(DEACTIVATE_ACCOUNT);
 export function* deactivateAccountSaga(action: Action<any>) {
   try {
-    console.log(`action:`, action);
     const state: WonderAppState = yield select();
     const { id, token }: { id: number; token: string } = action.payload;
 
@@ -71,9 +70,6 @@ export function* deactivateAccountSaga(action: Action<any>) {
       },
       authHeader
     );
-
-    console.log(`Deleted user account:`, deleteRes);
-
     // log user out
     yield put(persistAuth({}));
     yield put(persistUser({}));
@@ -257,8 +253,6 @@ export function* updateUserSaga(action: Action<any>) {
 
     const profile: Partial<User> = action.payload;
 
-    console.log(`Updating profile:`, profile);
-
     const { data }: { data: User } = yield call(
       api,
       {
@@ -270,8 +264,6 @@ export function* updateUserSaga(action: Action<any>) {
       },
       state.user
     );
-
-    console.log(`Raw data from updating user:`, data);
 
     yield put(persistUser(data));
   } catch (error) {

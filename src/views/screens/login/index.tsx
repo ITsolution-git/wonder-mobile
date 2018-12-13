@@ -14,7 +14,11 @@ import { connect } from 'react-redux';
 import ForgotPasswordModal from '../../components/modals/forgot-password-modal';
 
 import { Dispatch } from 'redux';
-import { loginUser, forgotPassword, getVerification } from 'src/store/sagas/user';
+import {
+  loginUser,
+  forgotPassword,
+  getVerification
+} from 'src/store/sagas/user';
 
 import validator from 'validator';
 import WonderAppState from 'src/models/wonder-app-state';
@@ -30,7 +34,7 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onLogin: (credentials: UserCredentials) => dispatch(loginUser(credentials)),
   onForgotPassword: (email: Email) =>
     dispatch(forgotPassword({ forgotEmail: email })),
-    onGetVerification: (data) => dispatch(getVerification(data))
+  onGetVerification: (data) => dispatch(getVerification(data))
 });
 
 interface Props {
@@ -86,7 +90,7 @@ class LoginScreen extends React.Component<Props> {
     }
 
     this.props.onGetVerification(email);
-   // navigation.navigate('Verify');
+    // navigation.navigate('Verify');
     // onLogin({ email, onSuccess: () => navigation.navigate('Verify') });
   }
 
@@ -176,7 +180,7 @@ class LoginScreen extends React.Component<Props> {
                   color: theme.colors.textColor,
                   marginTop: 18
                 }}
-                text='Forgot Password?'
+                text='Contact Support'
                 onPress={() => this.setState({ modalVisible: true })}
               />
             </View>

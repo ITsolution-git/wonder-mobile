@@ -297,7 +297,6 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
   render() {
     const { proposal, currentMatch, currentUser } = this.props;
-    console.log(currentUser);
 
     return (
       <Screen>

@@ -3,6 +3,7 @@ import { View, Text, Modal, SafeAreaView, StyleSheet } from 'react-native';
 import { PrimaryButton, RoundedTextInput } from '../theme';
 import theme from '../../../assets/styles/theme';
 import TouchableOpacityOnPress from '../../../models/touchable-on-press';
+import { IconButton, TextButton } from '../../components/theme';
 
 interface Props {
   visible: boolean;
@@ -23,10 +24,10 @@ const ForgotPasswordModal = (props: Props) => {
       onRequestClose={() => props.onRequestClose}
     >
       <View style={styles.container}>
-        <Text style={styles.descriptionText}>Forgot Your Password?</Text>
+        <Text style={styles.descriptionText}>Having trouble logging in?</Text>
         <Text style={styles.largeText}>We can help!</Text>
         <Text style={styles.actionText}>
-          Enter your email address to receive a new verification link
+          Enter your email address to contact support
         </Text>
         <RoundedTextInput
           returnKeyType='next'
@@ -41,6 +42,9 @@ const ForgotPasswordModal = (props: Props) => {
         />
 
         <PrimaryButton title='Send' onPress={props.submit} />
+        <View style={{ marginTop: 20 }}>
+          <TextButton text='Cancel' onPress={props.onRequestClose} />
+        </View>
       </View>
     </Modal>
   );

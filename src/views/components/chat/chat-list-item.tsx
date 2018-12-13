@@ -55,7 +55,7 @@ class ChatListItem extends React.PureComponent<ChatListItemProps> {
           numberOfLines={2}
           style={[
             !chat.last_message.read_at &&
-              chat.last_message.sender_id !== currentUser.id
+            chat.last_message.sender_id !== currentUser.id
               ? { color: 'black' }
               : null,
             { fontSize: 14 }
@@ -143,7 +143,7 @@ class ChatListItem extends React.PureComponent<ChatListItemProps> {
               <View
                 style={
                   chat.last_message.sender_id !== currentUser.id &&
-                    !chat.last_message.read_at
+                  !chat.last_message.read_at
                     ? styles.unreadMessage
                     : null
                 }
@@ -154,11 +154,11 @@ class ChatListItem extends React.PureComponent<ChatListItemProps> {
                   sender={chat.last_message.sender_id}
                   currentUser={currentUser}
                   circle
-                  uri={
-                    chat.partner.images && chat.partner.images.length
-                      ? chat.partner.images[0].url
-                      : null
-                  }
+                  uri={_.get(
+                    chat,
+                    'partner.images[0].url',
+                    `https://wonderapp.imgix.net/female-silhouette.jpg?fit=fill`
+                  )}
                 />
               </View>
             </View>
