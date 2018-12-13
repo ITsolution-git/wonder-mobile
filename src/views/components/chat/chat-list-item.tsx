@@ -157,7 +157,7 @@ class ChatListItem extends React.PureComponent<ChatListItemProps> {
                   uri={_.get(
                     chat,
                     'partner.images[0].url',
-                    `https://wonderapp.imgix.net/female-silhouette.jpg`
+                    `https://wonderapp.imgix.net/female-silhouette.jpg?fit=fill`
                   )}
                 />
               </View>

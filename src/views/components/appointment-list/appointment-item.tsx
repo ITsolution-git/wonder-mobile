@@ -63,7 +63,6 @@ class AppointmentItem extends React.PureComponent<Props> {
 
   render() {
     const { item, isPast } = this.props;
-
     return (
       <TouchableOpacity style={styles.container} onPress={this.handleOnPress}>
         <View style={styles.imageContainer}>
@@ -72,7 +71,7 @@ class AppointmentItem extends React.PureComponent<Props> {
             uri={_.get(
               item,
               'match.images[0].url',
-              `https://wonderapp.imgix.net/female-silhouette.jpg`
+              `https://wonderapp.imgix.net/female-silhouette.jpg?fit=fill`
             )}
             size={AvatarSize.md}
           />
@@ -86,7 +85,7 @@ class AppointmentItem extends React.PureComponent<Props> {
         </View>
         <View style={styles.contentContainer}>
           {this.renderTitle()}
-          <SubTitle style={{ marginTop: -6 }}>
+          <SubTitle style={{ marginTop: -4 }}>
             {moment(item.event_at).format('MMMM Do')}
           </SubTitle>
           <View style={styles.locationRow}>

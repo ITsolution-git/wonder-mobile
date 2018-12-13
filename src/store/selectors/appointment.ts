@@ -46,14 +46,14 @@ export const decorateAttendance = (
     const result: any = {
       ...appointment.appointment,
       attendanceId: appointment.id,
+      reviewed_at: appointment.reviewed_at,
       me,
       match: appointment.appointment.users.find(
         (user: AppointmentUser) => user.id !== me.id
       ),
       eventMoment: appointment.appointment.event_at
         ? moment(appointment.event_at)
-        : undefined,
-      reviewed_at: appointment.reviewed_at
+        : undefined
     };
     return result;
   }

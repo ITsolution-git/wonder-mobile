@@ -38,26 +38,26 @@ import {
 } from "src/store/sagas/appointment";
 import { isAppointmentBeforeToday } from "src/utils/appointment";
 import { callPhoneNumber } from "src/services/communication";
-import UserService from 'src/services/uber';
-import AmazonService from 'src/services/amazon';
-import { Toast } from 'native-base';
-import Color from 'color';
+import UserService from "src/services/uber";
+import AmazonService from "src/services/amazon";
+import { Toast } from "native-base";
+import Color from "color";
 
-import api, { BASE_URL } from 'src/services/api';
-import SvgUri from 'react-native-svg-uri';
+import api, { BASE_URL } from "src/services/api";
+import SvgUri from "react-native-svg-uri";
 
 import {
   deleteAttendance,
   getAttendances,
   reviewDate
-} from 'src/store/sagas/attendance';
-import Wonder from '../../components/theme/wonder/wonder';
-import WonderImage from '../../components/theme/wonder-image';
-import { confirmAppointment } from 'src/store/sagas/appointment';
-import { FirstTimeModal, IFirstTimeModalProps } from '@components';
-import moment from 'moment';
+} from "src/store/sagas/attendance";
+import Wonder from "../../components/theme/wonder/wonder";
+import WonderImage from "../../components/theme/wonder-image";
+import { confirmAppointment } from "src/store/sagas/appointment";
+import { FirstTimeModal, IFirstTimeModalProps } from "@components";
+import moment from "moment";
 
-const { height } = Dimensions.get('window');
+const { height } = Dimensions.get("window");
 
 interface AppointmentViewProps {
   currentUser: User;
@@ -78,14 +78,14 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onGetConversation: (partnerId: number) =>
-    dispatch(getConversation({ id: partnerId, successRoute: 'Chat' })),
+    dispatch(getConversation({ id: partnerId, successRoute: "Chat" })),
   onCancelAppointment: (data: DecoratedAppointment) =>
     dispatch(cancelAppointment(data)),
   onDeclineAppointment: (data: DecoratedAppointment) =>
     dispatch(declineAppointment(data)),
   onDeleteAttendance: (data: DecoratedAppointment) =>
     dispatch(deleteAttendance(data)),
-  onReviewDate: (data) => dispatch(reviewDate(data)),
+  onReviewDate: data => dispatch(reviewDate(data)),
   onConfirmAppointment: (appointment: DecoratedAppointment) =>
     dispatch(confirmAppointment({ appointment }))
 });
@@ -93,11 +93,11 @@ const mapDispatch = (dispatch: Dispatch) => ({
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   static navigationOptions = ({ navigation }) => {
     const appointment: DecoratedAppointment = navigation.getParam(
-      'appointment',
+      "appointment",
       {}
     );
     return {
-      title: 'YOUR DATE'
+      title: "YOUR DATE"
     };
   };
 
@@ -109,7 +109,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
   componentDidMount() {
     const { navigation } = this.props;
-    const open = navigation.getParam('review', false);
+    const open = navigation.getParam("review", false);
     if (open) {
       this.openReviewModal();
       navigation.setParams({ review: false });
@@ -119,40 +119,40 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   isPastAppointment = () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
-      'appointment',
+      "appointment",
       {}
     );
     return isAppointmentBeforeToday(appointment);
-  }
+  };
 
   openReviewModal = () => {
     this.setState({ isModalOpen: true });
-  }
+  };
 
   closeReviewModal = () => {
     this.setState({ isModalOpen: false });
-  }
+  };
 
   onCall = async (url?: string | null) => {
     Linking.canOpenURL(url)
-      .then((supported) => {
+      .then(supported => {
         if (!supported) {
           Alert.alert("Sorry! This number can't be opened from the app");
         } else {
           return Linking.openURL(url);
         }
       })
-      .catch((err) => console.error('An error occurred', err));
-  }
+      .catch(err => console.error("An error occurred", err));
+  };
 
   onServicePress = (url: string) => {
-    Alert.alert('Third Party', `This would go to ${url}`);
-  }
+    Alert.alert("Third Party", `This would go to ${url}`);
+  };
 
   onUber = async () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
-      'appointment',
+      "appointment",
       {}
     );
     const { location, longitude, latitude } = appointment;
@@ -162,7 +162,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       longitude,
       latitude
     });
-  }
+  };
 
   onAmazon = async () => {
     const { navigation } = this.props;
@@ -175,53 +175,53 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     if (topic) {
       await AmazonService.search(topic.supplies_keywords);
     } else {
-      Toast.show({ text: 'Unable to launch amazon, missing topic' });
+      Toast.show({ text: "Unable to launch amazon, missing topic" });
     }
-  }
+  };
 
   goToChat = () => {
     const { navigation, onGetConversation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
-      'appointment',
+      "appointment",
       {}
     );
 
     onGetConversation(appointment.match.id);
-  }
+  };
 
   handleConfirmation = (appointment: DecoratedAppointment) => {
     const { navigation } = this.props;
     this.setState({ modalOpen: true });
     this.props.onConfirmAppointment(appointment);
-  }
+  };
 
   share = (appointment) => {
     Share.share({
       message: `  "Wanted to share with you the information for my date through Wonder. My date is with ${
         appointment.match.first_name
-      } on  ${moment(appointment.event_at).format('MMMM Do')} at ${moment(
+      } on  ${moment(appointment.event_at).format("MMMM Do")} at ${moment(
         appointment.event_at
-      ).format('h:mma')} at ${appointment.name} at ${appointment.location}."`,
+      ).format("h:mma")} at ${appointment.name} at ${appointment.location}."`,
       title: `${appointment.owner.first_name}'s Wonder date!`
     });
-  }
+  };
 
   renderConfirmationButton = (appointment: DecoratedAppointment) => {
     const { state, owner, me } = appointment;
     const { isConfirmed } = this.state;
     const isOwner = owner.id === me.id;
     if (
-      (isOwner && state === 'negotiating' && !isConfirmed) ||
-      (!isOwner && state === 'invited' && !isConfirmed)
+      (isOwner && state === "negotiating" && !isConfirmed) ||
+      (!isOwner && state === "invited" && !isConfirmed)
     ) {
       return (
         <PrimaryButton
-          title='Confirm'
+          title="Confirm"
           onPress={() => this.handleConfirmation(appointment)}
         />
       );
     } else {
-      const label = state === 'confirmed' ? 'Confirmed' : 'Confirm';
+      const label = state === "confirmed" ? "Confirmed" : "Confirm";
       const greyedColor = Color(theme.colors.backgroundPrimary).toString();
       return (
         <PrimaryButton
@@ -233,34 +233,34 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         />
       );
     }
-  }
+  };
 
   decline = () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
-      'appointment',
+      "appointment",
       {}
     );
     Alert.alert(
-      'Confirm Decline',
-      'Are you sure you want to decline?',
+      "Confirm Decline",
+      "Are you sure you want to decline?",
       [
-        { text: 'Cancel' },
+        { text: "Cancel" },
         {
-          text: 'YES',
+          text: "YES",
           onPress: () => this.props.onDeclineAppointment(appointment)
         }
       ],
       { cancelable: false }
     );
-  }
+  };
 
   cancelAndGoToChat = (date) => {
     this.props.onGetConversation(date.match.id, {});
     this.props.onCancelAppointment(date);
     // this.props.onDeleteAttendance(date);
     this.props.navigation.navigate('Chat', { name: date.match.first_name });
-  }
+  };
 
   cancel = () => {
     const { navigation } = this.props;
@@ -280,10 +280,13 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       ],
       { cancelable: false }
     );
-  }
+  };
 
   openAddress = (lat, lng, label) => {
-    const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:' });
+    const scheme = Platform.select({
+      ios: 'maps:0,0?q=',
+      android: 'geo:0,0?q='
+    });
     const latLng = `${lat},${lng}`;
     const url = Platform.select({
       ios: `${scheme}${label}@${latLng}`,
@@ -291,7 +294,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     });
 
     Linking.openURL(url);
-  }
+  };
 
   showDeleteAlert = () => {
     Alert.alert(
@@ -356,7 +359,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           <View style={styles.header}>
             <Avatar
               circle
-              size={height <= 700 ? 'md' : 'xl'}
+              size={height <= 680 ? 'md' : 'xl'}
               uri={_.get(appointment, 'match.images[0].url', null)}
             />
           </View>
@@ -369,7 +372,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             </Title>
             <WonderImage style={{ height: 30 }} uri={appointment.topic.icon} />
             <Text
-              style={{ fontSize: height <= 700 ? 12 : 15, marginTop: 5 }}
+              style={{ fontSize: height <= 680 ? 12 : 15, marginTop: 5 }}
               align='center'
             >
               {appointment.name}
@@ -389,7 +392,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
             {appointment.eventMoment && (
               <Text
-                style={{ fontSize: height <= 700 ? 12 : 15 }}
+                style={{ fontSize: height <= 680 ? 12 : 15 }}
                 align='center'
               >
                 {moment(appointment.event_at).format('MMMM Do, [at] h:mma')}
@@ -407,9 +410,8 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         </View>
         <View>
           {isPast ? (
-            <View>
+            <View style={{ marginBottom: 8 }}>
               {appointment.state === 'confirmed' ? (
-                // !appointment.reviewed_at
                 <PrimaryButton
                   disabled={!appointment.reviewed_at ? false : true}
                   innerStyle={{ padding: 0 }}
@@ -428,7 +430,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               <View style={styles.col}>
                 <IconButton
                   size={50}
-                  iconSize={height <= 700 ? 30 : 44}
+                  iconSize={height <= 680 ? 30 : 44}
                   icon='car'
                   primary={theme.colors.primaryLight}
                   secondary='transparent'
@@ -441,7 +443,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               <View style={styles.col}>
                 <IconButton
                   size={50}
-                  iconSize={height <= 700 ? 30 : 44}
+                  iconSize={height <= 680 ? 30 : 44}
                   icon='shopping-cart'
                   primary={theme.colors.primaryLight}
                   secondary='transparent'
@@ -454,7 +456,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               <View style={styles.col}>
                 <IconButton
                   size={50}
-                  iconSize={height <= 700 ? 30 : 44}
+                  iconSize={height <= 680 ? 30 : 44}
                   icon='gift'
                   primary={theme.colors.primaryLight}
                   secondary='transparent'
@@ -466,7 +468,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             <View style={styles.col}>
               <IconButton
                 size={50}
-                iconSize={height <= 700 ? 30 : 44}
+                iconSize={height <= 680 ? 30 : 44}
                 icon='share'
                 primary={theme.colors.primaryLight}
                 secondary='transparent'
@@ -565,7 +567,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   addressText: {
-    fontSize: height <= 700 ? 12 : 15,
+    fontSize: height <= 680 ? 12 : 15,
     color: 'rgb(0, 122, 255)',
     marginLeft: 10,
     textAlign: 'center'

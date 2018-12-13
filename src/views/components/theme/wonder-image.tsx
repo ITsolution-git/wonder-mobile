@@ -59,7 +59,7 @@ class WonderImage extends React.PureComponent<Props> {
           style={style}
           source={{
             uri: uri
-              ? `${uri}?w=${400}&h=${400}${imageExtension}`
+              ? `${uri}?crop=faces?w=${400}&h=${400}${imageExtension}`
               : `https://wonderapp.imgix.net/female-silhouette.jpg`
           }}
           {...rest}

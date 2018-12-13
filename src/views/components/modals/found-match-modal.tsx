@@ -41,7 +41,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
     if (candidate.images && candidate.images.length) {
       return candidate.images[0].url;
     }
-    return null;
+    return `https://wonderapp.imgix.net/female-silhouette.jpg`;
   }
 
   getCurrentUserImage = () => {

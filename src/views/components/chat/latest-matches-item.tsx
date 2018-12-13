@@ -29,7 +29,7 @@ class LatestMatchesItem extends React.Component<LatestMatchesItemProps> {
             uri={_.get(
               chat,
               'partner.images[0].url',
-              `https://wonderapp.imgix.net/female-silhouette.jpg`
+              `https://wonderapp.imgix.net/female-silhouette.jpg?fit=fill`
             )}
           />
         </View>
