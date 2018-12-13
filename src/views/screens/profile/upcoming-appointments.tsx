@@ -72,16 +72,22 @@ class UpcomingAppointmentsScreen extends React.Component<
   }
 
   handleCancel = (date) => {
-    this.props.onGetConversation(date.match.id, {});
-    this.props.onCancelAppointment(date);
-    this.props.onDeleteAttendance(date);
-    this.props.navigation.navigate('Chat', { name: date.match.first_name });
+    if (date.state !== 'cancelled') {
+      this.props.onDeleteAttendance(date);
+      this.props.onGetConversation(date.match.id, {});
+      this.props.onCancelAppointment(date);
+      this.props.navigation.navigate('Chat', { name: date.match.first_name });
+    } else {
+      this.props.onDeleteAttendance(date);
+    }
   }
 
   cancelAppointment = (date) => {
     Alert.alert(
       'Confirm',
-      'Are you sure you want to cancel this date?',
+      `Are you sure you want to ${
+        date.state === 'cancelled' ? 'remove' : 'cancel and remove'
+      } this date?`,
       [{ text: 'No' }, { text: 'Yes', onPress: () => this.handleCancel(date) }],
       { cancelable: false }
     );
@@ -89,10 +95,10 @@ class UpcomingAppointmentsScreen extends React.Component<
 
   filterAppointments = () => {
     const { search } = this.state;
-    const { appointments } = this.props;
+    const { appointments, attendances } = this.props;
 
     if (search) {
-      return appointments.filter((appointment) => {
+      return attendances.filter((appointment) => {
         const locationName =
           appointment.name.toLowerCase().indexOf(search) >= 0;
         const matchName =
@@ -109,7 +115,7 @@ class UpcomingAppointmentsScreen extends React.Component<
       });
     }
 
-    return appointments;
+    return attendances;
   }
 
   renderList = () => {

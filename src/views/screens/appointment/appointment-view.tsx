@@ -97,7 +97,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       {}
     );
     return {
-      title: "YOUR DATE"
+      title: 'YOUR DATE'
     };
   };
 
@@ -142,17 +142,17 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           return Linking.openURL(url);
         }
       })
-      .catch(err => console.error("An error occurred", err));
+      .catch((err) => console.error('An error occurred', err));
   };
 
   onServicePress = (url: string) => {
-    Alert.alert("Third Party", `This would go to ${url}`);
+    Alert.alert('Third Party', `This would go to ${url}`);
   };
 
   onUber = async () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
-      "appointment",
+      'appointment',
       {}
     );
     const { location, longitude, latitude } = appointment;
@@ -175,14 +175,14 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     if (topic) {
       await AmazonService.search(topic.supplies_keywords);
     } else {
-      Toast.show({ text: "Unable to launch amazon, missing topic" });
+      Toast.show({ text: 'Unable to launch amazon, missing topic' });
     }
   };
 
   goToChat = () => {
     const { navigation, onGetConversation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
-      "appointment",
+      'appointment',
       {}
     );
 
@@ -199,9 +199,9 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     Share.share({
       message: `  "Wanted to share with you the information for my date through Wonder. My date is with ${
         appointment.match.first_name
-      } on  ${moment(appointment.event_at).format("MMMM Do")} at ${moment(
+      } on  ${moment(appointment.event_at).format('MMMM Do')} at ${moment(
         appointment.event_at
-      ).format("h:mma")} at ${appointment.name} at ${appointment.location}."`,
+      ).format('h:mma')} at ${appointment.name} at ${appointment.location}."`,
       title: `${appointment.owner.first_name}'s Wonder date!`
     });
   };
@@ -211,17 +211,17 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     const { isConfirmed } = this.state;
     const isOwner = owner.id === me.id;
     if (
-      (isOwner && state === "negotiating" && !isConfirmed) ||
-      (!isOwner && state === "invited" && !isConfirmed)
+      (isOwner && state === 'negotiating' && !isConfirmed) ||
+      (!isOwner && state === 'invited' && !isConfirmed)
     ) {
       return (
         <PrimaryButton
-          title="Confirm"
+          title='Confirm'
           onPress={() => this.handleConfirmation(appointment)}
         />
       );
     } else {
-      const label = state === "confirmed" ? "Confirmed" : "Confirm";
+      const label = state === 'confirmed' ? 'Confirmed' : 'Confirm';
       const greyedColor = Color(theme.colors.backgroundPrimary).toString();
       return (
         <PrimaryButton
@@ -238,29 +238,29 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   decline = () => {
     const { navigation } = this.props;
     const appointment: DecoratedAppointment = navigation.getParam(
-      "appointment",
+      'appointment',
       {}
     );
     Alert.alert(
-      "Confirm Decline",
-      "Are you sure you want to decline?",
+      'Confirm Decline',
+      'Are you sure you want to decline?',
       [
-        { text: "Cancel" },
+        { text: 'Cancel' },
         {
-          text: "YES",
+          text: 'YES',
           onPress: () => this.props.onDeclineAppointment(appointment)
         }
       ],
       { cancelable: false }
     );
-  };
+  }
 
   cancelAndGoToChat = (date) => {
     this.props.onGetConversation(date.match.id, {});
     this.props.onCancelAppointment(date);
     // this.props.onDeleteAttendance(date);
     this.props.navigation.navigate('Chat', { name: date.match.first_name });
-  };
+  }
 
   cancel = () => {
     const { navigation } = this.props;
@@ -280,7 +280,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       ],
       { cancelable: false }
     );
-  };
+  }
 
   openAddress = (lat, lng, label) => {
     const scheme = Platform.select({
@@ -294,7 +294,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     });
 
     Linking.openURL(url);
-  };
+  }
 
   showDeleteAlert = () => {
     Alert.alert(
