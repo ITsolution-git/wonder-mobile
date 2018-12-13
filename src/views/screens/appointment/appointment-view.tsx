@@ -409,10 +409,14 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         <View>
           {isPast ? (
             <View>
-              {appointment.state === 'confirmed' && !appointment.reviewed_at ? (
+              {appointment.state === 'confirmed' ? (
+                // !appointment.reviewed_at
                 <PrimaryButton
+                  disabled={!appointment.reviewed_at ? false : true}
                   innerStyle={{ padding: 0 }}
-                  title='Leave Review'
+                  title={
+                    !appointment.reviewed_at ? 'Leave Review' : 'Left Review'
+                  }
                   onPress={this.openReviewModal}
                 />
               ) : null}

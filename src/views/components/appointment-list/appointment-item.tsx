@@ -76,13 +76,13 @@ class AppointmentItem extends React.PureComponent<Props> {
             )}
             size={AvatarSize.md}
           />
-          {isPast && (
+          {isPast && item.state === 'confirmed' ? (
             <TextButton
-              text='Leave review'
+              text={!item.reviewed_at ? 'Leave Review' : 'Left Review'}
               style={styles.reviewBtn}
               onPress={this.handleOnPress}
             />
-          )}
+          ) : null}
         </View>
         <View style={styles.contentContainer}>
           {this.renderTitle()}
