@@ -145,7 +145,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
     const { errors, birthdate } = this.state;
 
     return (
-      <Screen>
+      <View style={{ flex: 1 }}>
         <ScrollView style={styles.container}>
           <KeyboardAvoidingView
             keyboardVerticalOffset={Platform.select({ android: -40, ios: 0 })}
@@ -157,6 +157,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
             <View style={styles.row}>
               <View flex={1}>
                 <TextInput
+                  style={{ height: 40 }}
                   label='First Name'
                   defaultValue={currentUser.first_name}
                   onChangeText={this.onChangeText('first_name')}
@@ -165,6 +166,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
               </View>
               <View flex={1}>
                 <TextInput
+                  style={{ height: 40 }}
                   label='Last Name'
                   defaultValue={currentUser.last_name}
                   onChangeText={this.onChangeText('last_name')}
@@ -202,18 +204,21 @@ class ProfileEditScreen extends React.Component<Props, State> {
 
             <View>
               <TextInput
+                style={{ height: 40 }}
                 label='Education'
                 onChangeText={this.onChangeText('education')}
                 defaultValue={currentUser.school}
                 errorHint={errors.school}
               />
               <TextInput
+                style={{ height: 40 }}
                 label='Occupation'
                 onChangeText={this.onChangeText('occupation')}
                 defaultValue={currentUser.occupation}
                 errorHint={errors.occupation}
               />
               <TextInput
+                style={{ height: 40 }}
                 label='Activity Zip Code'
                 disabled
                 defaultValue={currentUser.zipcode}
@@ -224,7 +229,7 @@ class ProfileEditScreen extends React.Component<Props, State> {
         <View>
           <PrimaryButton rounded={false} title='Save' onPress={this.validate} />
         </View>
-      </Screen>
+      </View>
     );
   }
 
@@ -242,7 +247,7 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     flex: 1,
-    backgroundColor: 'pink'
+    backgroundColor: '#FFF'
   },
   row: {
     flexDirection: 'row'
