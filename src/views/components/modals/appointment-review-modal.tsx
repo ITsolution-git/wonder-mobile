@@ -342,11 +342,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     margin: 2
   },
-  btnContainer: {
-    flexDirection: 'row',
-    width: '30%',
-    justifyContent: 'space-around'
-  },
+  // btnContainer: {
+  //   flexDirection: 'row',
+  //   width: '30%',
+  //   justifyContent: 'space-around'
+  // },
   option: {
     padding: 5,
     marginTop: 10,
