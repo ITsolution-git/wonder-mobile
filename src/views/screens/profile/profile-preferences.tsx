@@ -95,8 +95,8 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
     apn_new_messages: profile.apn_new_messages,
     apn_message_likes: profile.apn_message_likes,
     apn_message_super_likes: profile.apn_message_super_likes,
-    activities_only_interest: profile.activities_only_interest || true,
-    apn_new_offers: profile.apn_new_offers || true,
+    activities_only_interest: !!profile.activities_only_interest,
+    apn_new_offers: !!profile.apn_new_offers,
     geocoding_requested: profile.geocoding_requested
   })
 
