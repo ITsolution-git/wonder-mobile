@@ -68,23 +68,24 @@ class AppointmentConfirmScreen extends React.Component<
 
       return (
         <View flex={1}>
-          <Title>{match.first_name}</Title>
-          <View style={{ alignItems: 'center', marginTop: 15 }}>
+          <View style={{ alignItems: 'center', marginBottom: 15 }}>
             <Avatar
               size={AvatarSize.md}
               circle
               uri={_.get(match, 'images[0].url', null)}
             />
           </View>
+          <Title>{match.first_name}</Title>
           <View style={styles.body}>
-            <Text style={{ fontSize: 18 }}>
-              Invite {match.first_name} to have a wonderful time at{' '}
-              <Strong>{activity.name}</Strong> at{' '}
-              {eventMoment.format('MMMM Do, [at] h:mma')}
+            <Text style={{ fontSize: 18, textAlign: 'center' }}>
+              Invite {match.first_name} to:{'\n'}
+              <Strong style={{ textAlign: 'center' }}>
+                {activity.name} at {activity.location} on {eventMoment.format('MMMM Do, [at] h:mma')}
+              </Strong>
             </Text>
           </View>
-          <View style={styles.footer}>
-            <PrimaryButton title='Confirm Wonder' onPress={this.onComplete} />
+          <View>
+            <PrimaryButton rounded={false} title='Send Invitation' onPress={this.onComplete} />
           </View>
         </View>
       );
@@ -92,7 +93,7 @@ class AppointmentConfirmScreen extends React.Component<
   }
 
   renderConfirmContent = (appointment: DecoratedAppointment) => {
-    const { match, eventMoment, name } = appointment;
+    const { match, eventMoment, name, location } = appointment;
 
     return (
       <View flex={1}>
@@ -105,16 +106,18 @@ class AppointmentConfirmScreen extends React.Component<
           />
         </View>
         <View style={styles.body}>
-          <Text style={{ fontSize: 18 }}>
-            Invite {match.first_name} to have a wonderful time at{' '}
-            <Strong>{name}</Strong> at{' '}
-            {eventMoment && eventMoment.format('MMMM Do, [at] h:mma')}
+          <Text style={{ fontSize: 18, textAlign: 'center' }}>
+            Invite {match.first_name} to:{'\n'}
+            <Strong style={{ textAlign: 'center' }}>
+              {name} at {location} on {eventMoment && eventMoment.format('MMMM Do, [at] h:mma')}
+            </Strong>
           </Text>
         </View>
-        <View style={styles.footer}>
-          <PrimaryButton
+        <View>
+          <PrimaryButton 
+            rounded={false}
             title='Confirm'
-            onPress={() => this.handleConfirmAppointment(appointment)}
+            onPress={() => this.handleConfirmAppointment(appointment)} 
           />
         </View>
       </View>
