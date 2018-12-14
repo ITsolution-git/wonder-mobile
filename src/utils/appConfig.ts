@@ -1,4 +1,11 @@
+import { Platform } from 'react-native';
+
+export const IOS = Platform.OS === 'ios';
 export const DEV: boolean = process.env.NODE_ENV === 'development';
+
+if (DEV) {
+  console.disableYellowBox = true;
+}
 
 export const PURGE = DEV ? false : false;
 

@@ -86,9 +86,12 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
     male_interest: profile.male_interest,
     female_interest: profile.female_interest,
     available: profile.available,
-    show_flakers: profile.show_flakers,
-    show_ghosters: profile.show_ghosters,
-    show_fibbers: profile.show_fibbers,
+    show_flakers:
+      profile.show_flakers === undefined ? true : profile.show_flakers,
+    show_ghosters:
+      profile.show_ghosters === undefined ? true : profile.show_ghosters,
+    show_fibbers:
+      profile.show_fibbers === undefined ? true : profile.show_fibbers,
     military_time: profile.military_time,
     distance_unit: profile.distance_unit || DistanceUnit.miles,
     apn_new_matches: profile.apn_new_matches,

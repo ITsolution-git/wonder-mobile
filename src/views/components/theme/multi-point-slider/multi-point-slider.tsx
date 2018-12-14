@@ -4,6 +4,7 @@ import MultiSlider from 'react-native-multi-slider';
 import theme from 'src/assets/styles/theme';
 import { Text } from 'src/views/components/theme';
 import { width as WIDTH } from '@assets';
+import { IOS } from '@utils';
 
 const commonMarker = {
   position: 'absolute',
@@ -103,6 +104,9 @@ class MultiPointSlider extends React.Component<
   private renderValue1 = (): React.ReactNode => {
     const { selectedMin } = this.state;
 
+    if (!IOS) {
+      return null;
+    }
     return (
       <Text size={12} style={localStyles.sliderValueText}>
         {`${selectedMin}`}
@@ -112,6 +116,11 @@ class MultiPointSlider extends React.Component<
 
   private renderValue2 = (): React.ReactNode => {
     const { selectedMax } = this.state;
+
+    if (!IOS) {
+      return null;
+    }
+
     return (
       <Text size={12} style={localStyles.sliderValueText2}>
         {`${selectedMax}`}
