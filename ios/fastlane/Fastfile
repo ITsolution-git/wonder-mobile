@@ -39,6 +39,10 @@ platform :ios do
     )
   end
 
+  desc "Increment build number"
+  lane :vbump do |options|
+    increment_version_number(xcodeproj: "WonderApp.xcodeproj")
+  end
 
   desc "Installs CoacoaPods dependencies"
   lane :install_cocoapods do

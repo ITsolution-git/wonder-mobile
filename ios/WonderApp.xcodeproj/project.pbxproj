@@ -314,13 +314,6 @@
 			remoteGlobalIDString = 8B172670E54FFE9AC8848B1A5D55FFA5;
 			remoteInfo = "react-native-video";
 		};
-		1E5D1F9E212FEC1F00419E22 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1E5D1F73212FEC1F00419E22 /* Pods.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 136FDCD7EFB26EB62499F244201AD937;
-			remoteInfo = yoga;
-		};
 		2D02E4911E0B4A5D006451C7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
@@ -970,7 +963,6 @@
 				0769D631214369D200DB2301 /* libRNImageRotate.a */,
 				0769D633214369D200DB2301 /* libRNSVG.a */,
 				77415B3121A0C59000EF1C82 /* libSDWebImage.a */,
-				1E5D1F9F212FEC1F00419E22 /* libyoga.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1677,13 +1669,6 @@
 			fileType = archive.ar;
 			path = "libreact-native-video.a";
 			remoteRef = 1E5D1F9C212FEC1F00419E22 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1E5D1F9F212FEC1F00419E22 /* libyoga.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libyoga.a;
-			remoteRef = 1E5D1F9E212FEC1F00419E22 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */ = {

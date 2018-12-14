@@ -21,6 +21,11 @@ or alternatively using `brew cask install fastlane`
 fastlane ios beta
 ```
 Push a new beta build to HockeyApp
+### ios vbump
+```
+fastlane ios vbump
+```
+Increment build number
 ### ios install_cocoapods
 ```
 fastlane ios install_cocoapods
