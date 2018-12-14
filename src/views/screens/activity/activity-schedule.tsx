@@ -1,6 +1,6 @@
 import React from 'react';
 import Analytics from 'appcenter-analytics';
-import { View, Alert, StyleSheet } from 'react-native';
+import { View, Alert, StyleSheet, Dimensions } from 'react-native';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -58,6 +58,8 @@ interface State {
   };
   agendaItems: any;
 }
+
+const { height } = Dimensions.get('window');
 
 const mapState = (state: WonderAppState): StateProps => ({
   appointment: state.appointment,
@@ -249,7 +251,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           paddingBottom: 15
         }}
       >
-        <Avatar circle uri={_.get(images[0], 'url', null)} size={AvatarSize.md} />
+        <Avatar circle uri={_.get(images[0], 'url', null)} size={height <= 680 ? 'md' : 'xl'} />
         <Text style={{ marginTop: 15, fontFamily: 'Poppins-Regular', color: black }}>
           {first_name}
         </Text>
