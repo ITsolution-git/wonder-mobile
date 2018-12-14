@@ -151,8 +151,8 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_message_likes,
       apn_message_super_likes,
       geocoding_requested,
-      apn_new_offers,
-      activities_only_interest
+      apn_new_offers
+      //   activities_only_interest
     } = this.state;
 
     onSave({
@@ -172,8 +172,8 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_message_likes,
       apn_message_super_likes,
       geocoding_requested,
-      apn_new_offers,
-      activities_only_interest
+      apn_new_offers
+      //   activities_only_interest
     });
     navigation.goBack();
   }
@@ -244,13 +244,13 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
               />
             </View>
 
-            <View style={styles.row}>
+            {/* <View style={styles.row}>
               <Text>Activities</Text>
               <Switch
                 value={!!activities_only_interest}
                 onValueChange={this.onBooleanChange('activities_only_interest')}
               />
-            </View>
+            </View> */}
 
             <View style={styles.row}>
               <Text>Products &amp; Services</Text>
