@@ -32,6 +32,8 @@ import UserCalendarModal, {
   CalendarItemMap
 } from 'src/views/components/modals/user-calendar.modal';
 import theme from 'src/assets/styles/theme';
+import Topic from 'src/models/topic';
+import { black } from 'color-name';
 
 interface StateProps {
   currentUser: User;
@@ -223,13 +225,14 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
   }
 
   renderHeader = () => {
-    const { navigation, conversation } = this.props;
+    const { navigation, conversation, appointment: { topic = {} } } = this.props;
     const { selectedDate, selectedTime } = this.state;
     const { first_name, last_name, images = [] } = _.get(
       conversation,
       'partner',
       {} as User
     );
+    const activityName = _.get(topic, 'name', "Activity");
 
     const dateTime = moment(selectedDate, 'YYYY-MM-DD');
 
@@ -246,9 +249,8 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
           paddingBottom: 15
         }}
       >
-        <Avatar circle uri={_.get(images[0], 'url', null)} size={AvatarSize.xl} />
-        <Text style={{ marginTop: 15, fontFamily: 'Poppins-Regular'}}>
-          {/* {[first_name, last_name].join(' ')} */}
+        <Avatar circle uri={_.get(images[0], 'url', null)} size={AvatarSize.md} />
+        <Text style={{ marginTop: 15, fontFamily: 'Poppins-Regular', color: black }}>
           {first_name}
         </Text>
 
@@ -258,7 +260,7 @@ class ActivityScheduleScreen extends React.Component<Props, State> {
             <TextButton
               style={styles.calendarButtonText}
               // text={"Soccer with ".."dateTime.format('MMMM Do, YYYY[\n][at] h:mma')}
-              text={[, 'with', first_name, 'on', dateTime.format('MMMM Do, h:mma')].join(' ')}
+              text={[activityName, 'with', first_name, '\n', 'on', dateTime.format('MMMM Do'), '\n', 'at', dateTime.format('h:mma')].join(' ')}
               onPress={this.openCalendarModal}
             />
           </View>
