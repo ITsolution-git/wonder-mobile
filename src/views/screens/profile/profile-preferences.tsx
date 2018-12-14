@@ -202,11 +202,11 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       activities_only_interest,
       apn_new_offers,
       show_fibbers,
+      show_flakers,
       apn_message_likes,
       apn_message_super_likes,
       geocoding_requested,
-      available,
-      show_flakers
+      available
     } = this.state;
 
     const ageRangeText = IOS
@@ -323,13 +323,11 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
                 initialMaxValue={age_of_interest_max}
                 onValueChange={this.onChangeAgeRange}
               />
-              {}
-              {}
             </View>
 
             <View style={styles.heading}>
               <SubHeader>
-                Distance ({distance_unit}) - {distance_of_interest_max}
+                Distance ({distance_unit}) - Up to {distance_of_interest_max}
               </SubHeader>
             </View>
             <View style={styles.row}>
@@ -346,11 +344,31 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
               />
             </View>
 
+            <View style={styles.heading}>
+              <SubHeader>Integrity</SubHeader>
+            </View>
+
             <View style={styles.row}>
               <Text>Ghosters</Text>
               <Switch
                 value={show_ghosters}
                 onValueChange={this.onBooleanChange('show_ghosters')}
+              />
+            </View>
+
+            <View style={styles.row}>
+              <Text>Flakers</Text>
+              <Switch
+                value={show_flakers}
+                onValueChange={this.onBooleanChange('show_flakers')}
+              />
+            </View>
+
+            <View style={styles.row}>
+              <Text>Fibbers</Text>
+              <Switch
+                value={show_fibbers}
+                onValueChange={this.onBooleanChange('show_fibbers')}
               />
             </View>
           </View>

@@ -34,7 +34,7 @@ interface User {
   apn_new_messages?: boolean;
   apn_message_likes?: boolean;
   apn_message_super_likes?: boolean;
-  apn_activities?: boolean;
+  activities_only_interest?: boolean;
   apn_new_offers?: boolean;
   push_device_id?: string;
   push_device_type?: string;
