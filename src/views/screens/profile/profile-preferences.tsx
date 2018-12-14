@@ -22,9 +22,7 @@ import { connect } from 'react-redux';
 
 import { Dispatch } from 'redux';
 import { updateUser, getUser } from 'src/store/sagas/user';
-import MultiPointSlider, {
-  MultiPointSliderValue
-} from 'src/views/components/theme/multi-point-slider/multi-point-slider';
+import MultiPointSlider from 'src/views/components/theme/multi-point-slider/multi-point-slider';
 import WonderAppState from 'src/models/wonder-app-state';
 import User from 'src/models/user';
 import DistanceUnit from 'src/models/distance-unit';
@@ -63,6 +61,8 @@ interface State {
   apn_new_matches?: boolean;
   apn_new_messages?: boolean;
   apn_message_likes?: boolean;
+  activities_only_interest?: boolean;
+  apn_new_offers?: boolean;
   apn_message_super_likes?: boolean;
   geocoding_requested?: boolean;
 }
@@ -95,6 +95,8 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
     apn_new_messages: profile.apn_new_messages,
     apn_message_likes: profile.apn_message_likes,
     apn_message_super_likes: profile.apn_message_super_likes,
+    activities_only_interest: profile.activities_only_interest || true,
+    apn_new_offers: profile.apn_new_offers || true,
     geocoding_requested: profile.geocoding_requested
   })
 
@@ -148,7 +150,9 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_new_messages,
       apn_message_likes,
       apn_message_super_likes,
-      geocoding_requested
+      geocoding_requested,
+      apn_new_offers,
+      activities_only_interest
     } = this.state;
 
     onSave({
@@ -167,7 +171,9 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_new_messages,
       apn_message_likes,
       apn_message_super_likes,
-      geocoding_requested
+      geocoding_requested,
+      apn_new_offers,
+      activities_only_interest
     });
     navigation.goBack();
   }
@@ -181,7 +187,6 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const { navigation } = this.props;
     const {
       isRefreshing,
       distance_of_interest_max,
@@ -189,17 +194,19 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       age_of_interest_max,
       male_interest,
       female_interest,
-      available,
-      show_flakers,
       show_ghosters,
-      show_fibbers,
       military_time,
       distance_unit,
       apn_new_matches,
       apn_new_messages,
+      activities_only_interest,
+      apn_new_offers,
+      show_fibbers,
       apn_message_likes,
       apn_message_super_likes,
-      geocoding_requested
+      geocoding_requested,
+      available,
+      show_flakers
     } = this.state;
 
     const ageRangeText = IOS
@@ -240,18 +247,17 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
             <View style={styles.row}>
               <Text>Activities</Text>
               <Switch
-                disabled
-                // value={!!true}
-                // onValueChange={this.onBooleanChange('apn_activities')}
+                value={!!activities_only_interest}
+                onValueChange={this.onBooleanChange('activities_only_interest')}
               />
             </View>
 
             <View style={styles.row}>
               <Text>Products &amp; Services</Text>
               <Switch
-                disabled
-                // value={!!true}
-                // onValueChange={this.onBooleanChange('apn_activities')}
+                // disabled
+                value={!!apn_new_offers}
+                onValueChange={this.onBooleanChange('apn_new_offers')}
               />
             </View>
 
@@ -377,7 +383,7 @@ const styles = StyleSheet.create({
       width: 0,
       height: 5
     },
-    marginVertical: 5
+    marginVertical: 10
   },
   heading: {
     marginTop: 15
