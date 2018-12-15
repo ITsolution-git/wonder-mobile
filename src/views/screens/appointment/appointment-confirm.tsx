@@ -73,7 +73,7 @@ class AppointmentConfirmScreen extends React.Component<
           <ScrollView style={styles.container}>
             <View style={{ alignItems: 'center', marginBottom: 15 }}>
               <Avatar
-                size={height <= 680 ? 'md' : 'xl'}
+                size={AvatarSize.xl}
                 circle
                 uri={_.get(match, 'images[0].url', null)}
               />
@@ -106,7 +106,7 @@ class AppointmentConfirmScreen extends React.Component<
           <Title>{match.first_name}</Title>
           <View style={{ alignItems: 'center', marginTop: 15 }}>
             <Avatar
-              size={height <= 680 ? 'md' : 'xl'}
+              size={AvatarSize.xl}
               circle
               uri={_.get(match, 'images[0].url', null)}
             />
