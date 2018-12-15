@@ -73,7 +73,7 @@ const ProfileNavigator = createStackNavigator(
     ProfilePreferences: {
       screen: ProfilePreferences,
       navigationOptions: {
-        title: 'PREFERENCES',
+        title: 'SETTINGS',
         ...theme.NavBar.transparent,
         headerRight: <View />
         // header: null,
