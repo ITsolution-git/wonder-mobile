@@ -5,6 +5,7 @@ import registration from "./registration";
 import chat from "./chat";
 import config from "./config";
 import appointment from "./appointment";
+import apiAlertReducer from "./apiAlertReducer";
 
 export default combineReducers({
   config,
@@ -13,4 +14,5 @@ export default combineReducers({
   wonder,
   registration,
   appointment,
+  apiAlert: apiAlertReducer,
 });

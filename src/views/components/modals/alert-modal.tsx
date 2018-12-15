@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import {
   ImageProperties,
   ImageStyle,
@@ -7,9 +8,11 @@ import {
   View,
   Modal
 } from 'react-native';
+import { Text, PrimaryButton } from 'src/views/components/theme';
+import WonderAppState from 'src/models/wonder-app-state';
 import { colors } from '@assets';
 import images from '@images';
-import { Text, PrimaryButton } from 'src/views/components/theme';
+import { hideAlertModal } from '@actions';
 
 const commonContainer = {
   flex: 1,
@@ -25,7 +28,7 @@ const localStyles = StyleSheet.create({
   },
   errorContainer: {
     ...commonContainer,
-    backgroundColor: colors.red
+    backgroundColor: colors.red50
   },
   subContainer: {
     backgroundColor: colors.white,
@@ -65,6 +68,8 @@ export interface IAlertModalProps {
   buttonTitle2?: string;
   onPress2?: (data?: any) => void;
   isError: boolean;
+  hideAlertModal: () => void;
+  alertVisible: boolean;
 }
 
 class AlertModal extends React.Component<IAlertModalProps> {
@@ -76,13 +81,14 @@ class AlertModal extends React.Component<IAlertModalProps> {
     renderWonderful: true,
     buttonTitle: 'Got it!',
     buttonTitle2: '',
-    isError: false
+    isError: false,
+    alertVisible: false
   };
 
   private renderWonderfulText = (): React.ReactNode => {
-    const { renderWonderful } = this.props;
+    const { renderWonderful, isError } = this.props;
 
-    if (!renderWonderful) {
+    if (!renderWonderful || isError) {
       return null;
     }
 
@@ -102,7 +108,12 @@ class AlertModal extends React.Component<IAlertModalProps> {
   }
 
   private handleOnPress = (): void => {
-    const { onPress, onRequestClose } = this.props;
+    const { isError, onPress, onRequestClose } = this.props;
+
+    if (isError) {
+      this.props.hideAlertModal();
+      return;
+    }
 
     onRequestClose();
     onPress();
@@ -130,14 +141,15 @@ class AlertModal extends React.Component<IAlertModalProps> {
       animationType,
       resizeMode,
       buttonTitle2,
-      isError
+      isError,
+      alertVisible
     } = this.props;
 
     return (
       <Modal
         onRequestClose={onRequestClose}
         animationType={animationType}
-        visible={visible}
+        visible={visible || alertVisible}
         transparent={true}
       >
         <View
@@ -180,4 +192,13 @@ class AlertModal extends React.Component<IAlertModalProps> {
   }
 }
 
-export { AlertModal };
+const mapStateToProps = ({ apiAlert }: WonderAppState) => ({
+  ...apiAlert
+});
+
+const ConnectedAlert = connect(
+  mapStateToProps,
+  { hideAlertModal }
+)(AlertModal);
+
+export { AlertModal, ConnectedAlert };
