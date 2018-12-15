@@ -58,7 +58,7 @@ import { Options, Response } from '../../../models/image-picker';
 import { ImageSource } from 'react-native-vector-icons/Icon';
 import Wonder from 'src/views/components/theme/wonder/wonder';
 import ProfileModalChat from 'src/views/components/modals/profile-modal-chat';
-import { FirstTimeModal } from '@components';
+import { AlertModal } from '@components';
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -453,7 +453,7 @@ class ChatScreen extends React.Component<Props> {
     if (!_.isEmpty(conversation)) {
       return (
         <Screen>
-          <FirstTimeModal
+          <AlertModal
             onPress={this.closeModalAndScheduleWonder}
             onRequestClose={this.closeModalAndScheduleWonder}
             buttonTitle={'Schedule Wonder'}

@@ -20,7 +20,7 @@ import { selectCurrentUser } from 'src/store/selectors/user';
 import WonderAppState from 'src/models/wonder-app-state';
 import Proposal from 'src/models/proposal';
 import User from 'src/models/user';
-import { FirstTimeModal, IFirstTimeModalProps } from '@components';
+import { AlertModal, IAlertModalProps } from '@components';
 import { updateUser } from '../../../store/sagas/user';
 import {
   getConversations,
@@ -240,7 +240,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
     }
   }
 
-  private getFirstMatchModalProps = (): IFirstTimeModalProps => {
+  private getFirstMatchModalProps = (): IAlertModalProps => {
     const { modalOpen } = this.state;
 
     const isFirst = modalOpen === 'firstTime1';
@@ -260,7 +260,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
     return modalProps;
   }
 
-  private getModalProps = (): IFirstTimeModalProps => {
+  private getModalProps = (): IAlertModalProps => {
     const { modalOpen, index } = this.state;
     const { proposal } = this.props;
 
@@ -300,8 +300,8 @@ class ProposalViewScreen extends React.Component<Props, State> {
 
     return (
       <Screen>
-        <FirstTimeModal {...this.getModalProps()} />
-        <FirstTimeModal {...this.getFirstMatchModalProps()} />
+        <AlertModal {...this.getModalProps()} />
+        <AlertModal {...this.getFirstMatchModalProps()} />
         <View style={styles.flex1}>
           <ProposalSwiper
             currentUser={currentUser}

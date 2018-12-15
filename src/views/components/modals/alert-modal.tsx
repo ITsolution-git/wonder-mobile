@@ -9,15 +9,23 @@ import {
 } from 'react-native';
 import { colors } from '@assets';
 import images from '@images';
-import { Text, Button, PrimaryButton } from 'src/views/components/theme';
+import { Text, PrimaryButton } from 'src/views/components/theme';
+
+const commonContainer = {
+  flex: 1,
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center'
+};
 
 const localStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    ...commonContainer,
     backgroundColor: colors.primary50
+  },
+  errorContainer: {
+    ...commonContainer,
+    backgroundColor: colors.red
   },
   subContainer: {
     backgroundColor: colors.white,
@@ -42,7 +50,7 @@ const localStyles = StyleSheet.create({
   }
 });
 
-export interface IFirstTimeModalProps {
+export interface IAlertModalProps {
   icon?: number;
   title: string;
   body: string;
@@ -56,17 +64,19 @@ export interface IFirstTimeModalProps {
   renderWonderful?: boolean;
   buttonTitle2?: string;
   onPress2?: (data?: any) => void;
+  isError: boolean;
 }
 
-class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
-  public static defaultProps: Partial<IFirstTimeModalProps> = {
+class AlertModal extends React.Component<IAlertModalProps> {
+  public static defaultProps: Partial<IAlertModalProps> = {
     animationType: 'fade',
     resizeMode: 'contain',
     iconStyle: {},
     icon: images.LogoIcon,
     renderWonderful: true,
     buttonTitle: 'Got it!',
-    buttonTitle2: ''
+    buttonTitle2: '',
+    isError: false
   };
 
   private renderWonderfulText = (): React.ReactNode => {
@@ -119,7 +129,8 @@ class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
       onRequestClose,
       animationType,
       resizeMode,
-      buttonTitle2
+      buttonTitle2,
+      isError
     } = this.props;
 
     return (
@@ -129,10 +140,12 @@ class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
         visible={visible}
         transparent={true}
       >
-        <View style={localStyles.container}>
+        <View
+          style={isError ? localStyles.errorContainer : localStyles.container}
+        >
           <View style={localStyles.subContainer}>
             <Image
-              source={icon}
+              source={isError ? images.warning : icon}
               style={[localStyles.icon, iconStyle]}
               resizeMode={resizeMode}
             />
@@ -167,4 +180,4 @@ class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
   }
 }
 
-export { FirstTimeModal };
+export { AlertModal };

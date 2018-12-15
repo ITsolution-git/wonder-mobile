@@ -54,7 +54,7 @@ import {
 import Wonder from '../../components/theme/wonder/wonder';
 import WonderImage from '../../components/theme/wonder-image';
 import { confirmAppointment } from 'src/store/sagas/appointment';
-import { FirstTimeModal, IFirstTimeModalProps } from '@components';
+import { AlertModal, IAlertModalProps } from '@components';
 import RNCalendarEvents from 'react-native-calendar-events';
 import moment from 'moment';
 
@@ -343,7 +343,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     });
   }
 
-  private getModalProps = (): IFirstTimeModalProps => {
+  private getModalProps = (): IAlertModalProps => {
     const { modalOpen } = this.state;
 
     const isPass = modalOpen === 'pass';
@@ -545,7 +545,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             </View>
           </View>
         </View>
-        <FirstTimeModal {...this.getModalProps()} />
+        <AlertModal {...this.getModalProps()} />
         <AppointmentReviewModal
           onRequestClose={this.closeReviewModal}
           visible={this.state.isModalOpen}
