@@ -5,7 +5,7 @@ import Screen from 'src/views/components/screen';
 import { Text, Strong, PrimaryButton } from 'src/views/components/theme';
 import { Dispatch } from 'redux';
 import moment from 'moment-timezone';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import WonderAppState from 'src/models/wonder-app-state';
 import {
   AppointmentState,
@@ -20,6 +20,8 @@ import { confirmAppointment } from 'src/store/sagas/appointment';
 import { DecoratedAppointment } from 'src/models/appointment';
 
 import RNCalendarEvents from 'react-native-calendar-events';
+
+const { height } = Dimensions.get('window');
 
 const mapState = (state: WonderAppState) => ({
   appointment: state.appointment
@@ -68,25 +70,28 @@ class AppointmentConfirmScreen extends React.Component<
 
       return (
         <View flex={1}>
-          <View style={{ alignItems: 'center', marginBottom: 15 }}>
-            <Avatar
-              size={AvatarSize.md}
-              circle
-              uri={_.get(match, 'images[0].url', null)}
-            />
-          </View>
-          <Title>{match.first_name}</Title>
-          <View style={styles.body}>
-            <Text style={{ fontSize: 18, textAlign: 'center' }}>
-              Invite {match.first_name} to:{'\n'}
-              <Strong style={{ textAlign: 'center' }}>
-                {activity.name} at {activity.location} on {eventMoment.format('MMMM Do, [at] h:mma')}
-              </Strong>
-            </Text>
-          </View>
+          <ScrollView style={styles.container}>
+            <View style={{ alignItems: 'center', marginBottom: 15 }}>
+              <Avatar
+                size={height <= 680 ? 'md' : 'xl'}
+                circle
+                uri={_.get(match, 'images[0].url', null)}
+              />
+            </View>
+            <Title>{match.first_name}</Title>
+            <View style={styles.body}>
+              <Text style={{ fontSize: 18, textAlign: 'center' }}>
+                Invite {match.first_name} to:{'\n'}
+                <Strong style={{ textAlign: 'center' }}>
+                  {activity.name} date{'\n'} at {activity.location.join(',\n')} {'\n'}
+                  on {eventMoment.format('MMMM Do [at] h:mma')}?
+                </Strong>
+              </Text>
+            </View>
+          </ScrollView>
           <View>
-            <PrimaryButton rounded={false} title='Send Invitation' onPress={this.onComplete} />
-          </View>
+              <PrimaryButton rounded={false} title='Send Invitation' onPress={this.onComplete} />
+            </View>
         </View>
       );
     }
@@ -97,22 +102,25 @@ class AppointmentConfirmScreen extends React.Component<
 
     return (
       <View flex={1}>
-        <Title>{match.first_name}</Title>
-        <View style={{ alignItems: 'center', marginTop: 15 }}>
-          <Avatar
-            size={AvatarSize.md}
-            circle
-            uri={_.get(match, 'images[0].url', null)}
-          />
-        </View>
-        <View style={styles.body}>
-          <Text style={{ fontSize: 18, textAlign: 'center' }}>
-            Invite {match.first_name} to:{'\n'}
-            <Strong style={{ textAlign: 'center' }}>
-              {name} at {location} on {eventMoment && eventMoment.format('MMMM Do, [at] h:mma')}
-            </Strong>
-          </Text>
-        </View>
+        <ScrollView style={styles.container}>
+          <Title>{match.first_name}</Title>
+          <View style={{ alignItems: 'center', marginTop: 15 }}>
+            <Avatar
+              size={height <= 680 ? 'md' : 'xl'}
+              circle
+              uri={_.get(match, 'images[0].url', null)}
+            />
+          </View>
+          <View style={styles.body}>
+            <Text style={{ fontSize: 18, textAlign: 'center' }}>
+              Invite {match.first_name} to:{'\n'}
+              <Strong style={{ textAlign: 'center' }}>
+                {name} date{'\n'} at {location}{'\n'}
+                on {eventMoment && eventMoment.format('MMMM Do [at] h:mma')}?
+              </Strong>
+            </Text>
+          </View>
+        </ScrollView>
         <View>
           <PrimaryButton 
             rounded={false}
@@ -148,6 +156,11 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 15,
     paddingHorizontal: 20
+  },
+  container: {
+    paddingHorizontal: 20,
+    flex: 1,
+    backgroundColor: '#FFF'
   },
   footer: {
     marginBottom: 10,
