@@ -31,11 +31,14 @@ import theme from 'src/assets/styles/theme';
 import StateButton from 'src/views/components/theme/buttons/state-button';
 import Color from 'color';
 import { Label } from '../../components/theme';
+import { setAlertModal, IAPIAlert } from '@actions';
+import { LAZipCodeAlertTexts } from '@texts';
 
 interface Props {
   registration: RegistrationState;
   onSave: Function;
   navigation: NavigationScreenProp<any, NavigationParams>;
+  setAlertModal: () => void;
 }
 
 interface StateErrors {
@@ -62,7 +65,8 @@ const mapState = (state: WonderAppState) => ({
   registration: state.registration
 });
 const mapDispatch = (dispatch: Dispatch) => ({
-  onSave: (data: State) => dispatch(persistRegistrationInfo(data))
+  onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
+  setAlertModal: () => dispatch(setAlertModal(LAZipCodeAlertTexts))
 });
 
 class Register2 extends React.Component<Props, State> {
@@ -221,7 +225,8 @@ class Register2 extends React.Component<Props, State> {
       birthdate,
       zipcode,
       male_interest,
-      female_interest
+      female_interest,
+      geolocation
     } = this.state;
 
     if (GenderPicker.Genders.indexOf(gender) < 0) {
@@ -238,6 +243,9 @@ class Register2 extends React.Component<Props, State> {
       errors.zipcode = 'Please enter a Postal Code';
     } else if (!validator.isPostalCode(zipcode, 'US')) {
       errors.zipcode = 'Please enter a valid Postal Code';
+    } else if (!geolocation || geolocation.city !== 'Los Angeles') {
+      this.props.setAlertModal();
+      return;
     }
 
     if (Object.keys(errors).length) {

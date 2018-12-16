@@ -24,8 +24,6 @@ import validator from 'validator';
 import WonderAppState from 'src/models/wonder-app-state';
 import UserCredentials from 'src/models/user-credentials';
 
-import { Toast } from 'native-base';
-
 type Email = string;
 
 const mapState = (state: WonderAppState) => ({});
@@ -34,17 +32,18 @@ const mapDispatch = (dispatch: Dispatch) => ({
   onLogin: (credentials: UserCredentials) => dispatch(loginUser(credentials)),
   onForgotPassword: (email: Email) =>
     dispatch(forgotPassword({ forgotEmail: email })),
-  onGetVerification: (data) => dispatch(getVerification(data))
+  onGetVerification: (phone: string) => dispatch(getVerification(phone))
 });
 
 interface Props {
   onLogin: Function;
   onForgotPassword: Function;
   navigation: NavigationScreenProp<any, NavigationParams>;
+  onGetVerification: (phone: string) => Promise<void>;
 }
 
 interface State {
-  email: string;
+  phone: string;
   password: string;
   errors: StateErrors;
   modalVisible: boolean;
@@ -52,7 +51,7 @@ interface State {
 }
 
 interface StateErrors {
-  email?: string;
+  phone?: string;
   password?: string;
 }
 
@@ -60,7 +59,7 @@ class LoginScreen extends React.Component<Props> {
   inputs: any = {};
 
   state: State = {
-    email: '',
+    phone: '',
     password: '',
     errors: {},
     modalVisible: false,
@@ -80,26 +79,10 @@ class LoginScreen extends React.Component<Props> {
     };
   }
 
-  private submit = () => {
-    const errors: StateErrors = {};
-    const { email, password } = this.state;
-    const { onLogin, navigation } = this.props;
+  private submit = (): void => {
+    const { phone } = this.state;
 
-    if (validator.isEmpty(password)) {
-      errors.password = 'Please enter your password';
-    }
-
-    this.props.onGetVerification(email);
-    // navigation.navigate('Verify');
-    // onLogin({ email, onSuccess: () => navigation.navigate('Verify') });
-  }
-
-  focusOn = (key: string) => {
-    return () => {
-      if (this.inputs[key]) {
-        this.inputs[key].focus();
-      }
-    };
+    this.props.onGetVerification(phone);
   }
 
   private submitForgotEmail = () => {
@@ -107,7 +90,7 @@ class LoginScreen extends React.Component<Props> {
     const errors: StateErrors = {};
 
     if (!validator.isEmail(forgotEmail)) {
-      errors.email = 'Please enter a valid email';
+      errors.phone = 'Please enter a valid email';
     }
     if (Object.keys(errors).length) {
       this.setState({ errors });
@@ -118,76 +101,58 @@ class LoginScreen extends React.Component<Props> {
     this.setState({ modalVisible: false, errors: {} });
   }
 
+  private assignInputRef = (input: RoundedTextInput) => {
+    this.inputs.email = input;
+  }
+
+  private assignForgotEmailInputRef = (input: RoundedTextInput) => {
+    this.inputs.forgotEmail = input;
+  }
+
+  private toggleModal = () => {
+    this.setState({ modalVisible: !this.state.modalVisible });
+  }
+
   render() {
     const { navigation } = this.props;
-    const { errors } = this.state;
+    const { errors, phone, modalVisible } = this.state;
 
     return (
-      <Screen style={{ backgroundColor: '#FFF' }}>
-        <View flex={1} style={styles.header}>
-          <Image
-            style={{ width: '80%' }}
-            source={Logo.DARK}
-            resizeMode='contain'
-          />
+      <Screen style={styles.container}>
+        <View style={styles.header}>
+          <Image style={styles.logo} source={Logo.DARK} resizeMode='contain' />
         </View>
-        <View flex={1} style={styles.body}>
-          <View style={{ width: '100%' }}>
+        <View style={styles.body}>
+          <View style={styles.inputContainer}>
             <RoundedTextInput
               returnKeyType='next'
-              getRef={(input: RoundedTextInput) => {
-                this.inputs.email = input;
-              }}
-              onSubmitEditing={this.focusOn('password')}
+              getRef={this.assignInputRef}
               autoCapitalize='none'
               autoCorrect={false}
-              errorHint={errors.email}
+              errorHint={errors.phone}
               icon='phone'
               placeholder='Phone'
-              onChangeText={this.onChangeText('email')}
+              onChangeText={this.onChangeText('phone')}
               fullWidth
             />
           </View>
-          {/* <View style={{ marginTop: 10, width: '100%' }}>
-            <RoundedTextInput
-              returnKeyType='done'
-              getRef={(input: RoundedTextInput) => {
-                this.inputs.password = input;
-              }}
-              type='password'
-              autoCapitalize='none'
-              autoCorrect={false}
-              errorHint={errors.password}
-              icon='lock'
-              placeholder='Password'
-              onChangeText={this.onChangeText('password')}
-              fullWidth
-            />
-          </View> */}
-          <View
-            style={{
-              flex: 1,
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-between'
-            }}
-          >
-            <View style={{ marginTop: 10, width: '50%' }}>
-              <PrimaryButton title='Login' onPress={this.submit} />
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttonSubContainer}>
+              <PrimaryButton
+                disabled={!validator.isMobilePhone(phone, 'en-US')}
+                title='Login'
+                onPress={this.submit}
+              />
               <TextButton
-                style={{
-                  textAlign: 'center',
-                  color: theme.colors.textColor,
-                  marginTop: 18
-                }}
+                style={styles.textButton}
                 text='Contact Support'
-                onPress={() => this.setState({ modalVisible: true })}
+                onPress={this.toggleModal}
               />
             </View>
-            <View style={{ marginTop: 25, flexDirection: 'row' }}>
+            <View style={styles.noAccountContainer}>
               <Text>Don't have an account? </Text>
               <TextButton
-                style={{ textAlign: 'center', color: theme.colors.primary }}
+                style={styles.registerButton}
                 text='Register'
                 onPress={() => navigation.goBack()}
               />
@@ -195,14 +160,12 @@ class LoginScreen extends React.Component<Props> {
           </View>
         </View>
         <ForgotPasswordModal
-          getRef={(input: RoundedTextInput) => {
-            this.inputs.forgotEmail = input;
-          }}
-          visible={this.state.modalVisible}
-          onRequestClose={() => this.setState({ modalVisible: false })}
+          getRef={this.assignForgotEmailInputRef}
+          visible={modalVisible}
+          onRequestClose={this.toggleModal}
           onChangeText={this.onChangeText('forgotEmail')}
           submit={this.submitForgotEmail}
-          errorHint={errors.email}
+          errorHint={errors.phone}
         />
       </Screen>
     );
@@ -215,10 +178,28 @@ export default connect(
 )(LoginScreen);
 
 const styles = StyleSheet.create({
+  container: { backgroundColor: '#FFF' },
   header: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
+  logo: { width: '80%' },
+  inputContainer: { width: '100%' },
+  buttonContainer: {
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  buttonSubContainer: { marginTop: 10, width: '50%' },
+  textButton: {
+    textAlign: 'center',
+    color: theme.colors.textColor,
+    marginTop: 18
+  },
+  noAccountContainer: { marginTop: 25, flexDirection: 'row' },
+  registerButton: { textAlign: 'center', color: theme.colors.primary },
   body: {
     flex: 2,
     flexDirection: 'column',

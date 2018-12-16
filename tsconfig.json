@@ -43,10 +43,14 @@
       "assets": ["src/assets"],
       "components": ["src/views/components"],
       "@utils": ["src/utils/index.ts"],
+      "@actions": ["src/store/actions/index.ts"],
+      "@reducers": ["src/store/reducers/index.ts"],
+      "@store": ["src/store/index.ts"],
       "@components": ["src/views/components"],
       "@assets": ["src/assets"],
       "@images": ["src/assets/images"],
-      "@theme": ["src/views/components/theme"]
+      "@theme": ["src/views/components/theme"],
+      "@texts": ["src/texts/index.ts"]
     } /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */,
     // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
     "typeRoots": [

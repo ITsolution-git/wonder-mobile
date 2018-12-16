@@ -27,7 +27,9 @@ export const colors = {
   iconColor: '#fcdfc2',
   peach: '#ffdf95',
   lightGray: '#e5e3e3',
-  iron: '#cbc9cb'
+  iron: '#cbc9cb',
+  red: 'rgb(230, 41, 33)',
+  red50: 'rgba(230, 41, 33, 0.5)'
 };
 
 const transparentNavigationStyles = {

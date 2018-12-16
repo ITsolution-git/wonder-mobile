@@ -58,7 +58,8 @@ import { Options, Response } from '../../../models/image-picker';
 import { ImageSource } from 'react-native-vector-icons/Icon';
 import Wonder from 'src/views/components/theme/wonder/wonder';
 import ProfileModalChat from 'src/views/components/modals/profile-modal-chat';
-import { FirstTimeModal } from '@components';
+import { AlertModal } from '@components';
+import { setAlertModal, IAPIAlert } from '@actions';
 
 interface DispatchProps {
   onGetMessage: (userId: number) => void;
@@ -81,6 +82,7 @@ interface StateProps {
 
 interface Props extends DispatchProps, StateProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
+  setAlertModal: (data: IAPIAlert) => void;
 }
 
 interface ChatViewState {
@@ -117,7 +119,8 @@ const mapDispatch = (dispatch: Dispatch): DispatchProps => ({
   onReadMessages: (data: object) => dispatch(persistMessageAsRead(data)),
   onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data)),
   onReportUser: (data: object) => dispatch(blockUser(data)),
-  onClearConversation: () => dispatch(clearCurrentConversation())
+  onClearConversation: () => dispatch(clearCurrentConversation()),
+  setAlertModal: (data: IAPIAlert) => dispatch(setAlertModal(data))
 });
 
 class ChatScreen extends React.Component<Props> {
@@ -283,22 +286,26 @@ class ChatScreen extends React.Component<Props> {
   }
 
   showBlockAlert = () => {
-    Alert.alert(
-      'Confirm',
-      'Are you sure you want to remove this conversation?',
-      [{ text: 'Cancel' }, { text: 'YES', onPress: this.blockPartner }],
-      { cancelable: false }
-    );
+    this.props.setAlertModal({
+      title: 'Please Confirm',
+      body: `Are you sure you want to Block and Report this User?`,
+      alertVisible: true,
+      buttonTitle: 'Cancel',
+      buttonTitle2: 'Block',
+      onPress2: this.blockPartner
+    });
   }
 
   // could refactor these two alerts
   showAlert = () => {
-    Alert.alert(
-      'Confirm',
-      'Are you sure you want to remove this conversation?',
-      [{ text: 'Cancel' }, { text: 'YES', onPress: this.ghostPartner }],
-      { cancelable: false }
-    );
+    this.props.setAlertModal({
+      title: 'Please Confirm',
+      body: `Are you sure you want to unmatch?`,
+      alertVisible: true,
+      buttonTitle: 'Cancel',
+      buttonTitle2: 'Yes',
+      onPress2: this.ghostPartner
+    });
   }
 
   onSend = (messages: ChatResponseMessage[] = []) => {
@@ -453,7 +460,7 @@ class ChatScreen extends React.Component<Props> {
     if (!_.isEmpty(conversation)) {
       return (
         <Screen>
-          <FirstTimeModal
+          <AlertModal
             onPress={this.closeModalAndScheduleWonder}
             onRequestClose={this.closeModalAndScheduleWonder}
             buttonTitle={'Schedule Wonder'}

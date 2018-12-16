@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Text, Title, SmallText } from '../theme';
-import { View, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import Avatar from 'src/views/components/theme/avatar';
 import theme from 'src/assets/styles/theme';
@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { deleteConversation } from 'src/store/sagas/conversations';
 import { persistGhostMessage } from 'src/store/reducers/chat';
 import { fallbackImageUrl } from 'src/services/api';
+import { setAlertModal, IAPIAlert } from '@actions';
 
 interface ChatListItemProps {
   chat: Conversation;
@@ -21,12 +22,14 @@ interface ChatListItemProps {
   currentUser: { id: number };
   onGhostContact: (data: object) => void;
   onSendGhostMessage: (data: object) => void;
+  setAlertModal: (data: IAPIAlert) => void;
 }
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onDeleteConversation: (data: object) => dispatch(deleteConversation(data)),
   onGhostContact: (data: object) => dispatch(ghostContact(data)),
-  onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data))
+  onSendGhostMessage: (data: object) => dispatch(persistGhostMessage(data)),
+  setAlertModal: (data: IAPIAlert) => dispatch(setAlertModal(data))
 });
 
 class ChatListItem extends React.PureComponent<ChatListItemProps> {
@@ -107,12 +110,14 @@ class ChatListItem extends React.PureComponent<ChatListItemProps> {
   }
 
   showAlert = () => {
-    Alert.alert(
-      'Confirm',
-      'Are you sure you want to remove this conversation?',
-      [{ text: 'Cancel' }, { text: 'YES', onPress: this.deleteConversation }],
-      { cancelable: false }
-    );
+    this.props.setAlertModal({
+      title: 'Please Confirm',
+      body: `Are you sure you want to unmatch?`,
+      alertVisible: true,
+      buttonTitle: 'Cancel',
+      buttonTitle2: 'Unmatch',
+      onPress2: this.deleteConversation
+    });
   }
 
   render() {

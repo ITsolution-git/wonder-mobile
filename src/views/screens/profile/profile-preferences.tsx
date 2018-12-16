@@ -273,7 +273,7 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
             onValueChange={this.onChangeDistanceUnit}
           />
 
-          <SubHeader style={styles.heading}>Interests</SubHeader>
+          <SubHeader style={styles.heading}>Show Me</SubHeader>
 
           <ProfilePreferenceRow
             text={'Women'}

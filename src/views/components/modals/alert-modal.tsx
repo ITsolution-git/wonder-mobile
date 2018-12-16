@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import {
   ImageProperties,
   ImageStyle,
@@ -7,17 +8,27 @@ import {
   View,
   Modal
 } from 'react-native';
+import { Text, PrimaryButton } from 'src/views/components/theme';
+import WonderAppState from 'src/models/wonder-app-state';
 import { colors } from '@assets';
 import images from '@images';
-import { Text, Button, PrimaryButton } from 'src/views/components/theme';
+import { hideAlertModal } from '@actions';
+
+const commonContainer = {
+  flex: 1,
+  width: '100%',
+  justifyContent: 'center',
+  alignItems: 'center'
+};
 
 const localStyles = StyleSheet.create({
   container: {
-    flex: 1,
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    ...commonContainer,
     backgroundColor: colors.primary50
+  },
+  errorContainer: {
+    ...commonContainer,
+    backgroundColor: colors.red50
   },
   subContainer: {
     backgroundColor: colors.white,
@@ -42,7 +53,7 @@ const localStyles = StyleSheet.create({
   }
 });
 
-export interface IFirstTimeModalProps {
+export interface IAlertModalProps {
   icon?: number;
   title: string;
   body: string;
@@ -56,23 +67,28 @@ export interface IFirstTimeModalProps {
   renderWonderful?: boolean;
   buttonTitle2?: string;
   onPress2?: (data?: any) => void;
+  isError: boolean;
+  hideAlertModal: () => void;
+  alertVisible: boolean;
 }
 
-class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
-  public static defaultProps: Partial<IFirstTimeModalProps> = {
+class AlertModal extends React.Component<IAlertModalProps> {
+  public static defaultProps: Partial<IAlertModalProps> = {
     animationType: 'fade',
     resizeMode: 'contain',
     iconStyle: {},
     icon: images.LogoIcon,
     renderWonderful: true,
     buttonTitle: 'Got it!',
-    buttonTitle2: ''
+    buttonTitle2: '',
+    isError: false,
+    alertVisible: false
   };
 
   private renderWonderfulText = (): React.ReactNode => {
-    const { renderWonderful } = this.props;
+    const { renderWonderful, isError } = this.props;
 
-    if (!renderWonderful) {
+    if (!renderWonderful || isError) {
       return null;
     }
 
@@ -92,19 +108,35 @@ class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
   }
 
   private handleOnPress = (): void => {
-    const { onPress, onRequestClose } = this.props;
+    const { isError, onPress, onRequestClose } = this.props;
+
+    if (isError) {
+      this.props.hideAlertModal();
+
+      if (onPress) {
+        onPress();
+      }
+
+      return;
+    }
 
     onRequestClose();
     onPress();
   }
 
   private handleOnPress2 = (): void => {
-    const { onPress2, onRequestClose } = this.props;
+    const { onPress2, onRequestClose, isError } = this.props;
 
-    onRequestClose();
+    if (onRequestClose) {
+      onRequestClose();
+    }
 
     if (onPress2) {
       onPress2();
+    }
+
+    if (isError) {
+      this.props.hideAlertModal();
     }
   }
 
@@ -119,20 +151,24 @@ class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
       onRequestClose,
       animationType,
       resizeMode,
-      buttonTitle2
+      buttonTitle2,
+      isError,
+      alertVisible
     } = this.props;
 
     return (
       <Modal
         onRequestClose={onRequestClose}
         animationType={animationType}
-        visible={visible}
+        visible={visible || alertVisible}
         transparent={true}
       >
-        <View style={localStyles.container}>
+        <View
+          style={isError ? localStyles.errorContainer : localStyles.container}
+        >
           <View style={localStyles.subContainer}>
             <Image
-              source={icon}
+              source={isError ? images.warning : icon}
               style={[localStyles.icon, iconStyle]}
               resizeMode={resizeMode}
             />
@@ -167,4 +203,13 @@ class FirstTimeModal extends React.Component<IFirstTimeModalProps> {
   }
 }
 
-export { FirstTimeModal };
+const mapStateToProps = ({ apiAlert }: WonderAppState) => ({
+  ...apiAlert
+});
+
+const ConnectedAlert = connect(
+  mapStateToProps,
+  { hideAlertModal }
+)(AlertModal);
+
+export { AlertModal, ConnectedAlert };
