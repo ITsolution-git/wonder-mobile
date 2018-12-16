@@ -112,6 +112,11 @@ class AlertModal extends React.Component<IAlertModalProps> {
 
     if (isError) {
       this.props.hideAlertModal();
+
+      if (onPress) {
+        onPress();
+      }
+
       return;
     }
 
@@ -120,12 +125,18 @@ class AlertModal extends React.Component<IAlertModalProps> {
   }
 
   private handleOnPress2 = (): void => {
-    const { onPress2, onRequestClose } = this.props;
+    const { onPress2, onRequestClose, isError } = this.props;
 
-    onRequestClose();
+    if (onRequestClose) {
+      onRequestClose();
+    }
 
     if (onPress2) {
       onPress2();
+    }
+
+    if (isError) {
+      this.props.hideAlertModal();
     }
   }
 

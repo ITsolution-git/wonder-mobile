@@ -6,7 +6,9 @@ export interface IAPIAlert {
   buttonTitle: string;
   buttonTitle2?: string;
   alertVisible: boolean;
-  isError: boolean;
+  isError?: boolean;
+  onPress?: () => void;
+  onPress2?: () => void;
 }
 
 export const SET_API_ALERT = 'SET_API_ALERT';

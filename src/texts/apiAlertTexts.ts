@@ -41,3 +41,19 @@ export const twoPhotoMinimumAlertTexts = {
   buttonTitle: 'Okay',
   alertVisible: true
 };
+
+export const confirmLogoutAlertTexts = {
+  title: 'Confirm Logout',
+  body: `Are you sure you want to Log Out? There are more Wonder'ful people on here for you to meet.`,
+  buttonTitle: `Keep Wonder'n`,
+  buttonTitle2: `Logout`,
+  alertVisible: true
+};
+
+export const confirmDeactivateAlertTexts = {
+  title: 'Confirm Logout',
+  body: `Are you sure you want to deactivate your account? There are more Wonder'ful people on here for you to meet.`,
+  buttonTitle: `Keep Wonder'n`,
+  buttonTitle2: `Deactivate`,
+  alertVisible: true
+};
