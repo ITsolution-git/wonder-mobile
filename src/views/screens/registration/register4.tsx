@@ -22,6 +22,8 @@ import WonderAppState from '../../../models/wonder-app-state';
 import WonderPickerItem from 'src/views/components/theme/wonder-picker/wonder-picker-item';
 import WonderPickerSectionList from 'src/views/components/theme/wonder-picker/wonder-picker-sectionlist';
 import PickedWonders from 'src/views/components/theme/wonder-picker/picked-wonders';
+import { setAlertModal } from '@actions';
+import { only3WondersAlertTexts } from '@texts';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -29,6 +31,7 @@ interface Props {
   getAllTopics: Function;
   onSave: Function;
   onRegister: Function;
+  setAlertModal: () => void;
 }
 
 interface State {
@@ -43,7 +46,8 @@ const mapState = (state: WonderAppState) => ({
 const mapDispatch = (dispatch: Dispatch) => ({
   getAllTopics: () => dispatch(getTopics()),
   onSave: (data: any) => dispatch(persistRegistrationInfo(data)),
-  onRegister: () => dispatch(registerUser())
+  onRegister: () => dispatch(registerUser()),
+  setAlertModal: () => dispatch(setAlertModal(only3WondersAlertTexts))
 });
 
 const chosenItems = (arr: string[]) => {
@@ -79,10 +83,15 @@ class Register4 extends React.Component<Props, State> {
   onChangeSelected = (topic: Topic) => {
     const limit = 3;
     const { selected } = this.state;
-    if (
-      (!limit || selected.length < limit) &&
-      !selected.filter((t: Topic) => t.name === topic.name).length
-    ) {
+
+    const isRemoving = !!selected.filter((t: Topic) => t.name === topic.name)
+      .length;
+
+    if (selected.length === limit && !isRemoving) {
+      return this.props.setAlertModal();
+    }
+
+    if ((!limit || selected.length < limit) && !isRemoving) {
       this.setState({ selected: [...selected, topic] });
     } else {
       this.setState({
