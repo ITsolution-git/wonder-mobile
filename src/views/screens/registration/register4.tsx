@@ -154,7 +154,6 @@ class Register4 extends React.Component<Props, State> {
     if (selected.length === 3) {
       onSave({ topic_ids: selected.map((s: Topic) => s.id) });
       onRegister();
-      this.props.navigation.navigate('Register3');
     }
   }
 

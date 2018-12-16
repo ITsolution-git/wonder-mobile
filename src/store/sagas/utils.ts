@@ -6,16 +6,42 @@ export const getStoreState = () => getStore().getState();
 
 export const handleAxiosError = (error: any) => {
   if (error.response) {
+    const stringedError = JSON.stringify(error);
+    console.log(`API error:`, error.response);
+    console.log(`API stringed error:`, stringedError);
+
     const { data, config } = error.response;
     const { dispatch } = getStore();
 
     // TODO: map the error responses to texts to them dispatch here
 
-    dispatch(
-      setAlertModal({
-        ...alertTexts.loginAlertTexts
-      })
-    );
+    if (config.data.includes('verify') && data.message === 'Not found') {
+      dispatch(
+        setAlertModal({
+          ...alertTexts.loginAlertTexts
+        })
+      );
+    }
+
+    if (
+      data.errors &&
+      data.errors.email[0] &&
+      data.errors.email[0] === 'has already been taken'
+    ) {
+      dispatch(
+        setAlertModal({
+          ...alertTexts.emailInUseAlertTexts
+        })
+      );
+    }
+
+    if (data.message === 'Not a unique record') {
+      dispatch(
+        setAlertModal({
+          ...alertTexts.phoneInUseAlertTexts
+        })
+      );
+    }
 
     // Alert.alert(
     //   `HTTP ${error.response.status}`,
@@ -30,7 +56,6 @@ export const handleAxiosError = (error: any) => {
     //   )
     // );
   } else {
-    // tslint:disable-next-line
     console.log(`error:`, error);
     console.warn(error);
   }
