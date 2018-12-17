@@ -34,7 +34,7 @@ const localStyles = StyleSheet.create({
     backgroundColor: colors.white,
     padding: 25,
     alignItems: 'center',
-    width: '60%',
+    width: '70%',
     borderRadius: 5
   },
   icon: {
@@ -158,7 +158,7 @@ class AlertModal extends React.Component<IAlertModalProps> {
 
     return (
       <Modal
-        onRequestClose={onRequestClose}
+        onRequestClose={onRequestClose || this.props.hideAlertModal}
         animationType={animationType}
         visible={visible || alertVisible}
         transparent={true}

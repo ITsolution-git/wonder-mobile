@@ -107,6 +107,7 @@ export default class SwipeView extends React.Component<
         <ScrollView
           onScroll={this.onScroll}
           pagingEnabled
+          scrollEventThrottle={16}
           showsHorizontalScrollIndicator={false}
           ref={(list) => {
             this.list = list;

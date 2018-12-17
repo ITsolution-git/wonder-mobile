@@ -15,7 +15,11 @@ export const handleAxiosError = (error: any) => {
 
     // TODO: map the error responses to texts to them dispatch here
 
-    if (config.data.includes('verify') && data.message === 'Not found') {
+    if (
+      config.data &&
+      config.data.includes('verify') &&
+      data.message === 'Not found'
+    ) {
       dispatch(
         setAlertModal({
           ...alertTexts.loginAlertTexts

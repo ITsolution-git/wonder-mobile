@@ -249,7 +249,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
       visible: modalOpen.includes('firstTime'),
       title: isFirst ? 'Wonders' : `About`,
       body: isFirst
-        ? 'Wonders with Circles around them are Wonders you have in common!'
+        ? '"Activities" with circles around them are "Wonders" you have in common!'
         : 'Press the right bottom arrow to learn more about someone!',
       renderWonderful: false,
       onRequestClose: this.onCloseFirstModal,
@@ -272,7 +272,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
       visible: !!modalOpen && !modalOpen.includes('firstTime'),
       title: isPass ? "It's a Pass?" : `Wonder'n about ${name}?`,
       body: isPass
-        ? "Swiping left means you don't want to get to them."
+        ? "Swiping left means you don't want to get to know them."
         : 'Swiping right means you wanna chat with them.',
       buttonTitle: 'Cancel',
       buttonTitle2: isPass ? 'Pass' : 'Yep',
