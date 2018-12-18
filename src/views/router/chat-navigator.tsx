@@ -75,7 +75,7 @@ const ChatNavigator = createStackNavigator(
     AppointmentConfirm: {
       screen: AppointmentConfirm,
       navigationOptions: {
-        title: 'Confirm Your Wonder',
+        title: 'CONFIRM YOUR WONDER',
         ...theme.NavBar.transparent,
         headerRight:(<View></View>)
       }
