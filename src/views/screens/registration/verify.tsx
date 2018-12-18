@@ -61,7 +61,7 @@ class VerifyScreen extends React.PureComponent {
         </View>
         </View>
         <View style={styles.lowerContainer}>
-            <PrimaryButton title='Next' onPress={this.onSubmit} />
+            <PrimaryButton rounded={false} title='Next' onPress={this.onSubmit} />
         </View>
       </View>
     );
@@ -95,8 +95,7 @@ const styles = StyleSheet.create({
   lowerContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    padding: 15,
-    paddingBottom: 25
+    paddingTop: 15,
   },
   container: {
     flex: 1,

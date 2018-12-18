@@ -1,3 +1,5 @@
+import React from 'react';
+import { View } from 'react-native';
 import theme from 'src/assets/styles/theme';
 import { createStackNavigator } from 'react-navigation';
 import {
@@ -12,6 +14,8 @@ import {
   ProfileVideo
 } from '../screens';
 
+// Why Header Right is needed: https://github.com/react-navigation/react-navigation/issues/544#issuecomment-376443134
+
 const RegistrationNavigator = createStackNavigator(
   {
     Welcome: {
@@ -24,13 +28,15 @@ const RegistrationNavigator = createStackNavigator(
       screen: Login,
       navigationOptions: {
         title: 'LOGIN',
+        headerRight: (<View />),
         ...theme.NavBar.transparent
-      }
+      },
     },
     Verify: {
       screen: VerifyScreen,
       navigationOptions: {
         title: 'VERIFY',
+        headerRight: (<View />),
         ...theme.NavBar.transparent
       }
     },
@@ -38,6 +44,7 @@ const RegistrationNavigator = createStackNavigator(
       screen: Register1,
       navigationOptions: {
         title: 'CREATE ACCOUNT',
+        headerRight: (<View />),
         ...theme.NavBar.transparent
       }
     },
@@ -45,6 +52,7 @@ const RegistrationNavigator = createStackNavigator(
       screen: Register2,
       navigationOptions: {
         title: 'CREATE ACCOUNT',
+        headerRight: (<View />),
         ...theme.NavBar.transparent
       }
     },
@@ -52,6 +60,7 @@ const RegistrationNavigator = createStackNavigator(
       screen: Register3,
       navigationOptions: {
         title: 'CREATE ACCOUNT',
+        headerRight: (<View />),
         ...theme.NavBar.transparent
       }
     },
@@ -59,20 +68,23 @@ const RegistrationNavigator = createStackNavigator(
       screen: Register4,
       navigationOptions: {
         title: 'YOUR WONDERS',
+        headerRight: (<View />),
         ...theme.NavBar.transparent
       }
     },
     ProfileCamera: {
       screen: ProfileCamera,
       navigationOptions: {
-        title: 'Profile Selfie',
+        title: 'PROFILE SELFIE',
+        headerRight: (<View />),
         ...theme.NavBar.transparent
       }
     },
     ProfileVideo: {
       screen: ProfileVideo,
       navigationOptions: {
-        title: 'Vibe Video',
+        title: 'VIBE VIDEO',
+        headerRight: (<View />),
         ...theme.NavBar.transparent
       }
     }
