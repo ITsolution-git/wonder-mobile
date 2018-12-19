@@ -16,7 +16,6 @@ import User from 'src/models/user';
 import { Response } from 'src/models/image-picker';
 import theme from 'src/assets/styles/theme';
 import { AlertModal } from '@components';
-// import images from '@images';
 
 const mapState = (state: WonderAppState) => ({
   currentUser: selectCurrentUser(state)
@@ -45,7 +44,7 @@ class ProfileMediaScreen extends React.Component<Props, State> {
     hasSeenModal: false
   };
 
-  onSave = () => {
+  private onSave = () => {
     const {
       onUpdateUser,
       navigation,
@@ -61,8 +60,12 @@ class ProfileMediaScreen extends React.Component<Props, State> {
     }
   }
 
-  onAboutChange = (text: string) => {
+  private onAboutChange = (text: string) => {
     this.setState({ about: text });
+  }
+
+  private navToNewPicture = (data: Response | null) => {
+    this.props.navigation.navigate('ProfileCamera', { data });
   }
 
   private navToVideo = (data: Response | null) => {
@@ -117,9 +120,7 @@ class ProfileMediaScreen extends React.Component<Props, State> {
                   <MediaGrid
                     width={Device.WIDTH - 80}
                     gutter={2}
-                    onNewPicture={(data: Response | null) =>
-                      navigation.navigate('ProfileCamera', { data })
-                    }
+                    onNewPicture={this.navToNewPicture}
                     onNewVideo={this.navToVideo}
                   />
                 </View>
