@@ -22,6 +22,9 @@ import { DecoratedAppointment } from 'src/models/appointment';
 import RNCalendarEvents from 'react-native-calendar-events';
 import WonderImage from '../../components/theme/wonder-image';
 
+const Viewport = Dimensions.get('window');
+
+const IPHONE5_WIDTH = 640;
 const { height } = Dimensions.get('window');
 
 const mapState = (state: WonderAppState) => ({
@@ -108,23 +111,21 @@ class AppointmentConfirmScreen extends React.Component<
       return (
         <View flex={1}>
           <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-              <ScrollView
-                  style={styles.container}
-              >
-                <View style={styles.scrollViewContainer}>
-                  <View style={{ alignItems: 'center', marginBottom: 15, marginTop: 20 }}>
-                    <Avatar
-                        size={AvatarSize.xl}
-                        circle
-                        uri={_.get(match, 'images[0].url', null)}
-                    />
-                  </View>
-                  <Text style={[styles.mainFontSize, { textAlign: 'center', }]}>
-                    Invite {match.first_name}{'\n'}
-                    on a {appointment.topic.name} Date to:{'\n'}
-                  </Text>
-                  <View style={styles.body}>
-                    <View style={{ width: '80%' }}>
+              <View style={styles.scrollViewContainer}>
+                <View style={{ alignItems: 'center', marginBottom: 15, marginTop: 20 }}>
+                  <Avatar
+                      size={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? AvatarSize.md : AvatarSize.xl}
+                      circle
+                      uri={_.get(match, 'images[0].url', null)}
+                  />
+                </View>
+                <Text style={[{ textAlign: 'center', }, styles.mainFontSize, ]}>
+                  Invite {match.first_name}{'\n'}
+                  on a {appointment.topic.name} Date to:
+                </Text>
+                <View style={{justifyContent: 'center', flex: 1}}>
+                  <View style={[styles.body]}>
+                    <View>
                       <Text style={[styles.mainFontSize, styles.activityName]}>{activity.name}</Text>
                       <Text
                           style={[styles.mainFontSize, styles.addressText]}
@@ -136,7 +137,8 @@ class AppointmentConfirmScreen extends React.Component<
                               )
                           }
                       >
-                        {activity.location.join(',\n')}
+                        {activity.location.slice(0, 1) + '\n' + activity.location
+                            .slice(1, activity.location.length).join(', ')}
                       </Text>
 
                       {eventMoment && (
@@ -163,13 +165,12 @@ class AppointmentConfirmScreen extends React.Component<
                         </Text>
                       </TouchableOpacity>
                     </View>
-                    <View style={{ width: '20%', alignItems: 'flex-end' }}>
-                      <WonderImage style={{ height: 57, width: 57 }} uri={appointment.topic.icon} />
+                    <View style={{ alignItems: 'flex-start' }}>
+                      <WonderImage style={styles.WonderIcon} uri={appointment.topic.icon} />
                     </View>
                   </View>
                 </View>
-              </ScrollView>
-              <Text>{console.log(appointment, activity)}</Text>
+              </View>
           </View>
 
           <View>
@@ -240,21 +241,28 @@ export default connect(
 const styles = StyleSheet.create({
   body: {
     flex: 1,
+    height: '100%',
+    width: '100%',
     flexDirection: 'row',
-    marginTop: 15,
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
+    // marginTop: 15,
+    paddingHorizontal: 30,
+    justifyContent: 'space-around',
     alignItems: 'center',
     alignContent: 'center',
+    alignSelf: 'center',
   },
-
-  scrollView : {
-    height : Dimensions.get('window').height, }, mainContainer : {
-    flex : 1 },
-  scrollViewContainer : { },
-
+  scrollView: {
+    height : Dimensions.get('window').height,
+  },
+  mainContainer : {
+    flex : 1,
+  },
+  scrollViewContainer: {
+    flex: 1,
+    alignItems: 'center'
+  },
   mainFontSize: {
-    fontSize: 17,
+    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 13 : 16,
   },
   activityName: {
     color: '#000',
@@ -274,15 +282,18 @@ const styles = StyleSheet.create({
     color: 'rgb(0, 122, 255)',
     marginLeft: 0,
     textAlign: 'left',
-    fontSize: 16,
+    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 12 : 15,
   },
   container: {
     paddingHorizontal: 20,
-    // flex: 1,
     backgroundColor: '#FFF',
   },
   footer: {
     marginBottom: 10,
     paddingHorizontal: 20,
+  },
+  WonderIcon: {
+    height: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 39 : 48,
+    width: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 39 : 48,
   }
 });
