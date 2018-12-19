@@ -3,14 +3,15 @@ import { persistStore, persistReducer } from "redux-persist";
 import applyAppStateListener from "redux-enhancer-react-native-appstate";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
-import { PURGE } from "@utils";
 import rootReducer from "./reducers";
 import rootSaga from "./sagas";
 import Reactotron from "reactotron-react-native";
+import { PURGE, blacklist } from "@utils";
 
 const persistConfig = {
   key: "root",
   storage,
+  blacklist,
 };
 
 const composeEnhancers =
@@ -26,7 +27,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const sagaMiddleware = createSagaMiddleware();
 const middlewares = [sagaMiddleware];
 
-export default (initialState) => {
+const configureStore = (initialState) => {
   // create store and persistor per normal...
   const makeStore = __DEV__ ? Reactotron.createStore : createStore;
   //   const makeStore = createStore;
@@ -56,3 +57,5 @@ export default (initialState) => {
 
   return { store, persistor };
 };
+
+export const { store, persistor } = configureStore();

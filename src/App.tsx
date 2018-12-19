@@ -6,13 +6,14 @@ import { SafeAreaView, Platform, Dimensions } from 'react-native';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from 'react-redux';
 import { AppLoader } from '@components';
-import configureStore from './store/configureStore';
+import { store, persistor } from '@store';
 import AppRouter from './views/router';
 import { MenuProvider } from 'react-native-popup-menu';
+import { ConnectedAlert } from '@components';
+// import { loginAlertTexts } from '@texts';
 
 // Allow access to navigation in sagas
 export let navigatorRef: any;
-const { store, persistor } = configureStore();
 
 const isIphoneX = () => {
   const { height, width } = Dimensions.get('window');
@@ -51,6 +52,7 @@ export default class App extends Component {
       <MenuProvider>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
+            <ConnectedAlert />
             <AppLoader />
             <Root>{this.renderContent()}</Root>
           </PersistGate>

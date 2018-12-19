@@ -31,13 +31,14 @@ const gradient = [
   lighten(theme.colors.primaryLight, 0.1),
   lighten(theme.colors.primary, 0.1)
 ];
+
 class FoundMatchModal extends React.Component<FoundMatchModalProps> {
   static defaultProps = {
     visible: false
   };
 
   getCandidateImage = () => {
-    const { candidate } = this.props.proposal;
+    const {candidate} = this.props.proposal;
     if (candidate.images && candidate.images.length) {
       return candidate.images[0].url;
     }
@@ -45,7 +46,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
   }
 
   getCurrentUserImage = () => {
-    const { currentUser } = this.props;
+    const {currentUser} = this.props;
     if (currentUser.images && currentUser.images.length) {
       return currentUser.images[0].url;
     }
@@ -53,7 +54,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
   }
 
   renderModalContent = () => {
-    const { proposal, onRequestClose, onSuccess } = this.props;
+    const {proposal, onRequestClose, onSuccess} = this.props;
 
     if (proposal && proposal.candidate) {
       return (
@@ -62,39 +63,48 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
             <Text style={[styles.txt]}>
               {proposal.candidate.first_name} thinks
             </Text>
-            {/* <LinearGradient colors={text}> */}
-            <Text style={[styles.txt, styles.wonderfulTxt]}>
-              YOU'RE WONDERFUL
-            </Text>
-            {/* </LinearGradient> */}
+            <View style={{width: '98%', height: 116}}>
+              <Image
+                source={Images.yourWonderful}
+                style={{flex: 1, height: undefined, width: undefined}}
+                resizeMode='contain'
+              />
+            </View>
             <Text style={[styles.txt]}>
-              Tell {proposal.candidate.first_name} you think they are wonderful
+              Tell {proposal.candidate.first_name} you think they are Wonder'ful
               too!
             </Text>
             <View style={styles.row}>
               <Avatar
-                size={AvatarSize.md}
+                size={AvatarSize.xl}
                 uri={this.getCurrentUserImage()}
                 circle
+                bordered
+                style={styles.avatar}
+                containerStyle={styles.leftMatchAvatar}
               />
               <Image
                 source={Images.LogoIcon}
-                style={{ width: 50, height: 50 }}
+                style={{width: 50, height: 50, zIndex: 2}}
               />
               <Avatar
-                size={AvatarSize.md}
+                size={AvatarSize.xl}
+                containerStyle={styles.rightMatchAvatar}
                 uri={this.getCandidateImage()}
+                style={styles.avatar}
                 circle
+                bordered
               />
             </View>
           </View>
-          <View flex={1}>
+          <View flex={2} style={{paddingHorizontal: 100}}>
             <PrimaryButton
               title='Send Message'
               onPress={() => onSuccess(proposal)}
+              style={styles.primaryButtonStyle}
             />
-            <View style={styles.spacer} />
-            <OutlineButton title="Keep Wonder'N" onPress={onRequestClose} />
+            <View style={styles.spacer}/>
+            <OutlineButton title="Keep Wonder'n" onPress={onRequestClose} />
           </View>
         </LinearGradient>
       );
@@ -128,13 +138,27 @@ const styles = StyleSheet.create({
   },
   txt: {
     textAlign: 'center',
-    color: '#FFF'
+    color: '#FFF',
+    fontSize: 24,
+    fontFamily: 'Poppins-Bold'
   },
   row: {
-    marginTop: 15,
+    marginTop: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center'
+  },
+  primaryButtonStyle: {
+    fontSize: 30
+  },
+  leftMatchAvatar: {
+    right: -20,
+  },
+  rightMatchAvatar: {
+    left: -20,
+  },
+  avatar: {
+    borderColor: 'white'
   }
 });

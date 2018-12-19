@@ -54,9 +54,10 @@ import {
 import Wonder from '../../components/theme/wonder/wonder';
 import WonderImage from '../../components/theme/wonder-image';
 import { confirmAppointment } from 'src/store/sagas/appointment';
-import { FirstTimeModal, IFirstTimeModalProps } from '@components';
+import { AlertModal, IAlertModalProps } from '@components';
 import RNCalendarEvents from 'react-native-calendar-events';
 import moment from 'moment';
+import { setAlertModal, IAPIAlert } from '@actions';
 
 const { height } = Dimensions.get('window');
 
@@ -71,6 +72,7 @@ interface AppointmentViewProps {
   onGetConversation: (partnerId: number) => void;
   onDeclineAppointment: (data: DecoratedAppointment) => void;
   onCancelAppointment: (data: DecoratedAppointment) => void;
+  setAlertModal: (data: IAPIAlert) => void;
 }
 
 interface AppointmentViewState {
@@ -92,7 +94,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
     dispatch(deleteAttendance(data)),
   onReviewDate: (data) => dispatch(reviewDate(data)),
   onConfirmAppointment: (appointment: DecoratedAppointment) =>
-    dispatch(confirmAppointment({ appointment }))
+    dispatch(confirmAppointment({ appointment })),
+  setAlertModal: (data: IAPIAlert) => dispatch(setAlertModal(data))
 });
 
 class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
@@ -270,6 +273,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       'appointment',
       {}
     );
+
     Alert.alert(
       'Confirm Decline',
       'Are you sure you want to decline?',
@@ -297,18 +301,15 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
       'appointment',
       {}
     );
-    Alert.alert(
-      'Confirm Cancel',
-      'Are you sure you want to cancel?',
-      [
-        { text: 'Cancel' },
-        {
-          text: 'YES',
-          onPress: () => this.cancelAndGoToChat(appointment)
-        }
-      ],
-      { cancelable: false }
-    );
+
+    this.props.setAlertModal({
+      title: 'Confirm Cancel',
+      body: `Are you sure you want to cancel?`,
+      alertVisible: true,
+      buttonTitle: 'Keep Date',
+      buttonTitle2: 'Yes',
+      onPress2: () => this.cancelAndGoToChat(appointment)
+    });
   }
 
   openAddress = (lat, lng, label) => {
@@ -359,7 +360,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     });
   }
 
-  private getModalProps = (): IFirstTimeModalProps => {
+  private getModalProps = (): IAlertModalProps => {
     const { modalOpen } = this.state;
 
     const isPass = modalOpen === 'pass';
@@ -581,7 +582,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             </View>
           </View>
         </View>
-        <FirstTimeModal {...this.getModalProps()} />
+        <AlertModal {...this.getModalProps()} />
         <AppointmentReviewModal
           onRequestClose={this.closeReviewModal}
           visible={this.state.isModalOpen}

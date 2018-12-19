@@ -1,6 +1,6 @@
 export const Logo = {
   LIGHT: require('./wonder/logo-light.png'),
-  DARK: require('./wonder/logo-dark.png'),
+  DARK: require('./wonder/logo-dark.png')
 };
 
 export default {
@@ -11,4 +11,6 @@ export default {
   ONBOARDING_3: require('./backgrounds/onboard_3.png'),
   WELCOME: require('./backgrounds/welcome.png'),
   GhostButton: require('./buttons/ghosting.png'),
+  warning: require('./icons/warning.png'),
+  yourWonderful: require('./icons/yourWonderful.png'),
 };

@@ -15,7 +15,7 @@ import WonderAppState from 'src/models/wonder-app-state';
 import User from 'src/models/user';
 import { Response } from 'src/models/image-picker';
 import theme from 'src/assets/styles/theme';
-import { FirstTimeModal } from '@components';
+import { AlertModal } from '@components';
 // import images from '@images';
 
 const mapState = (state: WonderAppState) => ({
@@ -81,7 +81,7 @@ class ProfileMediaScreen extends React.Component<Props, State> {
 
     return (
       <Screen>
-        <FirstTimeModal
+        <AlertModal
           onPress={this.navToVideo}
           title={'VIBE VIDEO'}
           body={

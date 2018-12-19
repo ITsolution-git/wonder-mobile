@@ -47,6 +47,8 @@ import theme from '../../../assets/styles/theme';
 import Wonder from '../../components/theme/wonder/wonder';
 import Color from 'color';
 import { INITIAL_PROFILE_NAV } from '@utils';
+import { setAlertModal, IAPIAlert } from '@actions';
+import { confirmLogoutAlertTexts, confirmDeactivateAlertTexts } from '@texts';
 
 const { height } = Dimensions.get('window');
 
@@ -72,6 +74,7 @@ interface Props {
   onRefreshProfile: () => void;
   deactivateUsersAccount: (data: { id: number; token: string }) => void;
   auth: AuthToken;
+  setAlertModal: (data: IAPIAlert) => void;
 }
 
 const mapState = (state: WonderAppState) => ({
@@ -80,6 +83,7 @@ const mapState = (state: WonderAppState) => ({
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
+  setAlertModal: (data: IAPIAlert) => dispatch(setAlertModal(data)),
   onLogout: (id: number, token: string) => dispatch(logoutUser({ id, token })),
   onRefreshProfile: () => dispatch(getUser()),
   deactivateUsersAccount: ({ id, token }: { id: number; token: string }) =>
@@ -120,29 +124,19 @@ class ProfileViewScreen extends React.Component<Props> {
     return null;
   }
   deactivateAccount = () => {
-    const { currentUser } = this.props;
     const {
       auth: { uid: id, token }
     } = this.props;
 
-    const options = [
-      { text: 'Cancel' },
-      {
-        text: 'Yes',
-        onPress: () => {
-          this.props.deactivateUsersAccount({
-            id,
-            token
-          });
-        }
+    this.props.setAlertModal({
+      ...confirmDeactivateAlertTexts,
+      onPress2: () => {
+        this.props.deactivateUsersAccount({
+          id,
+          token
+        });
       }
-    ];
-
-    Alert.alert(
-      'Confirm Deactivate Account',
-      'Are you sure you want to deactivate your account?',
-      options
-    );
+    });
   }
 
   showFaq = (url) => {
@@ -157,12 +151,11 @@ class ProfileViewScreen extends React.Component<Props> {
 
   promptLogout = () => {
     const { onLogout, auth } = this.props;
-    const options = [
-      { text: 'Cancel', onPress: _.noop },
-      { text: 'Yes, Logout', onPress: () => onLogout(auth.uid, auth.token) }
-    ];
 
-    Alert.alert('Confirm Logout', 'Are you sure you want to logout?', options);
+    this.props.setAlertModal({
+      ...confirmLogoutAlertTexts,
+      onPress2: () => onLogout(auth.uid, auth.token)
+    });
   }
 
   openProfileModal = () => {

@@ -4,64 +4,40 @@ import MultiSlider from 'react-native-multi-slider';
 import theme from 'src/assets/styles/theme';
 import { Text } from 'src/views/components/theme';
 import { width as WIDTH } from '@assets';
+import { IOS } from '@utils';
+
+const commonMarker = {
+  position: 'absolute',
+  minWidth: 15
+};
 
 const localStyles = StyleSheet.create({
   container: { flex: 1, flexDirection: 'row' },
-  sliderContainer: { height: 70, width: '100%' },
+  sliderContainer: {},
   track: {
     backgroundColor: theme.colors.lightGray,
     width: '100%'
   },
   marker: {
-    width: 30,
-    height: 10,
+    width: 10,
+    height: 30,
     borderRadius: 5,
     backgroundColor: theme.colors.lightPeach,
     borderWidth: 0,
-    overflow: 'visible',
-    shadowColor: theme.colors.black,
-    shadowOffset: {
-      width: 0,
-      height: 0
-    },
-    elevation: 0,
-    shadowRadius: 0,
-    shadowOpacity: 0
+    overflow: 'visible'
   },
   selected: {
     backgroundColor: theme.colors.lightPeach
   },
   sliderValueText: {
-    position: 'absolute',
-    bottom: -20,
-    alignSelf: 'center'
+    ...commonMarker,
+    top: -20
+    // right: -2
   },
-  triangle: {
-    position: 'absolute',
-    top: -10,
-    height: 0,
-    width: 0,
-    backgroundColor: theme.colors.lightPeach,
-    borderStyle: 'solid',
-    borderTopWidth: 0,
-    borderRightWidth: 5,
-    borderBottomWidth: 10,
-    borderLeftWidth: 5,
-    borderTopColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: theme.colors.peach,
-    borderLeftColor: 'transparent'
-  },
-  sliderValueContainer: {
-    position: 'absolute',
+  sliderValueText2: {
+    ...commonMarker,
     bottom: -40,
-    paddingVertical: 2.5,
-    // paddingHorizontal: 15,
-    width: 35,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.lightPeach
+    right: -4
   }
 });
 
@@ -114,14 +90,6 @@ class MultiPointSlider extends React.Component<
     selectedMax: this.props.initialMaxValue || this.props.max
   };
 
-  //   private renderCustomMarkerLeft = (): React.ReactNode => {
-  //     return <View style={localStyles.marker} />;
-  //   };
-
-  //   private renderCustomMarkerRight = (): React.ReactNode => {
-  //     return <View style={localStyles.marker} />;
-  //   };
-
   private onValuesChange = (vals: number[]): void => {
     console.log(`vals:`, vals);
     const { onValueChange } = this.props;
@@ -136,26 +104,25 @@ class MultiPointSlider extends React.Component<
   private renderValue1 = (): React.ReactNode => {
     const { selectedMin } = this.state;
 
+    if (!IOS) {
+      return null;
+    }
     return (
       <Text size={12} style={localStyles.sliderValueText}>
         {`${selectedMin}`}
       </Text>
     );
-
-    // NK: to implemente full design, WIP
-
-    // return (
-    //   <View style={localStyles.sliderValueContainer}>
-    //     <View style={localStyles.triangle} />
-    //     <Text color={theme.colors.white} size={14}>{`${selectedMin}`}</Text>
-    //   </View>
-    // );
   }
 
   private renderValue2 = (): React.ReactNode => {
     const { selectedMax } = this.state;
+
+    if (!IOS) {
+      return null;
+    }
+
     return (
-      <Text size={12} style={localStyles.sliderValueText}>
+      <Text size={12} style={localStyles.sliderValueText2}>
         {`${selectedMax}`}
       </Text>
     );
@@ -178,7 +145,7 @@ class MultiPointSlider extends React.Component<
           trackStyle={localStyles.track}
           containerStyle={localStyles.sliderContainer}
           onValuesChange={this.onValuesChange}
-          markerOffsetX={10}
+          //   markerOffsetX={10}
         />
       </View>
     );

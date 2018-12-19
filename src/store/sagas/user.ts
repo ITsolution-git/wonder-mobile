@@ -99,6 +99,7 @@ export function* registerUserSaga() {
     });
 
     yield put(persistRegistrationInfo(data));
+    NavigatorService.navigate('Register3');
 
     // yield put(loginUser({ email, password }));
   } catch (error) {

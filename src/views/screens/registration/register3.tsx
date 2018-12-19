@@ -16,10 +16,13 @@ import WonderAppState from '../../../models/wonder-app-state';
 import { persistRegistrationInfo } from '../../../store/reducers/registration';
 import { Device } from 'src/assets/styles/theme';
 import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view';
+import { setAlertModal } from '@actions';
+import { twoPhotoMinimumAlertTexts } from '@texts';
 
 interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   onSave: Function;
+  setAlertModal: () => void;
 }
 
 interface State {
@@ -41,7 +44,8 @@ const mapState = (state: WonderAppState) => ({
 const mapDispatch = (dispatch: Dispatch) => ({
   onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
   onLogin: (data) => dispatch(loginUser(data)),
-  onGetVerification: (data) => dispatch(getVerification(data))
+  onGetVerification: (data) => dispatch(getVerification(data)),
+  setAlertModal: () => dispatch(setAlertModal(twoPhotoMinimumAlertTexts))
 });
 
 class Register3 extends React.Component<Props, State> {
@@ -68,7 +72,11 @@ class Register3 extends React.Component<Props, State> {
   private validate = () => {
     const { onSave, registration } = this.props;
 
-    const { about } = this.state;
+    const { about, images } = this.state;
+
+    if (images.length < 2) {
+      return this.props.setAlertModal();
+    }
 
     onSave({ about });
     this.props.onGetVerification(registration.phone);

@@ -25,6 +25,7 @@ import WonderImage from '../../components/theme/wonder-image';
 const Viewport = Dimensions.get('window');
 
 const IPHONE5_WIDTH = 640;
+const { height } = Dimensions.get('window');
 
 const mapState = (state: WonderAppState) => ({
   appointment: state.appointment

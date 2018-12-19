@@ -32,11 +32,11 @@ export function* getConversationsSaga(action: Action<any>) {
       state.user
     );
 
-    yield put(persistConversations(data));
+    if (data) {
+      yield put(persistConversations(data));
+    }
   } catch (error) {
     handleAxiosError(error);
-  } finally {
-    // yield put(getUser());
   }
 }
 export function* watchGetConversations() {

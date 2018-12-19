@@ -1,1 +1,1 @@
-export * from './first-time-modal';
+export * from './alert-modal';

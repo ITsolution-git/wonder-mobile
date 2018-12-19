@@ -15,20 +15,18 @@ import {
   RefreshControl
 } from 'react-native';
 import Slider from 'react-native-slider';
-import theme from 'src/assets/styles/theme';
 
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
 
 import { Dispatch } from 'redux';
 import { updateUser, getUser } from 'src/store/sagas/user';
-import MultiPointSlider, {
-  MultiPointSliderValue
-} from 'src/views/components/theme/multi-point-slider/multi-point-slider';
+import MultiPointSlider from 'src/views/components/theme/multi-point-slider/multi-point-slider';
 import WonderAppState from 'src/models/wonder-app-state';
 import User from 'src/models/user';
 import DistanceUnit from 'src/models/distance-unit';
 import { colors, IOS } from '@assets';
+import { ProfilePreferenceRow, prefRowStyles } from './profile-preference-row';
 
 const mapState = (state: WonderAppState) => ({
   profile: state.user.profile
@@ -63,6 +61,8 @@ interface State {
   apn_new_matches?: boolean;
   apn_new_messages?: boolean;
   apn_message_likes?: boolean;
+  activities_only_interest?: boolean;
+  apn_new_offers?: boolean;
   apn_message_super_likes?: boolean;
   geocoding_requested?: boolean;
 }
@@ -86,15 +86,20 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
     male_interest: profile.male_interest,
     female_interest: profile.female_interest,
     available: profile.available,
-    show_flakers: profile.show_flakers,
-    show_ghosters: profile.show_ghosters,
-    show_fibbers: profile.show_fibbers,
+    show_flakers:
+      profile.show_flakers === undefined ? true : profile.show_flakers,
+    show_ghosters:
+      profile.show_ghosters === undefined ? true : profile.show_ghosters,
+    show_fibbers:
+      profile.show_fibbers === undefined ? true : profile.show_fibbers,
     military_time: profile.military_time,
     distance_unit: profile.distance_unit || DistanceUnit.miles,
     apn_new_matches: profile.apn_new_matches,
     apn_new_messages: profile.apn_new_messages,
     apn_message_likes: profile.apn_message_likes,
     apn_message_super_likes: profile.apn_message_super_likes,
+    activities_only_interest: !!profile.activities_only_interest,
+    apn_new_offers: !!profile.apn_new_offers,
     geocoding_requested: profile.geocoding_requested
   })
 
@@ -148,7 +153,9 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_new_messages,
       apn_message_likes,
       apn_message_super_likes,
-      geocoding_requested
+      geocoding_requested,
+      apn_new_offers,
+      activities_only_interest
     } = this.state;
 
     onSave({
@@ -167,7 +174,9 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_new_messages,
       apn_message_likes,
       apn_message_super_likes,
-      geocoding_requested
+      geocoding_requested,
+      apn_new_offers,
+      activities_only_interest
     });
     navigation.goBack();
   }
@@ -181,7 +190,6 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
   }
 
   render() {
-    const { navigation } = this.props;
     const {
       isRefreshing,
       distance_of_interest_max,
@@ -189,17 +197,19 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       age_of_interest_max,
       male_interest,
       female_interest,
-      available,
-      show_flakers,
       show_ghosters,
-      show_fibbers,
       military_time,
       distance_unit,
       apn_new_matches,
       apn_new_messages,
+      activities_only_interest,
+      apn_new_offers,
+      show_fibbers,
+      show_flakers,
       apn_message_likes,
       apn_message_super_likes,
-      geocoding_requested
+      geocoding_requested,
+      available
     } = this.state;
 
     const ageRangeText = IOS
@@ -216,138 +226,123 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
               onRefresh={this.refresh}
             />
           }
+          contentContainerStyle={styles.contentContainer}
         >
-          <View style={{ paddingHorizontal: 20, flex: 1 }}>
-            <View style={styles.heading}>
-              <SubHeader>Notifications</SubHeader>
-            </View>
-            <View style={styles.row}>
-              <Text>New Matches</Text>
-              <Switch
-                value={!!apn_new_matches}
-                onValueChange={this.onBooleanChange('apn_new_matches')}
-              />
-            </View>
+          <SubHeader style={styles.heading}>Notifications</SubHeader>
+          <ProfilePreferenceRow
+            text={'New Matches'}
+            value={!!apn_new_matches}
+            onValueChange={this.onBooleanChange('apn_new_matches')}
+          />
 
-            <View style={styles.row}>
-              <Text>Messages</Text>
-              <Switch
-                value={!!apn_new_messages}
-                onValueChange={this.onBooleanChange('apn_new_messages')}
-              />
-            </View>
+          <ProfilePreferenceRow
+            text={'Messages'}
+            value={!!apn_new_messages}
+            onValueChange={this.onBooleanChange('apn_new_messages')}
+          />
 
-            <View style={styles.row}>
-              <Text>Activities</Text>
-              <Switch
-                disabled
-                // value={!!true}
-                // onValueChange={this.onBooleanChange('apn_activities')}
-              />
-            </View>
+          {/* <ProfilePreferenceRow
+            text={'Activities'}
+            value={!!activities_only_interest}
+            onValueChange={this.onBooleanChange('activities_only_interest')}
+          /> */}
 
-            <View style={styles.row}>
-              <Text>Products &amp; Services</Text>
-              <Switch
-                disabled
-                // value={!!true}
-                // onValueChange={this.onBooleanChange('apn_activities')}
-              />
-            </View>
+          <ProfilePreferenceRow
+            text={'Products & Services'}
+            value={!!apn_new_offers}
+            onValueChange={this.onBooleanChange('apn_new_offers')}
+          />
 
-            <View style={styles.heading}>
-              <SubHeader>Settings</SubHeader>
-            </View>
-            {/* <View style={styles.row}>
-              <Text>My Location</Text>
-              <Switch
-                value={!!show_location}
-                onValueChange={this.onBooleanChange('show_location')}
-              />
-            </View> */}
+          <SubHeader style={styles.heading}>Settings</SubHeader>
 
-            <View style={styles.row}>
-              <Text>Military Time</Text>
-              <Switch
-                value={military_time}
-                onValueChange={this.onBooleanChange('military_time')}
-              />
-            </View>
+          {/* <ProfilePreferenceRow
+            text={'My Location'}
+            value={!!show_location}
+            onValueChange={this.onBooleanChange('show_location')}
+          /> */}
 
-            <View style={styles.row}>
-              <Text>Units ({distance_unit})</Text>
-              <Switch
-                value={distance_unit === DistanceUnit.miles}
-                onValueChange={this.onChangeDistanceUnit}
-              />
-            </View>
+          <ProfilePreferenceRow
+            text={'Military Time'}
+            value={!!military_time}
+            onValueChange={this.onBooleanChange('military_time')}
+          />
 
-            <View style={styles.heading}>
-              <SubHeader>Interests</SubHeader>
-            </View>
-            <View style={styles.row}>
-              <Text>Women</Text>
-              <Switch
-                value={female_interest}
-                onValueChange={this.onBooleanChange('female_interest')}
-              />
-            </View>
+          <ProfilePreferenceRow
+            text={`Units ${distance_unit}`}
+            value={distance_unit === DistanceUnit.miles}
+            onValueChange={this.onChangeDistanceUnit}
+          />
 
-            <View style={styles.row}>
-              <Text>Men</Text>
-              <Switch
-                value={male_interest}
-                onValueChange={this.onBooleanChange('male_interest')}
-              />
-            </View>
+          <SubHeader style={styles.heading}>Show Me</SubHeader>
 
-            <View style={styles.row}>
-              <Text>Activity Partner</Text>
-              <Switch />
-            </View>
+          <ProfilePreferenceRow
+            text={'Women'}
+            value={!!female_interest}
+            onValueChange={this.onBooleanChange('female_interest')}
+          />
 
-            <View style={styles.heading}>
-              <SubHeader>{`Age Range${ageRangeText}`}</SubHeader>
-            </View>
-            <View style={styles.row}>
-              <MultiPointSlider
-                min={18}
-                max={80}
-                initialMinValue={age_of_interest_min}
-                initialMaxValue={age_of_interest_max}
-                onValueChange={this.onChangeAgeRange}
-              />
-              {}
-              {}
-            </View>
+          <ProfilePreferenceRow
+            text={'Men'}
+            value={!!male_interest}
+            onValueChange={this.onBooleanChange('male_interest')}
+          />
 
-            <View style={styles.heading}>
-              <SubHeader>
-                Distance ({distance_unit}) - {distance_of_interest_max}
-              </SubHeader>
-            </View>
-            <View style={styles.row}>
-              <Slider
-                onValueChange={this.onNumberChange('distance_of_interest_max')}
-                style={{ width: '100%' }}
-                minimumTrackTintColor={colors.lightPeach}
-                trackStyle={styles.track}
-                thumbStyle={styles.thumb}
-                value={distance_of_interest_max}
-                minimumValue={1}
-                maximumValue={50}
-                step={1}
-              />
-            </View>
+          <ProfilePreferenceRow
+            text={'Activity Partner'}
+            value={!!activities_only_interest}
+            onValueChange={this.onBooleanChange('activities_only_interest')}
+          />
 
-            <View style={styles.row}>
-              <Text>Ghosters</Text>
-              <Switch
-                value={show_ghosters}
-                onValueChange={this.onBooleanChange('show_ghosters')}
-              />
-            </View>
+          <SubHeader style={styles.heading}>
+            {`Age Range${ageRangeText}`}
+          </SubHeader>
+
+          <View style={prefRowStyles.row}>
+            <MultiPointSlider
+              min={18}
+              max={80}
+              initialMinValue={age_of_interest_min}
+              initialMaxValue={age_of_interest_max}
+              onValueChange={this.onChangeAgeRange}
+            />
           </View>
+
+          <SubHeader style={styles.heading}>
+            Distance ({distance_unit}) - Up to {distance_of_interest_max}
+          </SubHeader>
+
+          <View style={prefRowStyles.row}>
+            <Slider
+              onValueChange={this.onNumberChange('distance_of_interest_max')}
+              style={{ width: '100%' }}
+              minimumTrackTintColor={colors.lightPeach}
+              trackStyle={styles.track}
+              thumbStyle={styles.thumb}
+              value={distance_of_interest_max}
+              minimumValue={1}
+              maximumValue={50}
+              step={1}
+            />
+          </View>
+
+          <SubHeader style={styles.heading}>Integrity</SubHeader>
+          <ProfilePreferenceRow
+            text={'Ghosters'}
+            value={!!show_ghosters}
+            onValueChange={this.onBooleanChange('show_ghosters')}
+          />
+
+          <ProfilePreferenceRow
+            text={'Flakers'}
+            value={!!show_flakers}
+            onValueChange={this.onBooleanChange('show_flakers')}
+          />
+
+          <ProfilePreferenceRow
+            text={'Fibbers'}
+            value={!!show_fibbers}
+            onValueChange={this.onBooleanChange('show_fibbers')}
+          />
         </ScrollView>
         <View>
           <PrimaryButton rounded={false} title='Save' onPress={this.save} />
@@ -363,22 +358,7 @@ export default connect(
 )(ProfilePreferencesScreen);
 
 const styles = StyleSheet.create({
-  row: {
-    borderRadius: 5,
-    padding: 10,
-    backgroundColor: '#FFF',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.2,
-    shadowOffset: {
-      width: 0,
-      height: 5
-    },
-    marginVertical: 5
-  },
+  contentContainer: { paddingHorizontal: 20 },
   heading: {
     marginTop: 15
   },
