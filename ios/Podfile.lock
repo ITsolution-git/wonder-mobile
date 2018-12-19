@@ -118,7 +118,7 @@ PODS:
   - nanopb/encode (0.3.901)
   - Protobuf (3.6.1)
   - React (0.57.8):
-    - React/Core (= 0.57.8)
+    - React/Core (= 0.57.8
   - react-native-calendar-events (1.6.4):
     - React
   - react-native-fast-image (5.1.1):

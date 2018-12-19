@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, Modal, SafeAreaView, StyleSheet } from 'react-native';
-import { PrimaryButton, RoundedTextInput } from '../theme';
+import { PrimaryButton, RoundedTextInput, SecondaryButton } from '../theme';
 import theme from '../../../assets/styles/theme';
 import TouchableOpacityOnPress from '../../../models/touchable-on-press';
 import { IconButton, TextButton } from '../../components/theme';
@@ -40,11 +40,15 @@ const ForgotPasswordModal = (props: Props) => {
           fullWidth
           errorHint={props.errorHint}
         />
-
-        <PrimaryButton title='Send' onPress={props.submit} />
-        <View style={{ marginTop: 20 }}>
-          <TextButton text='Cancel' onPress={props.onRequestClose} />
+        <View style={styles.btnContainer}>
+          <PrimaryButton title='Send' onPress={props.submit} />
+          <SecondaryButton
+            innerStyle={{ minWidth: 130, backgroundColor: '#f1f1f1' }}
+            title='Cancel'
+            onPress={props.onRequestClose} 
+          />
         </View>
+
       </View>
     </Modal>
   );
@@ -76,5 +80,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
     marginBottom: 30
-  }
+  },
+  btnContainer: {
+    flexDirection: 'row',
+    marginTop: 12,
+    alignSelf: 'center',
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'space-around'
+  },
 });

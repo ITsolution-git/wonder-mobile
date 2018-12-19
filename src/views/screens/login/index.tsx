@@ -133,7 +133,7 @@ class LoginScreen extends React.Component<Props> {
               icon='phone'
               placeholder='Phone'
               onChangeText={this.onChangeText('phone')}
-              fullWidth
+              style={styles.roundedTextButton}
             />
           </View>
           <View style={styles.buttonContainer}>
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   logo: { width: '80%' },
-  inputContainer: { width: '100%' },
+  inputContainer: { width: '80%' },
   buttonContainer: {
     flex: 1,
     width: '100%',
@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   buttonSubContainer: { marginTop: 10, width: '50%' },
+  roundedTextButton: { height: 54 },
   textButton: {
     textAlign: 'center',
     color: theme.colors.textColor,
