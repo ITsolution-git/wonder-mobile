@@ -1,7 +1,7 @@
-import React from "react";
-import _ from "lodash";
-import { connect } from "react-redux";
-import Screen from "src/views/components/screen";
+import React from 'react';
+import _ from 'lodash';
+import { connect } from 'react-redux';
+import Screen from 'src/views/components/screen';
 import {
   Title,
   Text,
@@ -9,8 +9,8 @@ import {
   PrimaryButton,
   IconButton,
   TextButton,
-  SecondaryButton
-} from "src/views/components/theme";
+  SecondaryButton, Strong
+} from 'src/views/components/theme';
 import {
   View,
   StyleSheet,
@@ -20,23 +20,23 @@ import {
   TouchableOpacity,
   Dimensions,
   Share
-} from "react-native";
-import { NavigationScreenProp, NavigationParams } from "react-navigation";
-import AppointmentReviewModal from "src/views/components/modals/appointment-review-modal";
+} from 'react-native';
+import { NavigationScreenProp, NavigationParams } from 'react-navigation';
+import AppointmentReviewModal from 'src/views/components/modals/appointment-review-modal';
 
-import { selectCurrentUser } from "src/store/selectors/user";
-import { Dispatch } from "redux";
-import Avatar from "src/views/components/theme/avatar";
-import User from "src/models/user";
-import { DecoratedAppointment } from "src/models/appointment";
-import WonderAppState from "src/models/wonder-app-state";
-import theme from "src/assets/styles/theme";
-import { getConversation } from "src/store/sagas/conversations";
+import { selectCurrentUser } from 'src/store/selectors/user';
+import { Dispatch } from 'redux';
+import Avatar, {AvatarSize} from 'src/views/components/theme/avatar';
+import User from 'src/models/user';
+import { DecoratedAppointment } from 'src/models/appointment';
+import WonderAppState from 'src/models/wonder-app-state';
+import theme from 'src/assets/styles/theme';
+import { getConversation } from 'src/store/sagas/conversations';
 import {
   cancelAppointment,
   declineAppointment
-} from "src/store/sagas/appointment";
-import { isAppointmentBeforeToday } from "src/utils/appointment";
+} from 'src/store/sagas/appointment';
+import { isAppointmentBeforeToday } from 'src/utils/appointment';
 import { callPhoneNumber } from 'src/services/communication';
 import UserService from 'src/services/uber';
 import AmazonService from 'src/services/amazon';
@@ -59,6 +59,10 @@ import RNCalendarEvents from 'react-native-calendar-events';
 import moment from 'moment';
 
 const { height } = Dimensions.get('window');
+
+const Viewport = Dimensions.get('window');
+
+const IPHONE5_WIDTH = 640;
 
 interface AppointmentViewProps {
   currentUser: User;
@@ -100,7 +104,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     return {
       title: 'YOUR DATE'
     };
-  };
+  }
 
   state: AppointmentViewState = {
     isModalOpen: false,
@@ -156,6 +160,16 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         }
       })
       .catch((err) => console.error('An error occurred', err));
+  }
+
+  formatPhoneNumber = (phoneNumberString: String) => {
+    const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+    const match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      const intlCode = (match[1] ? '+1 ' : '');
+      return ['(', match[2], ') ', match[3], '-', match[4]].join('');
+    }
+    return '';
   }
 
   onServicePress = (url: string) => {
@@ -231,6 +245,8 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
         <PrimaryButton
           title='Confirm'
           onPress={() => this.handleConfirmation(appointment)}
+          innerStyle={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ?
+              { minHeight: 30 } : null }
         />
       );
     } else {
@@ -381,66 +397,82 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           <View style={styles.header}>
             <Avatar
               circle
-              size={height <= 680 ? 'md' : 'xl'}
+              size={AvatarSize.md}
               uri={_.get(appointment, 'match.images[0].url', null)}
             />
           </View>
-          <View style={styles.contentContainer}>
-            <Title align='center'>
-              {_.get(appointment, 'topic.name', null)} with{' '}
-              {appointment.match
-                ? appointment.match.first_name
-                : 'Deactivated User'}{' '}
-            </Title>
-            <WonderImage style={{ height: 30 }} uri={appointment.topic.icon} />
-            <Text
-              style={{ fontSize: height <= 680 ? 12 : 15, marginTop: 5 }}
-              align='center'
-            >
-              {appointment.name}
-            </Text>
-            <Text
-              style={styles.addressText}
-              onPress={() =>
-                this.openAddress(
-                  appointment.latitude,
-                  appointment.longitude,
-                  appointment.name
-                )
-              }
-            >
-              {appointment.location}
-            </Text>
 
-            {appointment.eventMoment && (
-              <Text
-                style={{ fontSize: height <= 680 ? 12 : 15 }}
-                align='center'
-              >
-                {moment(appointment.event_at).format('MMMM Do, [at] h:mma')}
-              </Text>
-            )}
-            {appointment.phone !== null && (
-              <TextButton
-                btnStyle={{ alignSelf: 'center' }}
-                style={styles.phoneText}
-                text={appointment.phone}
-                onPress={() => this.onCall(`tel:${appointment.phone}`)}
-              />
-            )}
+          <View style={styles.contentContainer}>
+            <Title align='center' style={[ styles.mainFontSize, ]}>
+              Invite {appointment.match
+                ? appointment.match.first_name
+                : 'Deactivated User'}{' '}{'\n'}
+              on a {_.get(appointment, 'topic.name', null)} Date to:
+            </Title>
+            <View style={{justifyContent: 'center', flex: 1 }}>
+              <View style={[styles.body]}>
+                <View style={{ width: '80%' }}>
+                  <Text style={[styles.mainFontSize, styles.activityName]}>{appointment.name}</Text>
+                  <Text
+                      style={[styles.mainFontSize, styles.addressText]}
+                      onPress={() =>
+                          this.openAddress(
+                              appointment.latitude,
+                              appointment.longitude,
+                              appointment.name
+                          )
+                      }
+                  >
+                    {
+                      appointment.location.split(',')
+                        .slice(0, 1) + '\n' + appointment.location.split(', ')
+                        .slice(1, appointment.location.split(', ').length).join(',')
+                    }
+                  </Text>
+                  {appointment.eventMoment && (
+                      <Strong
+                          align='left'
+                          style={styles.mainFontSize}
+                      >
+                        {appointment.eventMoment.format('MMMM Do [at] h:mma')}
+                      </Strong>
+                  )}
+                  {appointment.phone !== null && (
+                      <TextButton
+                          btnStyle={{ alignSelf: 'flex-start' }}
+                          style={[styles.mainFontSize, styles.phoneText]}
+                          text={this.formatPhoneNumber(appointment.phone)}
+                          onPress={() => this.onCall(`tel:${appointment.phone}`)}
+                      />
+                  )}
+                  <TouchableOpacity onPress={() => Linking.openURL('google.com')}>
+                    <Text style={[styles.linkText]}>
+                      somesite.com
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{ width: '20%', alignItems: 'flex-end' }}>
+                  <WonderImage
+                      style={styles.WonderIcon}
+                      uri={appointment.topic.icon}
+                  />
+                </View>
+              </View>
+            </View>
+
           </View>
         </View>
         <View>
           {isPast ? (
-            <View style={{ marginBottom: 8 }}>
+            <View style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 8 }}>
               {appointment.state === 'confirmed' ? (
                 <PrimaryButton
                   disabled={!appointment.reviewed_at ? false : true}
-                  innerStyle={{ padding: 0 }}
                   title={
                     !this.state.reviewDisabled ? 'Leave Review' : 'Left Review'
                   }
                   onPress={this.openReviewModal}
+                  innerStyle={{ padding: 0 }}
                 />
               ) : null}
             </View>
@@ -519,6 +551,8 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                   }
                   title='Cancel'
                   onPress={this.cancel}
+                  innerStyle={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ?
+                      { padding: 5.6, minHeight: 15 } : null }
                 />
               </View>
             )}
@@ -540,6 +574,8 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                   }
                   title='Decline'
                   onPress={this.decline}
+                  innerStyle={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ?
+                      { padding: 5.6, minHeight: 15 } : null }
                 />
               )}
             </View>
@@ -580,22 +616,45 @@ const styles = StyleSheet.create({
   },
   btnLabel: {
     textAlign: 'center',
-    fontSize: 12
+    fontSize: 12,
   },
   phoneText: {
-    fontSize: 14,
     color: 'rgb(0, 122, 255)',
-    marginLeft: 10,
-    textAlign: 'center'
+    marginLeft: 0,
+    textAlign: 'left',
   },
   addressText: {
-    fontSize: height <= 680 ? 12 : 15,
     color: 'rgb(0, 122, 255)',
-    marginLeft: 10,
-    textAlign: 'center'
+    marginLeft: 0,
+    textAlign: 'left',
   },
   contentContainer: {
+    flex: 1,
     marginTop: 15,
     alignItems: 'center'
-  }
+  },
+  activityName: {
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  mainFontSize: {
+    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 12 : 15,
+  },
+  linkText: {
+    color: 'rgb(0, 122, 255)',
+    marginLeft: 0,
+    textAlign: 'left',
+    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 14,
+  },
+  body: {
+    flexDirection: 'row',
+    paddingHorizontal: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignContent: 'center',
+  },
+  WonderIcon: {
+    height: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 42 : 51,
+    width: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 42 : 51,
+  },
 });
