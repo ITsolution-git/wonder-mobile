@@ -11,5 +11,6 @@ export default {
   ONBOARDING_3: require('./backgrounds/onboard_3.png'),
   WELCOME: require('./backgrounds/welcome.png'),
   GhostButton: require('./buttons/ghosting.png'),
-  warning: require('./icons/warning.png')
+  warning: require('./icons/warning.png'),
+  yourWonderful: require('./icons/yourWonderful.png'),
 };

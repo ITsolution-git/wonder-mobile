@@ -46,7 +46,7 @@ class VerifyScreen extends React.PureComponent {
             resizeMode='contain'
           />
           <Text style={styles.headerText}>
-            Please enter the four digit verification code we sent you to verify your account
+            Please enter the four digit verification code we sent you to verify your account.
           </Text>
         <View style={{ width: '50%' }}>
           <RoundedTextInput
@@ -61,7 +61,7 @@ class VerifyScreen extends React.PureComponent {
         </View>
         </View>
         <View style={styles.lowerContainer}>
-            <PrimaryButton title='Next' onPress={this.onSubmit} />
+            <PrimaryButton rounded={false} title='Next' onPress={this.onSubmit} />
         </View>
       </View>
     );
@@ -95,8 +95,7 @@ const styles = StyleSheet.create({
   lowerContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    padding: 15,
-    paddingBottom: 25
+    paddingTop: 15,
   },
   container: {
     flex: 1,
