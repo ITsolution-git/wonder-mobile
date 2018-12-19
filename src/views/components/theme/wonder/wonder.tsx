@@ -13,6 +13,13 @@ interface WonderProps {
   size?: number;
   labelStyles?: any;
 }
+
+const excludePaddingOnIcons = [ // These icons already include padding.
+  'BIKING',
+  'LUNCH',
+  'GO KARTS'
+];
+
 const Wonder: React.SFC<WonderProps> = ({
   labelStyles,
   topic,
@@ -26,25 +33,26 @@ const Wonder: React.SFC<WonderProps> = ({
     borderRadius: size / 2,
     backgroundColor: 'transparent',
   };
+  const nameUpperCase = _.toUpper(topic.name);
 
   const wonderStyles = [styles.container, containerStyles];
   if (active) {
     wonderStyles.push(styles.selectedContainer);
   }
-
   return (
     <View style={wonderStyles}>
       <WonderImage
-        style={{ height: imageSize, width: imageSize, marginBottom: 5 }}
+        style={{ height: imageSize, width: imageSize}}
         uri={topic.icon}
       />
+      {_.indexOf(excludePaddingOnIcons, nameUpperCase) !== -1 ? null : <View style={{height: 5 }} />}
       <Text
         numberOfLines={1}
         adjustsFontSizeToFit={true}
         allowFontScaling={false}
         style={[styles.label, labelStyles && labelStyles]}
       >
-        {_.toUpper(topic.name)}
+        {nameUpperCase}
       </Text>
     </View>
   );

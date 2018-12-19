@@ -1,6 +1,6 @@
 import React from 'react';
 import Screen from 'src/views/components/screen';
-import { StyleSheet, View, KeyboardAvoidingView, Button } from 'react-native';
+import {StyleSheet, View, KeyboardAvoidingView, Button, Platform, ScrollView} from 'react-native';
 import {
   Text,
   Strong,
@@ -9,15 +9,15 @@ import {
   TextInput
 } from 'src/views/components/theme';
 import theme from 'src/assets/styles/theme';
-import { NavigationScreenProp, NavigationParams } from 'react-navigation';
-import { KeyboardDismissView } from 'src/views/components/keyboard-dismiss-view';
+import {NavigationScreenProp, NavigationParams} from 'react-navigation';
+import {KeyboardDismissView} from 'src/views/components/keyboard-dismiss-view';
 import validator from 'validator';
-import { Dispatch } from 'redux';
-import { submitFeedback } from 'src/store/sagas/feedback';
-import { connect } from 'react-redux';
+import {Dispatch} from 'redux';
+import {submitFeedback} from 'src/store/sagas/feedback';
+import {connect} from 'react-redux';
 import SupportMessage from 'src/models/support-message';
 import WonderAppState from 'src/models/wonder-app-state';
-import { Content } from 'native-base';
+import {Content} from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import StateButton from 'src/views/components/theme/buttons/state-button';
 
@@ -43,10 +43,8 @@ const mapDispatch = (dispatch: Dispatch) => ({
 });
 
 // automatically get name and email from user in redux
-class FeedbackScreen extends React.Component<
-  FeedbackScreenProps,
-  FeedbackScreenState
-> {
+class FeedbackScreen extends React.Component<FeedbackScreenProps,
+  FeedbackScreenState> {
   state: FeedbackScreenState = {
     subject: '',
     body: '',
@@ -58,11 +56,11 @@ class FeedbackScreen extends React.Component<
   };
 
   onChangeSubjectText = (text: string) => {
-    this.setState({ subject: text });
+    this.setState({subject: text});
   }
 
   onChangebodyText = (text: string) => {
-    this.setState({ body: text });
+    this.setState({body: text});
   }
 
   getImage = () => {
@@ -77,29 +75,29 @@ class FeedbackScreen extends React.Component<
       } else if (res.error) {
         // console.log("Error", res.error);
       } else {
-        this.setState({ data: res });
+        this.setState({data: res});
       }
     });
   }
 
   submit = () => {
-    const { subject, body, data } = this.state;
-    const { onSubmitFeedback, navigation } = this.props;
+    const {subject, body, data} = this.state;
+    const {onSubmitFeedback, navigation} = this.props;
     if (!validator.isEmpty(subject) && !validator.isEmpty(body)) {
-      onSubmitFeedback({ subject, body, file: data.uri });
+      onSubmitFeedback({subject, body, file: data.uri});
       navigation.goBack();
     } else {
       if (validator.isEmpty(subject)) {
-        this.setState({ subjectError: true });
+        this.setState({subjectError: true});
       }
       if (validator.isEmpty(body)) {
-        this.setState({ bodyError: true });
+        this.setState({bodyError: true});
       }
     }
   }
 
   render() {
-    const { navigation } = this.props;
+    const {navigation} = this.props;
     const {
       subjectError,
       bodyError,
@@ -108,69 +106,62 @@ class FeedbackScreen extends React.Component<
     } = this.state;
 
     return (
-      <Screen horizontalPadding={20} style={{ paddingBottom: 20 }}>
-        <Content>
-          {/* <KeyboardAvoidingView
-            behavior="position"
-            style={{ flex: 1 }}
-            contentContainerStyle={{ flex: 1 }}
+      <Screen>
+        <ScrollView style={styles.container}>
+          <KeyboardAvoidingView
+            keyboardVerticalOffset={Platform.select({android: -40, ios: 0})}
+            behavior='position'
+            style={{flex: 1}}
+            contentContainerStyle={{flex: 1, paddingBottom: 20, paddingHorizontal: 20}}
           >
-            <KeyboardDismissView style={{ flex: 1 }}> */}
-          <Text style={styles.infoText}>
-            We want you to have a{' '}
-            <Strong style={{ color: theme.colors.primary }}>Wonderful</Strong>{' '}
-            experience! We would love to hear your feedback.
-          </Text>
-          <View>
-            {subjectError && (
-              <Text style={{ fontSize: 10, color: 'red' }}>
-                {subjectErrorText}
+            <KeyboardDismissView>
+              <Text style={styles.infoText}>
+                We want you to have a{' '}
+                <Strong style={{color: theme.colors.primary}}>Wonder'ful</Strong>{' '}
+                experience! We would love to hear your feedback.
               </Text>
-            )}
-            <TextInput
-              onFocus={() => this.setState({ subjectError: false })}
-              placeholder='Subject'
-              onChangeText={this.onChangeSubjectText}
-            />
-            <View
-              style={{
-                padding: 5,
-                backgroundColor: '#E1E1E1',
-                marginBottom: 10,
-                borderRadius: 4,
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between'
-              }}
-            >
-              <StateButton
-                active={true}
-                text='Add File'
-                onPress={this.getImage}
-              />
-              {this.state.data.uri && <Text>slected image</Text>}
-            </View>
-            {bodyError && (
-              <Text style={{ fontSize: 10, color: 'red' }}>
-                {bodyErrorText}
-              </Text>
-            )}
-            <TextArea
-              onFocus={() => this.setState({ bodyError: false })}
-              onChangeText={this.onChangebodyText}
-              placeholder='Message...'
-              style={{
-                minHeight: 150,
-                backgroundColor: '#E1E1E1',
-                color: '#444'
-              }}
-            />
-          </View>
-          {/* </KeyboardDismissView>
-          </KeyboardAvoidingView> */}
-        </Content>
+              <View>
+                {subjectError && (
+                  <Text style={{fontSize: 10, color: 'red'}}>
+                    {subjectErrorText}
+                  </Text>
+                )}
+                <TextInput
+                  onFocus={() => this.setState({subjectError: false})}
+                  placeholder='Subject'
+                  onChangeText={this.onChangeSubjectText}
+                />
+                <View
+                  style={styles.addFile}
+                >
+                  <StateButton
+                    active={true}
+                    text='Add File'
+                    onPress={this.getImage}
+                  />
+                  {this.state.data.uri && <Text>selected image</Text>}
+                </View>
+                {bodyError && (
+                  <Text style={{fontSize: 10, color: 'red'}}>
+                    {bodyErrorText}
+                  </Text>
+                )}
+                <TextArea
+                  onFocus={() => this.setState({bodyError: false})}
+                  onChangeText={this.onChangebodyText}
+                  placeholder='Message...'
+                  style={{
+                    minHeight: 250,
+                    backgroundColor: '#E1E1E1',
+                    color: '#444'
+                  }}
+                />
+              </View>
+            </KeyboardDismissView>
+          </KeyboardAvoidingView>
+        </ScrollView>
 
-        <PrimaryButton title='Submit' onPress={this.submit} />
+        <PrimaryButton rounded={false} title='Submit' onPress={this.submit}/>
       </Screen>
     );
   }
@@ -191,5 +182,15 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center',
     marginBottom: 20
+  },
+  addFile: {
+    padding: 0,
+    paddingRight: 10,
+    backgroundColor: '#E1E1E1',
+    marginBottom: 10,
+    borderRadius: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   }
 });

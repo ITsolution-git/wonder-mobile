@@ -83,10 +83,10 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
                 style={styles.avatar}
                 containerStyle={styles.leftMatchAvatar}
               />
-              <Image
-                source={Images.LogoIcon}
-                style={{width: 50, height: 50, zIndex: 2}}
-              />
+                <Image
+                  source={Images.LogoIcon}
+                  style={{width: 50, height: 50, zIndex: 2, elevation: 10}}
+                />
               <Avatar
                 size={AvatarSize.lg}
                 containerStyle={styles.rightMatchAvatar}
@@ -97,7 +97,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
               />
             </View>
           </View>
-          <View flex={2} style={{paddingHorizontal: 100}}>
+          <View flex={1} style={{paddingHorizontal: 100}}>
             <PrimaryButton
               title='Send Message'
               onPress={() => onSuccess(proposal)}

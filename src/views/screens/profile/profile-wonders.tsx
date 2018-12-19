@@ -161,43 +161,37 @@ class ProfileWondersScreen extends React.Component<Props, State> {
   render() {
     const { selected } = this.state;
     return (
-      <Screen horizontalPadding={20}>
+      <Screen>
         {/* <View style={{ paddingVertical: 15 }}>
           <Text style={{ textAlign: 'center' }}>
             Please select 3 Wonders for us to find people and activities in your area.
           </Text>
         </View> */}
-        <View>{this.renderPicks()}</View>
-        <View
-          style={{ paddingVertical: 15, width: '70%', alignSelf: 'center' }}
-        >
-          <TextInput
-            color={theme.colors.primaryLight}
-            containerStyles={{ borderBottomColor: theme.colors.primaryLight }}
-            autoCorrect={false}
-            autoCapitalize='none'
-            icon='search'
-            placeholder='Search'
-            onChangeText={this.onSearchTextChange}
-          />
-        </View>
-        <View flex={1}>
-          {this.renderPicker()}
+        <View style={styles.contentContainer}>
+          <View>{this.renderPicks()}</View>
           <View
-            style={{
-              position: 'absolute',
-              bottom: 10,
-              width: '100%',
-              zIndex: 10
-            }}
+            style={{paddingVertical: 15, width: '70%', alignSelf: 'center'}}
           >
-            <PrimaryButton
-              disabled={selected.length !== 3}
-              title='Save'
-              onPress={this.validate}
+            <TextInput
+              color={theme.colors.primaryLight}
+              containerStyles={{borderBottomColor: theme.colors.primaryLight}}
+              autoCorrect={false}
+              autoCapitalize='none'
+              icon='search'
+              placeholder='Search'
+              onChangeText={this.onSearchTextChange}
             />
           </View>
+          <View flex={1}>
+            {this.renderPicker()}
+          </View>
         </View>
+        <PrimaryButton
+          disabled={selected.length !== 3}
+          title='Save'
+          rounded={false}
+          onPress={this.validate}
+        />
       </Screen>
     );
   }
@@ -218,5 +212,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5
-  }
+  },
+  contentContainer: {paddingHorizontal: 20, flex: 1},
 });

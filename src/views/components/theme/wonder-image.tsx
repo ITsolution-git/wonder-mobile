@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
-import { ImageProps, Image, ImageStyle, StyleProp } from 'react-native';
+import {ImageProps, Image, ImageStyle, StyleProp, Dimensions} from 'react-native';
 import SvgUri from 'react-native-svg-uri';
 import api, { BASE_URL } from 'src/services/api';
 import Omit from 'src/models/omit';
@@ -40,7 +40,7 @@ class WonderImage extends React.PureComponent<Props> {
         return (
           <FastImage
             fallback={true}
-            style={style}
+            style={[style, uri !== 7 ? null: {height: Dimensions.get('window').height} ]}
             {...rest}
             source={{
               uri:

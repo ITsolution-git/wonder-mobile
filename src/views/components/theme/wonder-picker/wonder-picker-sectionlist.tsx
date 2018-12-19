@@ -48,7 +48,7 @@ const WonderPickerSectionList = (props: Props) => {
         <Text style={styles.sectionHeader}>{title}</Text>
       )}
       sections={[
-        { title: 'QUICK DATES', data: props.groupedQuickDates },
+        { title: 'Quick Dates', data: props.groupedQuickDates },
         { title: '', data: props.groupedTopics }
       ]}
       keyExtractor={(item, index) => item + index}

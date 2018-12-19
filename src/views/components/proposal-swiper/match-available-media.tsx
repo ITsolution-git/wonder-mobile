@@ -23,7 +23,7 @@ const MatchAvailableMedia = (props: Props) => {
                 opacity: i === props.currentImageIndex ? 1 : 0.2,
                 backgroundColor:
                   i === props.currentImageIndex
-                    ? theme.colors.primary
+                    ? theme.colors.primaryLight
                     : theme.colors.textColorLight
               }
             ]}
