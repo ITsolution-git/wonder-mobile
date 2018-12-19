@@ -37,11 +37,13 @@ class ChatList extends React.PureComponent<ChatListProps> {
 
   render() {
     const { chats, onRefresh } = this.props;
+
     if (!chats || chats.length) {
       return (
         <FlatList
           refreshing={false}
           onRefresh={onRefresh}
+          contentContainerStyle={styles.flatList}
           showsVerticalScrollIndicator={false}
           data={chats || []}
           keyExtractor={this.keyExtractor}
@@ -58,5 +60,8 @@ export default ChatList;
 const styles = StyleSheet.create({
   emptyContainer: {
     flex: 1
+  },
+  flatList: {
+    paddingBottom: 50
   }
 });
