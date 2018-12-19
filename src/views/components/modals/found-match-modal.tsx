@@ -76,7 +76,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
             </Text>
             <View style={styles.row}>
               <Avatar
-                size={AvatarSize.lg}
+                size={AvatarSize.xl}
                 uri={this.getCurrentUserImage()}
                 circle
                 bordered
@@ -88,7 +88,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
                 style={{width: 50, height: 50, zIndex: 2}}
               />
               <Avatar
-                size={AvatarSize.lg}
+                size={AvatarSize.xl}
                 containerStyle={styles.rightMatchAvatar}
                 uri={this.getCandidateImage()}
                 style={styles.avatar}
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold'
   },
   row: {
-    marginTop: 15,
+    marginTop: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'center',
