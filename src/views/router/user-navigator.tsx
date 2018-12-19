@@ -59,7 +59,9 @@ const ProfileNavigator = createStackNavigator(
     ProfileMedia: {
       screen: ProfileMedia,
       navigationOptions: {
-        header: null
+        title: 'PHOTOS & VIBE VIDEO',
+        ...theme.NavBar.transparent,
+        headerRight: <View />
       }
     },
     ProfileWonders: {

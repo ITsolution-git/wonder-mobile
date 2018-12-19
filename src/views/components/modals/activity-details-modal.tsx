@@ -11,7 +11,14 @@ import {
   TouchableWithoutFeedback,
   Linking
 } from 'react-native';
-import { Title, Text, PrimaryButton, SmallText, SubTitle, TextButton } from '../theme';
+import {
+  Title,
+  Text,
+  PrimaryButton,
+  SmallText,
+  SubTitle,
+  TextButton
+} from '../theme';
 
 import PricingIndicator from '../pricing-indicator';
 import RatingIndicator from '../rating-indicator';
@@ -35,22 +42,28 @@ function lighten(color: string, value: number) {
 }
 
 function distance(lat1: any, lon1: any, lat2: any, lon2: any, unit: String) {
-  if ((lat1 === lat2) && (lon1 === lon2)) {
+  if (lat1 === lat2 && lon1 === lon2) {
     return 0;
   } else {
-    const radlat1 = Math.PI * lat1 / 180;
-    const radlat2 = Math.PI * lat2 / 180;
+    const radlat1 = (Math.PI * lat1) / 180;
+    const radlat2 = (Math.PI * lat2) / 180;
     const theta = lon1 - lon2;
-    const radtheta = Math.PI * theta / 180;
-    let dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    const radtheta = (Math.PI * theta) / 180;
+    let dist =
+      Math.sin(radlat1) * Math.sin(radlat2) +
+      Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
     if (dist > 1) {
       dist = 1;
     }
     dist = Math.acos(dist);
-    dist = dist * 180 / Math.PI;
+    dist = (dist * 180) / Math.PI;
     dist = dist * 60 * 1.1515;
-    if (unit === 'K') { dist = dist * 1.609344; }
-    if (unit === 'N') { dist = dist * 0.8684; }
+    if (unit === 'K') {
+      dist = dist * 1.609344;
+    }
+    if (unit === 'N') {
+      dist = dist * 0.8684;
+    }
     return dist;
   }
 }
@@ -85,37 +98,32 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
 
     if (hours && hours.length) {
       const currentBusinessDay = hours.filter((d: any) => d.day === dow);
-      if(currentBusinessDay && currentBusinessDay[0]){
+      if (currentBusinessDay && currentBusinessDay[0]) {
         return (
           <SmallText
             allowFontScaling={false}
             adjustsFontSizeToFit={true}
             style={{ fontSize: 11, color: 'grey', marginRight: 5 }}
           >
-            {
-              moment(currentBusinessDay[0].start, 'HH:mm').format('hh:mm a')
-              + '-' +
-              moment(currentBusinessDay[0].end, 'HH:mm').format('hh:mm a')
-            }
+            {moment(currentBusinessDay[0].start, 'HH:mm').format('hh:mm a') +
+              '-' +
+              moment(currentBusinessDay[0].end, 'HH:mm').format('hh:mm a')}
           </SmallText>
         );
-      }else{
-        return <View></View>;
+      } else {
+        return <View />;
       }
-     
     }
-
   }
 
   callNumber = (url: string) => {
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (!supported) {
-          Alert.alert("Sorry! This number can't be opened from the app");
-        } else {
-          return Linking.openURL(url);
-        }
-      });
+    Linking.canOpenURL(url).then((supported) => {
+      if (!supported) {
+        Alert.alert("Sorry! This number can't be opened from the app");
+      } else {
+        return Linking.openURL(url);
+      }
+    });
     // .catch((err) => console.error('An error occurred', err));
   }
 
@@ -140,10 +148,7 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
             <View style={styles.body}>
               <View style={styles.row}>
                 <View style={{ flex: 2 }}>
-                  <Title
-                    allowFontScaling={false}
-                    style={{ color: '#000' }}
-                  >
+                  <Title allowFontScaling={false} style={{ color: '#000' }}>
                     {name}
                   </Title>
                   <SmallText
@@ -154,20 +159,31 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
                   </SmallText>
                   {this.renderStoreHours()}
                   <PricingIndicator rating={price_level} />
-                  {phone !== undefined &&
+                  {phone !== undefined && (
                     <TextButton
                       text={phone}
                       style={styles.phoneText}
                       onPress={() => this.callNumber(`tel:${phone}`)}
-                    />}
+                    />
+                  )}
                 </View>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                   <Text>
-                    {distance(userPosition.lat, userPosition.lng, details.latitude, details.longitude, 'N')
-                      .toFixed(0) + ' miles'}
+                    {distance(
+                      userPosition.lat,
+                      userPosition.lng,
+                      details.latitude,
+                      details.longitude,
+                      'N'
+                    ).toFixed(0) + ' miles'}
                   </Text>
-                  <RatingIndicator containerStyle={{ marginTop: 4 }} rating={rating} />
-                  <SmallText style={{ marginTop: 3 }}>{review_count} Reviews</SmallText>
+                  <RatingIndicator
+                    containerStyle={{ marginTop: 4 }}
+                    rating={rating}
+                  />
+                  <SmallText style={{ marginTop: 3 }}>
+                    {review_count} Reviews
+                  </SmallText>
                   <TouchableWithoutFeedback
                     onPress={() => Linking.openURL('https://www.yelp.com')}
                   >
@@ -180,7 +196,11 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
               </View>
             </View>
             <View
-              style={{ paddingHorizontal: 10, marginVertical: 10, alignItems: 'center' }}
+              style={{
+                paddingHorizontal: 10,
+                marginVertical: 10,
+                alignItems: 'center'
+              }}
             >
               <PrimaryButton title='Invite' onPress={onConfirm} />
             </View>
@@ -194,7 +214,9 @@ class ActivityDetailsModal extends React.Component<ActivityDetailsModalProps> {
 
     return (
       <Modal animationType='fade' visible={!!details} transparent {...rest}>
-        {this.renderDetails()}
+        <TouchableWithoutFeedback onPress={this.props.onRequestClose}>
+          {this.renderDetails()}
+        </TouchableWithoutFeedback>
       </Modal>
     );
   }
@@ -237,6 +259,6 @@ const styles = StyleSheet.create({
   },
   phoneText: {
     fontSize: 13,
-    color: 'rgb(0, 122, 255)',
-  },
+    color: 'rgb(0, 122, 255)'
+  }
 });

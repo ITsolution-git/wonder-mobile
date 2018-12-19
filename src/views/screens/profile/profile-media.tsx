@@ -96,7 +96,7 @@ class ProfileMediaScreen extends React.Component<Props, State> {
           visible={modalVisible}
         />
         <View style={{ paddingHorizontal: 20, flex: 1 }}>
-          <Text
+          {/* <Text
             allowFontScaling={false}
             numberOfLines={1}
             style={{
@@ -105,8 +105,8 @@ class ProfileMediaScreen extends React.Component<Props, State> {
               textAlign: 'center'
             }}
           >
-            UPLOAD YOUR PHOTO'S &amp; VIBE VIDEO
-          </Text>
+            UPLOAD YOUR PHOTOS & VIBE VIDEO
+          </Text> */}
           <KeyboardAvoidingView
             behavior='position'
             style={{ flex: 1 }}
