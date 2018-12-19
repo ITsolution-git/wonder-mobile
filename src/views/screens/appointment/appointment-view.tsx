@@ -246,6 +246,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     ) {
       return (
         <PrimaryButton
+          style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 0 : 11 }}
           title='Confirm'
           onPress={() => this.handleConfirmation(appointment)}
           innerStyle={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ?
@@ -410,7 +411,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 : 'Deactivated User'}{' '}{'\n'}
               on a {_.get(appointment, 'topic.name', null)} Date to:
             </Title>
-            <View style={{justifyContent: 'center', flex: 1 }}>
+            <View style={{justifyContent: 'center', flex: 1}}>
               <View style={[styles.body]}>
                 <View style={{ width: '80%' }}>
                   <Text style={[styles.mainFontSize, styles.activityName]}>{appointment.name}</Text>
@@ -639,13 +640,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   mainFontSize: {
-    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 12 : 15,
+    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 15,
   },
   linkText: {
     color: 'rgb(0, 122, 255)',
     marginLeft: 0,
     textAlign: 'left',
-    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 14,
+    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 10 : 14,
   },
   body: {
     flexDirection: 'row',
