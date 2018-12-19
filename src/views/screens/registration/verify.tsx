@@ -46,7 +46,7 @@ class VerifyScreen extends React.PureComponent {
             resizeMode='contain'
           />
           <Text style={styles.headerText}>
-            Please enter the four digit verification code we sent you to verify your account
+            Please enter the four digit verification code we sent you to verify your account.
           </Text>
         <View style={{ width: '50%' }}>
           <RoundedTextInput
