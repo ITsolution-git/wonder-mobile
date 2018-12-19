@@ -125,7 +125,7 @@ class AppointmentConfirmScreen extends React.Component<
                 </Text>
                 <View style={{justifyContent: 'center', flex: 1}}>
                   <View style={[styles.body]}>
-                    <View style={{ width: '80%' }}>
+                    <View>
                       <Text style={[styles.mainFontSize, styles.activityName]}>{activity.name}</Text>
                       <Text
                           style={[styles.mainFontSize, styles.addressText]}
@@ -165,7 +165,7 @@ class AppointmentConfirmScreen extends React.Component<
                         </Text>
                       </TouchableOpacity>
                     </View>
-                    <View style={{ width: '20%', alignItems: 'center' }}>
+                    <View style={{ alignItems: 'flex-start' }}>
                       <WonderImage style={styles.WonderIcon} uri={appointment.topic.icon} />
                     </View>
                   </View>
@@ -240,12 +240,13 @@ export default connect(
 
 const styles = StyleSheet.create({
   body: {
-    // flex: 1,
+    flex: 1,
     height: '100%',
+    width: '100%',
     flexDirection: 'row',
     // marginTop: 15,
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
+    paddingHorizontal: 30,
+    justifyContent: 'space-around',
     alignItems: 'center',
     alignContent: 'center',
     alignSelf: 'center',
