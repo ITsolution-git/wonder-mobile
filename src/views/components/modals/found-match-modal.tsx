@@ -97,7 +97,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
               />
             </View>
           </View>
-          <View flex={1} style={{paddingHorizontal: 100}}>
+          <View flex={1} style={{paddingHorizontal: '30%'}}>
             <PrimaryButton
               title='Send Message'
               onPress={() => onSuccess(proposal)}
