@@ -2,6 +2,7 @@ import Color from 'color';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { StyleSheet, ModalProps, Modal, View, Image } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import theme from 'src/assets/styles/theme';
 import { Text, PrimaryButton, OutlineButton } from '../theme';
@@ -64,7 +65,8 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
               {proposal.candidate.first_name} thinks
             </Text>
             <View style={{width: '98%', height: 116}}>
-              <Image
+              <FastImage
+                fallback={true}
                 source={Images.yourWonderful}
                 style={{flex: 1, height: undefined, width: undefined}}
                 resizeMode='contain'
@@ -83,10 +85,11 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
                 style={styles.avatar}
                 containerStyle={styles.leftMatchAvatar}
               />
-                <Image
-                  source={Images.LogoIcon}
-                  style={{width: 50, height: 50, zIndex: 2, elevation: 10}}
-                />
+              <FastImage
+                fallback={true}
+                source={Images.LogoIcon}
+                style={{width: 50, height: 50, zIndex: 2, elevation: 8}}
+              />
               <Avatar
                 size={AvatarSize.lg}
                 containerStyle={styles.rightMatchAvatar}
@@ -133,13 +136,10 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: 'center'
   },
-  wonderfulTxt: {
-    fontSize: 24
-  },
   txt: {
     textAlign: 'center',
     color: '#FFF',
-    fontSize: 24,
+    fontSize: 20,
     fontFamily: 'Poppins-Bold'
   },
   row: {

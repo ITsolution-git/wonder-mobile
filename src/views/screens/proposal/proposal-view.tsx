@@ -177,6 +177,7 @@ class ProposalViewScreen extends React.Component<Props, State> {
     this.props.onClearCurrentMatch();
     this.props.onRefreshConversations();
     onGetConversation(currentMatch.candidate.id);
+    this.props.navigation.navigate('Chat', { name: currentMatch.candidate.first_name });
   }
 
   swipeRight = (index: number) => {
@@ -186,11 +187,11 @@ class ProposalViewScreen extends React.Component<Props, State> {
     const { has_swiped_right } = onboarding_ui_state;
 
     if (!has_swiped_right) {
+      this.setState({ modalOpen: 'accept', index });
       this.props.updateUserUIFlags({
         ...onboarding_ui_state,
         has_swiped_right: true
       });
-      this.setState({ modalOpen: 'accept', index });
     } else {
       this.props.onRightSwipe(proposal[index]);
     }
