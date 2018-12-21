@@ -21,10 +21,12 @@ import { DecoratedAppointment } from 'src/models/appointment';
 
 import RNCalendarEvents from 'react-native-calendar-events';
 import WonderImage from '../../components/theme/wonder-image';
+import {fallbackImageUrl} from '../../../services/api';
 
 const Viewport = Dimensions.get('window');
 
 const IPHONE5_WIDTH = 640;
+const IPHONE6_WIDTH = 750;
 const { height } = Dimensions.get('window');
 
 const mapState = (state: WonderAppState) => ({
@@ -57,6 +59,28 @@ class AppointmentConfirmScreen extends React.Component<
   onComplete = () => {
     const { onConfirm } = this.props;
     onConfirm();
+  }
+
+  getAvatarSize = () => {
+    switch ((Viewport.width * Viewport.scale)) {
+      case IPHONE6_WIDTH :
+        return AvatarSize.lg;
+      case IPHONE5_WIDTH :
+        return AvatarSize.md;
+      default:
+        return AvatarSize.xl;
+    }
+  }
+
+  getWonderSize = () => {
+    switch ((Viewport.width * Viewport.scale)) {
+      case IPHONE6_WIDTH :
+        return 44;
+      case IPHONE5_WIDTH :
+        return 39;
+      default:
+        return 48;
+    }
   }
 
   openAddress = (lat, lng, label) => {
@@ -114,9 +138,9 @@ class AppointmentConfirmScreen extends React.Component<
               <View style={styles.scrollViewContainer}>
                 <View style={{ alignItems: 'center', marginBottom: 15, marginTop: 20 }}>
                   <Avatar
-                      size={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? AvatarSize.md : AvatarSize.xl}
+                      size={this.getAvatarSize()}
                       circle
-                      uri={_.get(match, 'images[0].url', null)}
+                      uri={_.get(match, 'images[0].url', fallbackImageUrl)}
                   />
                 </View>
                 <Text style={[{ textAlign: 'center', }, styles.mainFontSize, ]}>
@@ -125,7 +149,7 @@ class AppointmentConfirmScreen extends React.Component<
                 </Text>
                 <View style={{justifyContent: 'center', flex: 1}}>
                   <View style={[styles.body]}>
-                    <View>
+                    <View style={{maxWidth: '80%'}}>
                       <Text style={[styles.mainFontSize, styles.activityName]}>{activity.name}</Text>
                       <Text
                           style={[styles.mainFontSize, styles.addressText]}
@@ -161,12 +185,21 @@ class AppointmentConfirmScreen extends React.Component<
 
                       <TouchableOpacity onPress={() => Linking.openURL(activity.url)}>
                         <Text style={[styles.linkText]}>
-                          somesite.com
+                          Visit Website{console.log(activity, 'activity', appointment, 'appointment')}
                         </Text>
                       </TouchableOpacity>
                     </View>
-                    <View style={{ alignItems: 'flex-start' }}>
-                      <WonderImage style={styles.WonderIcon} uri={appointment.topic.icon} />
+                    <View style={{ alignItems: 'flex-start', maxWidth: '20%' }}>
+                      <WonderImage
+                          style={{
+                            width: this.getWonderSize(),
+                            height: this.getWonderSize()
+                          }
+                            // styles.WonderIcon
+
+                          }
+                          uri={appointment.topic.icon}
+                      />
                     </View>
                   </View>
                 </View>
@@ -182,32 +215,75 @@ class AppointmentConfirmScreen extends React.Component<
   }
 
   renderConfirmContent = (appointment: DecoratedAppointment) => {
-    const { match, eventMoment, name, location } = appointment;
+    const { match, eventMoment, name, location, activity } = appointment;
 
     return (
-      <View flex={1}>
-        <ScrollView style={styles.container}>
-          <Title>{match.first_name}</Title>
-          <View style={{ alignItems: 'center', marginTop: 15 }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
+        <View style={styles.scrollViewContainer}>
+          <View style={{ alignItems: 'center', marginBottom: 15, marginTop: 20 }}>
             <Avatar
-              size={AvatarSize.xl}
-              circle
-              uri={_.get(match, 'images[0].url', null)}
+                size={
+                  this.getAvatarSize()
+                }
+                circle
+                uri={_.get(match, 'images[0].url', null)}
             />
           </View>
-          <View style={styles.body}>
-            <View>
-              <Text style={{ fontSize: 18, textAlign: 'left' }}>
-                Invite {match.first_name} to:{'\n'}
-                <Strong style={{ textAlign: 'center' }}>
-                  {name} date{'\n'} at {location}{'\n'}
-                  on {eventMoment && eventMoment.format('MMMM Do [at] h:mma')}?
-                </Strong>
-              </Text>
-            </View>
+          <Text style={[{ textAlign: 'center', }, styles.mainFontSize, ]}>
+            Invite {match.first_name}{'\n'}
+            on a {appointment.topic.name} Date to:
+          </Text>
+          <View style={{justifyContent: 'center', flex: 1}}>
+            <View style={[styles.body]}>
+              <View style={{maxWidth: '80%'}}>
+                <Text style={[styles.mainFontSize, styles.activityName]}>{name}</Text>
+                <Text
+                    style={[styles.mainFontSize, styles.addressText]}
+                    onPress={() =>
+                        this.openAddress(
+                            activity.latitude,
+                            activity.longitude,
+                            activity.name
+                        )
+                    }
+                >
+                  {
+                      location.split(',')
+                        .slice(0, 1) + '\n' + location.split(', ')
+                        .slice(1, location.split(', ').length).join(', ')
+                  }
+                </Text>
 
+                {eventMoment && (
+                    <Strong
+                        align='left'
+                        style={styles.mainFontSize}
+                    >
+                      {eventMoment.format('MMMM Do [at] h:mma')}
+                    </Strong>
+                )}
+
+                {activity.phone !== null && (
+                    <TextButton
+                        btnStyle={{ alignSelf: 'flex-start' }}
+                        style={[styles.mainFontSize, styles.phoneText]}
+                        text={this.formatPhoneNumber(activity.phone)}
+                        onPress={() => this.onCall(`tel:${activity.phone}`)}
+                    />
+                )}
+
+                <TouchableOpacity onPress={() => Linking.openURL(activity.url)}>
+                  <Text style={[styles.linkText]}>
+                    Visit Website
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{ alignItems: 'flex-start', maxWidth: '20%' }}>
+                <WonderImage style={styles.WonderIcon} uri={appointment.topic.icon} />
+              </View>
+            </View>
           </View>
-        </ScrollView>
+        </View>
         <View>
           <PrimaryButton
             rounded={false}
@@ -245,7 +321,7 @@ const styles = StyleSheet.create({
     width: '100%',
     flexDirection: 'row',
     // marginTop: 15,
-    paddingHorizontal: 30,
+    paddingHorizontal: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 22 : 30,
     justifyContent: 'space-around',
     alignItems: 'center',
     alignContent: 'center',
