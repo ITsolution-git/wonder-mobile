@@ -30,9 +30,8 @@ class AppointmentItem extends React.PureComponent<Props> {
     const now = moment();
     if (moment(event_at).isSameOrAfter(now)) {
       return (
-        <Title style={styles.title}>
-          {_.get(item, 'topic.name', null)} at{' '}
-          <Strong>{moment(event_at).format('h:mma')}</Strong> with{' '}
+        <Title style={[styles.title]}>
+          {_.get(item, 'topic.name', null)}{' '}with{' '}
           {match.first_name}
         </Title>
       );
@@ -81,8 +80,8 @@ class AppointmentItem extends React.PureComponent<Props> {
         </View>
         <View style={styles.contentContainer}>
           {this.renderTitle()}
-          <SubTitle style={{ marginTop: -4 }}>
-            {moment(item.event_at).format('MMMM Do')}
+          <SubTitle style={{ marginTop: 2, }}>
+            {moment(item.event_at).format('MMMM Do [at] h:mma')}
           </SubTitle>
           <View style={styles.locationRow}>
             <View>
@@ -158,5 +157,8 @@ const styles = StyleSheet.create({
     marginRight: 5,
     marginLeft: 5
   },
-  title: { lineHeight: 18 }
+  title: {
+    lineHeight: 18,
+    color: theme.colors.primary
+  }
 });

@@ -11,10 +11,13 @@ import {
 import theme from 'src/assets/styles/theme';
 import navigation from '../../services/navigation';
 import {
+    Dimensions,
 
-  View,
-  
+    View,
+
 } from 'react-native';
+const Viewport = Dimensions.get('window');
+const IPHONE5_WIDTH = 640;
 
 const ChatNavigator = createStackNavigator(
   {
@@ -77,6 +80,7 @@ const ChatNavigator = createStackNavigator(
       navigationOptions: {
         title: 'CONFIRM YOUR WONDER',
         ...theme.NavBar.transparent,
+      headerTitleStyle : { fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 14 },
         headerRight:(<View></View>)
       }
     }

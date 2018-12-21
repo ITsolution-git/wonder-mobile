@@ -43,7 +43,7 @@ import AmazonService from 'src/services/amazon';
 import { Toast } from 'native-base';
 import Color from 'color';
 
-import api, { BASE_URL } from 'src/services/api';
+import api, {BASE_URL, fallbackImageUrl} from 'src/services/api';
 import SvgUri from 'react-native-svg-uri';
 
 import {
@@ -64,6 +64,8 @@ const { height } = Dimensions.get('window');
 const Viewport = Dimensions.get('window');
 
 const IPHONE5_WIDTH = 640;
+const IPHONE6_WIDTH = 750;
+const IPHONE6Plus_WIDTH = 1242;
 
 interface AppointmentViewProps {
   currentUser: User;
@@ -246,11 +248,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     ) {
       return (
         <PrimaryButton
-          style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 0 : 11 }}
+          style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE6_WIDTH) ? 0 : 11 }}
           title='Confirm'
           onPress={() => this.handleConfirmation(appointment)}
-          innerStyle={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ?
-              { minHeight: 30 } : null }
+          innerStyle={((Viewport.width * Viewport.scale) <= IPHONE6_WIDTH) ?
+              { minHeight: 35 } : null }
         />
       );
     } else {
@@ -353,6 +355,17 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     navigation.goBack();
   }
 
+  getAvatarSize = () => {
+    switch ((Viewport.width * Viewport.scale)) {
+      case IPHONE6_WIDTH :
+        return AvatarSize.md;
+      case IPHONE5_WIDTH :
+        return AvatarSize.xmd;
+      default:
+        return AvatarSize.lg;
+    }
+  }
+
   closeModal = () => {
     this.setState({
       modalOpen: false,
@@ -399,8 +412,8 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           <View style={styles.header}>
             <Avatar
               circle
-              size={AvatarSize.md}
-              uri={_.get(appointment, 'match.images[0].url', null)}
+              size={this.getAvatarSize() }
+              uri={_.get(appointment, 'match.images[0].url', fallbackImageUrl)}
             />
           </View>
 
@@ -428,13 +441,13 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                     {
                       appointment.location.split(',')
                         .slice(0, 1) + '\n' + appointment.location.split(', ')
-                        .slice(1, appointment.location.split(', ').length).join(',')
+                        .slice(1, appointment.location.split(', ').length).join(', ')
                     }
                   </Text>
                   {appointment.eventMoment && (
                       <Strong
                           align='left'
-                          style={styles.mainFontSize}
+                          style={[styles.mainFontSize, {color: '#000'}]}
                       >
                         {appointment.eventMoment.format('MMMM Do [at] h:mma')}
                       </Strong>
@@ -553,8 +566,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                   }
                   title='Cancel'
                   onPress={this.cancel}
-                  innerStyle={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ?
-                      { padding: 5.6, minHeight: 15 } : null }
+                  innerStyle={styles.BottomControlButton}
                 />
               </View>
             )}
@@ -563,6 +575,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 <SecondaryButton
                   title='Delete'
                   onPress={this.showDeleteAlert}
+                  innerStyle={styles.BottomControlButton}
                 />
               ) : (
                 <SecondaryButton
@@ -576,8 +589,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                   }
                   title='Decline'
                   onPress={this.decline}
-                  innerStyle={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ?
-                      { padding: 5.6, minHeight: 15 } : null }
+                  innerStyle={styles.BottomControlButton}
                 />
               )}
             </View>
@@ -658,5 +670,9 @@ const styles = StyleSheet.create({
   WonderIcon: {
     height: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 42 : 51,
     width: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 42 : 51,
+  },
+  BottomControlButton: {
+    padding: 5,
+    minHeight: 12,
   },
 });
