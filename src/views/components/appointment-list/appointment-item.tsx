@@ -80,7 +80,7 @@ class AppointmentItem extends React.PureComponent<Props> {
         </View>
         <View style={styles.contentContainer}>
           {this.renderTitle()}
-          <SubTitle style={{ marginTop: 2, }}>
+          <SubTitle style={{ marginTop: 2, marginBottom: 4 }}>
             {moment(item.event_at).format('MMMM Do [at] h:mma')}
           </SubTitle>
           <View style={styles.locationRow}>
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 2
   },
-  locationRow: { flexDirection: 'row' },
+  locationRow: { flexDirection: 'row', marginTop: 2 },
   locationText: { marginLeft: 10 },
   phoneText: {
     fontSize: 10,

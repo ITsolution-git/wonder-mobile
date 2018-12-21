@@ -229,11 +229,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
   share = (appointment) => {
     Share.share({
-      message: `  "Wanted to share with you the information for my date through Wonder. My date is with ${
+      message: `Wanted to share with you the information for my date through Wonder. My date is with ${
         appointment.match.first_name
       } on  ${moment(appointment.event_at).format('MMMM Do')} at ${moment(
         appointment.event_at
-      ).format('h:mma')} at ${appointment.name} at ${appointment.location}."`,
+      ).format('h:mma')} at ${appointment.name} at ${appointment.location}.`,
       title: `${appointment.owner.first_name}'s Wonder date!`
     });
   }
@@ -248,11 +248,10 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     ) {
       return (
         <PrimaryButton
-          style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE6_WIDTH) ? 0 : 11 }}
+          style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE6_WIDTH) ? 0 : 11 ,}}
           title='Confirm'
           onPress={() => this.handleConfirmation(appointment)}
-          innerStyle={((Viewport.width * Viewport.scale) <= IPHONE6_WIDTH) ?
-              { minHeight: 35 } : null }
+          innerStyle={{ minHeight: 30 }}
         />
       );
     } else {
@@ -424,7 +423,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 : 'Deactivated User'}{' '}{'\n'}
               on a {_.get(appointment, 'topic.name', null)} Date to:
             </Title>
-            <View style={{justifyContent: 'center', flex: 1}}>
+            <View style={{justifyContent: 'space-around', flex: 1}}>
               <View style={[styles.body]}>
                 <View style={{ width: '80%' }}>
                   <Text style={[styles.mainFontSize, styles.activityName]}>{appointment.name}</Text>
@@ -447,7 +446,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                   {appointment.eventMoment && (
                       <Strong
                           align='left'
-                          style={[styles.mainFontSize, {color: '#000'}]}
+                          style={styles.mainFontSize}
                       >
                         {appointment.eventMoment.format('MMMM Do [at] h:mma')}
                       </Strong>
@@ -460,9 +459,9 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                           onPress={() => this.onCall(`tel:${appointment.phone}`)}
                       />
                   )}
-                  <TouchableOpacity onPress={() => Linking.openURL('google.com')}>
+                  <TouchableOpacity onPress={() => Linking.openURL('test.com')}>
                     <Text style={[styles.linkText]}>
-                      somesite.com
+                      Visit Website{console.log(appointment)}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -473,27 +472,29 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                   />
                 </View>
               </View>
+              <View style={{paddingHorizontal: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 10 : 20}}>
+                {isPast ? (
+                    <View>
+                      {appointment.state === 'confirmed' ? (
+                          <PrimaryButton
+                              disabled={!appointment.reviewed_at ? false : true}
+                              title={
+                                !this.state.reviewDisabled ? 'Leave Review' : 'Left Review'
+                              }
+                              onPress={this.openReviewModal}
+                              innerStyle={{ padding: 0 }}
+                          />
+                      ) : null}
+                    </View>
+                ) : (
+                    this.renderConfirmationButton(appointment)
+                )}
+              </View>
             </View>
 
           </View>
         </View>
         <View>
-          {isPast ? (
-            <View style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 8 }}>
-              {appointment.state === 'confirmed' ? (
-                <PrimaryButton
-                  disabled={!appointment.reviewed_at ? false : true}
-                  title={
-                    !this.state.reviewDisabled ? 'Leave Review' : 'Left Review'
-                  }
-                  onPress={this.openReviewModal}
-                  innerStyle={{ padding: 0 }}
-                />
-              ) : null}
-            </View>
-          ) : (
-            this.renderConfirmationButton(appointment)
-          )}
           <View style={styles.row}>
             {!isPast && (
               <View style={styles.col}>
@@ -552,7 +553,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               {
                 marginVertical: 15,
                 justifyContent: 'space-between'
-              }
+              },
             ]}
           >
             {!isPast && (
@@ -622,7 +623,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-between',
   },
   col: {
     flex: 1,
@@ -675,4 +676,7 @@ const styles = StyleSheet.create({
     padding: 5,
     minHeight: 12,
   },
+  ContentPadding: {
+    paddingHorizontal: 20
+  }
 });

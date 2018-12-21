@@ -223,7 +223,7 @@ class AppointmentConfirmScreen extends React.Component<
             <Avatar
                 size={
                   this.getAvatarSize()
-                } // TODO add lg
+                }
                 circle
                 uri={_.get(match, 'images[0].url', null)}
             />
