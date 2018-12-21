@@ -49,10 +49,10 @@ const WonderPickerSectionList = (props: Props) => {
       )}
       sections={[
         { title: 'Quick Dates', data: props.groupedQuickDates },
-        { title: '', data: props.groupedTopics }
+        { title: '', data: props.groupedTopics, final: true }
       ]}
       keyExtractor={(item, index) => item + index}
-      renderSectionFooter={() => <View style={styles.sectionFooter} />}
+      renderSectionFooter={({section}) => section.final ? null : <View style={styles.sectionFooter} />}
       ListFooterComponent={() => <View style={styles.footer} />}
     />
   );
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     width: '80%',
     padding: 10
   },
-  footer: { height: 80 },
+  footer: { height: 10 },
   lessThanThree: {
     padding: 10,
     flexDirection: 'row',

@@ -1,6 +1,6 @@
 import React from 'react';
 import Screen from 'src/views/components/screen';
-import {StyleSheet, View, KeyboardAvoidingView, Button, Platform, ScrollView} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {
   Text,
   Strong,
@@ -10,16 +10,16 @@ import {
 } from 'src/views/components/theme';
 import theme from 'src/assets/styles/theme';
 import {NavigationScreenProp, NavigationParams} from 'react-navigation';
-import {KeyboardDismissView} from 'src/views/components/keyboard-dismiss-view';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import validator from 'validator';
 import {Dispatch} from 'redux';
 import {submitFeedback} from 'src/store/sagas/feedback';
 import {connect} from 'react-redux';
 import SupportMessage from 'src/models/support-message';
 import WonderAppState from 'src/models/wonder-app-state';
-import {Content} from 'native-base';
 import ImagePicker from 'react-native-image-picker';
 import StateButton from 'src/views/components/theme/buttons/state-button';
+import normalizeText from '../../../utils/normalizeText';
 
 interface FeedbackScreenProps {
   navigation: NavigationScreenProp<any, NavigationParams>;
@@ -107,59 +107,58 @@ class FeedbackScreen extends React.Component<FeedbackScreenProps,
 
     return (
       <Screen>
-        <ScrollView style={styles.container}>
-          <KeyboardAvoidingView
-            keyboardVerticalOffset={Platform.select({android: -40, ios: 0})}
-            behavior='position'
-            style={{flex: 1}}
-            contentContainerStyle={{flex: 1, paddingBottom: 20, paddingHorizontal: 20}}
-          >
-            <KeyboardDismissView>
-              <Text style={styles.infoText}>
-                We want you to have a{' '}
-                <Strong style={{color: theme.colors.primary}}>Wonder'ful</Strong>{' '}
-                experience! We would love to hear your feedback.
+        <KeyboardAwareScrollView
+          keyboardShouldPersistTaps='never'
+          keyboardDismissMode='interactive'
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={styles.container}
+          contentContainerStyle={{paddingBottom: 20, paddingHorizontal: 20}}
+        >
+          <Text style={styles.infoText}>
+            We want you to have a{' '}
+            <Strong style={{color: theme.colors.primary}}>Wonder'ful</Strong>{' '}
+            experience! We would love to hear your feedback.
+          </Text>
+          <View>
+            {subjectError && (
+              <Text style={{fontSize: 10, color: 'red'}}>
+                {subjectErrorText}
               </Text>
-              <View>
-                {subjectError && (
-                  <Text style={{fontSize: 10, color: 'red'}}>
-                    {subjectErrorText}
-                  </Text>
-                )}
-                <TextInput
-                  onFocus={() => this.setState({subjectError: false})}
-                  placeholder='Subject'
-                  onChangeText={this.onChangeSubjectText}
-                />
-                <View
-                  style={styles.addFile}
-                >
-                  <StateButton
-                    active={true}
-                    text='Add File'
-                    onPress={this.getImage}
-                  />
-                  {this.state.data.uri && <Text>selected image</Text>}
-                </View>
-                {bodyError && (
-                  <Text style={{fontSize: 10, color: 'red'}}>
-                    {bodyErrorText}
-                  </Text>
-                )}
-                <TextArea
-                  onFocus={() => this.setState({bodyError: false})}
-                  onChangeText={this.onChangebodyText}
-                  placeholder='Message...'
-                  style={{
-                    minHeight: 250,
-                    backgroundColor: '#E1E1E1',
-                    color: '#444'
-                  }}
-                />
-              </View>
-            </KeyboardDismissView>
-          </KeyboardAvoidingView>
-        </ScrollView>
+            )}
+            <TextInput
+              onFocus={() => this.setState({subjectError: false})}
+              placeholder='Subject'
+              onChangeText={this.onChangeSubjectText}
+            />
+            <View
+              style={styles.addFile}
+            >
+              <StateButton
+                active={true}
+                text='Add File'
+                onPress={this.getImage}
+                textStyle={{fontSize: normalizeText(13)}}
+              />
+              {this.state.data.uri && <Text>selected image</Text>}
+            </View>
+            {bodyError && (
+              <Text style={{fontSize: 10, color: 'red'}}>
+                {bodyErrorText}
+              </Text>
+            )}
+            <TextArea
+              onFocus={() => this.setState({bodyError: false})}
+              onChangeText={this.onChangebodyText}
+              placeholder='Message...'
+              style={{
+                minHeight: 250,
+                backgroundColor: '#E1E1E1',
+                color: '#444'
+              }}
+            />
+          </View>
+        </KeyboardAwareScrollView>
 
         <PrimaryButton rounded={false} title='Submit' onPress={this.submit}/>
       </Screen>
