@@ -79,7 +79,7 @@ export default class MediaGridItem extends React.Component<Props> {
     if (source) {
       onPress({ ...source, uri: `${BASE_URL}/${source.url}` });
     } else if (videoSource) {
-      onPress({ uri: `${BASE_URL}/${videoSource}` });
+      onPress({ uri: videoSource });
     }
   }
 

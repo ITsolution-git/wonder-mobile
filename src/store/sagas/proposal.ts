@@ -48,7 +48,6 @@ export function* getNewProposalSaga() {
 export function* watchGetNewProposal() {
   yield takeEvery(GET_NEW_PROPOSAL, getNewProposalSaga);
 }
-// THIS SAGA IS NOT YET BEING USED
 const GET_NEXT_PROPOSAL = 'GET_NEXT_PROPOSAL';
 export const getNextProposal = createAction(GET_NEXT_PROPOSAL);
 
