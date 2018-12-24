@@ -80,7 +80,7 @@ class Register1 extends React.Component<Props, State> {
     const { errors } = this.state;
     return (
       <Screen>
-        <ScrollView>
+        <ScrollView style={{ flex:1 }} contentContainerStyle={{ minHeight: '90%' }}>
           <KeyboardAvoidingView
             keyboardVerticalOffset={Platform.select({ android: -40, ios: 0 })}
             behavior='position'
