@@ -11,6 +11,7 @@ import Avatar, { AvatarSize } from '../theme/avatar';
 import Images from 'src/assets/images';
 import Proposal from 'src/models/proposal';
 import User from 'src/models/user';
+import normalizeText from '../../../utils/normalizeText';
 
 function lighten(color: string, value: number) {
   return Color(color)
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
   txt: {
     textAlign: 'center',
     color: '#FFF',
-    fontSize: 20,
+    fontSize: normalizeText(24),
     fontFamily: 'Poppins-Bold'
   },
   row: {
@@ -150,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   primaryButtonStyle: {
-    fontSize: 30
+    fontSize: normalizeText(30)
   },
   leftMatchAvatar: {
     right: -20,

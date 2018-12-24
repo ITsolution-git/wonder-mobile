@@ -43,7 +43,7 @@ import AmazonService from 'src/services/amazon';
 import { Toast } from 'native-base';
 import Color from 'color';
 
-import api, { BASE_URL } from 'src/services/api';
+import api, {BASE_URL, fallbackImageUrl} from 'src/services/api';
 import SvgUri from 'react-native-svg-uri';
 
 import {
@@ -64,6 +64,8 @@ const { height } = Dimensions.get('window');
 const Viewport = Dimensions.get('window');
 
 const IPHONE5_WIDTH = 640;
+const IPHONE6_WIDTH = 750;
+const IPHONE6Plus_WIDTH = 1242;
 
 interface AppointmentViewProps {
   currentUser: User;
@@ -227,11 +229,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
 
   share = (appointment) => {
     Share.share({
-      message: `  "Wanted to share with you the information for my date through Wonder. My date is with ${
+      message: `Wanted to share with you the information for my date through Wonder. My date is with ${
         appointment.match.first_name
       } on  ${moment(appointment.event_at).format('MMMM Do')} at ${moment(
         appointment.event_at
-      ).format('h:mma')} at ${appointment.name} at ${appointment.location}."`,
+      ).format('h:mma')} at ${appointment.name} at ${appointment.location}.`,
       title: `${appointment.owner.first_name}'s Wonder date!`
     });
   }
@@ -246,11 +248,10 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     ) {
       return (
         <PrimaryButton
-          style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 0 : 11 }}
+          style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE6_WIDTH) ? 0 : 11 ,}}
           title='Confirm'
           onPress={() => this.handleConfirmation(appointment)}
-          innerStyle={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ?
-              { minHeight: 30 } : null }
+          innerStyle={{ minHeight: 30 }}
         />
       );
     } else {
@@ -353,6 +354,17 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     navigation.goBack();
   }
 
+  getAvatarSize = () => {
+    switch ((Viewport.width * Viewport.scale)) {
+      case IPHONE6_WIDTH :
+        return AvatarSize.md;
+      case IPHONE5_WIDTH :
+        return AvatarSize.xmd;
+      default:
+        return AvatarSize.lg;
+    }
+  }
+
   closeModal = () => {
     this.setState({
       modalOpen: false,
@@ -399,8 +411,8 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           <View style={styles.header}>
             <Avatar
               circle
-              size={AvatarSize.md}
-              uri={_.get(appointment, 'match.images[0].url', null)}
+              size={this.getAvatarSize() }
+              uri={_.get(appointment, 'match.images[0].url', fallbackImageUrl)}
             />
           </View>
 
@@ -411,7 +423,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 : 'Deactivated User'}{' '}{'\n'}
               on a {_.get(appointment, 'topic.name', null)} Date to:
             </Title>
-            <View style={{justifyContent: 'center', flex: 1}}>
+            <View style={{justifyContent: 'space-around', flex: 1}}>
               <View style={[styles.body]}>
                 <View style={{ width: '80%' }}>
                   <Text style={[styles.mainFontSize, styles.activityName]}>{appointment.name}</Text>
@@ -428,7 +440,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                     {
                       appointment.location.split(',')
                         .slice(0, 1) + '\n' + appointment.location.split(', ')
-                        .slice(1, appointment.location.split(', ').length).join(',')
+                        .slice(1, appointment.location.split(', ').length).join(', ')
                     }
                   </Text>
                   {appointment.eventMoment && (
@@ -447,9 +459,9 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                           onPress={() => this.onCall(`tel:${appointment.phone}`)}
                       />
                   )}
-                  <TouchableOpacity onPress={() => Linking.openURL('google.com')}>
+                  <TouchableOpacity onPress={() => Linking.openURL('test.com')}>
                     <Text style={[styles.linkText]}>
-                      somesite.com
+                      Visit Website{console.log(appointment)}
                     </Text>
                   </TouchableOpacity>
                 </View>
@@ -460,27 +472,29 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                   />
                 </View>
               </View>
+              <View style={{paddingHorizontal: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 10 : 20}}>
+                {isPast ? (
+                    <View>
+                      {appointment.state === 'confirmed' ? (
+                          <PrimaryButton
+                              disabled={!appointment.reviewed_at ? false : true}
+                              title={
+                                !this.state.reviewDisabled ? 'Leave Review' : 'Left Review'
+                              }
+                              onPress={this.openReviewModal}
+                              innerStyle={{ padding: 0 }}
+                          />
+                      ) : null}
+                    </View>
+                ) : (
+                    this.renderConfirmationButton(appointment)
+                )}
+              </View>
             </View>
 
           </View>
         </View>
         <View>
-          {isPast ? (
-            <View style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 8 }}>
-              {appointment.state === 'confirmed' ? (
-                <PrimaryButton
-                  disabled={!appointment.reviewed_at ? false : true}
-                  title={
-                    !this.state.reviewDisabled ? 'Leave Review' : 'Left Review'
-                  }
-                  onPress={this.openReviewModal}
-                  innerStyle={{ padding: 0 }}
-                />
-              ) : null}
-            </View>
-          ) : (
-            this.renderConfirmationButton(appointment)
-          )}
           <View style={styles.row}>
             {!isPast && (
               <View style={styles.col}>
@@ -539,7 +553,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               {
                 marginVertical: 15,
                 justifyContent: 'space-between'
-              }
+              },
             ]}
           >
             {!isPast && (
@@ -553,8 +567,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                   }
                   title='Cancel'
                   onPress={this.cancel}
-                  innerStyle={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ?
-                      { padding: 5.6, minHeight: 15 } : null }
+                  innerStyle={styles.BottomControlButton}
                 />
               </View>
             )}
@@ -563,6 +576,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 <SecondaryButton
                   title='Delete'
                   onPress={this.showDeleteAlert}
+                  innerStyle={styles.BottomControlButton}
                 />
               ) : (
                 <SecondaryButton
@@ -576,8 +590,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                   }
                   title='Decline'
                   onPress={this.decline}
-                  innerStyle={((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ?
-                      { padding: 5.6, minHeight: 15 } : null }
+                  innerStyle={styles.BottomControlButton}
                 />
               )}
             </View>
@@ -610,7 +623,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-between',
   },
   col: {
     flex: 1,
@@ -659,4 +672,11 @@ const styles = StyleSheet.create({
     height: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 42 : 51,
     width: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 42 : 51,
   },
+  BottomControlButton: {
+    padding: 5,
+    minHeight: 12,
+  },
+  ContentPadding: {
+    paddingHorizontal: 20
+  }
 });
