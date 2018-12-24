@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, View } from 'react-native';
+import {Platform, View} from 'react-native';
 import {
   createStackNavigator,
   createMaterialTopTabNavigator,
@@ -20,7 +20,7 @@ import {
   ProfileVideo,
   Feedback
 } from '../screens';
-import { INITIAL_PROFILE_SCREEN } from '@utils';
+import {INITIAL_PROFILE_SCREEN} from '@utils';
 
 import TabIcon from 'src/views/components/tabs/secondary-tab-icon';
 import theme from 'src/assets/styles/theme';
@@ -28,8 +28,8 @@ import theme from 'src/assets/styles/theme';
 // import SecondaryTabIcon from 'src/views/components/tab/secondary-tab-icon';
 
 function hideTabsForNestedRoutes({
-  navigation
-}: {
+                                   navigation
+                                 }: {
   navigation: NavigationScreenProp<NavigationRoute>;
 }) {
   if (navigation.state.index >= 1) {
@@ -53,21 +53,23 @@ const ProfileNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Profile',
         ...theme.NavBar.transparent,
-        headerRight: <View />
+        headerRight: <View/>
       }
     },
     ProfileMedia: {
       screen: ProfileMedia,
       navigationOptions: {
-        header: null
+        title: 'PHOTOS & VIBE VIDEO',
+        ...theme.NavBar.transparent,
+        headerRight: <View />
       }
     },
     ProfileWonders: {
       screen: ProfileWonders,
       navigationOptions: {
-        title: 'Pick Your Wonders',
+        title: 'PICK YOUR WONDERS',
         ...theme.NavBar.transparent,
-        headerRight: <View />
+        headerRight: <View/>
       }
     },
     ProfilePreferences: {
@@ -75,7 +77,7 @@ const ProfileNavigator = createStackNavigator(
       navigationOptions: {
         title: 'SETTINGS',
         ...theme.NavBar.transparent,
-        headerRight: <View />
+        headerRight: <View/>
         // header: null,
       }
     },
@@ -84,7 +86,7 @@ const ProfileNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Profile Selfie',
         ...theme.NavBar.transparent,
-        headerRight: <View />
+        headerRight: <View/>
       }
     },
     ProfileVideo: {
@@ -92,15 +94,15 @@ const ProfileNavigator = createStackNavigator(
       navigationOptions: {
         title: 'Vibe Video',
         ...theme.NavBar.transparent,
-        headerRight: <View />
+        headerRight: <View/>
       }
     },
     Feedback: {
       screen: Feedback,
       navigationOptions: {
-        title: 'Contact Us',
+        title: 'CONTACT US',
         ...theme.NavBar.transparent,
-        headerRight: <View />
+        headerRight: <View/>
       }
     }
   },
@@ -112,13 +114,13 @@ const ProfileNavigator = createStackNavigator(
 const UpcomingAppointmentsNavigator = createStackNavigator({
   UpcomingAppointments: {
     screen: UpcomingAppointments,
-    navigationOptions: { header: null }
+    navigationOptions: {header: null}
   },
   UpcomingAppointmentView: {
     screen: AppointmentView,
     navigationOptions: {
       ...theme.NavBar.transparent,
-      headerRight: <View />
+      headerRight: <View/>
     }
   }
 });
@@ -126,13 +128,13 @@ const UpcomingAppointmentsNavigator = createStackNavigator({
 const PastAppointmentsNavigator = createStackNavigator({
   PastAppointments: {
     screen: PastAppointments,
-    navigationOptions: { header: null }
+    navigationOptions: {header: null}
   },
   PastAppointmentView: {
     screen: AppointmentView,
     navigationOptions: {
       ...theme.NavBar.transparent,
-      headerRight: <View />
+      headerRight: <View/>
     }
   }
 });

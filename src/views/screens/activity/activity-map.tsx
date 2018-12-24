@@ -114,9 +114,13 @@ class ActivityMapScreen extends React.Component<Props, State> {
   }
 
   private fallbackToBackendLocation = (): void => {
-    const {
-      currentUser: { latitude, longitude }
-    } = this.props;
+    const { currentUser } = this.props;
+
+    if (!currentUser) {
+      return;
+    }
+
+    const { latitude, longitude } = currentUser;
 
     if (latitude && longitude) {
       this.setState({

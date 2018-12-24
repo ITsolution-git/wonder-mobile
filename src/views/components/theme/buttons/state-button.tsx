@@ -12,6 +12,7 @@ interface StateButtonProps {
   active: boolean | undefined;
   text: string;
   onPress: () => void;
+  textStyle?: object | {};
 }
 
 export const StateButton = (props: StateButtonProps) => {
@@ -26,7 +27,7 @@ export const StateButton = (props: StateButtonProps) => {
         }
       ]}
     >
-      <Text style={{ color: props.active ? '#fff' : theme.colors.primary }}>
+      <Text style={{ color: props.active ? '#fff' : theme.colors.primary, ...props.textStyle }}>
         {props.text}
       </Text>
     </TouchableHighlight>

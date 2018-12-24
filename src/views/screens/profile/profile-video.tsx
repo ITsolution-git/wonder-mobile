@@ -63,9 +63,9 @@ class ProfileVideoScreen extends React.Component<Props, State> {
 
     ImagePicker.launchCamera(options, (res: Response) => {
       if (res.didCancel) {
-        // console.log("User cancelled!");
+        console.log('User cancelled!');
       } else if (res.error) {
-        // console.log("Error", res.error);
+        console.log('Error', res.error);
       } else {
         this.setState({ data: res });
       }

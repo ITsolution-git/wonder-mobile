@@ -27,6 +27,7 @@ const Viewport = Dimensions.get('window');
 
 const IPHONE5_WIDTH = 640;
 const IPHONE6_WIDTH = 750;
+const { height } = Dimensions.get('window');
 
 const mapState = (state: WonderAppState) => ({
   appointment: state.appointment

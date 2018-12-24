@@ -2,6 +2,7 @@ import Color from 'color';
 import React from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import { StyleSheet, ModalProps, Modal, View, Image } from 'react-native';
+import FastImage from 'react-native-fast-image';
 
 import theme from 'src/assets/styles/theme';
 import { Text, PrimaryButton, OutlineButton } from '../theme';
@@ -10,6 +11,7 @@ import Avatar, { AvatarSize } from '../theme/avatar';
 import Images from 'src/assets/images';
 import Proposal from 'src/models/proposal';
 import User from 'src/models/user';
+import normalizeText from '../../../utils/normalizeText';
 
 function lighten(color: string, value: number) {
   return Color(color)
@@ -64,7 +66,8 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
               {proposal.candidate.first_name} thinks
             </Text>
             <View style={{width: '98%', height: 116}}>
-              <Image
+              <FastImage
+                fallback={true}
                 source={Images.yourWonderful}
                 style={{flex: 1, height: undefined, width: undefined}}
                 resizeMode='contain'
@@ -76,19 +79,20 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
             </Text>
             <View style={styles.row}>
               <Avatar
-                size={AvatarSize.xl}
+                size={AvatarSize.lg}
                 uri={this.getCurrentUserImage()}
                 circle
                 bordered
                 style={styles.avatar}
                 containerStyle={styles.leftMatchAvatar}
               />
-              <Image
+              <FastImage
+                fallback={true}
                 source={Images.LogoIcon}
-                style={{width: 50, height: 50, zIndex: 2}}
+                style={{width: 50, height: 50, zIndex: 2, elevation: 8}}
               />
               <Avatar
-                size={AvatarSize.xl}
+                size={AvatarSize.lg}
                 containerStyle={styles.rightMatchAvatar}
                 uri={this.getCandidateImage()}
                 style={styles.avatar}
@@ -97,7 +101,7 @@ class FoundMatchModal extends React.Component<FoundMatchModalProps> {
               />
             </View>
           </View>
-          <View flex={2} style={{paddingHorizontal: 100}}>
+          <View flex={1} style={{paddingHorizontal: '30%'}}>
             <PrimaryButton
               title='Send Message'
               onPress={() => onSuccess(proposal)}
@@ -133,24 +137,21 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: 'center'
   },
-  wonderfulTxt: {
-    fontSize: 24
-  },
   txt: {
     textAlign: 'center',
     color: '#FFF',
-    fontSize: 24,
+    fontSize: normalizeText(24),
     fontFamily: 'Poppins-Bold'
   },
   row: {
-    marginTop: 20,
+    marginTop: 15,
     paddingHorizontal: 20,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'
   },
   primaryButtonStyle: {
-    fontSize: 30
+    fontSize: normalizeText(30)
   },
   leftMatchAvatar: {
     right: -20,

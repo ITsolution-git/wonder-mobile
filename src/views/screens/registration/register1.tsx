@@ -33,7 +33,6 @@ interface State {
   last_name: string;
   email: string;
   phone: string;
-  password: string;
   errors: StateErrors;
 }
 
@@ -42,7 +41,6 @@ interface StateErrors {
   last_name?: string;
   email?: string;
   phone?: string;
-  password?: string;
 }
 
 const mapState = (state: WonderAppState) => ({});
@@ -57,8 +55,7 @@ class Register1 extends React.Component<Props, State> {
     first_name: null,
     last_name: null,
     email: null,
-    phone: null,
-    password: null
+    phone: null
   };
 
   state: State = {
@@ -66,7 +63,6 @@ class Register1 extends React.Component<Props, State> {
     last_name: '',
     email: '',
     phone: '',
-    password: '',
     errors: {}
   };
 
@@ -84,7 +80,7 @@ class Register1 extends React.Component<Props, State> {
     const { errors } = this.state;
     return (
       <Screen>
-        <ScrollView>
+        <ScrollView style={{ flex:1 }} contentContainerStyle={{ minHeight: '90%' }}>
           <KeyboardAvoidingView
             keyboardVerticalOffset={Platform.select({ android: -40, ios: 0 })}
             behavior='position'
@@ -101,7 +97,7 @@ class Register1 extends React.Component<Props, State> {
               />
             </View>
             <View style={styles.body}>
-              <View style={{ width: '100%' }}>
+              <View style={{ width: '80%' }}>
                 <RoundedTextInput
                   getRef={(input: any) => {
                     this.inputs.first_name = input;
@@ -119,9 +115,10 @@ class Register1 extends React.Component<Props, State> {
                   onChangeText={this.onChangeText('first_name')}
                   fullWidth
                   maxLength={50}
+                  style={styles.roundedTextButton}
                 />
               </View>
-              <View style={{ marginTop: 10, width: '100%' }}>
+              <View style={{ marginTop: 10, width: '80%' }}>
                 <RoundedTextInput
                   getRef={(input: any) => {
                     this.inputs.last_name = input;
@@ -139,9 +136,10 @@ class Register1 extends React.Component<Props, State> {
                   onChangeText={this.onChangeText('last_name')}
                   fullWidth
                   maxLength={50}
+                  style={styles.roundedTextButton}
                 />
               </View>
-              <View style={{ marginTop: 10, width: '100%' }}>
+              <View style={{ marginTop: 10, width: '80%' }}>
                 <RoundedTextInput
                   getRef={(input: any) => {
                     this.inputs.email = input;
@@ -157,15 +155,15 @@ class Register1 extends React.Component<Props, State> {
                   onChangeText={this.onChangeText('email')}
                   fullWidth
                   maxLength={50}
+                  style={styles.roundedTextButton}
                 />
               </View>
-              <View style={{ marginTop: 10, width: '100%' }}>
+              <View style={{ marginTop: 10, width: '80%' }}>
                 <RoundedTextInput
                   getRef={(input: any) => {
                     this.inputs.phone = input;
                   }}
-                  onSubmitEditing={this.focusNext('password')}
-                  returnKeyType='next'
+                  returnKeyType='done'
                   onValidate={(text: string) =>
                     text && validator.isMobilePhone(text, 'en-US')
                   }
@@ -178,34 +176,16 @@ class Register1 extends React.Component<Props, State> {
                   onChangeText={this.onChangeText('phone')}
                   fullWidth
                   maxLength={10}
+                  style={styles.roundedTextButton}
                 />
-              </View>
-              <View style={{ marginTop: 10, width: '100%' }}>
-                <RoundedTextInput
-                  onValidate={(text: string) => text && text.length > 5}
-                  returnKeyType='done'
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  errorHint={errors.password}
-                  icon='lock'
-                  placeholder='Password'
-                  onChangeText={this.onChangeText('password')}
-                  fullWidth
-                />
-              </View>
-              <View
-                style={{
-                  paddingVertical: 10,
-                  width: '50%',
-                  alignSelf: 'center'
-                }}
-              >
-                <PrimaryButton title='Next' onPress={this.validate} />
               </View>
             </View>
             {/* </KeyboardDismissView> */}
           </KeyboardAvoidingView>
         </ScrollView>
+        <View>
+          <PrimaryButton rounded={false} title='Next' onPress={this.validate} />
+        </View>
       </Screen>
     );
   }
@@ -213,7 +193,7 @@ class Register1 extends React.Component<Props, State> {
   private validate = () => {
     const errors: StateErrors = {};
     const { navigation, onSave } = this.props;
-    const { first_name, last_name, email, phone, password } = this.state;
+    const { first_name, last_name, email, phone } = this.state;
 
     if (validator.isEmpty(first_name)) {
       errors.first_name = 'Please enter your first name';
@@ -231,17 +211,11 @@ class Register1 extends React.Component<Props, State> {
       errors.phone = 'Please enter your mobile phone number';
     }
 
-    if (validator.isEmpty(password)) {
-      errors.password = 'Please enter a password';
-    } else if (password && password.length < 6) {
-      errors.password = 'Password must be at least 6 characters';
-    }
-
     if (Object.keys(errors).length) {
       this.setState({ errors });
       return;
     }
-    onSave({ first_name, last_name, email, phone, password });
+    onSave({ first_name, last_name, email, phone });
     navigation.navigate('Register2');
   }
 
@@ -267,14 +241,15 @@ export default connect(
 
 const styles = StyleSheet.create({
   body: {
-    alignItems: 'center',
     flex: 1,
     flexDirection: 'column',
-    padding: 20
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   header: {
     maxHeight: 125,
     flex: 0,
     alignItems: 'center'
-  }
+  },
+  roundedTextButton: { height: 54 },
 });
