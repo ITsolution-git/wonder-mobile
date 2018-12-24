@@ -92,7 +92,7 @@ class CardDetailsOverlay extends React.Component<CardDetailsOverlayProps,
     return (
       <Text
         allowFontScaling={false}
-        style={{fontSize: 14, marginBottom: 5, color: '#fff'}}
+        style={{fontSize: 14, marginBottom: 5, color: '#fff', marginLeft: 2}}
       >
         {distance <= 1 ? '< 1 mile' : distance + ' miles'}
       </Text>
