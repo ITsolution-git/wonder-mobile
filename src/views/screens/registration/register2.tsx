@@ -187,12 +187,12 @@ class Register2 extends React.Component<Props, State> {
               onChangeText={this.onChangeText('zipcode')}
               onBlur={this.lookupZipcode}
             />
-            <View style={{ marginVertical: 10 }}>
-              <PrimaryButton title='Next' onPress={this.validate} />
-            </View>
             {/* </KeyboardDismissView> */}
           </KeyboardAvoidingView>
         </ScrollView>
+        <View style={{ marginHorizontal: -20 }}>
+          <PrimaryButton rounded={false} title='Next' onPress={this.validate} />
+        </View>
       </Screen>
     );
   }
@@ -284,16 +284,15 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   genderBtns: {
-    paddingBottom: 4,
-    borderBottomWidth: 2,
-    borderBottomColor: Color(theme.colors.textColor).lighten(0.5)
   },
   genderBtnsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingTop: 4
   },
   title: {
-    color: theme.colors.primary,
+    color: '#fbdfc2',
     textAlign: 'center',
     fontWeight: 'bold'
   }
