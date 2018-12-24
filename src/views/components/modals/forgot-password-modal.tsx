@@ -67,8 +67,9 @@ const styles = StyleSheet.create({
     padding: 20
   },
   logo: {
-    flex: .5,
-    width: '80%'
+    flex: 1,
+    width: '90%',
+    maxHeight: 100
   },
   emailGroup: {
     flex: 1,
