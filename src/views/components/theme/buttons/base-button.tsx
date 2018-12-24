@@ -136,14 +136,14 @@ const styles = StyleSheet.create({
     // padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   container: {
-    flex: 0
+    flex: 0,
   },
   txtContainer: {
-    flex: 7,
-    justifyContent: 'center'
+    // flex: 7,
+    justifyContent: 'center',
   },
   iconContainer: {
     width: 40,

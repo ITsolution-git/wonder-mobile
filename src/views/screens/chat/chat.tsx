@@ -433,11 +433,9 @@ class ChatScreen extends React.Component<Props> {
             title='Schedule Wonder'
             onPress={this.scheduleWonder}
           />
-        </View>
-        <View style={styles.ghostButtonContainer}>
           <TouchableOpacity
               onPress={this.openGhostingModal}
-              style={[styles.ghostButtonStyle, { borderWidth: 2,  }]}
+              style={[styles.ghostButtonStyle, { borderWidth: 2, }]}
           >
             <Image
                 source={Assets.GhostButton}
@@ -585,7 +583,7 @@ const styles = StyleSheet.create({
     right: 0
   },
   ghostButtonStyle: {
-    marginLeft: 38,
+    marginLeft: 20,
     borderRadius: 100 / 2,
     justifyContent: 'center',
     alignItems: 'center',
@@ -602,14 +600,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   actionBtnContainer: {
-    // width: '50%',
+    width: '50%',
     alignItems: 'center',
-    position: 'relative',
-  },
-  ghostButtonContainer : {
-    height: '100%',
-    position: 'absolute',
-    right: 10,
     justifyContent: 'center',
-  }
+  },
 });
