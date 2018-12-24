@@ -25,7 +25,7 @@ class LatestMatchesItem extends React.Component<LatestMatchesItemProps> {
       <TouchableOpacity style={styles.container} onPress={onPress}>
         <View flex={5}>
           <Avatar
-            size={'xmd'}
+            size={'sm'}
             circle
             uri={_.get(chat, 'partner.images[0].url', fallbackImageUrl)}
           />

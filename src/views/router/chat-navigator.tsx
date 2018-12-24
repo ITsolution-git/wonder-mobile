@@ -8,7 +8,7 @@ import {
   AppointmentConfirm,
   ActivitySchedule
 } from '../screens';
-import theme from 'src/assets/styles/theme';
+import theme, {colors} from 'src/assets/styles/theme';
 import navigation from '../../services/navigation';
 import {
     Dimensions,
@@ -42,7 +42,6 @@ const ChatNavigator = createStackNavigator(
         //   titleStyle: {
         //     color: 'black',
         //     textAlign:'center',
-          
         //     fontWeight: '500'
         //   }
         // },

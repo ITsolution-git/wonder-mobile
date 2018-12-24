@@ -248,7 +248,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     ) {
       return (
         <PrimaryButton
-          style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE6_WIDTH) ? 0 : 11 ,}}
+          // style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE6_WIDTH) ? 0 : 11 }}
           title='Confirm'
           onPress={() => this.handleConfirmation(appointment)}
           innerStyle={{ minHeight: 30 }}
@@ -459,11 +459,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                           onPress={() => this.onCall(`tel:${appointment.phone}`)}
                       />
                   )}
-                  <TouchableOpacity onPress={() => Linking.openURL('test.com')}>
-                    <Text style={[styles.linkText]}>
-                      Visit Website{console.log(appointment)}
-                    </Text>
-                  </TouchableOpacity>
+                  {/*<TouchableOpacity onPress={() => Linking.openURL('test.com')}>*/}
+                    {/*<Text style={[styles.linkText]}>*/}
+                      {/*Visit Website*/}
+                    {/*</Text>*/}
+                  {/*</TouchableOpacity>*/}
                 </View>
                 <View style={{ width: '20%', alignItems: 'flex-end' }}>
                   <WonderImage
@@ -482,7 +482,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                                 !this.state.reviewDisabled ? 'Leave Review' : 'Left Review'
                               }
                               onPress={this.openReviewModal}
-                              innerStyle={{ padding: 0 }}
+                              innerStyle={{ minHeight: 30 }}
                           />
                       ) : null}
                     </View>
@@ -632,6 +632,7 @@ const styles = StyleSheet.create({
   btnLabel: {
     textAlign: 'center',
     fontSize: 12,
+    marginTop: 10
   },
   phoneText: {
     color: 'rgb(0, 122, 255)',
@@ -645,7 +646,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    marginTop: 15,
+    marginTop: 5,
     alignItems: 'center'
   },
   activityName: {

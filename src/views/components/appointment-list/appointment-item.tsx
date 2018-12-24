@@ -60,6 +60,16 @@ class AppointmentItem extends React.PureComponent<Props> {
     callNumber(`tel:${phone}`);
   }
 
+  formatPhoneNumber = (phoneNumberString: String) => {
+    const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+    const match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+        const intlCode = (match[1] ? '+1 ' : '');
+        return ['(', match[2], ') ', match[3], '-', match[4]].join('');
+    }
+    return '';
+  }
+
   render() {
     const { item, isPast } = this.props;
     return (
@@ -97,7 +107,7 @@ class AppointmentItem extends React.PureComponent<Props> {
               </SmallText>
               {item.phone !== null && (
                 <TextButton
-                  text={item.phone}
+                  text={this.formatPhoneNumber(item.phone)}
                   style={styles.phoneText}
                   onPress={this.handleCallNumber}
                 />
