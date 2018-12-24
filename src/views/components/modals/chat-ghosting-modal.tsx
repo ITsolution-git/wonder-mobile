@@ -12,6 +12,7 @@ import { IconButton, TextArea, Title, SecondaryButton } from '../theme';
 import { Text, PrimaryButton, OutlineButton } from 'src/views/components/theme';
 import TouchableOpacityOnPress from '../../../models/touchable-on-press';
 import LinearGradient from 'react-native-linear-gradient';
+import { isIphoneX } from '../../../utils/is-iphone-x';
 import theme from 'src/assets/styles/theme';
 const { width } = Dimensions.get('window');
 interface Props extends ModalProps {
@@ -25,10 +26,19 @@ class ChatGhostingModal extends React.Component<Props> {
     onRequestClose: _.noop
   };
 
+  isIPhoneXSize = (dim: any) => {
+    return dim.height === 812 || dim.width === 812;
+  }
+
+  isIPhoneXrSize = (dim: any) => {
+    return dim.height === 896 || dim.width === 896;
+  }
+
+
   state = {
     ghostMessage: `Hi ${
       this.props.conversation.partner.first_name
-      }, Unfortunately I'm no longer interested but I hope you find someone wonder'ful! Good luck:)`
+      }, Unfortunately, I'm no longer interested, but I hope you find someone wonder'ful! Good luck! :)`
   };
 
   onSendGhost = () => {
@@ -43,7 +53,9 @@ class ChatGhostingModal extends React.Component<Props> {
     return (
       <LinearGradient
         colors={['#FFF', '#feec5a', '#f48e5c']}
-        style={styles.modal}
+        style={[styles.modal,
+          { paddingTop: isIphoneX() ? 40 : 20 }
+        ]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
         locations={[0, 0.5, 1]}
@@ -54,11 +66,11 @@ class ChatGhostingModal extends React.Component<Props> {
           style={{ justifyContent: 'space-around' }}
         >
           <Title allowFontScaling={false} style={styles.title} color='#333'>
-            {'Thanks for not ghosting!'}
+            {'Thanks for Not Ghosting!'}
           </Title>
-          <View flex={1}>
+          <View>
             <Text allowFontScaling={false} style={styles.textColor}>
-              Send a goodbye message, we will send it to them and remove them
+              Send a goodbye message. We will send it to them and remove them
               from your matches.
             </Text>
             <TextArea
@@ -91,7 +103,7 @@ class ChatGhostingModal extends React.Component<Props> {
     const { onCancel, onSuccess, onRequestClose, ...rest } = this.props;
     return (
       <Modal onRequestClose={onRequestClose} transparent {...rest}>
-        <View style={{ flex: 1, maxHeight: 320 }}>{this.renderContent()}</View>
+        <View style={{ flex: 1, maxHeight: 300 }}>{this.renderContent()}</View>
       </Modal>
     );
   }
@@ -138,18 +150,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  title: { fontSize: 22, marginTop: 7 },
-  margin: { marginTop: 5 },
-  textColor: { color: '#333' },
-  textArea: { backgroundColor: 'white', minHeight: 100, marginTop: 10 },
+  title: {
+    fontSize: 22,
+    marginTop: 20,
+    textAlign: 'center',
+  },
+  margin: {
+    marginTop: 5
+  },
+  textColor: {
+    color: '#333',
+    textAlign: 'justify',
+    marginTop: Platform.select({ ios: 10, }),
+  },
+  textArea: {
+    backgroundColor: 'white',
+    minHeight: 100,
+    marginTop: 10
+  },
   btnContainer: {
     flexDirection: 'row',
-    marginTop: 12,
+    marginTop: 20,
     alignSelf: 'center',
     alignItems: 'center',
     width: '100%',
     justifyContent: 'space-around'
   },
-  secondInner: { minWidth: 130, backgroundColor: '#f1f1f1' },
-  secondOuter: { marginRight: 5, height: 44, justifyContent: 'center' }
+  secondInner: {
+    minWidth: 130,
+    backgroundColor: '#f1f1f1'
+  },
+  secondOuter: {
+    marginRight: 5,
+    height: 44,
+    justifyContent: 'center'
+  }
 });
