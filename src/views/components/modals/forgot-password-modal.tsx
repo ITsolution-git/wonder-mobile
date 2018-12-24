@@ -72,8 +72,10 @@ const styles = StyleSheet.create({
   },
   emailGroup: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingBottom: 60,
-    width: '80%'
+    width: '80%',
   },
   descriptionText: {
     paddingBottom: 30,
