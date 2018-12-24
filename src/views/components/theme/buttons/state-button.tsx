@@ -22,12 +22,12 @@ export const StateButton = (props: StateButtonProps) => {
       style={[
         styles.btnContainer,
         {
-          backgroundColor: props.active ? theme.colors.primary : '#fff',
-          borderColor: props.active ? '#fff' : theme.colors.primary
+          backgroundColor: props.active ? theme.colors.primaryLight : '#fff',
+          borderColor: props.active ? '#fff' : theme.colors.primaryLight
         }
       ]}
     >
-      <Text style={{ color: props.active ? '#fff' : theme.colors.primary, ...props.textStyle }}>
+      <Text style={{ color: props.active ? '#fff' : theme.colors.primaryLight, ...props.textStyle }}>
         {props.text}
       </Text>
     </TouchableHighlight>

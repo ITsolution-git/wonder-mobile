@@ -3,7 +3,7 @@ import { View, Text, Modal, StyleSheet, Image } from 'react-native';
 import { PrimaryButton, RoundedTextInput, SecondaryButton } from '../theme';
 import theme from '../../../assets/styles/theme';
 import TouchableOpacityOnPress from '../../../models/touchable-on-press';
-import Images from 'src/assets/images';
+import Images, { Logo } from 'src/assets/images';
 
 interface Props {
   visible: boolean;
@@ -24,7 +24,7 @@ const ForgotPasswordModal = (props: Props) => {
       onRequestClose={() => props.onRequestClose}
     >
       <View style={styles.container}>
-        <Image style={styles.logo} source={Images.Logo.DARK} resizeMode='contain' />
+        <Image style={styles.logo} source={Logo.DARK} resizeMode='contain' />
         <View style={styles.emailGroup}>
           <Text style={styles.descriptionText}>Having trouble logging in?</Text>
           <RoundedTextInput
@@ -37,6 +37,7 @@ const ForgotPasswordModal = (props: Props) => {
             onChangeText={props.onChangeText}
             fullWidth
             errorHint={props.errorHint}
+            style={styles.roundedTextButton}
           />
           <Text style={styles.actionText}>
             {`Enter your email address to\ncontact support.`}
@@ -63,23 +64,27 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 20,
-    marginTop: 60
+    padding: 20
   },
   logo: {
-    width: 300,
-    height: 100
+    flex: 1,
+    width: '90%',
+    maxHeight: 100
   },
   emailGroup: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingBottom: 60,
-    width: '80%'
+    width: '80%',
   },
   descriptionText: {
-    paddingBottom: 50,
+    paddingBottom: 30,
     fontSize: 15,
     color: theme.colors.textColor,
     textAlign: 'center'
   },
+  roundedTextButton: { height: 54 },
   actionText: {
     fontSize: 14,
     color: theme.colors.textColor,
