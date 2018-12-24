@@ -46,7 +46,10 @@ class VerifyScreen extends React.PureComponent {
             resizeMode='contain'
           />
           <Text style={styles.headerText}>
-            Please enter the four digit verification code we sent you to verify your account.
+            Please enter the four digit verification code
+          </Text>
+          <Text style={styles.headerText}>
+            we sent you to verify your account.
           </Text>
         <View style={{ width: '50%' }}>
           <RoundedTextInput
@@ -107,5 +110,5 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'space-around'
   },
-  image: { width: '80%', maxHeight: 100 }
+  image: { width: '90%', maxHeight: 100 }
 });
