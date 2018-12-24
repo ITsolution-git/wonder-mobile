@@ -101,7 +101,7 @@ class Register1 extends React.Component<Props, State> {
               />
             </View>
             <View style={styles.body}>
-              <View style={{ width: '100%' }}>
+              <View style={{ width: '80%' }}>
                 <RoundedTextInput
                   getRef={(input: any) => {
                     this.inputs.first_name = input;
@@ -119,9 +119,10 @@ class Register1 extends React.Component<Props, State> {
                   onChangeText={this.onChangeText('first_name')}
                   fullWidth
                   maxLength={50}
+                  style={styles.roundedTextButton}
                 />
               </View>
-              <View style={{ marginTop: 10, width: '100%' }}>
+              <View style={{ marginTop: 10, width: '80%' }}>
                 <RoundedTextInput
                   getRef={(input: any) => {
                     this.inputs.last_name = input;
@@ -139,9 +140,10 @@ class Register1 extends React.Component<Props, State> {
                   onChangeText={this.onChangeText('last_name')}
                   fullWidth
                   maxLength={50}
+                  style={styles.roundedTextButton}
                 />
               </View>
-              <View style={{ marginTop: 10, width: '100%' }}>
+              <View style={{ marginTop: 10, width: '80%' }}>
                 <RoundedTextInput
                   getRef={(input: any) => {
                     this.inputs.email = input;
@@ -157,9 +159,10 @@ class Register1 extends React.Component<Props, State> {
                   onChangeText={this.onChangeText('email')}
                   fullWidth
                   maxLength={50}
+                  style={styles.roundedTextButton}
                 />
               </View>
-              <View style={{ marginTop: 10, width: '100%' }}>
+              <View style={{ marginTop: 10, width: '80%' }}>
                 <RoundedTextInput
                   getRef={(input: any) => {
                     this.inputs.phone = input;
@@ -178,9 +181,10 @@ class Register1 extends React.Component<Props, State> {
                   onChangeText={this.onChangeText('phone')}
                   fullWidth
                   maxLength={10}
+                  style={styles.roundedTextButton}
                 />
               </View>
-              <View style={{ marginTop: 10, width: '100%' }}>
+              <View style={{ marginTop: 10, width: '80%' }}>
                 <RoundedTextInput
                   onValidate={(text: string) => text && text.length > 5}
                   returnKeyType='done'
@@ -191,21 +195,16 @@ class Register1 extends React.Component<Props, State> {
                   placeholder='Password'
                   onChangeText={this.onChangeText('password')}
                   fullWidth
+                  style={styles.roundedTextButton}
                 />
-              </View>
-              <View
-                style={{
-                  paddingVertical: 10,
-                  width: '50%',
-                  alignSelf: 'center'
-                }}
-              >
-                <PrimaryButton title='Next' onPress={this.validate} />
               </View>
             </View>
             {/* </KeyboardDismissView> */}
           </KeyboardAvoidingView>
         </ScrollView>
+        <View>
+          <PrimaryButton rounded={false} title='Next' onPress={this.validate} />
+        </View>
       </Screen>
     );
   }
@@ -276,5 +275,6 @@ const styles = StyleSheet.create({
     maxHeight: 125,
     flex: 0,
     alignItems: 'center'
-  }
+  },
+  roundedTextButton: { height: 54 },
 });
