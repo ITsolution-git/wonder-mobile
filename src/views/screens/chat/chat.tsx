@@ -479,7 +479,7 @@ class ChatScreen extends React.Component<Props> {
             messages={this.state.conversationMessages}
             renderFooter={this.renderFooter}
             onSend={this.onSend}
-            renderActions={this.renderActions}
+            renderActions={null}
             dateFormat={'LLL'}
             renderTime={() => null}
             onPressAvatar={this.openProfileModal}

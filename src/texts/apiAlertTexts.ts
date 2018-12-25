@@ -52,7 +52,7 @@ export const confirmLogoutAlertTexts = {
 
 export const confirmDeactivateAlertTexts = {
   title: 'Confirm Logout',
-  body: `Are you sure you want to deactivate your account? There are more Wonder'ful people on here for you to meet.`,
+  body: `Are you sure you want to deactivate account? There are a lot more Wonder'ful people on here!`,
   buttonTitle: `Keep Wonder'n`,
   buttonTitle2: `Deactivate`,
   alertVisible: true
