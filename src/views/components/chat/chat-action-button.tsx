@@ -32,7 +32,7 @@ export default class ChatActionButton extends React.PureComponent<BaseButtonProp
         end={{ x: 1, y: 1 }}
         {...this.props}
         style={{ padding: 5, }}
-        innerStyle={{ paddingHorizontal: 8 }}
+        innerStyle={{ paddingHorizontal: 8, minWidth: 150 }}
       />
     );
   }

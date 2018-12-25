@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     flex: 0,
   },
   txtContainer: {
-    // flex: 7,
+    flex: 7,
     justifyContent: 'center',
   },
   iconContainer: {
