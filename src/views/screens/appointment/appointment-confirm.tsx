@@ -62,24 +62,24 @@ class AppointmentConfirmScreen extends React.Component<
   }
 
   getAvatarSize = () => {
-    switch ((Viewport.width * Viewport.scale)) {
-      case IPHONE6_WIDTH :
-        return AvatarSize.lg;
-      case IPHONE5_WIDTH :
-        return AvatarSize.md;
-      default:
-        return AvatarSize.xl;
+    const resolution = Viewport.width * Viewport.scale;
+    if (resolution > IPHONE6_WIDTH) {
+      return AvatarSize.xl;
+    } else if (resolution <= IPHONE6_WIDTH && resolution > IPHONE5_WIDTH) {
+      return AvatarSize.lg;
+    } else if (resolution <= IPHONE5_WIDTH) {
+      return AvatarSize.md;
     }
   }
 
   getWonderSize = () => {
-    switch ((Viewport.width * Viewport.scale)) {
-      case IPHONE6_WIDTH :
-        return 44;
-      case IPHONE5_WIDTH :
-        return 39;
-      default:
-        return 48;
+    const resolution = Viewport.width * Viewport.scale;
+    if (resolution > IPHONE6_WIDTH) {
+      return 48;
+    } else if (resolution <= IPHONE6_WIDTH && resolution > IPHONE5_WIDTH) {
+      return 39;
+    } else if (resolution <= IPHONE5_WIDTH) {
+      return 39;
     }
   }
 
@@ -135,75 +135,71 @@ class AppointmentConfirmScreen extends React.Component<
       return (
         <View flex={1}>
           <View style={{ flex: 1, justifyContent: 'center', alignSelf: 'center' }}>
-              <View style={styles.scrollViewContainer}>
-                <View style={{ alignItems: 'center', marginBottom: 5, marginTop: 20 }}>
-                  <Avatar
-                      size={this.getAvatarSize()}
-                      circle
-                      uri={_.get(match, 'images[0].url', fallbackImageUrl)}
-                  />
-                </View>
-                <Text style={[{ textAlign: 'center', }, styles.titleFontSize, ]}>
-                  Invite {match.first_name}{'\n'}
-                  on a {appointment.topic.name} Date to:
-                </Text>
-                <View style={{justifyContent: 'center', flex: 1}}>
-                  <View style={[styles.body]}>
-                    <View style={{maxWidth: '80%'}}>
-                      <Text style={[styles.mainFontSize, styles.activityName]}>{activity.name}</Text>
-                      <Text
-                          style={[styles.mainFontSize, styles.addressText]}
-                          onPress={() =>
-                              this.openAddress(
-                                  activity.latitude,
-                                  activity.longitude,
-                                  activity.name
-                              )
-                          }
+            <View style={styles.scrollViewContainer}>
+              <View style={{ alignItems: 'center', marginBottom: 5, marginTop: 20 }}>
+                <Avatar
+                  size={this.getAvatarSize()}
+                  circle
+                  uri={_.get(match, 'images[0].url', fallbackImageUrl)}
+                />
+              </View>
+              <Text style={[{ textAlign: 'center', }, styles.titleFontSize, ]}>
+                Invite {match.first_name}{'\n'}
+                on a {appointment.topic.name} Date to:
+              </Text>
+              <View style={{justifyContent: 'center', flex: 1}}>
+                <View style={[styles.body]}>
+                  <View style={{maxWidth: '80%'}}>
+                    <Text style={[styles.mainFontSize, styles.activityName]}>{activity.name}</Text>
+                    <Text
+                      style={[styles.mainFontSize, styles.addressText]}
+                      onPress={() =>
+                        this.openAddress(
+                          activity.latitude,
+                          activity.longitude,
+                          activity.name
+                        )
+                      }
+                    >
+                      {activity.location.slice(0, 1) + '\n' + activity.location
+                        .slice(1, activity.location.length).join(', ')}
+                    </Text>
+
+                    {eventMoment && (
+                      <Strong
+                        align='left'
+                        style={[styles.mainFontSize, { marginTop: -4, marginBottom: -2 }]}
                       >
-                        {activity.location.slice(0, 1) + '\n' + activity.location
-                            .slice(1, activity.location.length).join(', ')}
-                      </Text>
+                        {eventMoment.format('MMMM Do [at] h:mma')}
+                      </Strong>
+                    )}
 
-                      {eventMoment && (
-                          <Strong
-                              align='left'
-                              style={styles.mainFontSize}
-                          >
-                            {eventMoment.format('MMMM Do [at] h:mma')}
-                          </Strong>
-                      )}
-
-                      {activity.phone !== null && (
-                          <TextButton
-                              btnStyle={{ alignSelf: 'flex-start' }}
-                              style={[styles.mainFontSize, styles.phoneText]}
-                              text={this.formatPhoneNumber(activity.phone)}
-                              onPress={() => this.onCall(`tel:${activity.phone}`)}
-                          />
-                      )}
-
-                      <TouchableOpacity onPress={() => Linking.openURL(activity.url)}>
-                        <Text style={[styles.linkText]}>
-                          Visit Website{console.log(activity, 'activity', appointment, 'appointment')}
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                    <View style={{ alignItems: 'flex-start', maxWidth: '20%' }}>
-                      <WonderImage
-                          style={{
-                            width: this.getWonderSize(),
-                            height: this.getWonderSize()
-                          }
-                            // styles.WonderIcon
-
-                          }
-                          uri={appointment.topic.icon}
+                    {activity.phone !== null && activity.phone !== '' ? (
+                      <TextButton
+                        btnStyle={{ alignSelf: 'flex-start' }}
+                        style={[styles.mainFontSize, styles.phoneText]}
+                        text={this.formatPhoneNumber(activity.phone)}
+                        onPress={() => this.onCall(`tel:${activity.phone}`)}
                       />
-                    </View>
+                    ) : null}
+                    <TouchableOpacity onPress={() => Linking.openURL(activity.url)}>
+                      <Text style={[styles.linkText]}>
+                        Visit Website{console.log(activity, 'activity', appointment, 'appointment')}
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ alignItems: 'flex-start', maxWidth: '20%' }}>
+                    <WonderImage
+                      style={{
+                        width: this.getWonderSize(),
+                        height: this.getWonderSize()
+                      }}
+                      uri={appointment.topic.icon}
+                    />
                   </View>
                 </View>
               </View>
+            </View>
           </View>
 
           <View>
@@ -222,11 +218,11 @@ class AppointmentConfirmScreen extends React.Component<
         <View style={styles.scrollViewContainer}>
           <View style={{ alignItems: 'center', marginBottom: 5, marginTop: 20 }}>
             <Avatar
-                size={
-                  this.getAvatarSize()
-                }
-                circle
-                uri={_.get(match, 'images[0].url', null)}
+              size={
+                this.getAvatarSize()
+              }
+              circle
+              uri={_.get(match, 'images[0].url', null)}
             />
           </View>
           <Text style={[{ textAlign: 'center', }, styles.titleFontSize, ]}>
@@ -238,46 +234,46 @@ class AppointmentConfirmScreen extends React.Component<
               <View style={{maxWidth: '80%'}}>
                 <Text style={[styles.mainFontSize, styles.activityName]}>{name}</Text>
                 <Text
-                    style={[styles.mainFontSize, styles.addressText]}
-                    onPress={() =>
-                        this.openAddress(
-                            activity.latitude,
-                            activity.longitude,
-                            activity.name
-                        )
-                    }
+                  style={[styles.mainFontSize, styles.addressText]}
+                  onPress={() =>
+                    this.openAddress(
+                      activity.latitude,
+                      activity.longitude,
+                      activity.name
+                    )
+                  }
                 >
                   {
-                      location.split(',')
-                        .slice(0, 1) + '\n' + location.split(', ')
-                        .slice(1, location.split(', ').length).join(', ')
+                    location.split(',')
+                      .slice(0, 1) + '\n' + location.split(', ')
+                      .slice(1, location.split(', ').length).join(', ')
                   }
                 </Text>
 
                 {eventMoment && (
-                    <Strong
-                        align='left'
-                        style={styles.mainFontSize}
-                    >
-                      {eventMoment.format('MMMM Do [at] h:mma')}
-                    </Strong>
+                  <Strong
+                    align='left'
+                    style={[styles.mainFontSize, { marginTop: -4, marginBottom: -1 }]}
+                  >
+                    {eventMoment.format('MMMM Do [at] h:mma')}
+                  </Strong>
                 )}
 
-                {activity.phone !== null || activity.phone.length !== 0 && (
-                    <TextButton
-                        btnStyle={{ alignSelf: 'flex-start' }}
-                        style={[styles.mainFontSize, styles.phoneText]}
-                        text={this.formatPhoneNumber(activity.phone)}
-                        onPress={() => this.onCall(`tel:${activity.phone}`)}
-                    />
-                )}
-                  {activity.url.length >= 0 ? (
-                      <TouchableOpacity onPress={() => Linking.openURL(activity.url)}>
-                          <Text style={[styles.linkText]}>
-                              Visit Website
-                          </Text>
-                      </TouchableOpacity>
-                      ) : null }
+                {activity.phone !== null && activity.phone !== '' ? (
+                  <TextButton
+                    btnStyle={{ alignSelf: 'flex-start' }}
+                    style={[styles.mainFontSize, styles.phoneText]}
+                    text={this.formatPhoneNumber(activity.phone)}
+                    onPress={() => this.onCall(`tel:${activity.phone}`)}
+                  />
+                ) : null}
+                {activity.url.length >= 0 ? (
+                  <TouchableOpacity onPress={() => Linking.openURL(activity.url)}>
+                    <Text style={[styles.linkText]}>
+                      Visit Website
+                    </Text>
+                  </TouchableOpacity>
+                 ) : null }
               </View>
               <View style={{ alignItems: 'flex-start', maxWidth: '20%' }}>
                 <WonderImage style={styles.WonderIcon} uri={appointment.topic.icon} />

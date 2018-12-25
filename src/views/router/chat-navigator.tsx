@@ -64,23 +64,23 @@ const ChatNavigator = createStackNavigator(
         //headerTitleStyle :{textAlign: 'center',alignSelf:'center',justifyContent: 'center'},
         title: 'SCHEDULE WONDER',
         ...theme.NavBar.transparent,
-        headerRight:(<View></View>)
+        headerRight: (<View></View>)
       }
     },
     AppointmentInvite: {
       screen: AppointmentInvite,
       navigationOptions: {
         ...theme.NavBar.transparent,
-        headerRight:(<View></View>)
+        headerRight: (<View></View>)
       },
     },
     AppointmentConfirm: {
       screen: AppointmentConfirm,
       navigationOptions: {
         title: 'CONFIRM YOUR WONDER',
+        headerTitleStyle : { fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 14 },
         ...theme.NavBar.transparent,
-      headerTitleStyle : { fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 14 },
-        headerRight:(<View></View>)
+        headerRight: (<View></View>)
       }
     }
   },
