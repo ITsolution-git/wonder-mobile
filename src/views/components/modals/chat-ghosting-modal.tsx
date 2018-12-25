@@ -21,19 +21,14 @@ interface Props extends ModalProps {
   conversation?: object;
 }
 
+const Viewport = Dimensions.get('window');
+
+const IPHONE5_WIDTH = 640;
+
 class ChatGhostingModal extends React.Component<Props> {
   static defaultProps = {
     onRequestClose: _.noop
   };
-
-  isIPhoneXSize = (dim: any) => {
-    return dim.height === 812 || dim.width === 812;
-  }
-
-  isIPhoneXrSize = (dim: any) => {
-    return dim.height === 896 || dim.width === 896;
-  }
-
 
   state = {
     ghostMessage: `Hi ${
@@ -54,7 +49,7 @@ class ChatGhostingModal extends React.Component<Props> {
       <LinearGradient
         colors={['#FFF', '#feec5a', '#f48e5c']}
         style={[styles.modal,
-          { paddingTop: isIphoneX() ? 40 : 20 }
+          { paddingTop: isIphoneX() ? 30 : 20 }
         ]}
         start={{ x: 0, y: 0 }}
         end={{ x: 0, y: 1 }}
@@ -65,10 +60,10 @@ class ChatGhostingModal extends React.Component<Props> {
           flex={1}
           style={{ justifyContent: 'space-around' }}
         >
-          <Title allowFontScaling={false} style={styles.title} color='#333'>
+          <Title allowFontScaling={true} style={styles.title} color='#333'>
             {'Thanks for Not Ghosting!'}
           </Title>
-          <View>
+
             <Text allowFontScaling={false} style={styles.textColor}>
               Send a goodbye message. We will send it to them and remove them
               from your matches.
@@ -79,7 +74,7 @@ class ChatGhostingModal extends React.Component<Props> {
               value={this.state.ghostMessage}
               style={styles.textArea}
             />
-          </View>
+
           <View style={styles.btnContainer}>
             <SecondaryButton
               innerStyle={{ minWidth: 120, backgroundColor: '#f1f1f1' }}
@@ -103,7 +98,9 @@ class ChatGhostingModal extends React.Component<Props> {
     const { onCancel, onSuccess, onRequestClose, ...rest } = this.props;
     return (
       <Modal onRequestClose={onRequestClose} transparent {...rest}>
-        <View style={{ flex: 1, maxHeight: 300 }}>{this.renderContent()}</View>
+        <View style={{ flex: 1, maxHeight: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? '55%' : '45%' }}>
+          {this.renderContent()}
+        </View>
       </Modal>
     );
   }
@@ -115,14 +112,16 @@ const styles = StyleSheet.create({
   modal: {
     flex: 1,
     justifyContent: 'space-around',
-    padding: 20
+    // padding: 20
+    paddingHorizontal: 20,
+    paddingBottom: 10,
   },
   modalButton: {
     maxWidth: 100,
     backgroundColor: '#aaa'
   },
   header: {
-    marginTop: Platform.select({ ios: 20, android: 0 }),
+    // marginTop: Platform.select({ ios: 20, android: 0 }),
     height: 44,
     backgroundColor: '#FFF',
     flexDirection: 'row',
@@ -152,8 +151,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    marginTop: 20,
     textAlign: 'center',
+    marginVertical: -5,
   },
   margin: {
     marginTop: 5
@@ -161,16 +160,16 @@ const styles = StyleSheet.create({
   textColor: {
     color: '#333',
     textAlign: 'justify',
-    marginTop: Platform.select({ ios: 10, }),
+    // marginTop: Platform.select({ ios: 10, }),
   },
   textArea: {
     backgroundColor: 'white',
     minHeight: 100,
-    marginTop: 10
+    // marginTop: 10
   },
   btnContainer: {
     flexDirection: 'row',
-    marginTop: 20,
+    // marginTop: 20,
     alignSelf: 'center',
     alignItems: 'center',
     width: '100%',

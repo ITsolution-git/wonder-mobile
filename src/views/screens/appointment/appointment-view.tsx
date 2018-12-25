@@ -355,13 +355,13 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   }
 
   getAvatarSize = () => {
-    switch ((Viewport.width * Viewport.scale)) {
-      case IPHONE6_WIDTH :
-        return AvatarSize.md;
-      case IPHONE5_WIDTH :
-        return AvatarSize.xmd;
-      default:
-        return AvatarSize.lg;
+    const resolution = Viewport.width * Viewport.scale;
+    if (resolution > IPHONE6_WIDTH) {
+      return AvatarSize.lg;
+    } else if (resolution <= IPHONE6_WIDTH && resolution > IPHONE5_WIDTH) {
+      return AvatarSize.md;
+    } else if (resolution <= IPHONE5_WIDTH) {
+      return AvatarSize.xmd;
     }
   }
 
@@ -411,7 +411,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           <View style={styles.header}>
             <Avatar
               circle
-              size={this.getAvatarSize() }
+              size={this.getAvatarSize()}
               uri={_.get(appointment, 'match.images[0].url', fallbackImageUrl)}
             />
           </View>
@@ -422,19 +422,19 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 : 'Deactivated User'}{' '}{'\n'}
               on a {_.get(appointment, 'topic.name', null)} Date to:
             </Title>
-            <View style={{justifyContent: isPast && !appointment.reviewed_at ? 'space-around' : 'center', flex: 1}}>
+            <View style={{justifyContent: appointment.state === 'confirmed' ? 'space-around' : 'center', flex: 1}}>
               <View style={[styles.body]}>
                 <View style={{ width: '80%' }}>
                   <Text style={[styles.mainFontSize, styles.activityName]}>{appointment.name}</Text>
                   <Text
-                      style={[styles.mainFontSize, styles.addressText]}
-                      onPress={() =>
-                          this.openAddress(
-                              appointment.latitude,
-                              appointment.longitude,
-                              appointment.name
-                          )
-                      }
+                    style={[styles.mainFontSize, styles.addressText]}
+                    onPress={() =>
+                      this.openAddress(
+                        appointment.latitude,
+                        appointment.longitude,
+                        appointment.name
+                      )
+                    }
                   >
                     {
                       appointment.location.split(',')
@@ -443,52 +443,52 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                     }
                   </Text>
                   {appointment.eventMoment && (
-                      <Strong
-                          align='left'
-                          style={styles.mainFontSize}
-                      >
-                        {appointment.eventMoment.format('MMMM Do [at] h:mma')}
-                      </Strong>
+                    <Strong
+                      align='left'
+                      style={[styles.mainFontSize, { marginTop: -4, marginBottom: -2 }]}
+                    >
+                      {appointment.eventMoment.format('MMMM Do [at] h:mma')}
+                    </Strong>
                   )}
-                  {appointment.phone !== null  && (
-                      <TextButton
-                          btnStyle={{ alignSelf: 'flex-start' }}
-                          style={[styles.mainFontSize, styles.phoneText]}
-                          text={this.formatPhoneNumber(appointment.phone)}
-                          onPress={() => this.onCall(`tel:${appointment.phone}`)}
-                      />
-                  )}
+                  {appointment.phone !== null  && appointment.phone !== '' ? (
+                    <TextButton
+                      btnStyle={{ alignSelf: 'flex-start' }}
+                      style={[styles.mainFontSize, styles.phoneText]}
+                      text={this.formatPhoneNumber(appointment.phone)}
+                      onPress={() => this.onCall(`tel:${appointment.phone}`)}
+                    />
+                  ) : null}
                 </View>
                 <View style={{ width: '20%', alignItems: 'flex-end' }}>
                   <WonderImage
-                      style={styles.WonderIcon}
-                      uri={appointment.topic.icon}
+                    style={styles.WonderIcon}
+                    uri={appointment.topic.icon}
                   />
                 </View>
               </View>
               <View style={{paddingHorizontal: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 10 : 20}}>
                 {isPast ? (
-                    <View>
-                      {appointment.state === 'confirmed' ? (
-                          <PrimaryButton
-                              disabled={!appointment.reviewed_at ? false : true}
-                              title={
-                                !this.state.reviewDisabled ? 'Leave Review' : 'Left Review'
-                              }
-                              onPress={this.openReviewModal}
-                              innerStyle={{ minHeight: 30 }}
-                          />
-                      ) : null}
-                    </View>
+                  <View>
+                    {appointment.state === 'confirmed' ? (
+                      <PrimaryButton
+                        disabled={!appointment.reviewed_at ? false : true}
+                        title={
+                          !this.state.reviewDisabled ? 'Leave Review' : 'Left Review'
+                        }
+                        onPress={this.openReviewModal}
+                        innerStyle={{ minHeight: 30 }}
+                      />
+                    ) : null}
+                  </View>
                 ) : (
-                    this.renderConfirmationButton(appointment)
+                  this.renderConfirmationButton(appointment)
                 )}
               </View>
             </View>
 
           </View>
         </View>
-        <View>
+        <View style={{marginTop: -5}}>
           <View style={styles.row}>
             {!isPast && (
               <View style={styles.col}>
