@@ -415,15 +415,14 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
               uri={_.get(appointment, 'match.images[0].url', fallbackImageUrl)}
             />
           </View>
-
           <View style={styles.contentContainer}>
-            <Title align='center' style={[ styles.mainFontSize, ]}>
+            <Title align='center' style={[ styles.titleFontSize, ]}>
               Invite {appointment.match
                 ? appointment.match.first_name
                 : 'Deactivated User'}{' '}{'\n'}
               on a {_.get(appointment, 'topic.name', null)} Date to:
             </Title>
-            <View style={{justifyContent: 'space-around', flex: 1}}>
+            <View style={{justifyContent: isPast && !appointment.reviewed_at ? 'space-around' : 'center', flex: 1}}>
               <View style={[styles.body]}>
                 <View style={{ width: '80%' }}>
                   <Text style={[styles.mainFontSize, styles.activityName]}>{appointment.name}</Text>
@@ -451,7 +450,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                         {appointment.eventMoment.format('MMMM Do [at] h:mma')}
                       </Strong>
                   )}
-                  {appointment.phone !== null && (
+                  {appointment.phone !== null  && (
                       <TextButton
                           btnStyle={{ alignSelf: 'flex-start' }}
                           style={[styles.mainFontSize, styles.phoneText]}
@@ -459,11 +458,6 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                           onPress={() => this.onCall(`tel:${appointment.phone}`)}
                       />
                   )}
-                  {/*<TouchableOpacity onPress={() => Linking.openURL('test.com')}>*/}
-                    {/*<Text style={[styles.linkText]}>*/}
-                      {/*Visit Website*/}
-                    {/*</Text>*/}
-                  {/*</TouchableOpacity>*/}
                 </View>
                 <View style={{ width: '20%', alignItems: 'flex-end' }}>
                   <WonderImage
@@ -655,6 +649,9 @@ const styles = StyleSheet.create({
   },
   mainFontSize: {
     fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 15,
+  },
+  titleFontSize: {
+    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 10 : 13,
   },
   linkText: {
     color: 'rgb(0, 122, 255)',
