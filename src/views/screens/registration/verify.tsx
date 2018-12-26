@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableHighlight } from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { RoundedTextInput, PrimaryButton } from 'src/views/components/theme';
 import { loginUser, forgotPassword, getVerification } from 'src/store/sagas/user';
@@ -16,7 +16,8 @@ const mapState = (state: WonderAppState) => ({
 
 const mapDispatch = (dispatch: Dispatch) => ({
   onLoginUser: (data) => dispatch(loginUser(data)),
-  onLogin: (credentials: UserCredentials) => dispatch(loginUser(credentials))
+  onLogin: (credentials: UserCredentials) => dispatch(loginUser(credentials)),
+  onGetVerification: (phone: string) => dispatch(getVerification(phone))
 });
 
 class VerifyScreen extends React.PureComponent {
@@ -35,6 +36,13 @@ class VerifyScreen extends React.PureComponent {
     const { code } = this.state;
     this.props.onLogin({ phone, code });
   }
+
+  onResend = ():void => {
+    const { phone } = this.props.currentUser;
+
+    this.props.onGetVerification(phone);
+  }
+
 
   render() {
 
@@ -68,9 +76,19 @@ class VerifyScreen extends React.PureComponent {
                 maxLength={4}
               />
             </View>
+            <View>
+              <TouchableHighlight
+                onPress={this.onResend}
+                underlayColor='transparent'
+              >
+                <Text style={{ color: theme.colors.primary }}>
+                  Resend Code
+                </Text>
+              </TouchableHighlight>
+            </View>
           </View>
           <View style={styles.lowerContainer}>
-              <PrimaryButton rounded={false} title='Next' onPress={this.onSubmit} />
+            <PrimaryButton rounded={false} title='Next' onPress={this.onSubmit} />
           </View>
         </KeyboardAwareScrollView>
       </View>
