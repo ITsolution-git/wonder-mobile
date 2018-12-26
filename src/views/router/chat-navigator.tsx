@@ -78,9 +78,16 @@ const ChatNavigator = createStackNavigator(
       screen: AppointmentConfirm,
       navigationOptions: {
         title: 'CONFIRM YOUR WONDER',
-        headerTitleStyle : { fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 14 },
-        ...theme.NavBar.transparent,
-        headerRight: (<View></View>)
+        headerRight: (<View></View>),
+        headerTitleStyle : {
+          fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 14,
+          marginHorizontal: 5,
+            textAlign: 'center',
+          alignSelf: 'center',
+          justifyContent: 'center',
+          flex: 1
+        },
+          ...theme.NavBar.transparent,
       }
     }
   },

@@ -71,7 +71,7 @@ export default class Welcome extends React.Component<Props> {
               innerStyle={{
                 minHeight: 44,
                 paddingTop: 14,
-                paddingBottom: 14
+                paddingBottom: 14,
               }}
             />
             <TouchableOpacity
