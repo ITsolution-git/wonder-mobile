@@ -118,6 +118,16 @@ class AppointmentConfirmScreen extends React.Component<
     return '';
   }
 
+  formatAddress = (location: any) => {
+    if (location.length === 1) {
+      return location;
+    } else {
+      return location.slice(0, 1) + '\n' + location
+          .slice(1, location.length).join(', ');
+    }
+
+  }
+
   handleConfirmAppointment = (appointment: DecoratedAppointment) => {
     const { onConfirmAppointment, navigation } = this.props;
     onConfirmAppointment(appointment);
@@ -160,8 +170,7 @@ class AppointmentConfirmScreen extends React.Component<
                         )
                       }
                     >
-                      {activity.location.slice(0, 1) + '\n' + activity.location
-                        .slice(1, activity.location.length).join(', ')}
+                      {this.formatAddress(activity.location)}
                     </Text>
 
                     {eventMoment && (
@@ -242,11 +251,7 @@ class AppointmentConfirmScreen extends React.Component<
                     )
                   }
                 >
-                  {
-                    location.split(',')
-                      .slice(0, 1) + '\n' + location.split(', ')
-                      .slice(1, location.split(', ').length).join(', ')
-                  }
+                  {this.formatAddress(location)}
                 </Text>
 
                 {eventMoment && (

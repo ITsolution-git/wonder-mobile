@@ -177,6 +177,17 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     return '';
   }
 
+  formatAddress = (location: any) => {
+    if (location.length === 1) {
+      return location.split(',');
+    } else {
+      return location.split(',')
+          .slice(0, 1) + '\n' + location.split(', ')
+          .slice(1, location.split(', ').length).join(', ');
+    }
+
+  }
+
   onServicePress = (url: string) => {
     Alert.alert('Third Party', `This would go to ${url}`);
   }
@@ -442,11 +453,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                       )
                     }
                   >
-                    {
-                      appointment.location.split(',')
-                        .slice(0, 1) + '\n' + appointment.location.split(', ')
-                        .slice(1, appointment.location.split(', ').length).join(', ')
-                    }
+                    {this.formatAddress(appointment.location)}
                   </Text>
                   {appointment.eventMoment && (
                     <Strong
