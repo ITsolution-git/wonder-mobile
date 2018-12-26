@@ -424,7 +424,8 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
             </Title>
             <View
                 style={{
-                  justifyContent: appointment.state === 'invited' && isPast ? 'center' : 'space-around',
+                  justifyContent: (appointment.state === 'invited' && isPast) ||
+                      (appointment.state === 'declined' && isPast) ? 'center' : 'space-around',
                   flex: 1
                 }}
             >
@@ -464,6 +465,11 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                     />
                   ) : null}
                 </View>
+                {/*<TouchableOpacity onPress={() => Linking.openURL('test.com')}>*/}
+                {/*<Text style={[styles.linkText]}>*/}
+                {/*Visit Website*/}
+                {/*</Text>*/}
+                {/*</TouchableOpacity>*/}
                 <View style={{ width: '20%', alignItems: 'flex-end' }}>
                   <WonderImage
                     style={styles.WonderIcon}
