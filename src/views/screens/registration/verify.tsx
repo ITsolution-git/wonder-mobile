@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   },
   headerContainer: {
-    flex: 2,
     alignItems: 'center',
     padding: 20,
     justifyContent: 'space-around'
