@@ -34,7 +34,8 @@ const mapState = (state: WonderAppState) => ({
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onSave: (profile: Partial<User>) => dispatch(updateUser(profile)),
+  onSave: (profile: Partial<User>, updateProposals: () => void) =>
+    dispatch(updateUser(profile, updateProposals)),
   onRefresh: () => dispatch(getUser()),
   getNextProposal: () => dispatch(getNextProposal(5))
 });
@@ -179,9 +180,9 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_message_super_likes,
       geocoding_requested,
       apn_new_offers,
-      activities_only_interest
+      activities_only_interest,
+      getNextProposal: this.props.getNextProposal
     });
-    setTimeout(this.props.getNextProposal, 1500);
     navigation.goBack();
   }
 
