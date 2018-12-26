@@ -23,6 +23,7 @@ interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   onSave: Function;
   setAlertModal: () => void;
+  userImages: any[];
 }
 
 interface State {
@@ -39,7 +40,8 @@ interface StateErrors {
 }
 
 const mapState = (state: WonderAppState) => ({
-  registration: state.registration
+  registration: state.registration,
+  userImages: state.user.profile.images || []
 });
 const mapDispatch = (dispatch: Dispatch) => ({
   onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
@@ -70,11 +72,11 @@ class Register3 extends React.Component<Props, State> {
   }
 
   private validate = () => {
-    const { onSave, registration } = this.props;
+    const { onSave, registration, userImages } = this.props;
 
-    const { about, images } = this.state;
+    const { about } = this.state;
 
-    if (images.length < 2) {
+    if (userImages.length < 2) {
       return this.props.setAlertModal();
     }
 
