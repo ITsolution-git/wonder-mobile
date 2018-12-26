@@ -60,7 +60,7 @@ class ChatGhostingModal extends React.Component<Props> {
           flex={1}
           style={{ justifyContent: 'space-around' }}
         >
-          <Title allowFontScaling={true} style={styles.title} color='#333'>
+          <Title allowFontScaling={false} style={styles.title} color='#333'>
             {'Thanks for Not Ghosting!'}
           </Title>
 
@@ -98,7 +98,7 @@ class ChatGhostingModal extends React.Component<Props> {
     const { onCancel, onSuccess, onRequestClose, ...rest } = this.props;
     return (
       <Modal onRequestClose={onRequestClose} transparent {...rest}>
-        <View style={{ flex: 1, maxHeight: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? '55%' : '45%' }}>
+        <View style={{ flex: 1, maxHeight: 320, }}>
           {this.renderContent()}
         </View>
       </Modal>
