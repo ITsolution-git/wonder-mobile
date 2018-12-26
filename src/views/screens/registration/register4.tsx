@@ -160,10 +160,9 @@ class Register4 extends React.Component<Props, State> {
   validate = () => {
     const { onSave, onRegister } = this.props;
     const { selected } = this.state;
-    if (selected.length === 3) {
-      onSave({ topic_ids: selected.map((s: Topic) => s.id) });
-      onRegister();
-    }
+
+    onSave({ topic_ids: selected.map((s: Topic) => s.id) });
+    onRegister();
   }
 
   renderRow = ({ item }: { item: any }) => {
