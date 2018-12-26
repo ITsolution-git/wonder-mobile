@@ -248,7 +248,6 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
     ) {
       return (
         <PrimaryButton
-          // style={{ marginBottom: ((Viewport.width * Viewport.scale) <= IPHONE6_WIDTH) ? 0 : 11 }}
           title='Confirm'
           onPress={() => this.handleConfirmation(appointment)}
           innerStyle={{ minHeight: 30 }}
@@ -264,6 +263,7 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
           title={label}
           onPress={_.noop}
           disabled
+          innerStyle={{ minHeight: 30 }}
         />
       );
     }
@@ -422,7 +422,12 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 : 'Deactivated User'}{' '}{'\n'}
               on a {_.get(appointment, 'topic.name', null)} Date to:
             </Title>
-            <View style={{justifyContent: appointment.state === 'confirmed' ? 'space-around' : 'center', flex: 1}}>
+            <View
+                style={{
+                  justifyContent: appointment.state === 'invited' && isPast ? 'center' : 'space-around',
+                  flex: 1
+                }}
+            >
               <View style={[styles.body]}>
                 <View style={{ width: '80%' }}>
                   <Text style={[styles.mainFontSize, styles.activityName]}>{appointment.name}</Text>
