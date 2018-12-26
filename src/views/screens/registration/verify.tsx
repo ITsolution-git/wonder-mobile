@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { View, Text, Image, StyleSheet } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import { RoundedTextInput, PrimaryButton } from 'src/views/components/theme';
 import { loginUser, forgotPassword, getVerification } from 'src/store/sagas/user';
 import { selectCurrentUser, selectAuth } from 'src/store/selectors/user';
@@ -39,30 +40,39 @@ class VerifyScreen extends React.PureComponent {
 
     return (
       <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Image
-            style={styles.image}
-            source={Logo.DARK}
-            resizeMode='contain'
-          />
-          <Text style={styles.headerText}>
-            {`Please enter the four digit verification code\nwe sent you to verify your account.`}
-          </Text>
-        <View style={{ width: '50%' }}>
-          <RoundedTextInput
-            getRef={(input: any) => {
-              this.inputs.code = input;
-            }}
-            autoCorrect={false}
-            icon='lock'
-            onChangeText={this.onChangeText('code')}
-            maxLength={4}
-          />
-        </View>
-        </View>
-        <View style={styles.lowerContainer}>
-            <PrimaryButton rounded={false} title='Next' onPress={this.onSubmit} />
-        </View>
+        <KeyboardAwareScrollView
+          keyboardShouldPersistTaps='never'
+          keyboardDismissMode='interactive'
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={{ backgroundColor: '#fff' }}
+          contentContainerStyle={{ flex: 1 }}
+        >
+          <View style={styles.headerContainer}>
+            <Image
+              style={styles.image}
+              source={Logo.DARK}
+              resizeMode='contain'
+            />
+            <Text style={styles.headerText}>
+              {`Please enter the four digit verification code\nwe sent you to verify your account.`}
+            </Text>
+            <View style={{ width: '50%' }}>
+              <RoundedTextInput
+                getRef={(input: any) => {
+                  this.inputs.code = input;
+                }}
+                autoCorrect={false}
+                icon='lock'
+                onChangeText={this.onChangeText('code')}
+                maxLength={4}
+              />
+            </View>
+          </View>
+          <View style={styles.lowerContainer}>
+              <PrimaryButton rounded={false} title='Next' onPress={this.onSubmit} />
+          </View>
+        </KeyboardAwareScrollView>
       </View>
     );
   }
