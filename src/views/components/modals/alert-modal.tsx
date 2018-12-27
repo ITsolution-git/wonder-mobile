@@ -95,7 +95,7 @@ class AlertModal extends React.Component<IAlertModalProps> {
     return (
       <Text
         align={'center'}
-        color={colors.primary}
+        color={colors.primaryLight}
         style={localStyles.textPadding}
         //   allowFontScaling={false}
       >
