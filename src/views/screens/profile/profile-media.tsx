@@ -90,7 +90,7 @@ class ProfileMediaScreen extends React.Component<Props, State> {
           body={
             'Record a 15 second video of yourself saying "Hi and what makes you'
           }
-          buttonTitle={'Record'}
+          buttonTitle={'Record or Select Vibe Video'}
           renderWonderful={true}
           onRequestClose={this.toggleModalVisibility}
           visible={modalVisible}
