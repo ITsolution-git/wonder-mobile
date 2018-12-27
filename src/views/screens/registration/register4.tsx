@@ -189,8 +189,7 @@ class Register4 extends React.Component<Props, State> {
         <View style={{ paddingVertical: 15 }}>
           <Text style={{ textAlign: 'center' }}>
             Please select 3{' '}
-            <Text style={{ color: theme.colors.primary }}>Wonders</Text> to help
-            us find people &amp; activities in your area.
+            <Text style={{ color: theme.colors.primary }}>Wonders</Text>{`\nto help us find people & activities in\nyour area.`}
           </Text>
         </View>
         <View>{this.renderPicks()}</View>
