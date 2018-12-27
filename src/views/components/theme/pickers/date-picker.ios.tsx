@@ -99,7 +99,7 @@ export default class DatePicker extends React.Component<Props, State> {
 
 const styles = StyleSheet.create({
   iconBtn: {
-    backgroundColor: theme.colors.primaryLight,
+    backgroundColor: theme.colors.primary,
     borderRadius: 3,
     padding: 10,
     alignItems: 'center',
