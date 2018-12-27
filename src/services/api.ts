@@ -14,7 +14,7 @@ const wonderApi = axios.create({
   baseURL: BASE_URL + API_PATH,
   //   timeout: 1000,
   headers: {
-    'Accept': 'application/json',
+    "Accept": 'application/json',
     'Content-Type': 'application/json'
   }
 });
