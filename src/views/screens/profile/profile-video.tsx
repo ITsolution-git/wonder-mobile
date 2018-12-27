@@ -106,8 +106,7 @@ class ProfileVideoScreen extends React.Component<Props, State> {
       <View flex={1}>
         <View style={styles.container}>
           <Text>
-            Create a 15 second Vibe Video for others to see. Show them who you
-            are!
+            Record a 15 second Vibe Video of yourself saying "Hi, and what makes you Wonder'ful!"
           </Text>
         </View>
         <PrimaryButton
