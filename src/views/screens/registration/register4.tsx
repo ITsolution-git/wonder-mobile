@@ -206,13 +206,14 @@ class Register4 extends React.Component<Props, State> {
         </View>
         <View flex={1}>
           {this.renderPicker()}
-          <View style={styles.fixedButton}>
-            <PrimaryButton
-              disabled={selected.length !== 3}
-              title='Next'
-              onPress={this.validate}
-            />
-          </View>
+        </View>
+        <View style={styles.fixedButton}>
+          <PrimaryButton
+            rounded={false}
+            disabled={selected.length !== 3}
+            title='Next'
+            onPress={this.validate}
+          />
         </View>
       </Screen>
     );
@@ -248,8 +249,9 @@ const styles = StyleSheet.create({
   },
   fixedButton: {
     position: 'absolute',
-    bottom: 10,
-    width: '100%',
+    bottom: 0,
+    left: 0,
+    right: 0,
     zIndex: 10
   }
 });
