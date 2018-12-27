@@ -147,14 +147,13 @@ class ProfileCameraScreen extends React.Component<
       <View flex={1}>
         <View style={styles.container}>
           <Text>
-            Take a selfie to express who you are. Your profile images are
-            displayed for other people who match your interests
+            You want to look your best when matching with other people so make sure you take a great photo with good lighting and remember to smile :)
           </Text>
         </View>
         <View>
           <PrimaryButton
             rounded={false}
-            title='SELECT IMAGE'
+            title='Take Selfie or Upload Photo'
             onPress={this.getImage}
           />
         </View>
