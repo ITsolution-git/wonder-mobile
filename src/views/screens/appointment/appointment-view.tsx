@@ -66,6 +66,7 @@ const Viewport = Dimensions.get('window');
 const IPHONE5_WIDTH = 640;
 const IPHONE6_WIDTH = 750;
 const IPHONE6Plus_WIDTH = 1242;
+const IPHONEX_WIDTH = 1125;
 
 interface AppointmentViewProps {
   currentUser: User;
@@ -180,12 +181,28 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   formatAddress = (location: any) => {
     if (location.length === 1) {
       return location.split(',');
+    } else if (location.length === 3 ) {
+      return location.split(',')
+          .slice(0, 2).join(', ') + '\n' + location.split(', ')
+          .slice(2, location.split(', ').length).join(', ');
     } else {
       return location.split(',')
           .slice(0, 1) + '\n' + location.split(', ')
           .slice(1, location.split(', ').length).join(', ');
     }
+  }
 
+  getWonderSize = () => {
+    const resolution = Viewport.width * Viewport.scale
+    if (resolution >= IPHONEX_WIDTH) {
+      return 55;
+    } else if (resolution >= IPHONE6_WIDTH && resolution < IPHONEX_WIDTH) {
+      return 48;
+    } else if (resolution < IPHONE6_WIDTH && resolution > IPHONE5_WIDTH) {
+      return 40;
+    } else if (resolution <= IPHONE5_WIDTH) {
+      return 39;
+    }
   }
 
   onServicePress = (url: string) => {
@@ -437,11 +454,15 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 style={{
                   justifyContent: (appointment.state === 'invited' && isPast) ||
                       (appointment.state === 'declined' && isPast) ? 'center' : 'space-around',
-                  flex: 1
+                  flex: 1,
+                  alignItems: 'center',
+                  alignContent: 'center',
+                  alignSelf: 'center',
+                  width: '100%'
                 }}
             >
               <View style={[styles.body]}>
-                <View style={{ width: '80%' }}>
+                <View style={{ marginRight: 15, maxWidth: '62%' }}>
                   <Text style={[styles.mainFontSize, styles.activityName]}>{appointment.name}</Text>
                   <Text
                     style={[styles.mainFontSize, styles.addressText]}
@@ -477,14 +498,17 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
                 {/*Visit Website*/}
                 {/*</Text>*/}
                 {/*</TouchableOpacity>*/}
-                <View style={{ width: '20%', alignItems: 'flex-end' }}>
+                <View style={{height: '100%', justifyContent: 'center'}}>
                   <WonderImage
-                    style={styles.WonderIcon}
+                    style={{
+                      width: this.getWonderSize(),
+                      height: this.getWonderSize()
+                    }}
                     uri={appointment.topic.icon}
                   />
                 </View>
               </View>
-              <View style={{paddingHorizontal: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 10 : 20}}>
+              <View style={{ paddingHorizontal: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 10 : 20, width: '100%' }}>
                 {isPast ? (
                   <View>
                     {appointment.state === 'confirmed' ? (
@@ -666,10 +690,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   mainFontSize: {
-    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 15,
+    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 12 : 15,
   },
   titleFontSize: {
-    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 10 : 13,
+    fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 13,
   },
   linkText: {
     color: 'rgb(0, 122, 255)',
@@ -679,10 +703,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flexDirection: 'row',
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
     alignItems: 'center',
-    alignContent: 'center',
   },
   WonderIcon: {
     height: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 42 : 51,
