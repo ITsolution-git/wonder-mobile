@@ -42,6 +42,7 @@
     "paths": {
       "assets": ["src/assets"],
       "components": ["src/views/components"],
+      "@services": ["src/services/index.ts"],
       "@utils": ["src/utils/index.ts"],
       "@actions": ["src/store/actions/index.ts"],
       "@reducers": ["src/store/reducers/index.ts"],

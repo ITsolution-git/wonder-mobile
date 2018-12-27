@@ -21,6 +21,7 @@ import {
   persistRegistrationInfo,
   resetRegistration
 } from 'src/store/reducers/registration';
+import { checkUniqueness } from '@services';
 
 interface Props {
   onSave: Function;
@@ -34,6 +35,7 @@ interface State {
   email: string;
   phone: string;
   errors: StateErrors;
+  loading: boolean;
 }
 
 interface StateErrors {
@@ -63,7 +65,8 @@ class Register1 extends React.Component<Props, State> {
     last_name: '',
     email: '',
     phone: '',
-    errors: {}
+    errors: {},
+    loading: false
   };
 
   componentWillMount() {
@@ -77,10 +80,14 @@ class Register1 extends React.Component<Props, State> {
   }
 
   render() {
-    const { errors } = this.state;
+    const { errors, loading } = this.state;
+
     return (
       <Screen>
-        <ScrollView style={{ flex:1 }} contentContainerStyle={{ minHeight: '90%' }}>
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={{ minHeight: '90%' }}
+        >
           <KeyboardAvoidingView
             keyboardVerticalOffset={Platform.select({ android: -40, ios: 0 })}
             behavior='position'
@@ -184,7 +191,12 @@ class Register1 extends React.Component<Props, State> {
           </KeyboardAvoidingView>
         </ScrollView>
         <View>
-          <PrimaryButton rounded={false} title='Next' onPress={this.validate} />
+          <PrimaryButton
+            disabled={loading}
+            rounded={false}
+            title='Next'
+            onPress={this.validate}
+          />
         </View>
       </Screen>
     );
@@ -193,7 +205,14 @@ class Register1 extends React.Component<Props, State> {
   private validate = () => {
     const errors: StateErrors = {};
     const { navigation, onSave } = this.props;
-    const { first_name, last_name, email, phone } = this.state;
+    const {
+      errors: stateErrors,
+      first_name,
+      last_name,
+      email,
+      phone,
+      loading
+    } = this.state;
 
     if (validator.isEmpty(first_name)) {
       errors.first_name = 'Please enter your first name';
@@ -215,8 +234,31 @@ class Register1 extends React.Component<Props, State> {
       this.setState({ errors });
       return;
     }
-    onSave({ first_name, last_name, email, phone });
-    navigation.navigate('Register2');
+
+    this.setState({ loading: true }, async () => {
+      const [emailIsUnique, phoneIsUnique] = await Promise.all([
+        checkUniqueness({ email }),
+        checkUniqueness({ phone })
+      ]);
+
+      if (!emailIsUnique) {
+        errors.email = 'This email is already in use.';
+      }
+
+      if (!phoneIsUnique) {
+        errors.phone = 'This phone is already in use.';
+      }
+
+      if (!emailIsUnique || !phoneIsUnique) {
+        this.setState({ errors, loading: false });
+        return;
+      } else {
+        this.setState({ loading: false }, () => {
+          onSave({ first_name, last_name, email, phone });
+          navigation.navigate('Register2');
+        });
+      }
+    });
   }
 
   private onChangeText = (key: string) => {
@@ -251,5 +293,5 @@ const styles = StyleSheet.create({
     flex: 0,
     alignItems: 'center'
   },
-  roundedTextButton: { height: 54 },
+  roundedTextButton: { height: 54 }
 });
