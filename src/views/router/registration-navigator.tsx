@@ -75,7 +75,7 @@ const RegistrationNavigator = createStackNavigator(
     ProfileCamera: {
       screen: ProfileCamera,
       navigationOptions: {
-        title: 'PROFILE SELFIE',
+        title: 'TAKE SELFIE OR UPLOAD PHOTO',
         headerRight: (<View />),
         ...theme.NavBar.transparent
       }

@@ -84,7 +84,7 @@ const ProfileNavigator = createStackNavigator(
     ProfileCamera: {
       screen: ProfileCamera,
       navigationOptions: {
-        title: 'Profile Selfie',
+        title: 'TAKE SELFIE OR UPLOAD PHOTO',
         ...theme.NavBar.transparent,
         headerRight: <View/>
       }
