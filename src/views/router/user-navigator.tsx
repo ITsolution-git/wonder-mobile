@@ -92,7 +92,7 @@ const ProfileNavigator = createStackNavigator(
     ProfileVideo: {
       screen: ProfileVideo,
       navigationOptions: {
-        title: 'VIBE VIDEO',
+        title: 'RECORD OR SELECT VIBE VIDEO',
         ...theme.NavBar.transparent,
         headerRight: <View/>
       }
