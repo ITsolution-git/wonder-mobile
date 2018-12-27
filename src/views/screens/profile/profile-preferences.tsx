@@ -21,6 +21,7 @@ import { connect } from 'react-redux';
 
 import { Dispatch } from 'redux';
 import { updateUser, getUser } from 'src/store/sagas/user';
+import { getNextProposal } from 'src/store/sagas/proposal';
 import MultiPointSlider from 'src/views/components/theme/multi-point-slider/multi-point-slider';
 import WonderAppState from 'src/models/wonder-app-state';
 import User from 'src/models/user';
@@ -33,8 +34,10 @@ const mapState = (state: WonderAppState) => ({
 });
 
 const mapDispatch = (dispatch: Dispatch) => ({
-  onSave: (profile: Partial<User>) => dispatch(updateUser(profile)),
-  onRefresh: () => dispatch(getUser())
+  onSave: (profile: Partial<User>, updateProposals: () => void) =>
+    dispatch(updateUser(profile, updateProposals)),
+  onRefresh: () => dispatch(getUser()),
+  getNextProposal: () => dispatch(getNextProposal(5))
 });
 
 interface Props {
@@ -42,6 +45,7 @@ interface Props {
   profile: User;
   onSave: Function;
   onRefresh: Function;
+  getNextProposal: () => void;
 }
 
 interface State {
@@ -176,7 +180,8 @@ class ProfilePreferencesScreen extends React.Component<Props, State> {
       apn_message_super_likes,
       geocoding_requested,
       apn_new_offers,
-      activities_only_interest
+      activities_only_interest,
+      getNextProposal: this.props.getNextProposal
     });
     navigation.goBack();
   }

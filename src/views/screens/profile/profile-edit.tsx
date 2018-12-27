@@ -13,6 +13,7 @@ import {
   ScrollView,
   Platform
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import { NavigationScreenProp, NavigationParams } from 'react-navigation';
 import { connect } from 'react-redux';
@@ -146,86 +147,90 @@ class ProfileEditScreen extends React.Component<Props, State> {
 
     return (
       <View style={{ flex: 1 }}>
-        <ScrollView style={styles.container}>
-          <KeyboardAvoidingView
-            keyboardVerticalOffset={Platform.select({ android: -40, ios: 0 })}
-            behavior='position'
-            contentContainerStyle={{ flex: 1, justifyContent: 'space-around' }}
-            // style={styles.body}
-            style={{ flex: 1 }}
-          >
-            <View style={styles.row}>
-              <View flex={1}>
-                <TextInput
-                  style={{ height: 40 }}
-                  label='First Name'
-                  defaultValue={currentUser.first_name}
-                  onChangeText={this.onChangeText('first_name')}
-                  errorHint={errors.first_name}
-                />
-              </View>
-              <View flex={1}>
-                <TextInput
-                  style={{ height: 40 }}
-                  label='Last Name'
-                  defaultValue={currentUser.last_name}
-                  onChangeText={this.onChangeText('last_name')}
-                  errorHint={errors.last_name}
-                />
-              </View>
+        <KeyboardAwareScrollView
+          keyboardShouldPersistTaps='never'
+          keyboardDismissMode='interactive'
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+          style={{ paddingBottom: 15, backgroundColor: '#fff' }}
+          contentContainerStyle={{ paddingBottom: 20, paddingHorizontal: 20 }}
+        >
+          <View style={styles.row}>
+            <View flex={1}>
+              <TextInput
+                style={{ height: 40 }}
+                label='First Name'
+                defaultValue={currentUser.first_name}
+                onChangeText={this.onChangeText('first_name')}
+                autoCorrect={false}
+                errorHint={errors.first_name}
+              />
             </View>
-
-            <View style={styles.genderBtns}>
-              <Label>LOOKING FOR</Label>
-              <View style={styles.genderBtnsContainer}>
-                <StateButton
-                  active={this.state.male_interest}
-                  onPress={() => this.setGenderPreference('male')}
-                  text='Men'
-                />
-
-                <StateButton
-                  active={this.state.female_interest}
-                  onPress={() => this.setGenderPreference('female')}
-                  text='Women'
-                />
-              </View>
+            <View flex={1}>
+              <TextInput
+                style={{ height: 40 }}
+                label='Last Name'
+                defaultValue={currentUser.last_name}
+                onChangeText={this.onChangeText('last_name')}
+                autoCorrect={false}
+                errorHint={errors.last_name}
+              />
             </View>
+          </View>
 
-            <DatePicker
-              errorHint={errors.birthdate}
-              label='BIRTHDAY'
-              placeholder='Select Date'
-              onChange={this.onDateChange}
-              initialDate={new Date(birthdate)}
-              minDate={new Date('1950-01-01')}
-              maxDate={this.eighteenYearsAgoToday.toDate()}
+          <View style={styles.genderBtns}>
+            <Label>LOOKING FOR</Label>
+            <View style={styles.genderBtnsContainer}>
+              <StateButton
+                active={this.state.male_interest}
+                onPress={() => this.setGenderPreference('male')}
+                text='Men'
+              />
+
+              <StateButton
+                active={this.state.female_interest}
+                onPress={() => this.setGenderPreference('female')}
+                text='Women'
+              />
+            </View>
+          </View>
+
+          <DatePicker
+            errorHint={errors.birthdate}
+            label='BIRTHDAY'
+            placeholder='Select Date'
+            onChange={this.onDateChange}
+            initialDate={new Date(birthdate)}
+            minDate={new Date('1950-01-01')}
+            maxDate={this.eighteenYearsAgoToday.toDate()}
+          />
+
+          <View>
+            <TextInput
+              style={{ height: 40 }}
+              label='Education'
+              onChangeText={this.onChangeText('education')}
+              defaultValue={currentUser.school}
+              autoCorrect={false}
+              errorHint={errors.school}
             />
-
-            <View>
-              <TextInput
-                style={{ height: 40 }}
-                label='Education'
-                onChangeText={this.onChangeText('education')}
-                defaultValue={currentUser.school}
-                errorHint={errors.school}
-              />
-              <TextInput
-                style={{ height: 40 }}
-                label='Occupation'
-                onChangeText={this.onChangeText('occupation')}
-                defaultValue={currentUser.occupation}
-                errorHint={errors.occupation}
-              />
-              <TextInput
-                style={{ height: 40 }}
-                label='Activity Zip Code'
-                disabled
-                defaultValue={currentUser.zipcode}
-              />
-            </View>
-          </KeyboardAvoidingView>
-        </ScrollView>
+            <TextInput
+              style={{ height: 40 }}
+              label='Occupation'
+              onChangeText={this.onChangeText('occupation')}
+              defaultValue={currentUser.occupation}
+              autoCorrect={false}
+              errorHint={errors.occupation}
+            />
+            <TextInput
+              style={{ height: 40 }}
+              label='Activity Zip Code'
+              disabled
+              defaultValue={currentUser.zipcode}
+              autoCorrect={false}
+            />
+          </View>
+        </KeyboardAwareScrollView>
         <View>
           <PrimaryButton rounded={false} title='Save' onPress={this.validate} />
         </View>

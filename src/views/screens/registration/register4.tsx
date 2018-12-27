@@ -160,10 +160,9 @@ class Register4 extends React.Component<Props, State> {
   validate = () => {
     const { onSave, onRegister } = this.props;
     const { selected } = this.state;
-    if (selected.length === 3) {
-      onSave({ topic_ids: selected.map((s: Topic) => s.id) });
-      onRegister();
-    }
+
+    onSave({ topic_ids: selected.map((s: Topic) => s.id) });
+    onRegister();
   }
 
   renderRow = ({ item }: { item: any }) => {
@@ -190,8 +189,7 @@ class Register4 extends React.Component<Props, State> {
         <View style={{ paddingVertical: 15 }}>
           <Text style={{ textAlign: 'center' }}>
             Please select 3{' '}
-            <Text style={{ color: theme.colors.primary }}>Wonders</Text> to help
-            us find people &amp; activities in your area.
+            <Text style={{ color: theme.colors.primaryLight }}>Wonders</Text>{`\nto help us find people & activities in\nyour area.`}
           </Text>
         </View>
         <View>{this.renderPicks()}</View>
@@ -208,13 +206,14 @@ class Register4 extends React.Component<Props, State> {
         </View>
         <View flex={1}>
           {this.renderPicker()}
-          <View style={styles.fixedButton}>
-            <PrimaryButton
-              disabled={selected.length !== 3}
-              title='Next'
-              onPress={this.validate}
-            />
-          </View>
+        </View>
+        <View style={styles.fixedButton}>
+          <PrimaryButton
+            rounded={false}
+            disabled={selected.length !== 3}
+            title='Next'
+            onPress={this.validate}
+          />
         </View>
       </Screen>
     );
@@ -250,8 +249,9 @@ const styles = StyleSheet.create({
   },
   fixedButton: {
     position: 'absolute',
-    bottom: 10,
-    width: '100%',
+    bottom: 0,
+    left: 0,
+    right: 0,
     zIndex: 10
   }
 });

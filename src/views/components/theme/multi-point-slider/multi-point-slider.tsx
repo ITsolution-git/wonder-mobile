@@ -91,7 +91,7 @@ class MultiPointSlider extends React.Component<
   };
 
   private onValuesChange = (vals: number[]): void => {
-    console.log(`vals:`, vals);
+    // console.log(`vals:`, vals);
     const { onValueChange } = this.props;
 
     const [selectedMin, selectedMax] = vals;

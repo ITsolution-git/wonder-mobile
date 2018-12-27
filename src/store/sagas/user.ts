@@ -224,6 +224,8 @@ export function* getUserSaga() {
         },
         authHeader
       );
+
+      console.log(`persisting user data:`, data);
       yield put(persistUser(data));
     } else {
       const { data }: { data: User } = yield call(
@@ -252,7 +254,8 @@ export function* updateUserSaga(action: Action<any>) {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
 
-    const profile: Partial<User> = action.payload;
+    console.log(`update user action.payload:`, action.payload);
+    const { getNextProposal, ...profile } = action.payload;
 
     const { data }: { data: User } = yield call(
       api,
@@ -267,6 +270,10 @@ export function* updateUserSaga(action: Action<any>) {
     );
 
     yield put(persistUser(data));
+
+    if (getNextProposal) {
+      getNextProposal();
+    }
   } catch (error) {
     handleAxiosError(error);
   } finally {
@@ -292,25 +299,26 @@ export function* updateImageSaga(action: Action<any>) {
       name: Date.now() + '.jpg'
     };
     body.append('image', photo);
+    const token = auth.token || auth_token.token;
+    const uid = auth.uid || id;
 
-    // if updating photo on regostration
-    if (!state.user.auth.token) {
-      const authHeader = {
-        auth: {
-          token: auth_token.token
-        }
-      };
+    const authHeader = {
+      auth: {
+        token
+      }
+    };
 
-      const { data }: { data: any } = yield call(
-        api,
-        {
-          method: 'POST',
-          url: `/users/${id}/images`,
-          data: body
-        },
-        authHeader
-      );
-    }
+    const { data }: { data: any } = yield call(
+      api,
+      {
+        method: 'POST',
+        url: `/users/${uid}/images`,
+        data: body
+      },
+      authHeader
+    );
+
+    console.log(`posted another image:`, data);
 
     yield put(getUser());
   } catch (error) {
@@ -336,7 +344,6 @@ export function* deleteProfileImageSaga(action: Action<any>) {
     }
   } catch (error) {
     handleAxiosError(error);
-  } finally {
   }
 }
 
@@ -354,7 +361,6 @@ export function* deleteProfileVideoSaga() {
     yield put(getUser());
   } catch (error) {
     handleAxiosError(error);
-  } finally {
   }
 }
 
@@ -379,14 +385,27 @@ export function* updateVideoSaga(action: Action<any>) {
     };
     body.append('video', video);
 
-    if (!state.user.auth.token) {
-      const authHeader = {
-        auth: {
-          token: auth_token.token
-        }
-      };
-    } else {
-    }
+    const token = auth.token || auth_token.token;
+    const uid = auth.uid || id;
+
+    const authHeader = {
+      auth: {
+        token
+      }
+    };
+
+    const { data }: { data: any } = yield call(
+      api,
+      {
+        method: 'POST',
+        url: `/users/${uid}/video`,
+        data: body
+      },
+      authHeader
+    );
+
+    console.log(`posted a video:`, data);
+
     yield put(getUser());
   } catch (error) {
     handleAxiosError(error);

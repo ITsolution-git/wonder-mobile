@@ -23,6 +23,7 @@ interface Props {
   navigation: NavigationScreenProp<any, NavigationParams>;
   onSave: Function;
   setAlertModal: () => void;
+  userImages: any[];
 }
 
 interface State {
@@ -39,7 +40,8 @@ interface StateErrors {
 }
 
 const mapState = (state: WonderAppState) => ({
-  registration: state.registration
+  registration: state.registration,
+  userImages: state.user.profile.images || []
 });
 const mapDispatch = (dispatch: Dispatch) => ({
   onSave: (data: State) => dispatch(persistRegistrationInfo(data)),
@@ -70,11 +72,11 @@ class Register3 extends React.Component<Props, State> {
   }
 
   private validate = () => {
-    const { onSave, registration } = this.props;
+    const { onSave, registration, userImages } = this.props;
 
-    const { about, images } = this.state;
+    const { about } = this.state;
 
-    if (images.length < 2) {
+    if (userImages.length < 2) {
       return this.props.setAlertModal();
     }
 
@@ -93,7 +95,7 @@ class Register3 extends React.Component<Props, State> {
           contentContainerStyle={{ flex: 1 }}
         >
           <KeyboardDismissView>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 20 }}>
               <MediaGrid
                 width={Device.WIDTH - 80}
                 gutter={2}
@@ -107,11 +109,12 @@ class Register3 extends React.Component<Props, State> {
               // tslint:disable-next-line
               placeholder="Take this time to describe yourself, life experience, hobbies, and anything else that makes you wonderful..."
               maxLength={200}
+              minHeight={150}
             />
           </KeyboardDismissView>
         </KeyboardAvoidingView>
-        <View style={{ marginVertical: 10 }}>
-          <PrimaryButton title='Finish' onPress={this.validate} />
+        <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+          <PrimaryButton rounded={false} title='Finish' onPress={this.validate} />
         </View>
       </Screen>
     );
