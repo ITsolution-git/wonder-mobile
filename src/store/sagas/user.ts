@@ -254,7 +254,8 @@ export function* updateUserSaga(action: Action<any>) {
     const state: WonderAppState = yield select();
     const { auth } = state.user;
 
-    const profile: Partial<User> = action.payload;
+    console.log(`update user action.payload:`, action.payload);
+    const { getNextProposal, ...profile } = action.payload;
 
     const { data }: { data: User } = yield call(
       api,
@@ -269,6 +270,10 @@ export function* updateUserSaga(action: Action<any>) {
     );
 
     yield put(persistUser(data));
+
+    if (getNextProposal) {
+      getNextProposal();
+    }
   } catch (error) {
     handleAxiosError(error);
   } finally {

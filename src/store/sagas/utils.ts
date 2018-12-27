@@ -29,7 +29,7 @@ export const handleAxiosError = (error: any) => {
 
     if (
       data.errors &&
-      data.errors.email[0] &&
+      data.errors.email &&
       data.errors.email[0] === 'has already been taken'
     ) {
       dispatch(
@@ -37,6 +37,7 @@ export const handleAxiosError = (error: any) => {
           ...alertTexts.emailInUseAlertTexts
         })
       );
+      return;
     }
 
     if (data.message === 'Not a unique record') {
@@ -45,6 +46,7 @@ export const handleAxiosError = (error: any) => {
           ...alertTexts.phoneInUseAlertTexts
         })
       );
+      return;
     }
 
     // Alert.alert(
