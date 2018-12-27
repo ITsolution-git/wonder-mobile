@@ -27,6 +27,7 @@ const Viewport = Dimensions.get('window');
 
 const IPHONE5_WIDTH = 640;
 const IPHONE6_WIDTH = 750;
+const IPHONEX_WIDTH = 1125;
 
 const mapState = (state: WonderAppState) => ({
   appointment: state.appointment
@@ -72,11 +73,13 @@ class AppointmentConfirmScreen extends React.Component<
   }
 
   getWonderSize = () => {
-    const resolution = Viewport.width * Viewport.scale;
-    if (resolution > IPHONE6_WIDTH) {
+    const resolution = Viewport.width * Viewport.scale
+    if (resolution >= IPHONEX_WIDTH) {
+      return 55;
+    } else if (resolution >= IPHONE6_WIDTH && resolution < IPHONEX_WIDTH) {
       return 48;
-    } else if (resolution <= IPHONE6_WIDTH && resolution > IPHONE5_WIDTH) {
-      return 39;
+    } else if (resolution < IPHONE6_WIDTH && resolution > IPHONE5_WIDTH) {
+      return 40;
     } else if (resolution <= IPHONE5_WIDTH) {
       return 39;
     }
@@ -121,6 +124,9 @@ class AppointmentConfirmScreen extends React.Component<
   formatAddress = (location: any) => {
     if (location.length === 1) {
       return location;
+    } else if (location.length === 3 ) {
+      return location.slice(0, 2).join(', ') + '\n' + location
+          .slice(2, location.length).join(', ');
     } else {
       return location.slice(0, 1) + '\n' + location
           .slice(1, location.length).join(', ');
@@ -156,9 +162,9 @@ class AppointmentConfirmScreen extends React.Component<
                 Invite {match.first_name}{'\n'}
                 on a {appointment.topic.name} Date to:
               </Text>
-              <View style={{justifyContent: 'center', flex: 1}}>
+              <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
                 <View style={[styles.body]}>
-                  <View style={{maxWidth: '80%'}}>
+                  <View style={{ marginRight: 15, width: '68%' }}>
                     <Text style={[styles.mainFontSize, styles.activityName]}>{activity.name}</Text>
                     <Text
                       style={[styles.mainFontSize, styles.addressText]}
@@ -196,7 +202,7 @@ class AppointmentConfirmScreen extends React.Component<
                       </Text>
                     </TouchableOpacity>
                   </View>
-                  <View style={{ alignItems: 'flex-start', maxWidth: '20%' }}>
+                  <View style={{height: '100%', justifyContent: 'center'}}>
                     <WonderImage
                       style={{
                         width: this.getWonderSize(),
@@ -238,8 +244,8 @@ class AppointmentConfirmScreen extends React.Component<
             on a {appointment.topic.name} Date to:
           </Text>
           <View style={{justifyContent: 'center', flex: 1}}>
-            <View style={[styles.body]}>
-              <View style={{maxWidth: '80%'}}>
+            <View style={[styles.body, {maxWidth: '80%'}]}>
+              <View>
                 <Text style={[styles.mainFontSize, styles.activityName]}>{name}</Text>
                 <Text
                   style={[styles.mainFontSize, styles.addressText]}
@@ -279,7 +285,7 @@ class AppointmentConfirmScreen extends React.Component<
                   </TouchableOpacity>
                  ) : null }
               </View>
-              <View style={{ alignItems: 'flex-start', maxWidth: '20%' }}>
+              <View style={{ alignItems: 'flex-start'}}>
                 <WonderImage style={styles.WonderIcon} uri={appointment.topic.icon} />
               </View>
             </View>
@@ -317,16 +323,8 @@ export default connect(
 
 const styles = StyleSheet.create({
   body: {
-    flex: 1,
-    height: '100%',
-    width: '100%',
     flexDirection: 'row',
-    // marginTop: 15,
-    paddingHorizontal: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 22 : 30,
-    justifyContent: 'space-around',
     alignItems: 'center',
-    alignContent: 'center',
-    alignSelf: 'center',
   },
   scrollView: {
     height : Dimensions.get('window').height,

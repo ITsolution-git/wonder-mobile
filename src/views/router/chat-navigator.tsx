@@ -12,7 +12,7 @@ import theme, {colors} from 'src/assets/styles/theme';
 import navigation from '../../services/navigation';
 import {
     Dimensions,
-
+    Platform,
     View,
 
 } from 'react-native';
@@ -79,15 +79,24 @@ const ChatNavigator = createStackNavigator(
       navigationOptions: {
         title: 'CONFIRM YOUR WONDER',
         headerRight: (<View></View>),
-        headerTitleStyle : {
-          fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 14,
-          marginHorizontal: 5,
-            textAlign: 'center',
-          alignSelf: 'center',
-          justifyContent: 'center',
-          flex: 1
-        },
-          ...theme.NavBar.transparent,
+          ...Platform.select({
+              ios: {
+                  ...theme.NavBar.transparent,
+                  headerTitleStyle : {
+                      fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 14,
+                      marginHorizontal: 5,
+                      textAlign: 'center',
+                  },
+              },
+              android: {
+                  headerTitleStyle : {
+                      fontSize: ((Viewport.width * Viewport.scale) <= IPHONE5_WIDTH) ? 11 : 14,
+                      marginHorizontal: 5,
+                      textAlign: 'center',
+                  },
+                  ...theme.NavBar.transparent,
+              },
+          }),
       }
     }
   },

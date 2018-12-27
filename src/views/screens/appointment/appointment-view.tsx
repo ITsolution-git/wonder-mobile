@@ -180,6 +180,10 @@ class AppointmentViewScreen extends React.Component<AppointmentViewProps> {
   formatAddress = (location: any) => {
     if (location.length === 1) {
       return location.split(',');
+    } else if (location.length === 3 ) {
+      return location.split(',')
+          .slice(0, 2).join(', ') + '\n' + location.split(', ')
+          .slice(2, location.split(', ').length).join(', ');
     } else {
       return location.split(',')
           .slice(0, 1) + '\n' + location.split(', ')
