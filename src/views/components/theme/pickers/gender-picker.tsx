@@ -20,7 +20,7 @@ class GenderPickerOption extends React.Component<OptionProps> {
           <Icon
             name={option}
             color={
-              selected ? theme.colors.primaryLight : theme.colors.textColor
+              selected ? theme.colors.primary : theme.colors.textColor
             }
             size={48}
           />
