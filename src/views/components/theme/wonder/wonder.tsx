@@ -45,7 +45,7 @@ const Wonder: React.SFC<WonderProps> = ({
         style={{ height: imageSize, width: imageSize}}
         uri={topic.icon}
       />
-      {_.indexOf(excludePaddingOnIcons, nameUpperCase) !== -1 ? null : <View style={{height: 5 }} />}
+      {_.indexOf(excludePaddingOnIcons, nameUpperCase) !== -1 ? null : <View style={{height: 8 }} />}
       <Text
         numberOfLines={1}
         adjustsFontSizeToFit={true}

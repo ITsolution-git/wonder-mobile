@@ -86,11 +86,11 @@ class ProfileMediaScreen extends React.Component<Props, State> {
       <Screen>
         <AlertModal
           onPress={this.navToVideo}
-          title={'VIBE VIDEO'}
+          title={'RECORD OR SELECT VIBE VIDEO'}
           body={
-            'Record a 15-second video of yourself saying "Hi and what makes you"'
+            'Record a 15 second video of yourself saying "Hi and what makes you'
           }
-          buttonTitle={'Record'}
+          buttonTitle={'Record or Select Vibe Video'}
           renderWonderful={true}
           onRequestClose={this.toggleModalVisibility}
           visible={modalVisible}

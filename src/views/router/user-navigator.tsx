@@ -84,7 +84,7 @@ const ProfileNavigator = createStackNavigator(
     ProfileCamera: {
       screen: ProfileCamera,
       navigationOptions: {
-        title: 'Profile Selfie',
+        title: 'TAKE SELFIE OR UPLOAD PHOTO',
         ...theme.NavBar.transparent,
         headerRight: <View/>
       }
@@ -92,7 +92,7 @@ const ProfileNavigator = createStackNavigator(
     ProfileVideo: {
       screen: ProfileVideo,
       navigationOptions: {
-        title: 'Vibe Video',
+        title: 'RECORD OR SELECT VIBE VIDEO',
         ...theme.NavBar.transparent,
         headerRight: <View/>
       }

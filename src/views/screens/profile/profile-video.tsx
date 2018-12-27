@@ -81,11 +81,11 @@ class ProfileVideoScreen extends React.Component<Props, State> {
     let video = null;
     if (currentVideo) {
       video = (
-        <VideoPlayer video={currentVideo} videoHeight={1} videoWidth={1} />
+        <VideoPlayer video={currentVideo} resizeMode={"contain"} videoHeight={500} videoWidth={350} />
       );
     }
     if (data) {
-      video = <VideoPlayer video={data} videoHeight={1} videoWidth={1} />;
+      video = <VideoPlayer video={data} resizeMode={"contain"} videoHeight={500} videoWidth={350} />;
     }
     if (video) {
       return (
@@ -133,7 +133,8 @@ const styles = StyleSheet.create({
   imgcontainer: {
     flex: 1,
     flexDirection: 'column',
-    padding: 20
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   container: {
     flex: 1,
