@@ -188,7 +188,7 @@ class AlertModal extends React.Component<IAlertModalProps> {
               {body}
               {this.renderWonderfulText()}
             </Text>
-            <PrimaryButton title={buttonTitle} onPress={this.handleOnPress} />
+            <PrimaryButton title={buttonTitle} onPress={this.handleOnPress} style={{width: '100%'}}/>
             {!!buttonTitle2 && (
               <PrimaryButton
                 style={localStyles.button2}
