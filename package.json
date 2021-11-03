@@ -73,7 +73,7 @@
     "redux-persist": "^5.10.0",
     "redux-saga": "^0.16.0",
     "reselect": "^3.0.1",
-    "validator": "^10.4.0"
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@types/color": "^3.0.0",
